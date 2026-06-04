@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Konsep-konsep dasar biologi molekuler – Bioinformatic Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../docs/basic-tren-terbaru.html" rel="next">
+<link href="../docs/materi-dasar.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim",
+    "search-label": "Mencari"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Bioinformatic Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../materi.html" aria-current="page"> 
+<span class="menu-text">Materi</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tentang.html"> 
+<span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/bio.html"> 
+<span class="menu-text">Biografi</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-konsep-biomol.html">Konsep-konsep dasar biologi molekuler</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Daftar Materi</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/materi-dasar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Materi dasar</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-biomol.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Konsep-konsep dasar biologi molekuler</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-tren-terbaru.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-marker-genetik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-hierarki-linux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Memahami hierarki Linux</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-instalasi-tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instalasi Tools Bioinformatika</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-linux-in-win.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux di dalam Windows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-library-preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Library preparation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-dasar-ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep dasar pembelajaran mesin</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/skill-teknis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skill Teknis</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-curl-wget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variabel, loop, dan izin akses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-file-format.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mengenal berbagai format file NGS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality control hasil sequencing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Workflows</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-RNA-seq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RNA-Seq workflow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-metagenomics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Di halaman ini</h2>
+   
+  <ul>
+  <li><a href="#daftar-isi" id="toc-daftar-isi" class="nav-link active" data-scroll-target="#daftar-isi">Daftar isi</a></li>
+  <li><a href="#pendahuluan" id="toc-pendahuluan" class="nav-link" data-scroll-target="#pendahuluan">Pendahuluan</a></li>
+  <li><a href="#gen-dna-dan-dogma-sentral" id="toc-gen-dna-dan-dogma-sentral" class="nav-link" data-scroll-target="#gen-dna-dan-dogma-sentral">Gen, DNA, dan Dogma sentral</a>
+  <ul class="collapse">
+  <li><a href="#gen-unit-dasar-pewarisan-sifat" id="toc-gen-unit-dasar-pewarisan-sifat" class="nav-link" data-scroll-target="#gen-unit-dasar-pewarisan-sifat">Gen: Unit dasar pewarisan sifat</a></li>
+  <li><a href="#dna-bahan-penyusun-gen" id="toc-dna-bahan-penyusun-gen" class="nav-link" data-scroll-target="#dna-bahan-penyusun-gen">DNA: Bahan penyusun gen</a></li>
+  <li><a href="#dogma-sentral-aliran-informasi-genetik" id="toc-dogma-sentral-aliran-informasi-genetik" class="nav-link" data-scroll-target="#dogma-sentral-aliran-informasi-genetik">Dogma sentral: Aliran informasi genetik</a></li>
+  </ul></li>
+  <li><a href="#regulasi-ekspresi-gen" id="toc-regulasi-ekspresi-gen" class="nav-link" data-scroll-target="#regulasi-ekspresi-gen">Regulasi ekspresi gen</a>
+  <ul class="collapse">
+  <li><a href="#regulasi-transkripsi" id="toc-regulasi-transkripsi" class="nav-link" data-scroll-target="#regulasi-transkripsi">Regulasi transkripsi</a>
+  <ul class="collapse">
+  <li><a href="#regulasi-oleh-faktor-transkripsi-melalui-daerah-regulator" id="toc-regulasi-oleh-faktor-transkripsi-melalui-daerah-regulator" class="nav-link" data-scroll-target="#regulasi-oleh-faktor-transkripsi-melalui-daerah-regulator">Regulasi oleh faktor transkripsi melalui daerah regulator</a></li>
+  <li><a href="#regulasi-oleh-epigenetik" id="toc-regulasi-oleh-epigenetik" class="nav-link" data-scroll-target="#regulasi-oleh-epigenetik">Regulasi oleh epigenetik</a></li>
+  </ul></li>
+  <li><a href="#regulasi-pasca-transkripsi" id="toc-regulasi-pasca-transkripsi" class="nav-link" data-scroll-target="#regulasi-pasca-transkripsi">Regulasi pasca transkripsi</a>
+  <ul class="collapse">
+  <li><a href="#regulasi-oleh-non-coding-rna-ncrna" id="toc-regulasi-oleh-non-coding-rna-ncrna" class="nav-link" data-scroll-target="#regulasi-oleh-non-coding-rna-ncrna">Regulasi oleh Non-coding RNA (ncRNA)</a></li>
+  <li><a href="#regulasi-splicing" id="toc-regulasi-splicing" class="nav-link" data-scroll-target="#regulasi-splicing">Regulasi <em>splicing</em></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#membentuk-genome-variasi-sebagai-kunci-keragaman-dan-kelangsungan-hidup" id="toc-membentuk-genome-variasi-sebagai-kunci-keragaman-dan-kelangsungan-hidup" class="nav-link" data-scroll-target="#membentuk-genome-variasi-sebagai-kunci-keragaman-dan-kelangsungan-hidup">Membentuk genome: Variasi sebagai kunci keragaman dan kelangsungan hidup</a>
+  <ul class="collapse">
+  <li><a href="#mutasi" id="toc-mutasi" class="nav-link" data-scroll-target="#mutasi">Mutasi</a></li>
+  <li><a href="#variasi-genetik-dalam-populasi" id="toc-variasi-genetik-dalam-populasi" class="nav-link" data-scroll-target="#variasi-genetik-dalam-populasi">Variasi genetik dalam populasi</a>
+  <ul class="collapse">
+  <li><a href="#rekombinasi-genetik-mencampur-kartu-genetik" id="toc-rekombinasi-genetik-mencampur-kartu-genetik" class="nav-link" data-scroll-target="#rekombinasi-genetik-mencampur-kartu-genetik">Rekombinasi genetik: Mencampur kartu genetik</a></li>
+  <li><a href="#seleksi-alam-dan-evolusi" id="toc-seleksi-alam-dan-evolusi" class="nav-link" data-scroll-target="#seleksi-alam-dan-evolusi">Seleksi alam dan evolusi</a></li>
+  <li><a href="#genetic-drift-kebetulan-dalam-evolusi" id="toc-genetic-drift-kebetulan-dalam-evolusi" class="nav-link" data-scroll-target="#genetic-drift-kebetulan-dalam-evolusi"><em>Genetic drift</em>: Kebetulan dalam evolusi</a></li>
+  <li><a href="#gene-flow-pertukaran-materi-genetik-antar-populasi" id="toc-gene-flow-pertukaran-materi-genetik-antar-populasi" class="nav-link" data-scroll-target="#gene-flow-pertukaran-materi-genetik-antar-populasi"><em>Gene flow</em>: Pertukaran materi genetik antar populasi</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#referensi" id="toc-referensi" class="nav-link" data-scroll-target="#referensi">Referensi</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-konsep-biomol.html">Konsep-konsep dasar biologi molekuler</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Konsep-konsep dasar biologi molekuler</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
+<a href="../docs/basic-konsep-biomol.html" style="text-decoration: none; color: inherit;"> Konsep-konsep dasar biologi molekuler </a>
+</h1>
+<p style="text-align: center; font-size: 1.2rem;">
+Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
+</p>
+<div style="text-align: center; margin-bottom: 1.5rem;">
+<p><img src="https://png.pngtree.com/background/20250115/original/pngtree-a-close-up-of-dna-strand-in-pink-and-blue-capturing-picture-image_16103219.jpg" alt="Logo Genomik" style="max-width: 100%; height: auto;"></p>
+</div>
+<p><br></p>
+<section id="daftar-isi" class="level1">
+<h1>Daftar isi</h1>
+<ul>
+<li><a href="#pendahuluan">Pendahuluan</a></li>
+<li><a href="#gen-dna-dan-dogma-sentral">Gen, DNA dan Dogma sentral</a></li>
+<li><a href="#regulasi-ekspresi-gen">Regulasi ekspresi gen</a></li>
+<li><a href="#membentuk-genome-variasi-sebagai-kunci-keragaman-dan-kelangsungan-hidup">Membentuk genome: Variasi sebagai kunci keragaman dan kelangsungan hidup</a></li>
+</ul>
+</section>
+<section id="pendahuluan" class="level1">
+<h1>Pendahuluan</h1>
+<p>Biologi molekuler adalah cabang ilmu biologi yang mempelajari struktur dan fungsi molekul biologis, terutama asam nukleat dan protein, serta interaksi antara molekul-molekul tersebut. Bidang ini berperan penting dalam memahami proses-proses dasar kehidupan pada tingkat molekuler. Biologi molekuler menjembatani kesenjangan antara biologi klasik dan bidang-bidang seperti biokimia, genetika, dan fisiologi, memberikan pemahaman mendalam tentang mekanisme seluler.</p>
+<p>Perkembangan biologi molekuler dimulai dengan penemuan struktur DNA oleh James Watson dan Francis Crick pada tahun 1953, yang meletakkan dasar untuk memahami bagaimana informasi genetik disimpan, direplikasi, dan diterjemahkan menjadi protein. Sejak penemuan revolusioner ini, biologi molekuler telah berkembang pesat, menghasilkan teknik-teknik seperti kloning gen, sekuensing DNA, dan rekayasa genetika yang telah mengubah pendekatan kita dalam penelitian biologis.</p>
+<p>Dalam beberapa dekade terakhir, kemajuan dalam teknologi sekuensing dan analisis genetik telah memungkinkan para ilmuwan untuk memetakan genom berbagai organisme, termasuk genom manusia yang selesai dipetakan pada tahun 2003 (<em>Human Genome Project</em>). Pencapaian ini membuka era baru dalam penelitian biologi, memungkinkan pendekatan sistematis untuk memahami hubungan antara gen dan fenotipe, serta pengembangan aplikasi praktis dalam bidang kesehatan, pangan, dan lingkungan.</p>
+<p>Aplikasi biologi molekuler sangat luas dan terus berkembang. Di bidang kedokteran, biologi molekuler memungkinkan diagnosis yang lebih tepat untuk penyakit genetik, pengembangan terapi gen, dan pendekatan pengobatan yang dipersonalisasi (<em>precision medicine</em>). Di bidang pangan, akuakultur misalnya, teknologi DNA telah menghasilkan varian ikan dan udang dengan peningkatan performa pertumbuhan, ketahanan penyakit, dan nilai gizi. Di bidang lingkungan, pendekatan molekuler digunakan untuk memahami keanekaragaman hayati, mengembangkan bioremediasi, dan memantau ekosistem, misalnya penggunaan teknik eDNA (<em>environmental DNA</em>).</p>
+<p>Keberhasilan biologi molekuler tidak lepas dari pendekatannya yang interdisipliner, menggabungkan prinsip dan teknik dari berbagai bidang seperti biologi, kimia, fisika, matematika, dan ilmu komputer. Pendekatan terintegrasi ini telah melahirkan bidang-bidang baru seperti genomika, proteomika, dan bioinformatika, yang bersama-sama memberikan pemahaman komprehensif tentang proses-proses biologis pada tingkat molekuler.</p>
+</section>
+<section id="gen-dna-dan-dogma-sentral" class="level1">
+<h1>Gen, DNA, dan Dogma sentral</h1>
+<section id="gen-unit-dasar-pewarisan-sifat" class="level2">
+<h2 class="anchored" data-anchor-id="gen-unit-dasar-pewarisan-sifat">Gen: Unit dasar pewarisan sifat</h2>
+<p>Gen dapat diumpamakan sebagai resep dalam buku masak. Setiap resep (gen) berisi instruksi spesifik untuk membuat satu jenis hidangan, dalam hal ini adalah protein. Gen adalah unit fungsional terkecil dari materi genetik yang mengkode informasi untuk membentuk protein tertentu atau mengatur ekspresi gen lainnya.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/Gene-DNA.jpg" alt="DNA dan gen" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Struktur DNA dalam sel.</strong> DNA berada di dalam inti sel dan terorganisasi membentuk kromosom. DNA melilit protein histon membentuk nukleosom, yang kemudian berkontribusi pada struktur kromatin. Bagian spesifik dari DNA disebut gen, yang terdiri atas pasangan basa nukleotida: Adenin (A) berpasangan dengan Timin (T), dan Guanin (G) berpasangan dengan Sitosin (C). Struktur ini merupakan dasar penyimpanan informasi genetik dalam makhluk hidup. <br><em>Sumber gambar:</em> <a href="https://www.cancer.gov/publications/dictionaries/genetics-dictionary/def/dna" target="_blank">National Cancer Institute</a>
+</figcaption>
+</figure>
+<p>Bayangkan jika tubuh kita adalah sebuah orkestra besar, maka gen-gen adalah partitur musiknya. Setiap gen memberi petunjuk kapan, di mana, dan bagaimana menghasilkan nada (protein) tertentu. Kombinasi dari ribuan “nada” inilah yang menciptakan “simfoni kehidupan” yang unik pada setiap individu.</p>
+<p>Gen tidak bekerja sendirian. Mereka saling berinteraksi dalam jaringan kompleks, saling mengatur dan memengaruhi. Beberapa gen aktif sejak awal perkembangan embrio, sementara yang lain hanya aktif pada tahap tertentu atau di jaringan spesifik. Misalnya, gen yang bertanggung jawab untuk membentuk hemoglobin (protein pembawa oksigen dalam darah) sangat aktif di sel-sel darah merah, tetapi tidak aktif di sel kulit.</p>
+<p>Manusia memiliki sekitar 20.000-25.000 gen yang tersebar di 23 pasang kromosom. Jumlah ini mungkin terdengar banyak, tetapi sebenarnya cukup sederhana dibandingkan dengan kompleksitas tubuh manusia itu sendiri. Ini karena satu gen dapat menghasilkan beberapa varian protein melalui proses yang disebut “<em>alternative splicing</em>”, dan protein-protein ini kemudian berinteraksi dengan cara yang sangat kompleks.</p>
+</section>
+<section id="dna-bahan-penyusun-gen" class="level2">
+<h2 class="anchored" data-anchor-id="dna-bahan-penyusun-gen">DNA: Bahan penyusun gen</h2>
+<p>Jika gen adalah resep, maka DNA (<em>Deoxyribonucleic Acid</em>) adalah kertas tempat resep tersebut ditulis. DNA adalah molekul kompleks berbentuk heliks ganda (<em>double helix</em>) yang menyimpan informasi genetik dalam bentuk kode kimia. Struktur DNA seperti tangga spiral, dengan dua untai yang terhubung oleh anak tangga berupa pasangan basa nitrogen.</p>
+<p>Ada empat jenis basa nitrogen dalam DNA: Adenin (A), Guanin (G), Sitosin (C), dan Timin (T). Basa ini selalu berpasangan dengan aturan tertentu. Adenin selalu berpasangan dengan Timin, dan Guanin selalu berpasangan dengan Sitosin. Urutan basa inilah yang membentuk “kode genetik”, sebuah bahasa universal kehidupan yang menentukan karakteristik setiap organisme.</p>
+<p>Keindahan struktur DNA terletak pada kemampuannya untuk mereplikasi diri dengan akurat. Saat sel membelah, untai heliks ganda DNA terpisah, dan masing-masing untai menjadi cetakan (<em>template</em>) untuk membentuk untai komplementer baru. Hasilnya adalah dua molekul DNA identik untuk memastikan bahwa informasi genetik diteruskan dengan tepat ke sel-sel anak.</p>
+<p>Meskipun 99,9% DNA manusia identik, variasi 0,1% itulah yang membuat kita unik. Perbedaan kecil dalam urutan DNA dapat menghasilkan variasi dalam sifat fisik, kerentanan terhadap penyakit, dan bahkan beberapa aspek kepribadian. Variasi ini terjadi melalui mutasi acak dan rekombinasi genetik selama reproduksi seksual.</p>
+<p>DNA tidak hanya ditemukan di dalam inti sel (nukleus). Sebagian kecil DNA juga terdapat di mitokondria (generator energi di dalam sel), yang diwariskan secara eksklusif dari ibu (<em>maternal</em>). DNA mitokondria ini telah menjadi alat penting dalam studi evolusi manusia dan penelusuran garis keturunan.</p>
+</section>
+<section id="dogma-sentral-aliran-informasi-genetik" class="level2">
+<h2 class="anchored" data-anchor-id="dogma-sentral-aliran-informasi-genetik">Dogma sentral: Aliran informasi genetik</h2>
+<p>Dogma sentral biologi molekuler (<em>central dogma</em>) menjelaskan bagaimana informasi genetik mengalir dari DNA ke protein, melalui perantara RNA (<em>Ribonucleic acid</em>), sebuah materi genetik dengan untai tunggal (<em>single helix</em>). Ini seperti proses penerjemahan buku dari bahasa asli (DNA) ke bahasa perantara (RNA), dan akhirnya menjadi produk akhir yang fungsional (protein). Proses ini terjadi dalam dua tahap utama:</p>
+<p><strong>Transkripsi:</strong> Pada tahap ini, sekuen DNA digunakan sebagai <em>template</em> untuk membentuk molekul <em>messenger</em> RNA (mRNA). Enzim RNA polimerase membaca kode DNA dan mensintesis mRNA komplementer, di mana terjadi di dalam nukleus. Jika DNA adalah <em>master copy</em> dari instruksi genetik, mRNA adalah salinan kerja yang dapat dibawa keluar dari nukleus.</p>
+<p><strong>Translasi:</strong> Setelah mRNA terbentuk dan bergerak keluar dari nukleus menuju sitoplasma, informasi genetik diterjemahkan menjadi protein. Ribosom, “pabrik protein” sel, membaca kode pada mRNA dan merangkai asam amino sesuai urutan yang ditentukan. Setiap tiga basa (disebut kodon) pada mRNA mengkode satu asam amino spesifik. Rangkaian asam amino inilah yang membentuk protein, dan protein inilah yang menjalankan hampir semua fungsi dalam tubuh.</p>
+<p>Dogma sentral menyederhanakan proses yang sebenarnya sangat kompleks. Menariknya, dalam beberapa dekade terakhir, para ilmuwan telah menemukan beberapa “pengecualian” terhadap aliran informasi ini. Misalnya, beberapa virus (seperti HIV) memiliki enzim <em>reverse transcriptase</em> yang dapat mengubah RNA menjadi DNA, membalik arah normal aliran informasi. Penemuan non-coding RNA (ncRNA) yang memiliki fungsi regulasi juga telah memperluas pemahaman kita tentang peran RNA di luar sekadar perantara.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/Central-dogma.png" alt="Central dogma" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Dogma sentral.</strong> DNA mengalami replikasi untuk menggandakan dirinya, kemudian ditranskripsi menjadi RNA. RNA selanjutnya diterjemahkan (translasi) menjadi protein. Dalam kasus tertentu, RNA juga dapat ditranskripsi balik (reverse transcription) menjadi DNA, seperti yang terjadi pada virus retro. <br><em>Sumber gambar:</em> <a href="https://www.scienceholic.org/post/the-exception-to-the-central-dogma" target="_blank">scienceholic</a>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="regulasi-ekspresi-gen" class="level1">
+<h1>Regulasi ekspresi gen</h1>
+<p>Bayangkan jika semua lampu di rumah Anda menyala sepanjang waktu, bahkan ketika tidak dibutuhkan. Bukan hanya pemborosan energi, tapi juga sangat tidak efisien. Sel-sel dalam tubuh kita bekerja dengan prinsip yang mirip, mereka perlu “menyalakan” dan “mematikan” gen-gen tertentu pada waktu yang tepat. Inilah yang disebut sebagai regulasi ekspresi gen.</p>
+<p>Regulasi ekspresi gen adalah proses kompleks yang mengontrol kapan, di mana, dan seberapa banyak protein yang akan diproduksi dari suatu gen. Tidak semua gen aktif setiap saat di setiap sel. Sebagai contoh, sel-sel di mata kita mengaktifkan gen-gen yang membuat protein untuk penglihatan, sementara sel-sel di pankreas mengaktifkan gen-gen untuk produksi insulin. Regulasi ini memungkinkan sel-sel yang berbeda untuk memiliki fungsi yang berbeda meskipun mereka memiliki materi genetik yang sama.</p>
+<p>Secara umum, regulasi ekspresi gen terjadi pada tiga tingkatan:</p>
+<section id="regulasi-transkripsi" class="level2">
+<h2 class="anchored" data-anchor-id="regulasi-transkripsi">Regulasi transkripsi</h2>
+<p>Proses transkripsi adalah langkah pertama dan paling krusial dalam ekspresi gen, yang mana informasi genetik pada DNA diubah menjadi RNA. Regulasi pada tahap ini sangat menentukan apakah suatu gen akan “dinyalakan” atau “dimatikan”, ini seperti sakelar yang mengontrol aliran informasi genetik. Ada beberapa “sakelar” yang perlu kita pahami, yaitu:</p>
+<section id="regulasi-oleh-faktor-transkripsi-melalui-daerah-regulator" class="level3">
+<h3 class="anchored" data-anchor-id="regulasi-oleh-faktor-transkripsi-melalui-daerah-regulator">Regulasi oleh faktor transkripsi melalui daerah regulator</h3>
+<p>Faktor transkripsi (<em>transcription factor</em>) adalah protein spesial yang bisa mengenali dan mengikat sekuens DNA tertentu. Mereka bertindak seperti “sakelar” molekuler yang menentukan kapan dan seberapa banyak RNA yang akan diproduksi dari suatu gen. Faktor transkripsi ini berinteraksi dengan berbagai daerah regulator pada DNA diantaranya:</p>
+<ol type="1">
+<li><p><strong><em>Core promoter</em></strong></p>
+<p><em>Core promoter</em> merupakan sekuens DNA minimal yang diperlukan untuk memulai transkripsi. Terletak sekitar 35 pasang basa di sekitar titik awal transkripsi, daerah ini berisi elemen-elemen seperti TATA box yang dikenali oleh faktor transkripsi basal. Ketika faktor transkripsi basal seperti TFIID mengikat TATA box, mereka merekrut RNA polimerase II untuk memulai transkripsi. Ini seperti kunci kontak yang harus diputar agar mesin mobil bisa menyala.</p></li>
+<li><p><strong><em>Proksimal promoter</em></strong></p>
+<p><em>Proksimal promoter</em> berada sedikit lebih jauh dari titik awal transkripsi, biasanya dalam jarak ratusan pasang basa. Daerah ini mengandung elemen respon yang dikenali oleh faktor transkripsi spesifik. Interaksi antara faktor transkripsi dengan <em>proksimal promoter</em> dapat meningkatkan atau mengurangi tingkat transkripsi dasar. Misalnya, pada gen yang terlibat dalam respons terhadap stres panas, faktor transkripsi HSF (<em>Heat Shock Factor</em>) mengikat elemen respons panas di <em>proksimal promoter</em> untuk mengaktifkan transkripsi.</p></li>
+<li><p><strong><em>Enhancer</em></strong></p>
+<p><em>Enhancer</em> adalah sekuens DNA yang dapat meningkatkan tingkat transkripsi secara signifikan. Uniknya adalah lokasinya bisa sangat jauh dari gen yang diaturnya, bisa ribuan atau bahkan jutaan pasang basa, baik di hulu, di hilir, atau bahkan di dalam intron gen. <em>Enhancer</em> bekerja melalui pembentukan loop DNA, yang memungkinkan faktor transkripsi yang terikat pada <em>enhancer</em> berinteraksi dengan mesin transkripsi di promoter. Bayangkan <em>enhancer</em> sebagai mesin <em>turbocharger</em> yang mempercepat produksi RNA ketika diperlukan.</p></li>
+<li><p><strong><em>Silencer</em></strong></p>
+<p>Kebalikan dari <em>enhancer</em>, <em>silencer</em> adalah sekuens DNA yang mengurangi atau menekan transkripsi. Ketika protein <em>represor</em> mengikat <em>silencer</em>, mereka dapat mencegah interaksi antara <em>enhancer</em> dan promoter atau menghalangi perekrutan RNA polimerase. Ini seperti rem yang memperlambat atau menghentikan produksi RNA. <em>Silencer</em> membantu memastikan bahwa gen tidak diekspresikan pada waktu atau tempat yang tidak tepat.</p></li>
+<li><p><strong><em>Insulator</em></strong></p>
+<p>Insulator adalah elemen pengatur yang bertindak sebagai penghalang, mencegah <em>enhancer</em> atau <em>silencer</em> mempengaruhi promoter gen yang tidak seharusnya. Mereka menciptakan domain kromatin yang terisolasi, sehingga aktivitas pengatur tetap terbatas pada gen target yang tepat. Protein CTCF sering terlibat dalam fungsi insulator. Bayangkan insulator sebagai dinding pemisah yang mencegah “gangguan tetangga” dalam regulasi gen.</p></li>
+<li><p><strong><em>Locus Control Region (LCR)</em></strong></p>
+<p>LCR adalah kumpulan elemen pengatur yang mengkoordinasikan ekspresi sekelompok gen terkait. LCR dapat mengatur pembukaan struktur kromatin, memungkinkan akses ke semua gen dalam cluster. Contoh klasik adalah LCR pada cluster gen globin, yang memastikan ekspresi gen globin yang tepat selama perkembangan. LCR berfungsi seperti panel kontrol master yang mengatur sekelompok gen terkait.</p></li>
+</ol>
+</section>
+<section id="regulasi-oleh-epigenetik" class="level3">
+<h3 class="anchored" data-anchor-id="regulasi-oleh-epigenetik">Regulasi oleh epigenetik</h3>
+<p>Epigenetik merujuk pada berbagai faktor selain urutan DNA, seperti struktur kromatin dan metilasi DNA yang berperan dalam pengaturan gen. Intinya, regulasi epigenetik berkaitan dengan bagaimana DNA dikemas dan dibentuk, yang pada akhirnya memengaruhi tingkat ekspresi gen. Salah satu contohnya adalah bahwa cara DNA dikemas di dalam inti sel dapat menentukan apakah suatu wilayah DNA dapat diakses oleh faktor transkripsi yang diperlukan untuk mengaktifkan gen. Secara umum, ada dua mekanisme utama dalam regulasi epigenetik: (i) DNA metilasi dan (ii) modifikasi pada protein histon.</p>
+<ol type="1">
+<li><p><strong>DNA metilasi</strong></p>
+<p>DNA metilasi adalah penambahan gugus metil (CH3) pada basa sitosin dalam DNA, biasanya pada dinukleotida CpG (<em>CpG island</em>). Metilasi DNA umumnya terkait dengan penurunan ekspresi gen. Ketika promoter suatu gen mengalami metilasi, faktor transkripsi sering kali tidak dapat mengikat, menyebabkan “keheningan” gen tersebut. DNA metilasi berperan penting dalam inaktivasi kromosom X, imprinting gen, dan perlindungan terhadap elemen transposon. Enzim DNA <em>metiltransferase</em> (DNMTs) bertanggung jawab untuk menambahkan gugus metil ini.</p></li>
+<li><p><strong>Modifikasi Histon</strong></p>
+<p>Histon adalah protein yang membungkus DNA, membentuk struktur seperti manik-manik yang disebut <em>nukleosom</em>. Ekor histon yang menonjol dapat mengalami berbagai modifikasi, termasuk asetilasi, metilasi, fosforilasi, dan ubiquitinasi. Modifikasi ini membentuk “kode histon” yang mempengaruhi struktur kromatin dan aksesibilitas gen.</p>
+<p>Pada asetilasi histon, penambahan gugus asetil pada residu lisin di ekor histon umumnya terkait dengan aktivasi transkripsi. Asetilasi mengurangi muatan positif histon, melemahkan interaksinya dengan DNA bermuatan negatif, dan menghasilkan struktur kromatin yang lebih terbuka (<em>eukromatin</em>). Enzim <em>histon asetiltransferase</em> (HATs) menambahkan gugus asetil, sementara <em>histon deasetilase</em> (HDACs) menghilangkannya.</p>
+<p>Sementara itu, metilasi histon dapat mengaktifkan atau menekan transkripsi, tergantung pada residu mana yang termetilasi. Misalnya, trimetilasi pada lisin 4 histon H3 (H3K4me3) terkait dengan aktivasi transkripsi, sementara trimetilasi pada lisin 27 histon H3 (H3K27me3) biasanya menandakan represi gen, modifikasi histon terangkum pada tabel 1. Protein yang mengandung kromodomain dapat “membaca” modifikasi histon spesifik dan merekrut faktor tambahan untuk mengubah ekspresi gen.</p></li>
+</ol>
+<p><strong>Tabel 1</strong>: Modifikasi Histon dan Efeknya<br>
+(Jika lebih dari satu modifikasi memiliki efek yang sama, dipisahkan dengan koma)</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Modifikasi Histon</th>
+<th>Efek</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H3K9ac</td>
+<td>Promotor dan enhancer aktif</td>
+</tr>
+<tr class="even">
+<td>H3K14ac</td>
+<td>Transkripsi aktif</td>
+</tr>
+<tr class="odd">
+<td>H3K4me3, H3K4me2, H3K4me1</td>
+<td>Promotor dan enhancer aktif</td>
+</tr>
+<tr class="even">
+<td>H3K4me1, H3K27ac</td>
+<td>Spesifik untuk enhancer</td>
+</tr>
+<tr class="odd">
+<td>H3K27ac</td>
+<td>Spesifik untuk enhancer</td>
+</tr>
+<tr class="even">
+<td>H3K36me3</td>
+<td>Wilayah transkripsi aktif</td>
+</tr>
+<tr class="odd">
+<td>H3K27me3, H3K27me2, H3K27me1</td>
+<td>Promotor yang tidak aktif (silent)</td>
+</tr>
+<tr class="even">
+<td>H3K9me3, H3K9me2, H3K9me1</td>
+<td>Promotor yang tidak aktif (silent)</td>
+</tr>
+</tbody>
+</table>
+<p>Saat ini, studi tentang epigenetik menjadi topik yang sangat menarik, karena membuka pemahaman baru tentang bagaimana ekspresi gen dapat diatur tanpa mengubah urutan DNA itu sendiri. Penelitian di bidang ini memiliki implikasi luas, mulai dari pemahaman mekanisme dasar perkembangan embrionik hingga peran epigenetik dalam berbagai penyakit, termasuk kanker, gangguan neurodegeneratif, dan penyakit autoimun. Selain itu, epigenetik juga menjanjikan pendekatan terapeutik baru, seperti terapi epigenetik yang menargetkan enzim pengubah kromatin untuk memodulasi ekspresi gen secara spesifik. Pemahaman yang lebih mendalam tentang epigenetik berpotensi merevolusi pengobatan presisi dan membuka peluang besar dalam bioteknologi dan rekayasa genetik.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/epigenetic.png" alt="Epigenetics" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Mekanisme epigenetik.</strong> Mekanisme ini meliputi metilasi DNA (penambahan gugus metil yang dapat menonaktifkan gen) dan modifikasi histon (pengikatan faktor epigenetik pada ekor histon yang mempengaruhi keterbukaan DNA). <br><em>Sumber gambar:</em> <a href="https://en.wikipedia.org/wiki/Epigenetics" target="_blank">Wikipedia</a>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="regulasi-pasca-transkripsi" class="level2">
+<h2 class="anchored" data-anchor-id="regulasi-pasca-transkripsi">Regulasi pasca transkripsi</h2>
+<p>Setelah mRNA diproduksi melalui transkripsi, masih ada banyak titik kontrol sebelum akhirnya diterjemahkan menjadi protein. Regulasi pasca transkripsi memungkinkan respons yang lebih cepat dan lebih halus terhadap perubahan kebutuhan sel.</p>
+<section id="regulasi-oleh-non-coding-rna-ncrna" class="level3">
+<h3 class="anchored" data-anchor-id="regulasi-oleh-non-coding-rna-ncrna">Regulasi oleh Non-coding RNA (ncRNA)</h3>
+<p>ncRNA adalah molekul RNA yang tidak diterjemahkan menjadi protein tetapi berfungsi sebagai regulator penting. Bayangkan mereka sebagai petugas lalu lintas yang mengatur arus informasi genetik. ncRNA terbagi menjadi beberapa jenis, diantaranya:</p>
+<ol type="1">
+<li><p>MicroRNA (miRNA)</p>
+<p>miRNA adalah RNA non-coding pendek (sekitar 22 nukleotida) yang mengatur ekspresi gen dengan mengikat pada daerah 3’ UTR (<em>untranslated region</em>) dari mRNA target. Ketika miRNA mengikat mRNA dengan komplementaritas yang sempurna atau hampir sempurna, mereka dapat memicu degradasi mRNA atau menghambat translasi. Satu miRNA dapat mengatur ratusan mRNA target, menciptakan jaringan regulasi yang kompleks (si kecil cabe rawit). Proses biogenesis miRNA melibatkan enzim <em>Drosha</em> di nukleus dan <em>Dicer</em> di sitoplasma, yang memotong prekursor miRNA menjadi miRNA matang.</p></li>
+<li><p>Long non-coding RNA (lncRNA)</p>
+<p>lncRNA adalah RNA non-coding yang panjangnya lebih dari 200 nukleotida. Mereka memiliki berbagai fungsi regulasi, termasuk mengatur modifikasi kromatin, memfasilitasi interaksi enhancer-promoter, dan bertindak sebagai “sponge” untuk miRNA (menyerap miRNA sehingga tidak dapat mengikat mRNA target mereka). XIST adalah lncRNA terkenal yang berperan dalam inaktivasi kromosom X pada mamalia betina, “melapisi” kromosom X dan merekrut kompleks penekan.</p></li>
+<li><p>Small interfering RNA (siRNA)</p>
+<p>mirip dengan miRNA tetapi biasanya berasal dari RNA untai ganda eksogen atau elemen genetik seperti transposon. siRNA mengikat mRNA target dengan komplementaritas sempurna dan memicu degradasi mRNA melalui mekanisme RNA interference (RNAi). Ini berfungsi sebagai sistem pertahanan seluler terhadap virus dan elemen genetik bergerak.</p></li>
+<li><p>Piwi-interacting RNA (piRNA)</p>
+<p>piRNA diekspresikan dalam sel germline dan melindungi integritas genom dengan menekan transposon. Mereka berasosiasi dengan protein Piwi dan dapat memicu metilasi DNA pada sekuens transposon untuk mencegah transkripsi mereka.</p></li>
+</ol>
+</section>
+<section id="regulasi-splicing" class="level3">
+<h3 class="anchored" data-anchor-id="regulasi-splicing">Regulasi <em>splicing</em></h3>
+<p>RNA Splicing adalah proses penting dalam pemrosesan transkrip RNA, di mana intron (bagian non-koding) dibuang dari pre-mRNA, dan ekson (bagian pengkode protein) disambungkan untuk membentuk mRNA matang. Proses ini memungkinkan gen untuk mengekspresikan informasi genetik secara tepat dan efisien.</p>
+<p>Salah satu aspek paling menarik dari splicing adalah <em>alternative splicing</em>, yaitu mekanisme di mana satu gen dapat menghasilkan beberapa varian mRNA dan, pada akhirnya, berbagai isoform protein. Hal ini memungkinkan diversifikasi produk protein tanpa harus menambah jumlah gen.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/al-splicing.png" alt="Alternative splicing" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Mekanisme alternative splicing pada eukariota.</strong> Perbedaan ekspresi gen antara prokariota dan eukariota, di mana eukariota membentuk pre-mRNA yang mengandung intron dan ekson (a). Proses pemotongan intron dari pre-mRNA melalui situs donor (5’), situs akseptor (3’), dan branch site, menghasilkan ekson yang tersambung dan intron lariat (b). Regulasi splicing dipengaruhi oleh elemen penguat dan penghambat seperti ESE (Exonic Splicing Enhancer), ESS (Exonic Splicing Silencer), ISE (Intronic Splicing Enhancer), dan ISS (Intronic Splicing Silencer) (c). Berbagai jenis splicing alternatif menghasilkan variasi isoform mRNA, termasuk cassette exon, alternative splice site (5’/3’), intron retention, dan mutually exclusive exons, yang berkontribusi terhadap keberagaman protein dari satu gen (d). <br><em>Sumber gambar:</em> <a href="https://doi.org/10.1038/s41580-022-00545-z" target="_blank">Marasco &amp; Kornblihtt 2022</a>
+</figcaption>
+</figure>
+<p>Ada beberapa jenis <em>alternative splicing</em>, seperti:</p>
+<ul>
+<li><p><em>Exon skipping</em> – dimana suatu ekson dilewatkan dan tidak dimasukkan dalam mRNA akhir.</p></li>
+<li><p><em>Alternative splice site selection</em> – situs pemotongan (splice site) pada ekson atau intron bervariasi, menghasilkan panjang ekson/intron yang berbeda.</p></li>
+<li><p><em>Intron retention</em> – intron tidak dibuang dan tetap berada dalam mRNA akhir.</p></li>
+<li><p><em>Mutually exclusive exons</em> – dua atau lebih ekson yang saling eksklusif, hanya satu yang dimasukkan dalam satu transkrip.</p></li>
+</ul>
+<p>Diperkirakan bahwa lebih dari 95% gen penyandi protein pada manusia mengalami <em>alternative splicing</em>, sehingga secara signifikan memperluas kompleksitas proteom dari jumlah gen yang relatif terbatas. Ini seperti kopi Arabica yang punya banyak sekali varian tergantung berasal dari daerah mana dan diolah dengan cara apa.</p>
+<p>Splicing dilakukan oleh kompleks besar yang disebut <em>spliceosom</em>, yang terdiri dari ribonukleoprotein kecil (snRNPs). Spesifisitas dan efisiensi splicing juga dikendalikan oleh protein regulator yang berinteraksi dengan elemen-elemen regulasi pada pre-mRNA seperti:</p>
+<ol type="1">
+<li><p>Enhancer</p>
+<p><em>Exonic Splicing Enhancers</em> (ESEs) dan <em>Intronic Splicing Enhancers</em> (ISEs) adalah sekuens RNA yang meningkatkan efisiensi splicing. Mereka dapat dikenali oleh protein SR (<em>serine/arginine-rich</em>) yang membantu merekrut spliceosom ke situs yang tepat.</p></li>
+<li><p>Silencer</p>
+<p><em>Exonic Splicing Silencers</em> (ESSs) dan <em>Intronic Splicing Silencers</em> (ISSs) adalah sekuens yang menghambat splicing. Umumnya dikenali oleh hnRNPs (<em>heterogeneous nuclear ribonucleoproteins</em>), yang mencegah pembentukan spliceosom di lokasi tersebut.</p></li>
+</ol>
+<p>Regulasi <em>splicing</em> memainkan peran penting dalam perkembangan, diferensiasi sel, dan fungsi jaringan. Sebagai contoh, faktor <em>trans-acting</em> seperti NOVA mengatur pola <em>splicing</em> spesifik di neuron, yang berdampak pada fungsi sinaps.</p>
+<p>Kesalahan dalam <em>splicing</em> sering dikaitkan dengan penyakit genetik dan kanker. Mutasi pada splice site, elemen regulator cis, atau faktor <em>trans-acting</em> dapat menyebabkan bentuk mRNA abnormal dan menghasilkan protein yang disfungsional.</p>
+<p>Proses <em>splicing</em> juga dipengaruhi oleh dinamika transkripsi. Menurut model <em>kinetic coupling</em>, kecepatan RNA polimerase II saat mensintesis pre-mRNA dapat memengaruhi pilihan splice site. Transkripsi yang lebih lambat memberi lebih banyak waktu bagi faktor <em>splicing</em> untuk mengenali dan menggunakan splice site yang lemah, meningkatkan kemungkinan terjadinya <em>alternative splicing</em>. Struktur kromatin dan modifikasi histon juga dapat memodulasi aksesibilitas dan efisiensi <em>splicing</em>.</p>
+</section>
+</section>
+</section>
+<section id="membentuk-genome-variasi-sebagai-kunci-keragaman-dan-kelangsungan-hidup" class="level1">
+<h1>Membentuk genome: Variasi sebagai kunci keragaman dan kelangsungan hidup</h1>
+<section id="mutasi" class="level2">
+<h2 class="anchored" data-anchor-id="mutasi">Mutasi</h2>
+<p>DNA merupakan molekul yang luar biasa. Seperti halnya buku resep keluarga yang diturunkan dari generasi ke generasi yang berisi instruksi lengkap untuk membuat makanan. Namun terkadang, buku resep juga bisa mengalami perubahan, entah karena catatan tambahan di pinggir halaman atau noda saus yang menutupi angka dalam takaran. DNA juga mengalami perubahan yang kemudian kita sebut sebagai <strong>mutasi</strong>.</p>
+<p>Mutasi terjadi ketika ada perubahan dalam urutan basa DNA. Seperti kita bahasa sebelumnya, basa DNA terdiri dari empat jenis: Adenin (A), Timin (T), Guanin (G), dan Sitosin (C). Urutan basa ini mirip seperti huruf dalam kalimat, dan jika ada huruf yang berubah, dihapus, atau ditambahkan, makna kalimat tersebut bisa berubah. Misalnya, kalimat “Ibu pergi naik motor” akan memiliki arti berbeda jika berubah menjadi “Ibu pergi naik haji”. Begitu pula dengan mutasi DNA, perubahan kecil mungkin bisa membawa dampak yang sangat besar.</p>
+<p>Mutasi bisa terjadi karena berbagai sebab. Penyebab alami termasuk kesalahan saat DNA bereplikasi sebelum pembelahan sel. Bayangkan menyalin buku resep setebal 1000 halaman dengan tangan, tentu saja bisa terjadi kesalahan penulisan. Selain itu, faktor lingkungan seperti paparan radiasi ultraviolet dari sinar matahari atau bahan kimia tertentu juga bisa merusak DNA dan menyebabkan mutasi. Beberapa virus bahkan bisa menyisipkan materi genetiknya ke dalam DNA kita, menambahkan “resep baru” yang sebenarnya tidak kita butuhkan.</p>
+<p>Terdapat beberapa jenis mutasi utama yang perlu dipahami.</p>
+<ol type="1">
+<li><p>Substitusi</p>
+<p>Subtitusi terjadi ketika satu basa diganti dengan basa lain, seperti A berubah menjadi G. Ini mirip seperti mengganti kata “SANDI” menjadi “CANDI”.</p></li>
+<li><p>Insersi</p>
+<p>Insersi terjadi ketika basa baru ditambahkan ke dalam urutan DNA. Misalnya penambahan basa G pada sekuen ACTTTCC, sehingga menjadi ACTTTCCG. Sama seperti “TUA” menjadi “TUNA”.</p></li>
+<li><p>Delesi</p>
+<p>Delesi terjadi dimana satu atau lebih basa dihapus dari urutan DNA. Misalnya pada sekuen ACTTTCC, basa TT dihapus menjadi ACTCC. Sama seperti kata “BISA” menjadi “BIS”</p></li>
+</ol>
+<p>Tidak semua mutasi memberikan dampak yang sama. Beberapa mutasi bersifat “diam” atau <em>silent mutation</em> karena meskipun urutan DNA berubah, protein yang dihasilkan tetap sama. Ini bisa terjadi karena sifat degeneratif kode genetik, dimana beberapa asam amino bisa dikodekan oleh lebih dari satu kodon (tiga basa DNA). Mutasi lain bisa bersifat <em>missense</em>, dimana perubahan DNA menyebabkan perubahan asam amino dalam protein, atau <em>nonsense</em> yang menciptakan sinyal berhenti prematur dan menghasilkan protein terpotong.</p>
+</section>
+<section id="variasi-genetik-dalam-populasi" class="level2">
+<h2 class="anchored" data-anchor-id="variasi-genetik-dalam-populasi">Variasi genetik dalam populasi</h2>
+<p>Variasi genetik dalam populasi terjadi akibat akumulasi mutasi selama beberapa generasi. Bayangkan jika setiap salinan buku resep masakan memiliki sedikit perubahan, setelah ratusan tahun, buku-buku itu akan memiliki variasi yang cukup besar meskipun berasal dari satu sumber. Proses ini menciptakan keragaman genetik yang kita lihat dalam populasi manusia dan semua spesies. Variasi ini dapat kita observasi dalam bentuk <em>Single Nucleotide Polymorphisms</em> (SNPs), dimana satu basa berbeda antar individu, atau variasi jumlah salinan (<em>Copy Number Variations</em>) dimana segmen DNA tertentu memiliki jumlah salinan berbeda.</p>
+<section id="rekombinasi-genetik-mencampur-kartu-genetik" class="level3">
+<h3 class="anchored" data-anchor-id="rekombinasi-genetik-mencampur-kartu-genetik">Rekombinasi genetik: Mencampur kartu genetik</h3>
+<p>Rekombinasi genetik merupakan mekanisme penting lain yang meningkatkan variasi DNA. Selama pembentukan sel kelamin (gamet), kromosom dari ibu dan ayah saling bertukar segmen DNA dalam proses <em>crossing over</em>. Proses ini menciptakan kombinasi genetik baru yang berbeda dari kedua orangtua. Ini mirip seperti mengambil beberapa halaman dari buku resep satu keluarga dan menukarnya dengan halaman dari buku resep keluarga lain, menciptakan koleksi resep yang unik.</p>
+</section>
+<section id="seleksi-alam-dan-evolusi" class="level3">
+<h3 class="anchored" data-anchor-id="seleksi-alam-dan-evolusi">Seleksi alam dan evolusi</h3>
+<p>Seleksi alam bekerja pada variasi genetik di mana memfavoritkan mutasi yang menguntungkan dan mengeliminasi yang merugikan. Mutasi yang meningkatkan ketahanan terhadap penyakit atau kemampuan beradaptasi dengan lingkungan akan cenderung diteruskan ke generasi berikutnya. Sebaliknya, mutasi yang menyebabkan penyakit serius mungkin akan berkurang frekuensinya dalam populasi karena individu pembawa mutasi tersebut mungkin memiliki kesempatan lebih rendah untuk bereproduksi.</p>
+</section>
+<section id="genetic-drift-kebetulan-dalam-evolusi" class="level3">
+<h3 class="anchored" data-anchor-id="genetic-drift-kebetulan-dalam-evolusi"><em>Genetic drift</em>: Kebetulan dalam evolusi</h3>
+<p><em>Genetic drift</em> atau pergeseran genetik juga memainkan peran penting dalam evolusi, terutama pada populasi kecil. Berbeda dengan seleksi alam yang bekerja berdasarkan keuntungan adaptif, <em>genetic drift</em> terjadi secara acak. Bayangkan mengocok kartu dan mengambil beberapa secara acak, beberapa kartu (atau gen) mungkin lebih sering terambil daripada yang lain bukan karena nilainya lebih baik, tetapi karena “kebetulan”. Dalam populasi kecil, beberapa alel (varian gen) bisa hilang atau menjadi dominan hanya karena faktor kebetulan, bukan karena memberikan keuntungan yang evolusioner.</p>
+</section>
+<section id="gene-flow-pertukaran-materi-genetik-antar-populasi" class="level3">
+<h3 class="anchored" data-anchor-id="gene-flow-pertukaran-materi-genetik-antar-populasi"><em>Gene flow</em>: Pertukaran materi genetik antar populasi</h3>
+<p>Migrasi genetik atau <em>gene flow</em> terjadi ketika individu berpindah dari satu populasi ke populasi lain dan berkontribusi pada kumpulan gen yang baru. Proses ini meningkatkan variasi genetik dalam populasi penerima dan bisa mengurangi perbedaan genetik antar populasi yang sering bertukar materi genetik. Jika kita kembali ke analogi buku resep, ini seperti keluarga dari daerah berbeda yang bertemu dan berbagi resep, menciptakan fusi kuliner baru yang menggabungkan ciri khas berbagai daerah. Koala di Australia misalnya, menunjukkan bagaimana <em>gene flow</em> membantu mereka beradaptasi di berbagai lingkungan berbeda meskipun memiliki spesialisasi makanan. Adanya <em>gene flow</em> yang alami memungkinkan populasi koala untuk mempertahankan tingkat keanekaragaman genetik yang sehat, meningkatkan potensi evolusi adaptif, dan mengurangi risiko akibat inbreeding (perkawinan sesama keluarga). Hal ini juga memungkinkan penyebaran adaptasi lokal yang menguntungkan antar populasi, membantu spesies secara keseluruhan untuk merespon perubahan lingkungan, termasuk akibat aktivitas manusia.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/koala.png" alt="Analisis filogenomik" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Analisis filogenomik Koala dari beberapa populasi berbeda di Australia.</strong> Analisis filogenomik menunjukkan dua klade utama yang memisahkan populasi koala utara dan selatan. Sebagian besar populasi mengelompok sesuai wilayah, kecuali individu dari Campbelltown dan Kangaroo Island yang tergabung dalam klade utara. Cabang yang lebih pendek di wilayah selatan mengindikasikan keragaman genetik yang lebih rendah. Dukungan bootstrap kuat terlihat pada klade utama, meskipun simpul antar kelompok menunjukkan adanya percampuran populasi, terutama di wilayah selatan. <br><em>Sumber gambar:</em> <a>Penelitian penulis</a>
+</figcaption>
+</figure>
+<p>Melalui kombinasi mutasi, rekombinasi, seleksi alam, <em>genetic drift</em>, dan <em>gene flow</em>, variasi DNA terus terbentuk dan berubah sepanjang waktu. Semua proses ini bersama-sama membentuk cetak biru kehidupan yang terus berkembang, menciptakan keragaman luar biasa yang kita lihat pada seluruh bentuk kehidupan di planet ini.</p>
+<p>— Sekian —</p>
+</section>
+</section>
+</section>
+<section id="referensi" class="level1">
+<h1>Referensi</h1>
+<ul>
+<li>Lodish, H. F. (2008). Molecular cell biology. Macmillan.</li>
+<li>Stearns, S. C., &amp; Hoekstra, R. F. (2000). Evolution, an introduction. Oxford University Press.</li>
+<li><a href="https://doi.org/10.1016/s0092-8674(04)00045-5">Bartel. (2004). “MicroRNAs: Genomics, Biogenesis, Mechanism, and Function.” Cell 116 (2): 281–97.</a></li>
+<li><a href="https://www.nature.com/articles/47412">Strahl, and Allis. (2000). “The Language of Covalent Histone Modifications.” Nature 403 (6765): 41–45.</a></li>
+<li><a href="https://www.nature.com/articles/nrg3241">Veltman, J., Brunner, H. (2012) De novo mutations in human genetic disease. Nat Rev Genet 13, 565–575.</a></li>
+<li><a href="https://www.nature.com/articles/s41580-022-00545-z">Marasco, L.E., Kornblihtt, A.R. (2023). The physiology of alternative splicing. Nat Rev Mol Cell Biol 24, 242–254.</a></li>
+<li><a href="https://www.nature.com/articles/s41437-018-0144-4">Kjeldsen, S.R., Raadsma, H.W., Leigh, K.A. et al.&nbsp;(2019). Genomic comparisons reveal biogeographic and anthropogenic impacts in the koala (Phascolarctos cinereus): a dietary-specialist species distributed across heterogeneous environments. Heredity 122, 525–544.</a></li>
+</ul>
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bowo1698\.github\.io\/Bioinfonote\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../docs/materi-dasar.html" class="pagination-link" aria-label="Materi dasar">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Materi dasar</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../docs/basic-tren-terbaru.html" class="pagination-link" aria-label="Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur">
+        <span class="nav-page-text">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Agus Wibowo · MIT License</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

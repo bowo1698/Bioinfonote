@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur – Bioinformatic Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../docs/basic-marker-genetik.html" rel="next">
+<link href="../docs/basic-konsep-biomol.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim",
+    "search-label": "Mencari"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Bioinformatic Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../materi.html" aria-current="page"> 
+<span class="menu-text">Materi</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tentang.html"> 
+<span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/bio.html"> 
+<span class="menu-text">Biografi</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-tren-terbaru.html">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Daftar Materi</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/materi-dasar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Materi dasar</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-biomol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep-konsep dasar biologi molekuler</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-tren-terbaru.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-marker-genetik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-hierarki-linux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Memahami hierarki Linux</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-instalasi-tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instalasi Tools Bioinformatika</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-linux-in-win.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux di dalam Windows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-library-preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Library preparation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-dasar-ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep dasar pembelajaran mesin</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/skill-teknis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skill Teknis</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-curl-wget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variabel, loop, dan izin akses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-file-format.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mengenal berbagai format file NGS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality control hasil sequencing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Workflows</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-RNA-seq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RNA-Seq workflow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-metagenomics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Di halaman ini</h2>
+   
+  <ul>
+  <li><a href="#daftar-isi" id="toc-daftar-isi" class="nav-link active" data-scroll-target="#daftar-isi">Daftar isi</a></li>
+  <li><a href="#pendahuluan" id="toc-pendahuluan" class="nav-link" data-scroll-target="#pendahuluan">Pendahuluan</a></li>
+  <li><a href="#aplikasi-teknologi-sequencing-dalam-akuakultur" id="toc-aplikasi-teknologi-sequencing-dalam-akuakultur" class="nav-link" data-scroll-target="#aplikasi-teknologi-sequencing-dalam-akuakultur">Aplikasi teknologi <em>sequencing</em> dalam akuakultur</a></li>
+  <li><a href="#seleksi-genomik-revolusi-dalam-pemuliaan" id="toc-seleksi-genomik-revolusi-dalam-pemuliaan" class="nav-link" data-scroll-target="#seleksi-genomik-revolusi-dalam-pemuliaan">Seleksi genomik: Revolusi dalam pemuliaan</a></li>
+  <li><a href="#teknologi-induk-pengganti-surrogate-broodstock" id="toc-teknologi-induk-pengganti-surrogate-broodstock" class="nav-link" data-scroll-target="#teknologi-induk-pengganti-surrogate-broodstock">Teknologi induk pengganti (<em>surrogate broodstock</em>)</a></li>
+  <li><a href="#aplikasi-multi-omics" id="toc-aplikasi-multi-omics" class="nav-link" data-scroll-target="#aplikasi-multi-omics">Aplikasi <em>multi-omics</em></a></li>
+  <li><a href="#deteksi-dan-monitoring-patogen-melalui-metatranscriptomics" id="toc-deteksi-dan-monitoring-patogen-melalui-metatranscriptomics" class="nav-link" data-scroll-target="#deteksi-dan-monitoring-patogen-melalui-metatranscriptomics">Deteksi dan monitoring patogen melalui <em>Metatranscriptomics</em></a></li>
+  <li><a href="#tantangan-dan-arah-masa-depan" id="toc-tantangan-dan-arah-masa-depan" class="nav-link" data-scroll-target="#tantangan-dan-arah-masa-depan">Tantangan dan arah masa depan</a></li>
+  <li><a href="#referensi" id="toc-referensi" class="nav-link" data-scroll-target="#referensi">Referensi</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-tren-terbaru.html">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
+<a href="../docs/basic-tren-terbaru.html" style="text-decoration: none; color: inherit;"> Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur </a>
+</h1>
+<p style="text-align: center; font-size: 1.2rem;">
+Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
+</p>
+<div style="text-align: center; margin-bottom: 1.5rem;">
+<p><img src="https://neurosys.com/wp-content/webp-express/webp-images/uploads/2023/05/aquaculture-header.png.webp" alt="Tools instalation" style="max-width: 100%; height: auto;"></p>
+</div>
+<p><br></p>
+<section id="daftar-isi" class="level1">
+<h1>Daftar isi</h1>
+<ul>
+<li><a href="#pendahuluan">Pendahuluan</a></li>
+<li><a href="#aplikasi-teknologi-sequencing-dalam-akuakultur">Aplikasi teknologi <em>sequencing</em> dalam akuakultur</a></li>
+<li><a href="#seleksi-genomik-revolusi-dalam-pemuliaan">Seleksi genomik: Revolusi dalam pemuliaan</a></li>
+<li><a href="#teknologi-induk-pengganti-surrogate-broodstock">Teknologi induk pengganti (<em>surrogate broodstock</em>)</a></li>
+<li><a href="#aplikasi-multi-omics">Aplikasi <em>multi-omics</em></a></li>
+<li><a href="#deteksi-dan-monitoring-patogen-melalui-metatranscriptomics">Deteksi dan monitoring patogen melalui <em>Metatranscriptomics</em></a></li>
+<li><a href="#tantangan-dan-arah-masa-depan">Tantangan dan arah masa depan</a></li>
+</ul>
+</section>
+<section id="pendahuluan" class="level1">
+<h1>Pendahuluan</h1>
+<p>Seiring dengan meningkatnya permintaan protein hewani, terutama yang berasal dari akuakultur, aplikasi biologi molekuler dan bioinformatika telah menjadi salah satu komponen penting dalam pengembangan dan keberlanjutan sektor ini. Teknologi-teknologi mutakhir terbaru memungkinkan pemahaman yang lebih mendalam tentang genetika berbagai spesies akuakultur, terutama dalam hal optimalisasi program pemijahan (<em>breeding program</em>) untuk peningkatan efisiensi produksi misalnya komoditas dengan performa pertumbuhan dan daya tahan penyakit yang tinggi. Sehingga pada tulisan ini, kita akan mengeksplorasi berbagai aspek aplikasi biologi molekuler dan bioinformatika dalam akuakultur modern.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/genomic-application.png" alt="Genomic application" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Aplikasi genomik dalam akuakultur.</strong> Penerapan teknologi genomik dalam akuakultur mencakup identifikasi spesies, studi perilaku, deteksi penyakit, analisis filogenetik, studi asosiasi genom menyeluruh (GWAS), seleksi berbasis penanda (MAS), dan modifikasi epigenetik. Pendekatan ini mendukung pemahaman mendalam tentang genetika ikan dan peningkatan program pemuliaan. <br><em>Sumber gambar:</em> <a href="https://link.springer.com/chapter/10.1007/978-981-97-8553-7_11" target="_blank">Khatei et al.&nbsp;2025</a>
+</figcaption>
+</figure>
+</section>
+<section id="aplikasi-teknologi-sequencing-dalam-akuakultur" class="level1">
+<h1>Aplikasi teknologi <em>sequencing</em> dalam akuakultur</h1>
+<p>Kemajuan teknologi sequencing telah mendorong percepatan pemetaan genom berbagai spesies akuakultur. Saat ini, sejumlah spesies budidaya utama seperti Atlantic salmon, ikan mas, tilapia, dan udang vaname telah memiliki genom referensi berkualitas tinggi. Genom referensi ini menjadi fondasi penting dalam berbagai aplikasi biologi molekuler, termasuk seleksi berbasis genom, analisis ekspresi gen, studi ketahanan terhadap penyakit, dan pemetaan sifat kuantitatif (QTL mapping).</p>
+<p>Kualitas data genom juga terus mengalami peningkatan. Definisi genom berkualitas tinggi kini mencakup sejumlah kriteria penting, seperti kelengkapan sekuens yang tinggi, akurasi tinggi dalam pemetaan basa, kontinuitas sekuens yang panjang, penyusunan sekuens hingga tingkat kromosom, identifikasi kromosom seks (bila ada), serta penyelesaian haplotype-spesifik.</p>
+<p>Bahkan, beberapa proyek genomik terkini telah mengarah ke inisiatif “<em>telomere-to-telomere</em>” (T2T), yaitu penyusunan genom diploid secara utuh dari ujung telomer satu ke telomer lainnya tanpa celah (<em>gap-free</em>). Contoh yang menarik adalah genom ikan sablefish (<em>Anoplopoma fimbria</em>), yang langsung memenuhi kriteria “<em>high-quality reference genome</em>” pada perakitan awalnya berkat penggunaan teknologi mutakhir.</p>
+<p>Salah satu faktor kunci di balik kemajuan ini adalah adopsi teknologi <em>long-read sequencing</em> generasi ketiga, seperti <a href="https://www.pacb.com/technology/hifi-sequencing/how-it-works/">PacBio HiFi</a> dan <a href="https://nanoporetech.com/platform/technology">Oxford Nanopore</a>. Teknologi ini memungkinkan pembacaan fragmen DNA dengan panjang &gt;10 kb secara langsung, sehingga sangat membantu dalam merakit genom dengan kompleksitas tinggi, termasuk yang memiliki banyak elemen repetitif atau duplikasi gen.</p>
+<p>Selain itu, pengembangan <em>single nucleotide polymorphism</em> (SNP) chip telah menjadi komponen penting dalam akselerasi studi genetik di akuakultur. Beberapa contoh platform SNP chip yang banyak digunakan misalnya:</p>
+<ul>
+<li>Low-density chip seperti Pacific oyster Illumina GoldenGate 1K, <br></li>
+<li>Medium-density chip seperti Atlantic salmon Affymetrix Axiom 50K, dan <br></li>
+<li>High-density chip seperti catfish Affymetrix Axiom 690K. <br></li>
+</ul>
+<p>SNP chips ini memberikan solusi <em>genotyping</em> yang efisien dan lebih ekonomis dibandingkan dengan sekuensing seluruh genom (<em>whole genome sequencing</em>), khususnya dalam studi genetika populasi berskala besar dan program seleksi genetik berskala industri.</p>
+<p>Kemajuan teknologi sekuensing juga didukung oleh perkembangan perangkat lunak (<em>software</em>) dan alat bioinformatika. Berbagai <em>pipeline</em> dan <em>tools</em> telah dikembangkan untuk mengotomatisasi proses seperti perakitan genom (<em>genome assembly</em>), anotasi gen, identifikasi varian, hingga analisis ekspresi gen. Contohnya, Flye dan Canu untuk <em>de novo assembly</em>, MAKER dan BRAKER untuk anotasi gen, serta Snippy, GATK, dan FreeBayes untuk deteksi varian.</p>
+<p>Salah satu platform yang semakin populer dan banyak digunakan oleh komunitas akuakultur adalah <a href="https://usegalaxy.org.au/">Galaxy</a>, sebuah sistem bioinformatika berbasis web yang menyediakan antarmuka grafis untuk menjalankan analisis genomik secara <em>reproducible</em> tanpa memerlukan kemampuan pemrograman tingkat lanjut. Galaxy mempermudah integrasi berbagai tool seperti FastQC, BWA, Salmon, hingga DESeq2, sehingga sangat ideal untuk pelatihan, kolaborasi, maupun penelitian, meskipun Galaxy memiliki keterbatasan dalam hal performa saat menangani dataset besar, serta fleksibilitas yang lebih rendah dibandingkan analisis berbasis <em>command-line</em>, terutama pada server publik dengan sumber daya terbatas.</p>
+<p>Inovasi-inovasi ini membuka peluang besar untuk mempercepat riset genomik di sektor akuakultur, serta mendukung penerapan <em>precision breeding</em> yang lebih efisien dan berkelanjutan.</p>
+</section>
+<section id="seleksi-genomik-revolusi-dalam-pemuliaan" class="level1">
+<h1>Seleksi genomik: Revolusi dalam pemuliaan</h1>
+<p>Seleksi genomik atau <em>genomic selection</em> (GS) merupakan pendekatan pemuliaan revolusioner yang diperkenalkan oleh Meuwissen pada tahun 2001. Berbeda dengan seleksi konvensional yang mengandalkan silsilah dan data fenotip, atau <em>marker-assisted selection</em> (MAS) yang berfokus pada QTL (<em>Quantitative Trait Loci</em>) atau gen-gen dengan efek besar (<em>monogenic</em> atau <em>oligogenic</em>), seleksi genomik menggunakan marker yang tersebar di seluruh genom untuk memprediksi nilai pemuliaan dengan asumsi bahwa suatu sifat (<em>trait</em>) dipengaruhi oleh banyak gen (<em>polygenic</em>).</p>
+<p>Prinsip dasar GS adalah mengasumsikan bahwa setiap QTL atau gen yang mempengaruhi trait kuantitatif berada dalam <em>linkage disequilibrium</em> (LD), yang merupakan kondisi di mana alel pada dua lokus berbeda cenderung muncul bersama lebih sering (atau lebih jarang) dari yang diharapkan secara acak dengan setidaknya satu marker molekuler di seluruh genom. Proses GS melibatkan pembentukan populasi referensi dengan informasi genotip dan fenotip, pengembangan model prediksi, dan penerapan model tersebut pada kandidat seleksi yang hanya memiliki data genotip, misalnya microsatelit atau SNP.</p>
+<p>Keunggulan GS dibandingkan metode konvensional diantaranya: (1) tidak bergantung pada informasi fenotip untuk individu kandidat, (2) dapat menjelaskan semua variasi genetik dalam genom, (3) dapat menetralisir efek interaksi genotipe dengan lingkungan, dan (4) dapat mengurangi inbreeding. Metode ini juga mempersingkat interval generasi, meningkatkan intensitas seleksi, dan sangat cocok untuk trait dengan heritabilitas rendah (&lt; 0.1) seperti resistensi penyakit dan kualitas daging.</p>
+<p>Dalam akuakultur, GS telah diterapkan pada berbagai spesies dan trait. Resistensi terhadap kutu laut (<em>sea lice</em>) pada salmon, resistensi terhadap <em>bacterial cold water disease</em> pada rainbow trout, dan optimasi pertumbuhan pada tilapia merupakan contoh-contoh aplikasi GS yang saat ini telah berhasil diserap hingga ke level industri. Selain itu, studi menunjukkan bahwa akurasi GS biasanya lebih tinggi dibandingkan dengan metode berbasis silsilah konvensional (<em>pedigree-based selection</em>), dengan peningkatan rata-rata sebesar 22% untuk trait resistensi penyakit dan 24% untuk trait pertumbuhan.</p>
+<p>Salah satu penentu keberhasilan GS adalah penggunaan metode untuk meningkatkan akurasi prediksi nilai pemuliaan. Saat ini, metode prediksi nilai pemuliaan genomik (<em>genomic estimated breeding values</em> - GEBV) dalam GS dapat dibagi menjadi tiga kategori: (1) berdasarkan teori BLUP (<em>best linear unbiased prediction</em>), seperti GBLUP, ssGBLUP, dan variasinya; (2) berdasarkan teori Bayesian, seperti BayesA, BayesB, BayesC, dan BayesR; dan (3) yang terbaru adalah berdasarkan algoritma machine learning, seperti SVM, random forest, dan deep learning. Masing-masing metode memiliki kelebihan dan kelemahan, yang mana pemilihannya tergantung pada spesies, heritabilitas, karakteristik trait dan struktur populasi.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/gs.png" alt="Genomic selection" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Alur genomic selection.</strong> Genomic selection dimulai dari genotyping dan phenotyping populasi referensi, dilanjutkan dengan pemodelan prediksi nilai pemuliaan genomik (GEBV) yang digunakan untuk menyeleksi induk unggul dari populasi kandidat yang belum diketahui fenotipenya. <br><em>Sumber gambar:</em> <a href="https://doi.org/10.1111/raq.12716" target="_blank">Song et al.&nbsp;2022</a>
+</figcaption>
+</figure>
+<p>Selain itu, akurasi prediksi nilai GEBV ini dipengaruhi oleh beberapa faktor, seperti ukuran populasi referensi, densitas marker, metode estimasi GEBV, dan hubungan antara populasi referensi dan populasi kandidat. Sehingga riset-riset GS saat ini berfokus pada penentuan strategi untuk meningkatkan akurasi dan mengurangi biaya <em>genotyping</em>, seperti pengembangan panel SNP berdensitas rendah dikombinasikan dengan imputasi genotip, <em>low-coverage sequencing</em>, dan pencarian alternative marker informatif selain SNPs.</p>
+</section>
+<section id="teknologi-induk-pengganti-surrogate-broodstock" class="level1">
+<h1>Teknologi induk pengganti (<em>surrogate broodstock</em>)</h1>
+<p>Teknologi <em>surrogate broodstock</em> (SB) merupakan inovasi menarik yang memungkinkan produksi gamet dari donor menggunakan ikan pengganti (<em>surrogate</em>). Teknologi ini melibatkan transplantasi sel germline dari donor ke resipien strain atau spesies yang berbeda. Prinsipnya, sel induk germline yang ditransplantasikan akan bermigrasi ke gonad resipien, berintegrasi, dan menghasilkan gamet yang berasal dari donor.</p>
+<p>Keunikan teknologi ini adalah bahwa sel induk spermatogonia dari testis donor dapat menghasilkan telur fungsional jika ditransplantasikan ke resipien betina, dan sel induk oogonia dari ovarium donor dapat menghasilkan sperma fungsional jika ditransplantasikan ke resipien jantan. Ini menunjukkan bahwa sel germline menghasilkan gamet berdasarkan jenis kelamin resipien, bukan jenis kelamin asalnya.</p>
+<figure style="text-align: center;" class="figure">
+<img src="images/sb.png" alt="surrogate broodstock" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Produksi induk pengganti salmon masu dan generasi berikutnya dari rainbow trout melalui transplantasi sel punca germinal.</strong> Sel punca spermatogonia dari rainbow trout jantan ditransplantasikan ke dalam rongga peritoneum larva salmon masu triploid mandul yang baru menetas. Sel spermatogonia trout tersebut kemudian berhasil berkolonisasi di gonad ikan penerima, yang selanjutnya mampu menghasilkan sel telur atau sperma yang berasal dari donor, tergantung pada jenis kelamin ikan penerima. <br><em>Sumber gambar:</em> <a href="https://doi.org/10.1007/s12562-019-01299-y" target="_blank">Yoshizaki &amp; Yazawa. 2019</a>
+</figcaption>
+</figure>
+<p>Saat ini aplikasi <em>surrogate broodstock</em> dalam akuakultur masih dalam tahap awal yang meliputi:</p>
+<ol type="1">
+<li>Peningkatan efisiensi breeding: Memungkinkan produksi banyak offspring yang membawa sifat unggul dari satu ikan donor terpilih melalui transplantasi ke banyak ikan resipien.</li>
+<li>Pengurangan waktu generasi: Menggunakan spesies dengan waktu generasi pendek sebagai resipien untuk memproduksi gamet dari spesies dengan waktu generasi panjang, mempercepat proses pemuliaan.</li>
+<li>Penyimpanan jangka panjang sumber daya genetik: Kriopreservasi sel germline untuk transplantasi di masa depan, akan lebih mudah dilakukan dibandingkan kriopreservasi telur ikan.</li>
+<li>Produksi ikan steril secara genetik: Menghasilkan populasi ikan steril melalui transplantasi sel germline dari donor dengan mutasi sterilitas ke resipien normal.</li>
+</ol>
+<p>Meskipun menjanjikan, teknologi ini masih menghadapi tantangan, terutama dalam hal konsentrasi sel germline yang rendah pada beberapa spesies ikan dan efisiensi transplantasi yang bervariasi berdasarkan musim. Namun, dengan pengembangan metode untuk memperkaya sel induk germline dan optimalisasi waktu transplantasi, teknologi SB berpotensi memberikan dampak signifikan pada industri akuakultur.</p>
+</section>
+<section id="aplikasi-multi-omics" class="level1">
+<h1>Aplikasi <em>multi-omics</em></h1>
+<p>Pendekatan multi-omics merujuk pada pengintegrasian berbagai lapisan data “omics untuk memberikan pemahaman yang lebih komprehensif tentang mekanisme molekuler yang mendasari sifat-sifat penting dalam akuakultur (<em>traits</em>). Lapisan-lapisan ini meliputi genomik, epigenomik, transkriptomik, proteomik, metabolomik, microbiomik, dan metagenomik.</p>
+<ol type="1">
+<li><p>Transkriptomik.</p>
+<p>Studi transkriptomik telah membantu mengidentifikasi gen-gen yang terkait dengan respons terhadap stres lingkungan, seperti respons terhadap oksigen rendah pada <em>channel catfish</em> dan resistensi terhadap patogen. Analisis pasca-transkripsi, seperti splicing RNA dan poliadenilasi, juga memberikan wawasan tentang pengaruh lingkungan terhadap regulasi genetik.</p></li>
+<li><p>Epigenomik</p>
+<p>Epigenomik juga muncul sebagai bidang yang menjanjikan. Studi terkini telah mengidentifikasi modifikasi epigenetik yang terkait dengan penentuan jenis kelamin pada <em>channel catfish</em>, kesuburan pada striped bass, dan respons imun pada <em>eastern oyster</em> setelah infeksi parasit. Pemanipulasian lingkungan untuk mempengaruhi memori epigenetik juga dapat digunakan untuk meningkatkan performa dalam akuakultur.</p></li>
+<li><p>Mikrobiomik dan metagenomik</p>
+<p>Baik Microbiomik dan metagenomik berfokus pada dua area utama: mikrobiota usus/intestinal untuk memeriksa kesehatan ikan, stress, pencernaan, dan respons imun; dan sampel lingkungan untuk meningkatkan kesehatan ikan dan efisiensi produksi. Studi terbaru menunjukkan adanya hubungan antara mikrobiom usus dan pertumbuhan pada rainbow trout, perbedaan mikrobiom yang mempengaruhi pertumbuhan pada kerang, dan perbedaan dalam bertahan hidup terhadap invasi virus.</p></li>
+</ol>
+<p>Selain itu, beberapa studi terkini telah mengintegrasikan data transkriptomik, proteomik, dan/atau metabolomik dengan algoritma machine learning, dengan tujuan untuk menentukan penanda omik pertumbuhan dan ukuran tubuh, memprediksi kualitas telur, mengidentifikasi respons terhadap paparan kimia atau kondisi perkembangan, memprediksi resistensi penyakit, dan termasuk mendeteksi penanda ketertelusuran makanan laut.</p>
+<figure style="text-align: center;" class="figure">
+<img src="https://i0.wp.com/gen-fish.ca/wp-content/uploads/2024/04/Omics-Infographic.png?fit=4000%2C2000&amp;ssl=1" alt="Omics" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Studi OMICS.</strong> <br><em>Sumber gambar:</em> <a href="https://gen-fish.ca/intro-to-omics/" target="_blank">Gen-Fish</a>
+</figcaption>
+</figure>
+<p>Meskipun menjanjikan, integrasi data multi-omics menghadapi beberapa tantangan seperti standardisasi data, kompatibilitas lintas platform, penanganan data dan metadata yang tidak lengkap, dan keragaman metode analisis. Namun demikian, pengembangan alur kerja (<em>workflow</em>) dan aplikasi untuk mengintegrasikan data multi-omics terus berlangsung, misalnya MOMIC, OmicsSuite, IDARE2, dan integrator berbasis AI/ML.</p>
+</section>
+<section id="deteksi-dan-monitoring-patogen-melalui-metatranscriptomics" class="level1">
+<h1>Deteksi dan monitoring patogen melalui <em>Metatranscriptomics</em></h1>
+<p>Penyakit menular merupakan ancaman serius bagi produksi akuakultur global. Metode konvensional untuk identifikasi patogen, seperti <em>polymerase chain reaction</em> (PCR), kultur sel, dan histopatologi, memiliki keterbatasan, terutama saat menghadapi patogen baru atau yang bermutasi. Dalam konteks ini, <em>metatranscriptomics</em> (sekuensing RNA total) muncul sebagai pendekatan revolusioner untuk karakterisasi patogen.</p>
+<p><em>Metatranscriptomics</em> menyediakan tampilan taksonomi yang tidak bias terhadap virus RNA, virus DNA, bakteri, dan eukariota dalam sampel. Teknik ini menawarkan beberapa keunggulan, seperti (1) hemat biaya karena dapat mengungkap genom beberapa patogen dalam satu tes; (2) tidak memerlukan urutan DNA yang diketahui dari patogen; (3) dapat mendeteksi patogen pada tingkat varian; dan (4) dapat mengidentifikasi patogen bersamaan dengan ekspresi gen inang.</p>
+<p>Aplikasi <em>metatranscriptomics</em> dalam mengidentifikasi patogen ikan telah terbukti efektif dalam beberapa kasus penting. Contohnya identifikasi <em>piscine orthoreovirus</em> sebagai agen penyebab <em>heart and skeletal muscle inflammation</em> (HSMI) pada salmon, identifikasi <em>tilapia lake virus</em> (TiLV) sebagai penyebab wabah penyakit pada tilapia, dan identifikasi <em>scale drop disease virus</em> pada ikan sea bass Asia.</p>
+<p><em>Metatranscriptomics</em> juga dapat digunakan untuk surveilans pasif dan pemantauan ekosistem melalui analisis sampel dari hewan asimptomatik atau lingkungan (misalnya, air). Ini memungkinkan deteksi dini patogen sebelum wabah terjadi dan pemahaman yang lebih baik tentang keragaman patogen di lingkungan perairan.</p>
+<p>Proses investigasi wabah dengan <em>metatranscriptomics</em> melibatkan beberapa tahap diantaranya (1) definisi kasus dan pengecualian penyebab lingkungan; (2) pengujian dengan prosedur diagnostik tradisional; dan jika agen etiologi tidak sepenuhnya ditentukan, (3) analisis dengan <em>metatranscriptomics</em>, diikuti oleh validasi melalui studi in vitro atau in vivo.</p>
+<p>Meskipun menjanjikan, masih terdapat tantangan dalam penerapan <em>metatranscriptomics</em>, seperti kebutuhan akan kerangka pelaporan yang jelas dengan pedoman analitis untuk mengidentifikasi patogen yang dicurigai, serta kekhawatiran tentang dampak pada perdagangan dan kepentingan industri akuakultur.</p>
+</section>
+<section id="tantangan-dan-arah-masa-depan" class="level1">
+<h1>Tantangan dan arah masa depan</h1>
+<p>Meskipun kemajuan signifikan telah dicapai dalam aplikasi biologi molekuler dan bioinformatika untuk akuakultur, beberapa tantangan dan peluang masa depan perlu dipertimbangkan, diantaranya:</p>
+<ol type="1">
+<li><p>Pengembangan teknik fenotipe akurat</p>
+<p>Memperoleh fenotipe yang akurat sangat penting dalam program pemuliaan karena akurasi pengukuran <em>trait</em> langsung mempengaruhi akurasi seleksi genomik. Teknologi kamera dengan pengolahan gambar berbasis <em>machine learning</em> dengan akurasi tinggi (&gt;97%) untuk analisis gambar dan pengukuran fenotipik masih perlu dikembangkan, bersama dengan teknologi seperti pencitraan hyperspectral dan spektroskopi inframerah untuk mengukur atribut fisik dan kimia hewan budidaya.</p></li>
+<li><p>Pengembangan strategi untuk mengurangi biaya seleksi genomik</p>
+<p>Tantangan utama implementasi seleksi genomik adalah biaya genotipe. Sehingga strategi untuk mengurangi biaya sangatlah penting, misalnya pengembangan panel SNP densitas rendah, imputasi genotipe, sekuensing dengan coverage rendah, serta pencarian alternatif marker genetik yang lebih informatif masih perlu dikembangkan kedepannya.</p></li>
+<li><p>Pertimbangan interaksi genotipe dengan lingkungan (G×E)</p>
+<p><em>Trait</em> berinilai ekonomi tinggi biasanya dipengaruhi oleh gen, lingkungan, dan interaksi diantaranya (GxE). Mengabaikan interaksi G×E dapat mengurangi kemajuan genetik. Sehingga pengembangan dan inovasi motode terbaik untuk mempertimbangkan GxE sangatlah penting. Sampai saat ini, <em>model multi-trait</em> dan <em>reaction norm</em> merupakan dua metode umum untuk menangani interaksi G×E dalam evaluasi genetik.</p></li>
+<li><p>Pertimbangan dosis alel dalam prediksi genomik untuk ikan poliploid</p>
+<p>Ikan memiliki poliploidisasi yang melimpah, dengan tingkat ploidi yang bervariasi antarspesies. Parameterisasi ploidi yang tepat dalam prediksi genomik untuk spesies poliploid dapat meningkatkan akurasi prediksi.</p></li>
+<li><p>Integrasi data multi-omics dan pengeditan genom ke dalam seleksi genomik</p>
+<p>Strategi seleksi genomik saat ini mengandalkan analisis asosiasi langsung antara fenotipe dan SNP. Integrasi data multi-omics dan teknologi pengeditan genom, seperti CRISPR/Cas9, berpeluang dapat mempercepat pemahaman mekanisme genetik yang mendasari sifat kompleks dan meningkatkan kemajuan genetik.</p></li>
+<li><p>Pengembangan tenaga kerja terampil</p>
+<p>Pengembangan dan penerapan teknologi genomik dalam akuakultur membutuhkan tenaga kerja dengan keterampilan interdisipliner dalam genomik, breeding, dan bioinformatika. Program pelatihan yang komprehensif diperlukan untuk memenuhi kebutuhan ini.</p></li>
+</ol>
+<p>Dengan mengatasi tantangan ini dan memanfaatkan peluang yang ada, aplikasi biologi molekuler dan bioinformatika diharapkan dapat berkontribusi secara signifikan terhadap keberlanjutan dan produktivitas industri akuakultur di masa depan.</p>
+<blockquote class="blockquote">
+<p>“<strong><em>Aquaculture is no longer just about water and fish, it’s about data, genes, and the future of food supply and sustainability</em></strong>”</p>
+<p><strong>Agus Wibowo</strong></p>
+</blockquote>
+<p>— Sekian —</p>
+</section>
+<section id="referensi" class="level1">
+<h1>Referensi</h1>
+<ul>
+<li><a href="https://doi.org/10.1093/genetics/157.4.1819">Meuwissen, T. H., Hayes, B. J., &amp; Goddard, M. E. (2001). Prediction of total genetic value using genome-wide dense marker maps. Genetics, 157(4), 1819-1829.</a></li>
+<li><a href="https://doi.org/10.1038/s41576-020-0227-y">Houston, R. D., Bean, T. P., Macqueen, D. J., et al.&nbsp;(2020). Harnessing genomics to fast-track genetic improvement in aquaculture. Nature Reviews Genetics, 21(7), 389-409.</a></li>
+<li><a href="https://doi.org/10.1007/s12562-019-01299-y">Yoshizaki, G., &amp; Yazawa, R. (2019). Application of surrogate broodstock technology in aquaculture. Fisheries Science, 85, 429-437.</a></li>
+<li><a href="https://doi.org/10.1111/raq.12193">Robledo, D., Palaiokostas, C., Bargelloni, L., et al.&nbsp;(2018). Applications of genotyping by sequencing in aquaculture breeding and genetics. Reviews in Aquaculture, 10(3), 670-682.</a></li>
+<li><a href="https://doi.org/10.1111/raq.13002">Costa, V. A., Whittington, R. J., Caraguel, C., et al.&nbsp;(2025). Optimising outbreak investigation, surveillance and discovery of pathogens in aquaculture using unbiased metatranscriptomics. Reviews in Aquaculture, 17, e13002.</a></li>
+<li><a href="https://doi.org/10.1111/eva.13304">Verbyla, K. L., Kube, P. D., &amp; Evans, B. S. (2022). Commercial implementation of genomic selection in Tasmanian Atlantic salmon: Scheme evolution and validation. Evolutionary Applications, 15(4), 631-644.</a></li>
+<li><a href="https://doi.org/10.1111/raq.12716">Song, H., Dong, T., Yan, X., et al.&nbsp;(2023). Genomic selection and its research progress in aquaculture breeding. Reviews in Aquaculture, 15, 274-291.</a></li>
+<li><a href="https://doi.org/10.7717/peerj.4147">Gavery, M. R., &amp; Roberts, S. B. (2017). Epigenetic considerations in aquaculture. PeerJ, 5, e4147.</a></li>
+<li><a href="https://doi.org/10.1186/s12864-025-11247-z">Andersen, L. K., Thompson, N. F., Abernathy, J. W., et al.&nbsp;(2025). Advancing genetic improvement in the omics era: status and priorities for United States aquaculture. BMC Genomics, 26, 155.</a></li>
+<li><a href="https://doi.org/10.1016/j.aquaculture.2025.742393">Tai, Y., Liu, L., Zeng, Y., et al.&nbsp;(2025). Integrated GWAS and transcriptome analysis reveals regulatory networks underlying growth in improved grass carp. Aquaculture, 603, 742393.</a></li>
+</ul>
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bowo1698\.github\.io\/Bioinfonote\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../docs/basic-konsep-biomol.html" class="pagination-link" aria-label="Konsep-konsep dasar biologi molekuler">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Konsep-konsep dasar biologi molekuler</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../docs/basic-marker-genetik.html" class="pagination-link" aria-label="Marker-marker genetik: Kunci revolusi genomik dalam akuakultur">
+        <span class="nav-page-text">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Agus Wibowo · MIT License</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

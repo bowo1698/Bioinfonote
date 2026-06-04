@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>RNA-Seq workflow – Bioinformatic Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../docs/work-metagenomics.html" rel="next">
+<link href="../docs/workflows.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim",
+    "search-label": "Mencari"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Bioinformatic Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../materi.html" aria-current="page"> 
+<span class="menu-text">Materi</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tentang.html"> 
+<span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/bio.html"> 
+<span class="menu-text">Biografi</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Daftar Materi</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/materi-dasar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Materi dasar</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-biomol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep-konsep dasar biologi molekuler</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-tren-terbaru.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-marker-genetik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-hierarki-linux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Memahami hierarki Linux</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-instalasi-tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instalasi Tools Bioinformatika</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-linux-in-win.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux di dalam Windows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-library-preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Library preparation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-dasar-ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep dasar pembelajaran mesin</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/skill-teknis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skill Teknis</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-curl-wget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variabel, loop, dan izin akses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-file-format.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mengenal berbagai format file NGS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality control hasil sequencing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Workflows</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-RNA-seq.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">RNA-Seq workflow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-metagenomics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Di halaman ini</h2>
+   
+  <ul>
+  <li><a href="#daftar-isi" id="toc-daftar-isi" class="nav-link active" data-scroll-target="#daftar-isi">Daftar isi</a></li>
+  <li><a href="#apa-itu-studi-rna-seq" id="toc-apa-itu-studi-rna-seq" class="nav-link" data-scroll-target="#apa-itu-studi-rna-seq">Apa itu studi RNA-Seq?</a>
+  <ul class="collapse">
+  <li><a href="#menyelami-percakapan-genetik" id="toc-menyelami-percakapan-genetik" class="nav-link" data-scroll-target="#menyelami-percakapan-genetik">Menyelami percakapan genetik</a></li>
+  <li><a href="#mengapa-penting-untuk-akuakultur" id="toc-mengapa-penting-untuk-akuakultur" class="nav-link" data-scroll-target="#mengapa-penting-untuk-akuakultur">Mengapa penting untuk akuakultur?</a></li>
+  <li><a href="#dari-gen-ke-keputusan-produksi" id="toc-dari-gen-ke-keputusan-produksi" class="nav-link" data-scroll-target="#dari-gen-ke-keputusan-produksi">Dari gen ke keputusan produksi</a></li>
+  </ul></li>
+  <li><a href="#tentang-data-yang-digunakan-dan-persiapannya" id="toc-tentang-data-yang-digunakan-dan-persiapannya" class="nav-link" data-scroll-target="#tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</a>
+  <ul class="collapse">
+  <li><a href="#studi-analisis-ekspresi-gen-pada-ikan-turbot" id="toc-studi-analisis-ekspresi-gen-pada-ikan-turbot" class="nav-link" data-scroll-target="#studi-analisis-ekspresi-gen-pada-ikan-turbot">Studi analisis ekspresi gen pada ikan Turbot</a></li>
+  <li><a href="#data-demo-untuk-pembelajaran" id="toc-data-demo-untuk-pembelajaran" class="nav-link" data-scroll-target="#data-demo-untuk-pembelajaran">Data demo untuk pembelajaran</a></li>
+  <li><a href="#struktur-data-demo" id="toc-struktur-data-demo" class="nav-link" data-scroll-target="#struktur-data-demo">Struktur data demo</a></li>
+  </ul></li>
+  <li><a href="#quality-control-data-sequencing" id="toc-quality-control-data-sequencing" class="nav-link" data-scroll-target="#quality-control-data-sequencing">Quality control data sequencing</a>
+  <ul class="collapse">
+  <li><a href="#inspeksi-awal-file-sequencing" id="toc-inspeksi-awal-file-sequencing" class="nav-link" data-scroll-target="#inspeksi-awal-file-sequencing">Inspeksi awal file sequencing</a></li>
+  </ul></li>
+  <li><a href="#memilih-dan-memasang-tools" id="toc-memilih-dan-memasang-tools" class="nav-link" data-scroll-target="#memilih-dan-memasang-tools">Memilih dan memasang tools</a></li>
+  <li><a href="#pipeline-dari-reads-ke-matriks-hitungan" id="toc-pipeline-dari-reads-ke-matriks-hitungan" class="nav-link" data-scroll-target="#pipeline-dari-reads-ke-matriks-hitungan">Pipeline dari reads ke matriks hitungan</a>
+  <ul class="collapse">
+  <li><a href="#membangun-index-dan-menyejajarkan-reads" id="toc-membangun-index-dan-menyejajarkan-reads" class="nav-link" data-scroll-target="#membangun-index-dan-menyejajarkan-reads">Membangun index dan menyejajarkan reads</a></li>
+  <li><a href="#kuantifikasi-ekspresi-dengan-stringtie" id="toc-kuantifikasi-ekspresi-dengan-stringtie" class="nav-link" data-scroll-target="#kuantifikasi-ekspresi-dengan-stringtie">Kuantifikasi ekspresi dengan StringTie</a></li>
+  <li><a href="#menyusun-matriks-hitungan-dengan-prepde" id="toc-menyusun-matriks-hitungan-dengan-prepde" class="nav-link" data-scroll-target="#menyusun-matriks-hitungan-dengan-prepde">Menyusun matriks hitungan dengan prepDE</a></li>
+  </ul></li>
+  <li><a href="#analisis-perbedaan-ekspresi" id="toc-analisis-perbedaan-ekspresi" class="nav-link" data-scroll-target="#analisis-perbedaan-ekspresi">Analisis perbedaan ekspresi</a>
+  <ul class="collapse">
+  <li><a href="#memvisualisasikan-hasil-dengan-volcano-plot" id="toc-memvisualisasikan-hasil-dengan-volcano-plot" class="nav-link" data-scroll-target="#memvisualisasikan-hasil-dengan-volcano-plot">Memvisualisasikan hasil dengan volcano plot</a></li>
+  <li><a href="#ma-plot" id="toc-ma-plot" class="nav-link" data-scroll-target="#ma-plot">MA plot</a></li>
+  <li><a href="#pca-antar-sampel" id="toc-pca-antar-sampel" class="nav-link" data-scroll-target="#pca-antar-sampel">PCA antar sampel</a></li>
+  <li><a href="#heatmap-gen-paling-diferensial" id="toc-heatmap-gen-paling-diferensial" class="nav-link" data-scroll-target="#heatmap-gen-paling-diferensial">Heatmap gen paling diferensial</a></li>
+  </ul></li>
+  <li><a href="#analisis-fungsi-gen---go-dan-kegg-pathway" id="toc-analisis-fungsi-gen---go-dan-kegg-pathway" class="nav-link" data-scroll-target="#analisis-fungsi-gen---go-dan-kegg-pathway">Analisis fungsi gen - GO dan KEGG <em>pathway</em></a></li>
+  <li><a href="#apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" id="toc-apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" class="nav-link" data-scroll-target="#apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq">Apa yang perlu dipertimbangkan sebelum studi RNA-seq</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">RNA-Seq workflow</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
+<a href="../docs/work-RNA-seq.html" style="text-decoration: none; color: inherit;"> RNA-Seq: Dari reads ke ekspresi gen </a>
+</h1>
+<p style="text-align: center; font-size: 1.2rem;">
+Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
+</p>
+<div style="text-align: center; margin-bottom: 1.5rem;">
+<p><img src="https://www.marketresearchintellect.com/images/blogs/rising-tide-the-surge-of-farmed-whiteleg-shrimps-in-global-aquaculture.webp" alt="RNA-seq" style="max-width: 100%; height: auto;"></p>
+</div>
+<p><br></p>
+<section id="daftar-isi" class="level1">
+<h1>Daftar isi</h1>
+<ul>
+<li><a href="#apa-itu-studi-rna-seq">Apa itu studi RNA-seq?</a></li>
+<li><a href="#tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</a></li>
+<li><a href="#quality-control-data-sequencing">Quality control data sequencing</a></li>
+<li><a href="#memilih-dan-memasang-tools">Memilih dan memasang tools</a></li>
+<li><a href="#pipeline-dari-reads-ke-matriks-hitungan">Pipeline dari reads ke matriks hitungan</a></li>
+<li><a href="#analisis-perbedaan-ekspresi">Analisis perbedaan ekspresi</a></li>
+<li><a href="#analisis-fungsi-gen---go-dan-kegg-pathway">Analisis fungsi gen - GO dan KEGG <em>pathway</em></a></li>
+<li><a href="#apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq">Apa yang perlu dipertimbangkan sebelum studi RNA-seq</a></li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Catatan.</strong> Seluruh tutorial ini dapat dijalankan langsung di komputer biasa karena memakai data demo berukuran kecil. Kita memakai Bash untuk tahap <em>alignment</em> dan kuantifikasi, lalu R untuk analisis ekspresi diferensial, dan Anda dapat memakai VS Code untuk mengedit serta menjalankan skrip melalui terminal. Pada penelitian nyata dengan data berukuran puluhan GB, tahap <em>alignment</em> dan kuantifikasi menuntut waktu serta sumber daya komputasi yang jauh lebih besar.</p>
+</blockquote>
+</section>
+<section id="apa-itu-studi-rna-seq" class="level1">
+<h1>Apa itu studi RNA-Seq?</h1>
+<section id="menyelami-percakapan-genetik" class="level2">
+<h2 class="anchored" data-anchor-id="menyelami-percakapan-genetik">Menyelami percakapan genetik</h2>
+<p>RNA sequencing (RNA-seq) adalah teknologi sekuensing generasi baru yang memungkinkan kita “mendengar” aktivitas gen dalam sel untuk mengetahui gen mana yang aktif, seberapa besar ekspresinya, dan bagaimana ekspresi itu berubah dalam berbagai kondisi biologis. Tidak seperti microarray yang hanya mendeteksi gen yang telah diketahui sebelumnya, RNA-seq memetakan seluruh transkriptom (semua RNA yang aktif dalam sel pada waktu tertentu), termasuk RNA langka dan varian splicing baru yang belum pernah teridentifikasi.</p>
+<p>Teknologi ini telah merevolusi biologi molekuler dengan menghadirkan gambaran menyeluruh tentang dinamika ekspresi gen, baik pada level jaringan maupun, lebih baru lagi, pada level sel tunggal melalui pendekatan <em>single-cell</em> RNA-seq. Pendekatan ini membuka jendela terhadap keragaman seluler yang sebelumnya tersembunyi, memungkinkan identifikasi tipe sel baru, jalur diferensiasi, dan respons sel spesifik terhadap lingkungan.</p>
+</section>
+<section id="mengapa-penting-untuk-akuakultur" class="level2">
+<h2 class="anchored" data-anchor-id="mengapa-penting-untuk-akuakultur">Mengapa penting untuk akuakultur?</h2>
+<p>Dalam konteks akuakultur, RNA-seq menjadi alat yang strategis dan canggih untuk memahami bagaimana respon organisme budidaya terhadap suatu kondisi tertentu, misalnya stres, penyakit, pakan, serta kondisi lingkungan secara molekuler. Sehingga kita dapat mengungkap gen-gen yang terlibat dalam imunitas, pertumbuhan, metabolisme, hingga adaptasi terhadap budidaya intensif.</p>
+<p>Penerapannya mencakup identifikasi biomarker untuk deteksi dini penyakit, seleksi genomik berbasis ekspresi gen, optimalisasi pakan, pengembangan strain unggul, hingga penerapan <em>gene editing</em> (CRISPR). Misalnya, dengan menggunakan <em>single-cell</em> RNA-seq, kita bisa mengeksplorasi peran masing-masing sel dalam organ penting seperti hati, usus, insang atau organ lain untuk menghadirkan wawasan yang jauh lebih tajam untuk manajemen kesehatan dan nutrisi.</p>
+</section>
+<section id="dari-gen-ke-keputusan-produksi" class="level2">
+<h2 class="anchored" data-anchor-id="dari-gen-ke-keputusan-produksi">Dari gen ke keputusan produksi</h2>
+<p>RNA-seq menjembatani dunia molekuler dan praktik budidaya. Dengan memahami “bahasa” genetik secara mendalam, kita tak hanya menjawab pertanyaan biologis, tetapi juga membuat keputusan produksi yang lebih presisi, efisien, dan berkelanjutan. RNA-seq bukan sekadar teknologi, melainkan fondasi untuk membangun akuakultur yang cerdas, yang tidak lagi menebak, tapi memahami langsung apa yang sebenarnya dibutuhkan oleh organisme budidaya.</p>
+<figure style="text-align: center;" class="figure">
+<img src="https://pub.mdpi-res.com/ijms/ijms-25-10784/article_deploy/html/images/ijms-25-10784-ag.png?1728550988" alt="Omics" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>Integrasi RNA-Seq dan data serologi untuk prediksi alergi ikan.</strong> Dengan menganalisis ekspresi dan konservasi gen alergen, terutama parvalbumin (PV), studi kita bisa mengaitkan data molekuler ikan dengan respons imun seseorang. Hasilnya digunakan untuk merancang strategi diagnosis alergi ikan yang lebih spesifik dan personal untuk meningkatkan akurasi deteksi alergi antarspesies. <br><em>Sumber gambar:</em> <a href="https://www.mdpi.com/1422-0067/25/19/10784" target="_blank">Liu et al 2024</a>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="tentang-data-yang-digunakan-dan-persiapannya" class="level1">
+<h1>Tentang data yang digunakan dan persiapannya</h1>
+<section id="studi-analisis-ekspresi-gen-pada-ikan-turbot" class="level2">
+<h2 class="anchored" data-anchor-id="studi-analisis-ekspresi-gen-pada-ikan-turbot">Studi analisis ekspresi gen pada ikan Turbot</h2>
+<p>Dalam tutorial ini, kita menggunakan data dari studi oleh <a href="https://doi.org/10.1016/j.fsi.2022.108502">Lange et al.&nbsp;(2014)</a> yang meneliti tentang bagaimana perbedaan ekspresi gen pada udang vanamei (<em>Liptopenaeus vannamei</em>) pasca terinfeksi oleh toxin Pir A/B dari bakteri <em>Vibrio sp</em> yang umumnya menyebabkan penyakit <em>acute hepatopancreatic necrosis disease</em> (AHPND). Penelitian ini sangat relevan dan penting karena sering kali AHPND menyebabkan kematian massal pada udang budidaya sebelum 30 hari pemeliharaan.</p>
+<p>Penelitian ini menganalisis perubahan ekspresi gen pada sampel hepatopankreas menggunakan RNA-seq berbasis <em>short reads sequencing</em> (Illumina HiSeq X Ten - <em>paired-end reads</em>). Sehingga dengan memahami bagaimana respon molekuler terutama ekspresi gen bekerja ketika udang terinfeksi, ini akan membantu dalam pengembangan strategi pencegahan yang lebih efektif, seperti seleksi genetik untuk ketahanan penyakit, pengembangan vaksin, atau pengelolaan lingkungan yang lebih tepat dalam sistem budidaya.</p>
+<figure style="text-align: center;" class="figure">
+<img src="https://d1a39lp0neyni6.cloudfront.net/media/blog/image/528/dbea2264dba27cf099377a18a479d3b5.webp" alt="ahpnd" style="width: 85%;" class="figure-img">
+<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
+<strong>AHPND pada udang vanamei yang menyebabkan kekosongan pada hepatopankreas (atas) vs udang normal dengan hepatopankreas yang utuh (bawah)</strong> <br><em>Sumber gambar:</em> <a href="https://nusantics.com/en/blog/tackling-pira-and-pirb-toxins-causing-ahpnd-in-shrimp" target="_blank">Nusantics</a>
+</figcaption>
+</figure>
+</section>
+<section id="data-demo-untuk-pembelajaran" class="level2">
+<h2 class="anchored" data-anchor-id="data-demo-untuk-pembelajaran">Data demo untuk pembelajaran</h2>
+<blockquote class="blockquote">
+<p><strong>Catatan penting.</strong> Dataset asli di atas berukuran sangat besar (sekitar 86 GB) dan membutuhkan waktu serta sumber daya komputasi yang besar untuk diproses. Agar Anda dapat menjalankan keseluruhan pipeline ini dengan cepat di komputer biasa, tutorial ini memakai <strong>data demo</strong> berukuran kecil yang meniru struktur data nyata. Semua perintah dan tools pada pipeline tetap sama persis, yaitu HISAT2 untuk alignment, StringTie untuk kuantifikasi, prepDE untuk matriks hitungan, dan DESeq2 untuk analisis diferensial. Hanya datanya yang diperkecil. Pada penelitian nyata, data Anda akan jauh lebih besar dan menuntut waktu komputasi yang lebih lama.</p>
+</blockquote>
+<p>Silakan unduh data demo berikut untuk mengikuti tutorial dengan menekan tombol unduh, lalu berkas akan tersimpan di komputer Anda.</p>
+<div class="download-row">
+  <a class="btn-download" href="data/rnaseq-demo/raw_reads.tar.gz" download="">⬇&nbsp; Raw reads <span class="bd-sub">10 sampel paired-end, .tar.gz</span></a>
+  <a class="btn-download" href="data/rnaseq-demo/gene_count_matrix.csv" download="">⬇&nbsp; Count matrix <span class="bd-sub">gene_count_matrix.csv</span></a>
+  <a class="btn-download" href="data/rnaseq-demo/metadata.csv" download="">⬇&nbsp; Metadata <span class="bd-sub">metadata.csv</span></a>
+</div>
+<p>Genom referensi demo (<code>demo_genome.fa</code>) beserta anotasinya (<code>demo_annotation.gtf</code>) tersedia di folder <a href="https://github.com/bowo1698/Bioinfonote/tree/main/docs/data/rnaseq-demo/ref" target="_blank">docs/data/rnaseq-demo/ref</a>. Seluruh pipeline alignment hingga matriks hitungan pada data demo dapat dijalankan sekaligus lewat skrip <a href="https://github.com/bowo1698/Bioinfonote/blob/main/code/run-rnaseq-pipeline.sh" target="_blank"><code>code/run-rnaseq-pipeline.sh</code></a> yang menjalankan persis perintah HISAT2 → StringTie → prepDE pada bagian-bagian berikut. Hasil akhirnya adalah <code>gene_count_matrix.csv</code> yang dipakai pada analisis DESeq2 di bagian akhir tutorial.</p>
+</section>
+<section id="struktur-data-demo" class="level2">
+<h2 class="anchored" data-anchor-id="struktur-data-demo">Struktur data demo</h2>
+<p>Setelah mengunduh dan mengekstrak data demo di atas, Anda akan memiliki susunan berkas seperti berikut. <em>Reads</em> berada di folder <code>raw_reads/</code>, sedangkan genom referensi dan anotasinya berada di folder <code>ref/</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">data/rnaseq-demo/</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> raw_reads/</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── kontrol1_R1.fastq.gz   kontrol1_R2.fastq.gz</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── ...                     <span class="er">(</span><span class="ex">kontrol1..kontrol5,</span> infeksi1..infeksi5<span class="kw">)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── infeksi5_R1.fastq.gz   infeksi5_R2.fastq.gz</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> ref/</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── demo_genome.fa          <span class="co"># genom referensi</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── demo_annotation.gtf     <span class="co"># anotasi gen</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> metadata.csv                <span class="co"># daftar sampel dan kelompoknya</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pada studi nyata, langkah ini setara dengan mengunduh <em>reads</em> dari basis data seperti ENA atau NCBI-SRA serta mengunduh genom referensi beserta anotasinya dari NCBI. Karena ukuran data nyata bisa puluhan GB, proses pengunduhan saja dapat memakan waktu lama, sementara data demo ini cukup beberapa megabyte sehingga ringan dijalankan.</p>
+</section>
+</section>
+<section id="quality-control-data-sequencing" class="level1">
+<h1>Quality control data sequencing</h1>
+<section id="inspeksi-awal-file-sequencing" class="level2">
+<h2 class="anchored" data-anchor-id="inspeksi-awal-file-sequencing">Inspeksi awal file sequencing</h2>
+<p>Sebelum analisis, ada baiknya kita melihat langsung struktur berkas FASTQ. Setiap <em>read</em> pada FASTQ terdiri dari empat baris, yaitu header yang diawali <code>@</code>, urutan basa nukleotida, tanda <code>+</code>, dan string skor kualitas.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># lihat struktur salah satu file reads demo</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> data/rnaseq-demo/raw_reads/kontrol1_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># hitung jumlah read pada satu sampel</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> data/rnaseq-demo/raw_reads/kontrol1_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Perintah pertama menampilkan dua <em>read</em> pertama, sedangkan perintah kedua menghitung jumlah total <em>read</em> dengan membagi banyaknya baris dengan empat. Pada data nyata, di sinilah Anda menjalankan FastQC dan MultiQC untuk menilai mutu menyeluruh lalu memangkas <em>adapter</em> serta basa bermutu rendah. Karena data demo sudah bersih dan seragam, kita dapat langsung melangkah ke tahap <em>alignment</em>. Penjelasan lengkap tentang tahap QC tersedia pada artikel <a href="../docs/teknis-quality-control.html">Quality control hasil sequencing</a>.</p>
+</section>
+</section>
+<section id="memilih-dan-memasang-tools" class="level1">
+<h1>Memilih dan memasang tools</h1>
+<p>Pipeline ini memakai tiga tools utama yang bekerja berurutan, yaitu <code>HISAT2</code> untuk menyejajarkan (<em>align</em>) <em>reads</em> ke genom referensi, <code>StringTie</code> untuk mengkuantifikasi ekspresi tiap gen mengikuti anotasi, dan <code>samtools</code> untuk menangani berkas hasil <em>alignment</em>. Tahap analisis diferensial di akhir memakai paket R <code>DESeq2</code>. Pilihan HISAT2 dan StringTie tepat untuk tutorial ini karena keduanya akurat, hemat memori, dan dapat berjalan pada komputer biasa tanpa HPC.</p>
+<p>Semua tools alignment dipasang melalui conda lewat kanal bioconda.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># buat environment lalu pasang tools alignment dan kuantifikasi</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> rnaseq <span class="at">-y</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate rnaseq</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda <span class="at">-c</span> conda-forge hisat2 stringtie samtools <span class="at">-y</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Paket R untuk analisis diferensial dipasang dari dalam R.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DESeq2"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pipeline-dari-reads-ke-matriks-hitungan" class="level1">
+<h1>Pipeline dari reads ke matriks hitungan</h1>
+<p>Tiga langkah berikut mengubah <em>reads</em> mentah menjadi <code>gene_count_matrix.csv</code>, yaitu matriks jumlah baca per gen per sampel yang menjadi masukan DESeq2. Semua perintah di bawah ini persis seperti yang dijalankan otomatis oleh skrip <code>code/run-rnaseq-pipeline.sh</code>, sehingga Anda dapat menjalankannya satu per satu untuk memahami tiap tahap atau sekaligus lewat skrip tersebut.</p>
+<section id="membangun-index-dan-menyejajarkan-reads" class="level2">
+<h2 class="anchored" data-anchor-id="membangun-index-dan-menyejajarkan-reads">Membangun index dan menyejajarkan reads</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>data/rnaseq-demo</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$DD</span>/_pipe/bam</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. bangun index dari genom referensi (cukup sekali)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">hisat2-build</span> <span class="at">-q</span> <span class="va">$DD</span>/ref/demo_genome.fa <span class="va">$DD</span>/_pipe/idx</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. alignment lalu sorting untuk tiap sampel</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$DD</span>/metadata.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">hisat2</span> <span class="at">-p</span> 4 <span class="at">--no-spliced-alignment</span> <span class="at">-x</span> <span class="va">$DD</span>/_pipe/idx <span class="dt">\</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">-1</span> <span class="va">$DD</span>/raw_reads/<span class="va">${s}</span>_R1.fastq.gz <span class="at">-2</span> <span class="va">$DD</span>/raw_reads/<span class="va">${s}</span>_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">-S</span> <span class="va">$DD</span>/_pipe/bam/<span class="va">${s}</span>.sam</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> <span class="va">$DD</span>/_pipe/bam/<span class="va">${s}</span>.bam <span class="va">$DD</span>/_pipe/bam/<span class="va">${s}</span>.sam</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> index <span class="va">$DD</span>/_pipe/bam/<span class="va">${s}</span>.bam</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span> <span class="va">$DD</span>/_pipe/bam/<span class="va">${s}</span>.sam</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>hisat2-build</code> membangun semacam peta navigasi genom sehingga proses penyejajaran berjalan cepat dan presisi. Opsi <code>--no-spliced-alignment</code> dipakai karena gen pada data demo tidak memiliki intron. Pada genom nyata yang penuh intron, opsi ini dilepas agar HISAT2 dapat mengenali <em>splice junction</em> antar-exon.</p>
+</section>
+<section id="kuantifikasi-ekspresi-dengan-stringtie" class="level2">
+<h2 class="anchored" data-anchor-id="kuantifikasi-ekspresi-dengan-stringtie">Kuantifikasi ekspresi dengan StringTie</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$DD</span>/_pipe/ballgown</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="op">&gt;</span> <span class="va">$DD</span>/_pipe/sample_list.txt</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$DD</span>/metadata.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$DD</span>/_pipe/ballgown/<span class="va">${s}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">stringtie</span> <span class="at">-e</span> <span class="at">-B</span> <span class="at">-p</span> 4 <span class="at">-G</span> <span class="va">$DD</span>/ref/demo_annotation.gtf <span class="dt">\</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">-o</span> <span class="va">$DD</span>/_pipe/ballgown/<span class="va">${s}</span>/<span class="va">${s}</span>.gtf <span class="va">$DD</span>/_pipe/bam/<span class="va">${s}</span>.bam</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">'%s\t%s\n'</span> <span class="st">"</span><span class="va">$s</span><span class="st">"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">/</span><span class="va">${s}</span><span class="st">.gtf"</span> <span class="op">&gt;&gt;</span> <span class="va">$DD</span>/_pipe/sample_list.txt</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Opsi <code>-e -B</code> membuat StringTie hanya mengkuantifikasi transkrip yang sudah ada pada anotasi referensi (<code>-G</code>) lalu menulis berkas Ballgown yang dibutuhkan tahap berikutnya. Pendekatan ini sesuai untuk genom yang sudah teranotasi baik karena kita tidak perlu merakit transkrip baru.</p>
+</section>
+<section id="menyusun-matriks-hitungan-dengan-prepde" class="level2">
+<h2 class="anchored" data-anchor-id="menyusun-matriks-hitungan-dengan-prepde">Menyusun matriks hitungan dengan prepDE</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># unduh prepDE.py3 (skrip resmi StringTie) bila belum ada</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://ccb.jhu.edu/software/stringtie/dl/prepDE.py3 <span class="at">-o</span> prepDE.py3</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ubah hasil StringTie menjadi matriks hitungan per gen</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> prepDE.py3 <span class="at">-i</span> <span class="va">$DD</span>/_pipe/sample_list.txt <span class="at">-g</span> <span class="va">$DD</span>/gene_count_matrix.csv</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hasil akhirnya adalah <code>gene_count_matrix.csv</code>, yaitu matriks berukuran gen kali sampel yang berisi jumlah baca per gen. Berkas inilah yang menjadi masukan analisis ekspresi diferensial berikutnya. Untuk menjalankan ketiga langkah di atas sekaligus, cukup jalankan <code>bash code/run-rnaseq-pipeline.sh</code> dari root repositori.</p>
+</section>
+</section>
+<section id="analisis-perbedaan-ekspresi" class="level1">
+<h1>Analisis perbedaan ekspresi</h1>
+<p>Setelah memperoleh <code>gene_count_matrix.csv</code> dari tahap sebelumnya, kita sampai pada inti studi RNA-seq, yaitu <strong>analisis ekspresi diferensial</strong> (<em>differential expression</em>, DE). Tujuannya adalah menemukan gen-gen yang tingkat ekspresinya berubah secara signifikan antara dua kondisi, dalam kasus ini antara udang <strong>kontrol</strong> (sehat) dan udang <strong>terinfeksi</strong> AHPND. Gen-gen inilah yang menjadi kandidat <em>biomarker</em> dan petunjuk mekanisme molekuler respons terhadap infeksi.</p>
+<p>Kita akan menggunakan <code>DESeq2</code>, salah satu paket R paling banyak digunakan untuk DE. <code>DESeq2</code> memodelkan <em>count</em> dengan distribusi <em>negative binomial</em>, melakukan normalisasi antar-sampel (mengoreksi perbedaan <em>sequencing depth</em>), serta menstabilkan estimasi <em>dispersion</em> sehingga andal walaupun jumlah replikasi terbatas.</p>
+<p>Mulai dari sini analisis dijalankan langsung pada matriks hitungan data demo <code>gene_count_matrix.csv</code>, yaitu berkas yang sama persis dengan hasil tahap prepDE di atas. Kode berikut benar-benar dieksekusi saat halaman ini dibangun.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># baca count matrix demo (hasil HISAT2 -&gt; StringTie -&gt; prepDE)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"data/rnaseq-demo/gene_count_matrix.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>meta   <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rnaseq-demo/metadata.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> counts[, <span class="fu">rownames</span>(meta)]                       <span class="co"># samakan urutan kolom dengan metadata</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta<span class="sc">$</span>group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"kontrol"</span>, <span class="st">"infeksi"</span>))   <span class="co"># kontrol = referensi</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># bangun objek DESeqDataSet dengan desain ~ group</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> counts, <span class="at">colData =</span> meta, <span class="at">design =</span> <span class="sc">~</span> group)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[<span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;=</span> <span class="dv">10</span>, ]                 <span class="co"># buang gen ber-count sangat rendah</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">quiet =</span> <span class="cn">TRUE</span>)                          <span class="co"># normalisasi + dispersion + uji Wald</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"infeksi"</span>, <span class="st">"kontrol"</span>))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>deg <span class="ot">&lt;-</span> <span class="fu">subset</span>(res, <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(log2FoldChange) <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+out of 150 with nonzero total read count
+adjusted p-value &lt; 0.1
+LFC &gt; 0 (up)       : 23, 15%
+LFC &lt; 0 (down)     : 23, 15%
+outliers [1]       : 0, 0%
+low counts [2]     : 0, 0%
+(mean count &lt; 17)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results</code></pre>
+</div>
+</div>
+<p>Ringkasan di atas memberi tahu kita berapa banyak gen yang ekspresinya naik (<code>LFC &gt; 0</code>) dan turun (<code>LFC &lt; 0</code>) secara signifikan pada udang terinfeksi dibanding kontrol. Pada data demo ini sekitar empat puluhan gen lolos ambang <code>padj &lt; 0.05</code>, terbagi cukup berimbang antara yang naik dan yang turun, persis sebanyak sinyal diferensial yang memang kita tanam ke dalam data demo. Jumlah dan arah perubahan inilah ringkasan kuantitatif pertama dari respons molekuler terhadap infeksi.</p>
+<p>Beberapa kolom penting pada objek <code>res</code>:</p>
+<ul>
+<li><code>log2FoldChange</code>: besar perubahan ekspresi dalam skala log basis 2. Nilai <code>+1</code> berarti ekspresi <strong>naik 2 kali lipat</strong> pada udang terinfeksi, <code>-1</code> berarti <strong>turun setengahnya</strong>.</li>
+<li><code>pvalue</code>: <em>p-value</em> mentah hasil uji Wald untuk tiap gen.</li>
+<li><code>padj</code>: <em>p-value</em> yang telah dikoreksi untuk <em>multiple testing</em> dengan metode Benjamini-Hochberg (mengontrol <em>false discovery rate</em>). <strong>Selalu gunakan <code>padj</code>, bukan <code>pvalue</code> mentah</strong>, untuk menentukan signifikansi.</li>
+</ul>
+<p>Lazimnya, sebuah gen disebut <em>differentially expressed</em> (DEG) jika memenuhi dua syarat sekaligus: signifikan secara statistik (<code>padj &lt; 0.05</code>) <strong>dan</strong> punya besar perubahan yang berarti secara biologis (<code>|log2FoldChange| &gt; 1</code>).</p>
+<section id="memvisualisasikan-hasil-dengan-volcano-plot" class="level2">
+<h2 class="anchored" data-anchor-id="memvisualisasikan-hasil-dengan-volcano-plot">Memvisualisasikan hasil dengan volcano plot</h2>
+<p>Cara paling umum untuk meringkas hasil DE adalah <strong>volcano plot</strong>, yaitu sebar antara besarnya perubahan (<code>log2FoldChange</code> pada sumbu-x) dan signifikansi (<code>-log10(p-value)</code> pada sumbu-y). Disebut “<em>volcano</em>” karena bentuk sebarannya menyerupai semburan gunung berapi: gen yang paling menarik (perubahan besar <strong>dan</strong> sangat signifikan) terlempar ke pojok kiri-atas dan kanan-atas.</p>
+<p>Volcano plot di bawah ini dibuat langsung dari objek <code>res</code> data demo yang baru kita hitung.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Lihat kode R volcano plot</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(ggplot2); <span class="fu">library</span>(dplyr); <span class="fu">library</span>(ggrepel)})</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(res)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>res_df<span class="sc">$</span>gene <span class="ot">&lt;-</span> <span class="fu">rownames</span>(res_df)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> res_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> log2FoldChange <span class="sc">&gt;</span>  <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Up-regulated"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> log2FoldChange <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"Down-regulated"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                                             <span class="sc">~</span> <span class="st">"Tidak signifikan"</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> res_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(status <span class="sc">!=</span> <span class="st">"Tidak signifikan"</span>) <span class="sc">%&gt;%</span> <span class="fu">slice_min</span>(padj, <span class="at">n =</span> <span class="dv">8</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(res_df, <span class="fu">aes</span>(log2FoldChange, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">colour =</span> status)) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Up-regulated"</span> <span class="ot">=</span> <span class="st">"#c0392b"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Down-regulated"</span> <span class="ot">=</span> <span class="st">"#2c7fb8"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Tidak signifikan"</span> <span class="ot">=</span> <span class="st">"grey78"</span>), <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data =</span> top, <span class="fu">aes</span>(<span class="at">label =</span> gene), <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max.overlaps =</span> <span class="dv">20</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(log[<span class="dv">2</span>]<span class="sc">~</span><span class="st">"fold change (infeksi vs kontrol)"</span>),</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="sc">-</span>log[<span class="dv">10</span>]<span class="sc">~</span><span class="st">"(p-value)"</span>)) <span class="sc">+</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-volcano" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-RNA-seq_files/figure-html/fig-volcano-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;1: Volcano plot ekspresi diferensial data demo. Tiap titik satu gen. Titik merah naik (up-regulated) dan biru turun (down-regulated) pada udang terinfeksi dibanding kontrol; garis putus-putus menandai ambang |log2FC| &gt; 1 dan padj &lt; 0.05.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Cara membacanya: makin ke <strong>kanan/kiri</strong>, makin besar perubahan ekspresinya; makin ke <strong>atas</strong>, makin meyakinkan secara statistik. Gen di pojok kanan-atas (merah) adalah gen yang menyala lebih kuat saat infeksi, sedangkan pojok kiri-atas (biru) adalah gen yang ditekan. Daftar DEG inilah yang kemudian kita bawa ke analisis fungsi gen untuk dimaknai secara biologis.</p>
+</section>
+<section id="ma-plot" class="level2">
+<h2 class="anchored" data-anchor-id="ma-plot">MA plot</h2>
+<p><em>MA plot</em> memetakan rata-rata ekspresi tiap gen pada sumbu mendatar terhadap <em>log2 fold change</em> pada sumbu tegak. Plot ini berguna untuk melihat apakah gen yang berubah tersebar di seluruh rentang ekspresi atau hanya terpusat pada gen ber-ekspresi tinggi, sekaligus memperlihatkan pola penyusutan estimasi pada gen ber-count rendah.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>DESeq2<span class="sc">::</span><span class="fu">plotMA</span>(res, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="at">main =</span> <span class="st">"infeksi vs kontrol"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-ma" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-RNA-seq_files/figure-html/fig-ma-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;2: MA plot. Sumbu mendatar rata-rata count ternormalisasi, sumbu tegak log2 fold change. Titik biru adalah gen yang signifikan secara statistik.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Titik biru yang menyebar jauh dari garis nol adalah gen yang ekspresinya benar-benar berbeda antar kelompok. Pada data demo ini titik signifikan muncul di kedua arah dan pada berbagai tingkat ekspresi rata-rata, menandakan respons terhadap infeksi tidak terbatas pada segelintir gen yang sangat aktif saja.</p>
+</section>
+<section id="pca-antar-sampel" class="level2">
+<h2 class="anchored" data-anchor-id="pca-antar-sampel">PCA antar sampel</h2>
+<p>Sebelum menelaah gen satu per satu, kita lihat dulu gambaran besarnya dengan <em>Principal Component Analysis</em> pada nilai ekspresi yang sudah distabilkan variansinya. Jika kedua kelompok memang berbeda secara global, sampel kontrol dan infeksi akan membentuk dua gerombol terpisah.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vsd <span class="ot">&lt;-</span> <span class="fu">varianceStabilizingTransformation</span>(dds, <span class="at">blind =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(vsd, <span class="at">intgroup =</span> <span class="st">"group"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">kontrol =</span> <span class="st">"#2c7fb8"</span>, <span class="at">infeksi =</span> <span class="st">"#c0392b"</span>)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pca" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-RNA-seq_files/figure-html/fig-pca-1.png" class="img-fluid figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;3: PCA sampel berdasarkan ekspresi tervariance-stabilized. Pemisahan kontrol dan infeksi menandakan perbedaan profil ekspresi global.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Sampel kontrol dan infeksi terpisah jelas di sepanjang komponen utama pertama, yang biasanya menampung porsi variasi terbesar. Pemisahan global seperti ini menambah keyakinan bahwa perbedaan yang kita temukan pada level gen bukan kebetulan, melainkan mencerminkan pergeseran profil ekspresi menyeluruh akibat infeksi.</p>
+</section>
+<section id="heatmap-gen-paling-diferensial" class="level2">
+<h2 class="anchored" data-anchor-id="heatmap-gen-paling-diferensial">Heatmap gen paling diferensial</h2>
+<p>Terakhir, kita tampilkan 25 gen dengan <em>padj</em> terkecil sebagai <em>heatmap</em>. Nilai ekspresi tervariance-stabilized dipusatkan per gen sehingga warna menunjukkan apakah suatu gen relatif lebih tinggi (merah) atau lebih rendah (biru) pada tiap sampel.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>topg <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">rownames</span>(res[<span class="fu">order</span>(res<span class="sc">$</span>padj), ]), <span class="dv">25</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">assay</span>(vsd)[topg, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> mat <span class="sc">-</span> <span class="fu">rowMeans</span>(mat)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">as.table</span>(<span class="fu">as.matrix</span>(mat)))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(long) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"gene"</span>, <span class="st">"sample"</span>, <span class="st">"z"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta[<span class="fu">as.character</span>(long<span class="sc">$</span>sample), <span class="st">"group"</span>], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"kontrol"</span>,<span class="st">"infeksi"</span>))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>gene  <span class="ot">&lt;-</span> <span class="fu">factor</span>(long<span class="sc">$</span>gene, <span class="at">levels =</span> <span class="fu">rev</span>(topg))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(long, <span class="fu">aes</span>(sample, gene, <span class="at">fill =</span> z)) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> group, <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">space =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#2c7fb8"</span>, <span class="at">mid =</span> <span class="st">"#f7f7f7"</span>, <span class="at">high =</span> <span class="st">"#c0392b"</span>, <span class="at">name =</span> <span class="st">"z-score"</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-heatmap-genes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heatmap-genes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-RNA-seq_files/figure-html/fig-heatmap-genes-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heatmap-genes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;4: Heatmap 25 gen paling signifikan. Warna adalah ekspresi tervariance-stabilized yang dipusatkan per gen; kolom dikelompokkan menjadi panel kontrol dan infeksi.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Pola blok warna yang berlawanan antara dua panel menegaskan temuan kita. Gen yang menyala merah pada panel infeksi umumnya biru pada panel kontrol, dan sebaliknya. Inilah daftar kandidat penanda hayati yang paling layak ditindaklanjuti, misalnya untuk validasi dengan RT-qPCR atau penelusuran fungsinya pada analisis berikutnya.</p>
+</section>
+</section>
+<section id="analisis-fungsi-gen---go-dan-kegg-pathway" class="level1">
+<h1>Analisis fungsi gen - GO dan KEGG <em>pathway</em></h1>
+<p>Mendapatkan ratusan DEG barulah separuh cerita; pertanyaan berikutnya adalah <strong>“gen-gen ini sebenarnya mengerjakan apa?”</strong>. Untuk menjawabnya, kita lakukan <strong>analisis pengayaan fungsional</strong> (<em>functional enrichment</em>) yang menguji apakah daftar DEG kita diperkaya oleh fungsi biologis tertentu dibanding yang diharapkan secara kebetulan. Dua kerangka anotasi yang paling umum:</p>
+<ul>
+<li><strong>Gene Ontology (GO)</strong>: mengelompokkan gen ke dalam tiga ranah, <em>Biological Process</em> (BP), <em>Molecular Function</em> (MF), dan <em>Cellular Component</em> (CC).</li>
+<li><strong>KEGG pathway</strong>: memetakan gen ke jalur metabolik dan sinyal (misalnya <em>Toll-like receptor signaling</em> atau <em>metabolisme lipid</em>).</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Bagian ini bersifat ilustrasi, bukan hasil data demo.</strong> Berbeda dengan tahap <em>alignment</em> hingga DESeq2 di atas yang berjalan langsung pada data demo, analisis GO dan KEGG <strong>tidak dapat dijalankan pada data demo</strong>. Gen pada data demo adalah sekuens sintetik tanpa fungsi biologis nyata sehingga tidak memiliki anotasi GO maupun KEGG untuk dipetakan. Karena itu, kode di bawah hanya memperlihatkan <strong>cara</strong> menjalankan pengayaan pada organisme nyata, dan dotplot yang ditampilkan memakai angka ilustrasi semata untuk menunjukkan <strong>bentuk keluarannya</strong>, bukan kesimpulan dari data demo.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Catatan untuk organisme non-model:</strong> udang vanamei belum memiliki paket anotasi <code>OrgDb</code> resmi seperti manusia atau mencit. Praktik yang lazim adalah memetakan gen ke ortolognya menggunakan <a href="http://eggnog-mapper.embl.de/">eggNOG-mapper</a> atau BLAST ke spesies model, lalu menyusun tabel <code>TERM2GENE</code> (pasangan istilah GO/KEGG dengan gen) untuk diumpankan ke <code>clusterProfiler</code> melalui fungsi <code>enricher()</code>.</p>
+</blockquote>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># daftar gen DE (signifikan) dan latar belakang (semua gen yang diuji)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>gene_de <span class="ot">&lt;-</span> <span class="fu">rownames</span>(deg)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>gene_bg <span class="ot">&lt;-</span> <span class="fu">rownames</span>(res)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># anotasi GO/KEGG untuk organisme non-model disusun dari hasil eggNOG-mapper:</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   term2gene_go  : data.frame kolom (GO_id, gene_id)</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   term2name_go  : data.frame kolom (GO_id, deskripsi)</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># --- GO enrichment ---</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enricher</span>(gene_de,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">TERM2GENE     =</span> term2gene_go,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">TERM2NAME     =</span> term2name_go,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">universe      =</span> gene_bg,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>,</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">qvalueCutoff  =</span> <span class="fl">0.05</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># --- KEGG pathway enrichment ---</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>ekegg <span class="ot">&lt;-</span> <span class="fu">enricher</span>(gene_de,</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">TERM2GENE =</span> term2gene_kegg,</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>                  <span class="at">TERM2NAME =</span> term2name_kegg,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>                  <span class="at">universe  =</span> gene_bg)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co"># visualisasi</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(ego,   <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"GO enrichment (BP)"</span>)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(ekegg, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"KEGG pathway"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hasil pengayaan paling sering ditampilkan sebagai <strong>dotplot</strong>: sumbu-x adalah <em>gene ratio</em> (proporsi DEG yang masuk ke suatu istilah), ukuran titik menunjukkan jumlah gen, dan warna menunjukkan signifikansi (<code>p.adjust</code>). Dotplot berikut memakai <strong>angka ilustrasi (bukan hasil data demo)</strong> semata untuk memperlihatkan bentuk keluarannya:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Lihat kode R GO dotplot (data ilustrasi)</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>go_dummy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">term =</span> <span class="fu">c</span>(<span class="st">"respons imun bawaan"</span>, <span class="st">"aktivitas peptidase"</span>, <span class="st">"proses metabolik kitin"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>           <span class="st">"respons terhadap stres oksidatif"</span>, <span class="st">"fagositosis"</span>, <span class="st">"jalur sinyal Toll"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>           <span class="st">"metabolisme lipid"</span>, <span class="st">"transpor ion transmembran"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>           <span class="st">"proliferasi sel hemosit"</span>, <span class="st">"respons inflamasi"</span>),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_ratio =</span> <span class="fu">c</span>(<span class="fl">0.18</span>, <span class="fl">0.15</span>, <span class="fl">0.13</span>, <span class="fl">0.12</span>, <span class="fl">0.11</span>, <span class="fl">0.10</span>, <span class="fl">0.09</span>, <span class="fl">0.08</span>, <span class="fl">0.07</span>, <span class="fl">0.06</span>),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">count      =</span> <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">35</span>, <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">25</span>, <span class="dv">22</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">15</span>, <span class="dv">12</span>),</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">padj       =</span> <span class="fu">c</span>(<span class="fl">1e-8</span>, <span class="fl">5e-7</span>, <span class="fl">2e-6</span>, <span class="fl">8e-6</span>, <span class="fl">3e-5</span>, <span class="fl">1e-4</span>, <span class="fl">4e-4</span>, <span class="fl">9e-4</span>, <span class="fl">2e-3</span>, <span class="fl">6e-3</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>go_dummy<span class="sc">$</span>term <span class="ot">&lt;-</span> <span class="fu">factor</span>(go_dummy<span class="sc">$</span>term, <span class="at">levels =</span> go_dummy<span class="sc">$</span>term[<span class="fu">order</span>(go_dummy<span class="sc">$</span>gene_ratio)])</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(go_dummy, <span class="fu">aes</span>(gene_ratio, term, <span class="at">size =</span> count, <span class="at">colour =</span> padj)) <span class="sc">+</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_gradient</span>(<span class="at">low =</span> <span class="st">"#c0392b"</span>, <span class="at">high =</span> <span class="st">"#2c7fb8"</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>                        <span class="at">trans =</span> <span class="st">"log10"</span>, <span class="at">name =</span> <span class="st">"p.adjust"</span>) <span class="sc">+</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">"jumlah gen"</span>) <span class="sc">+</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"gene ratio"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"GO enrichment (Biological Process)"</span>) <span class="sc">+</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-go-dummy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-go-dummy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-RNA-seq_files/figure-html/fig-go-dummy-1.png" class="img-fluid figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-go-dummy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;5: Ilustrasi dotplot GO enrichment (data ilustrasi). Istilah di atas memiliki <em>gene ratio</em> tertinggi; titik yang lebih besar dan lebih merah menandakan pengayaan yang lebih kuat dan signifikan.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Dari pola seperti ini, kita bisa menyimpulkan cerita biologisnya, misalnya bahwa infeksi AHPND memicu pengayaan kuat pada <strong>respons imun bawaan</strong>, <strong>fagositosis</strong>, dan <strong>jalur sinyal Toll</strong>, sejalan dengan aktifnya pertahanan udang terhadap toksin <em>Vibrio</em>. Temuan inilah yang memberi makna pada daftar gen mentah dari DESeq2.</p>
+</section>
+<section id="apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" class="level1">
+<h1>Apa yang perlu dipertimbangkan sebelum studi RNA-seq</h1>
+<p>Kualitas hasil RNA-seq lebih banyak ditentukan di meja desain daripada di depan komputer. Sebelum mengeluarkan biaya sekuensing, pertimbangkan hal-hal berikut.</p>
+<ol type="1">
+<li><strong>Desain eksperimen dan replikasi biologis.</strong> Gunakan minimal <strong>3-4 replikasi biologis</strong> per kelompok (bukan replikasi teknis). Replikasi yang cukup jauh lebih menentukan kekuatan statistik daripada menambah <em>sequencing depth</em>.</li>
+<li><strong>Randomisasi dan <em>batch effect</em>.</strong> Jika sampel diproses dalam beberapa <em>batch</em> (hari ekstraksi atau <em>lane</em> sekuensing berbeda), sebar kondisi secara merata antar-<em>batch</em> dan catat informasinya agar bisa dimasukkan ke dalam desain model (<code>~ batch + kondisi</code>).</li>
+<li><strong>Kedalaman dan tipe sekuensing.</strong> Untuk DE pada level gen, umumnya cukup <strong>20-30 juta <em>reads</em> per sampel</strong>; deteksi <em>isoform</em> atau transkrip langka membutuhkan lebih banyak. <em>Paired-end</em> lebih disukai untuk <em>alignment</em> dan deteksi <em>splice junction</em>.</li>
+<li><strong>Kualitas dan jenis <em>library</em>.</strong> Periksa <strong>RIN</strong> (<em>RNA Integrity Number</em>) RNA Anda. Pilih <em>library prep</em> yang sesuai: <em>poly-A selection</em> untuk mRNA pada sampel berkualitas baik, atau <em>ribo-depletion</em> untuk sampel terdegradasi atau jika ingin menangkap RNA non-poliadenilasi.</li>
+<li><strong><em>Strandedness</em>.</strong> Catat orientasi <em>library</em> (<em>stranded</em> vs <em>unstranded</em>); kesalahan parameter <em>strand</em> saat kuantifikasi (<code>--rf</code>/<code>--fr</code>) dapat membuat banyak <em>count</em> hilang atau salah.</li>
+<li><strong>Kualitas genom dan anotasi referensi.</strong> Untuk organisme akuakultur non-model, kualitas anotasi sering menjadi penentu. Anotasi yang tidak lengkap akan langsung membatasi analisis GO/KEGG di hilir.</li>
+<li><strong>Normalisasi dan <em>multiple testing</em>.</strong> Percayakan normalisasi pada metode bawaan DESeq2/edgeR, dan selalu laporkan hasil berdasarkan <code>padj</code>, bukan <code>pvalue</code> mentah.</li>
+<li><strong>Validasi dan interpretasi biologis.</strong> Idealnya, sebagian DEG kunci divalidasi dengan <strong>RT-qPCR</strong>, dan temuan ditafsirkan dalam konteks biologis, bukan sekadar daftar gen dengan <em>p-value</em> kecil.</li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>Penutup.</strong> Dengan menyelesaikan alur HISAT2 → StringTie → DESeq2 hingga visualisasi dan pemaknaan fungsional, Anda kini memiliki gambaran utuh satu siklus studi RNA-seq, dari <em>reads</em> mentah sampai cerita biologis. Pada <em>workflow</em> berikutnya kita akan menempuh jalur alternatif <strong>STAR + RSEM</strong> untuk data yang sama dan membandingkan hasilnya. Skrip otomatis untuk seluruh pipeline ini tersedia di <a href="../code/All-hisat-stringtie.sh" download="">All-hisat-stringtie.sh</a> beserta <a href="../code/config.yaml" download="">config.yaml</a>.</p>
+</blockquote>
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bowo1698\.github\.io\/Bioinfonote\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../docs/workflows.html" class="pagination-link" aria-label="Workflows">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Workflows</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../docs/work-metagenomics.html" class="pagination-link" aria-label="Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang">
+        <span class="nav-page-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Agus Wibowo · MIT License</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

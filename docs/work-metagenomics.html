@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang – Bioinformatic Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../docs/work-RNA-seq.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim",
+    "search-label": "Mencari"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Bioinformatic Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../materi.html" aria-current="page"> 
+<span class="menu-text">Materi</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tentang.html"> 
+<span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/bio.html"> 
+<span class="menu-text">Biografi</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-metagenomics.html">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Daftar Materi</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/materi-dasar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Materi dasar</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-biomol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep-konsep dasar biologi molekuler</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-tren-terbaru.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-marker-genetik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-hierarki-linux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Memahami hierarki Linux</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-instalasi-tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instalasi Tools Bioinformatika</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-linux-in-win.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux di dalam Windows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-library-preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Library preparation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-dasar-ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep dasar pembelajaran mesin</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/skill-teknis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skill Teknis</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-curl-wget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variabel, loop, dan izin akses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-file-format.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mengenal berbagai format file NGS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality control hasil sequencing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Workflows</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-RNA-seq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RNA-Seq workflow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-metagenomics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Di halaman ini</h2>
+   
+  <ul>
+  <li><a href="#daftar-isi" id="toc-daftar-isi" class="nav-link active" data-scroll-target="#daftar-isi">Daftar isi</a></li>
+  <li><a href="#apa-itu-metagenomik-16s" id="toc-apa-itu-metagenomik-16s" class="nav-link" data-scroll-target="#apa-itu-metagenomik-16s">Apa itu metagenomik 16S?</a>
+  <ul class="collapse">
+  <li><a href="#gen-16s-rrna-sebagai-penanda-taksonomi" id="toc-gen-16s-rrna-sebagai-penanda-taksonomi" class="nav-link" data-scroll-target="#gen-16s-rrna-sebagai-penanda-taksonomi">Gen 16S rRNA sebagai penanda taksonomi</a></li>
+  <li><a href="#metabarcoding-16s-dibandingkan-sekuensing-shotgun" id="toc-metabarcoding-16s-dibandingkan-sekuensing-shotgun" class="nav-link" data-scroll-target="#metabarcoding-16s-dibandingkan-sekuensing-shotgun">Metabarcoding 16S dibandingkan sekuensing shotgun</a></li>
+  <li><a href="#relevansi-untuk-akuakultur" id="toc-relevansi-untuk-akuakultur" class="nav-link" data-scroll-target="#relevansi-untuk-akuakultur">Relevansi untuk akuakultur</a></li>
+  </ul></li>
+  <li><a href="#desain-studi-data" id="toc-desain-studi-data" class="nav-link" data-scroll-target="#desain-studi-data">Desain studi dan data</a>
+  <ul class="collapse">
+  <li><a href="#skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd" id="toc-skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd" class="nav-link" data-scroll-target="#skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd">Skenario mikrobioma usus udang vanamei sehat dan AHPND</a></li>
+  </ul></li>
+  <li><a href="#inspeksi-raw-reads" id="toc-inspeksi-raw-reads" class="nav-link" data-scroll-target="#inspeksi-raw-reads">Inspeksi raw reads</a></li>
+  <li><a href="#qc-pemangkasan-primer" id="toc-qc-pemangkasan-primer" class="nav-link" data-scroll-target="#qc-pemangkasan-primer">Kendali mutu dan pemangkasan primer</a></li>
+  <li><a href="#denoising-menjadi-asv-dengan-dada2" id="toc-denoising-menjadi-asv-dengan-dada2" class="nav-link" data-scroll-target="#denoising-menjadi-asv-dengan-dada2">Denoising menjadi ASV dengan DADA2</a></li>
+  <li><a href="#penugasan-taksonomi" id="toc-penugasan-taksonomi" class="nav-link" data-scroll-target="#penugasan-taksonomi">Penugasan taksonomi</a></li>
+  <li><a href="#membangun-objek-phyloseq" id="toc-membangun-objek-phyloseq" class="nav-link" data-scroll-target="#membangun-objek-phyloseq">Membangun objek phyloseq</a></li>
+  <li><a href="#analisis-komunitas-mikroba" id="toc-analisis-komunitas-mikroba" class="nav-link" data-scroll-target="#analisis-komunitas-mikroba">Analisis komunitas mikroba</a>
+  <ul class="collapse">
+  <li><a href="#alpha-diversity" id="toc-alpha-diversity" class="nav-link" data-scroll-target="#alpha-diversity">Alpha diversity, keragaman dalam sampel</a></li>
+  <li><a href="#kurva-rarefaction" id="toc-kurva-rarefaction" class="nav-link" data-scroll-target="#kurva-rarefaction">Kurva rarefaction</a></li>
+  <li><a href="#komposisi-taksonomi" id="toc-komposisi-taksonomi" class="nav-link" data-scroll-target="#komposisi-taksonomi">Komposisi taksonomi</a></li>
+  <li><a href="#beta-diversity" id="toc-beta-diversity" class="nav-link" data-scroll-target="#beta-diversity">Beta diversity, keragaman antar sampel</a></li>
+  <li><a href="#heatmap-kelimpahan" id="toc-heatmap-kelimpahan" class="nav-link" data-scroll-target="#heatmap-kelimpahan">Heatmap kelimpahan</a></li>
+  <li><a href="#kelimpahan-diferensial" id="toc-kelimpahan-diferensial" class="nav-link" data-scroll-target="#kelimpahan-diferensial">Kelimpahan diferensial dengan DESeq2</a></li>
+  </ul></li>
+  <li><a href="#apa-yang-perlu-dipertimbangkan" id="toc-apa-yang-perlu-dipertimbangkan" class="nav-link" data-scroll-target="#apa-yang-perlu-dipertimbangkan">Apa yang perlu dipertimbangkan</a></li>
+  <li><a href="#penutup" id="toc-penutup" class="nav-link" data-scroll-target="#penutup">Penutup</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-metagenomics.html">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
+<a href="../docs/work-metagenomics.html" style="text-decoration: none; color: inherit;"> Metagenomik 16S rRNA </a>
+</h1>
+<p style="text-align: center; font-size: 1.2rem;">
+Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
+</p>
+<figure style="text-align: center; margin-bottom: 1.5rem;" class="figure">
+<img src="https://www.globalseafood.org/wp-content/uploads/2020/08/ARANGUREN-Pic-0_960.jpg" alt="Udang vanamei pada budidaya intensif" style="max-width: 100%; height: auto; border-radius: 8px;" class="figure-img">
+<figcaption style="font-size: 0.9em; margin-top: 8px; color: #666;">
+Udang vanamei (<em>Litopenaeus vannamei</em>) pada sistem budidaya intensif. Gambar atas dan bawah masing-masing adalah udang sehat dan yang terinfeksi AHPND. <br><em>Sumber gambar</em> <a href="https://www.globalseafood.org/advocate/the-role-of-vibrio-in-shrimp-aquaculture/" target="_blank">Global Seafood Alliance</a>.
+</figcaption>
+</figure>
+<section id="daftar-isi" class="level1">
+<h1>Daftar isi</h1>
+<ol type="1">
+<li><a href="#apa-itu-metagenomik-16s">Apa itu metagenomik 16S?</a></li>
+<li><a href="#desain-studi-data">Desain studi dan data</a></li>
+<li><a href="#inspeksi-raw-reads">Inspeksi raw reads</a></li>
+<li><a href="#qc-pemangkasan-primer">Kendali mutu dan pemangkasan primer</a></li>
+<li><a href="#denoising-menjadi-asv-dengan-dada2">Denoising menjadi ASV dengan DADA2</a></li>
+<li><a href="#penugasan-taksonomi">Penugasan taksonomi</a></li>
+<li><a href="#membangun-objek-phyloseq">Membangun objek phyloseq</a></li>
+<li><a href="#analisis-komunitas-mikroba">Analisis komunitas mikroba</a></li>
+<li><a href="#apa-yang-perlu-dipertimbangkan">Apa yang perlu dipertimbangkan</a></li>
+</ol>
+</section>
+<section id="apa-itu-metagenomik-16s" class="level1">
+<h1>Apa itu metagenomik 16S?</h1>
+<section id="gen-16s-rrna-sebagai-penanda-taksonomi" class="level2">
+<h2 class="anchored" data-anchor-id="gen-16s-rrna-sebagai-penanda-taksonomi">Gen 16S rRNA sebagai penanda taksonomi</h2>
+<p>Di setiap sel bakteri terdapat subunit ribosom kecil yang mengandung molekul RNA berukuran sekitar 1.500 pasang basa, yang dikenal sebagai 16S rRNA. Gen yang mengkodenya sangat istimewa karena strukturnya tersusun dari daerah-daerah lestari (<em>conserved</em>) yang sangat terjaga di seluruh kehidupan prokariot dan diapit oleh sembilan daerah hipervariabel bernama V1 hingga V9. Daerah lestari berfungsi sebagai dermaga bagi <em>primer</em> PCR yang mampu menempel hampir di semua bakteri, sementara daerah hipervariabel bertindak seperti sidik jari khas tiap takson. Pada tutorial ini kita menargetkan wilayah V3 dan V4 karena kombinasinya memberikan resolusi taksonomi yang baik hingga tingkat <em>genus</em> sekaligus menghasilkan amplikon sepanjang sekitar 460 pasang basa, panjang yang ideal untuk <em>sequencing paired-end</em> Illumina. Khusus pada data demo tutorial ini, panjang amplikon sengaja disederhanakan menjadi 400 bp agar ringan dijalankan.</p>
+<figure style="text-align: center; margin: 1.5rem 0;" class="figure">
+<img src="images/metagenomics-overview.png" alt="Overview alur kerja metagenomik" style="max-width: 100%; height: auto;" class="figure-img">
+<figcaption style="font-size: 0.9em; margin-top: 8px; color: #666;">
+Gambaran umum alur kerja metagenomik, mulai dari pengambilan sampel dan ekstraksi DNA, amplifikasi serta <em>sequencing</em>, hingga analisis komunitas mikroba secara komputasional.
+</figcaption>
+</figure>
+<p>Alur kerja <em>metabarcoding</em> 16S dimulai dari pengambilan sampel dan ekstraksi DNA total, lalu amplifikasi daerah V3 dan V4 dengan PCR memakai <em>primer</em> universal. Amplikon yang dihasilkan kemudian di-<em>sequencing</em> secara massal. Setelah melewati tahap kendali mutu dan pemotongan <em>primer</em>, <em>reads</em> yang tersisa dikelompokkan menjadi satuan biologis bernama ASV (<em>Amplicon Sequence Variant</em>) atau OTU (<em>Operational Taxonomic Unit</em>). ASV yang dihasilkan oleh metode <em>denoising</em> seperti DADA2 merupakan satuan beresolusi tinggi karena mewakili urutan biologis yang tepat tanpa ambiguitas <em>clustering</em>. Setiap ASV lalu dibandingkan dengan basis data referensi seperti SILVA untuk memperoleh identitas taksonominya.</p>
+</section>
+<section id="metabarcoding-16s-dibandingkan-sekuensing-shotgun" class="level2">
+<h2 class="anchored" data-anchor-id="metabarcoding-16s-dibandingkan-sekuensing-shotgun">Metabarcoding 16S dibandingkan sekuensing shotgun</h2>
+<p>Dua pendekatan utama dalam metagenomik memiliki profil kelebihan dan kekurangan yang berbeda. Pendekatan <em>metabarcoding</em> amplikon 16S berbiaya rendah, hanya membutuhkan sedikit <em>reads</em> karena 10.000 sampai 50.000 <em>reads</em> per sampel sudah informatif, dan memberikan resolusi taksonomi hingga tingkat <em>genus</em> atau kadang <em>species</em> untuk bakteri serta <em>archaea</em>, walaupun tidak mampu mendeteksi virus, fungi, maupun jalur metabolik secara langsung. Sebaliknya, <em>shotgun metagenomics</em> berbiaya lebih tinggi dan membutuhkan jutaan <em>reads</em> per sampel, namun mampu memberikan resolusi hingga tingkat <em>species</em> atau <em>strain</em> sekaligus mengungkap potensi fungsional berupa gen dan <em>pathway</em> metabolik, dan mencakup seluruh domain kehidupan termasuk virus dan fungi.</p>
+<p>Untuk studi komunitas bakteri dalam konteks kesehatan organisme budidaya, pendekatan amplikon 16S umumnya menjadi pilihan pertama karena efisiensi biaya dan kemampuannya menangani banyak sampel dalam satu <em>run</em> sekuensing.</p>
+</section>
+<section id="relevansi-untuk-akuakultur" class="level2">
+<h2 class="anchored" data-anchor-id="relevansi-untuk-akuakultur">Relevansi untuk akuakultur</h2>
+<p>Sistem budidaya intensif menciptakan tekanan biologis yang tidak sederhana sehingga kesehatan hewan budidaya tidak hanya bergantung pada genotipe inang atau kualitas air, tetapi juga pada ekosistem mikroba di dalam dan sekitarnya. Mikrobioma usus udang dan ikan berperan aktif dalam pencernaan nutrisi, stimulasi sistem imun mukosa, serta produksi metabolit antimikroba yang menekan pertumbuhan patogen. Di tambak, komunitas mikroba air dan sedimen membentuk sabuk pengaman ekologis yang memengaruhi ketersediaan nutrisi sekaligus laju proliferasi bakteri oportunistik.</p>
+<p>Ketika terjadi <em>disbiosis</em>, yaitu ketidakseimbangan komposisi komunitas mikroba, sistem pertahanan ini melemah dan pintu terbuka bagi infeksi. Pada penyakit seperti <em>Vibriosis</em>, <em>Early Mortality Syndrome</em> (EMS), maupun AHPND, pergeseran dramatis komposisi mikrobioma usus sering mendahului tanda-tanda klinis yang terlihat. Hal inilah yang menjadikan metagenomik 16S sebagai alat yang sangat berharga karena kemampuannya mendeteksi perubahan komposisi komunitas mikroba dengan cepat dan biaya terjangkau membuka peluang untuk deteksi dini patogen, pemilihan kandidat probiotik yang tepat, serta evaluasi dampak perubahan manajemen pakan atau kualitas air terhadap kesehatan usus secara menyeluruh.</p>
+</section>
+</section>
+<section id="desain-studi-data" class="level1">
+<h1>Desain studi dan data</h1>
+<section id="skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd" class="level2">
+<h2 class="anchored" data-anchor-id="skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd">Skenario mikrobioma usus udang vanamei sehat dan AHPND</h2>
+<p>Tutorial ini menggunakan skenario yang dirancang untuk melengkapi studi transkriptomik yang sudah dibahas pada <a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a>. Di sana kita menelusuri respon ekspresi gen hepatopankreas udang vanamei (<em>Litopenaeus vannamei</em>) saat terinfeksi toksin Pir A/B dari <em>Vibrio</em> penyebab AHPND. Kini kita mendekati sistem yang sama dari sudut pandang berbeda, bukan ekspresi gen inang melainkan komunitas mikroba yang menghuni usus udang tersebut.</p>
+<p>Dataset tutorial ini terdiri dari 20 sampel usus udang vanamei, yaitu 10 sampel dari udang sehat tanpa tanda klinis dan 10 sampel dari udang yang terdiagnosis AHPND berdasarkan histopatologi hepatopankreas. DNA total diekstraksi dari isi usus memakai protokol <em>bead-beating</em> standar, kemudian daerah V3 dan V4 dari gen 16S rRNA diamplifikasi memakai pasangan <em>primer</em> 341F (<code>5'-CCTACGGGNGGCWGCAG-3'</code>) dan 805R (<code>5'-GACTACHVGGGTATCTAATCC-3'</code>). Produk amplikon lalu di-<em>sequencing</em> dengan platform Illumina MiSeq memakai <em>paired-end</em> 2×300 bp.</p>
+<p>Perbandingan dua kondisi ini memungkinkan kita menjawab beberapa pertanyaan penting. Apakah ada perbedaan komposisi <em>genus</em> bakteri antara udang sehat dan yang terinfeksi, apakah terjadi <em>disbiosis</em> misalnya penurunan <em>Lactobacillales</em> atau peningkatan <em>Vibrionaceae</em>, serta seberapa beragam komunitas mikroba dalam masing-masing kelompok. Semua pertanyaan ini akan kita jawab secara kuantitatif memakai analisis <em>alpha diversity</em>, <em>beta diversity</em>, dan perbandingan komposisi taksonomi.</p>
+<p>Semua data pada tutorial ini adalah data demo untuk pembelajaran yang dibuat dengan skrip <code>code/generate-16s-demo.R</code> agar seluruh pipeline dapat dijalankan langsung dan tetap ringan di komputer biasa. Perlu diingat bahwa data nyata umumnya jauh lebih besar, terdiri atas puluhan ribu hingga jutaan <em>reads</em> per sampel, sehingga menuntut sumber daya komputasi yang besar serta basis data taksonomi penuh seperti SILVA atau GTDB. Semua <em>genus</em> pada data demo ini sengaja dipilih dari kelompok bakteri laut dan payau yang lazim dijumpai di lingkungan tambak serta saluran pencernaan udang vanamei, sehingga tidak ada genus khas air tawar. Silakan unduh berkas berikut dengan menekan tombol unduh, lalu berkas akan tersimpan di komputer Anda.</p>
+<div class="download-row">
+<p><a class="btn-download" href="data/16s-demo/raw_reads.tar.gz" download="">⬇&nbsp; Raw reads <span class="bd-sub">20 sampel paired-end, .tar.gz</span></a> <a class="btn-download" href="data/16s-demo/metadata.csv" download="">⬇&nbsp; Metadata sampel <span class="bd-sub">metadata.csv</span></a> <a class="btn-download" href="data/16s-demo/ref/train_set_demo.fa.gz" download="">⬇&nbsp; Basis data taksonomi <span class="bd-sub">train_set_demo.fa.gz</span></a></p>
+</div>
+</section>
+</section>
+<section id="inspeksi-raw-reads" class="level1">
+<h1>Inspeksi raw reads</h1>
+<p>Sebelum memulai analisis, kita lihat dulu struktur dan jumlah <em>reads</em> yang kita miliki. Langkah ini penting untuk memastikan semua berkas terbaca dengan benar dan jumlah <em>reads</em> per sampel berada dalam rentang yang wajar. Kita juga perlu memverifikasi bahwa penamaan berkas konsisten sehingga DADA2 dapat mencocokkan pasangan <em>forward</em> dan <em>reverse</em> dengan tepat. Paket <code>ShortRead</code> memungkinkan kita membaca langsung metadata dari berkas FASTQ terkompresi tanpa perlu mengekstraknya lebih dulu sehingga inspeksi awal ini berjalan efisien bahkan untuk dataset besar.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(dada2); <span class="fu">library</span>(ggplot2)})</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>reads_dir <span class="ot">&lt;-</span> <span class="st">"data/16s-demo/raw_reads"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fnFs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(reads_dir, <span class="at">pattern =</span> <span class="st">"_1.fastq.gz$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>fnRs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(reads_dir, <span class="at">pattern =</span> <span class="st">"_2.fastq.gz$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_1.fastq.gz$"</span>, <span class="st">""</span>, <span class="fu">basename</span>(fnFs))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">sample =</span> sample_names,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">reads =</span> <span class="fu">sapply</span>(fnFs, <span class="cf">function</span>(f) <span class="fu">length</span>(ShortRead<span class="sc">::</span><span class="fu">readFastq</span>(f)))) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                        sample reads
+data/16s-demo/raw_reads/AH01_1.fastq.gz   AH01  1947
+data/16s-demo/raw_reads/AH02_1.fastq.gz   AH02  1992
+data/16s-demo/raw_reads/AH03_1.fastq.gz   AH03  1977
+data/16s-demo/raw_reads/AH04_1.fastq.gz   AH04  2043
+data/16s-demo/raw_reads/AH05_1.fastq.gz   AH05  2036
+data/16s-demo/raw_reads/AH06_1.fastq.gz   AH06  1997</code></pre>
+</div>
+</div>
+<p>Tabel di atas memperlihatkan nama sampel beserta jumlah <em>reads</em> yang berhasil dibaca dari masing-masing berkas. Setiap sampel berisi sekitar dua ribu pasang <em>reads</em>, jumlah yang sengaja dibuat kecil untuk demo namun cukup untuk menggambarkan seluruh alur. Pada data nyata, jumlah ini biasanya berada pada kisaran puluhan ribu <em>reads</em> per sampel. Penjelasan lebih dalam tentang format berkas yang kita pakai dapat Anda baca pada artikel <a href="../docs/teknis-file-format.html">Mengenal berbagai format file NGS</a>.</p>
+</section>
+<section id="qc-pemangkasan-primer" class="level1">
+<h1>Kendali mutu dan pemangkasan primer</h1>
+<p>Setiap amplikon yang kita sekuensing mengandung urutan <em>primer</em> PCR di ujung-ujungnya, yaitu 341F sepanjang 17 nt di awal <em>forward read</em> dan 805R sepanjang 21 nt di awal <em>reverse read</em>. Urutan <em>primer</em> ini bukan bagian dari sekuens biologis bakteri sehingga harus dibuang sebelum analisis lebih lanjut. Jika dibiarkan, urutan <em>primer</em> akan memperkenalkan artefak pada tahap <em>error learning</em> dan <em>denoising</em> DADA2 yang berpotensi menghasilkan ASV palsu.</p>
+<p>Alat standar untuk pemangkasan <em>primer</em> dalam pipeline produksi adalah <code>cutadapt</code>. Blok berikut menampilkan contoh perintah <code>cutadapt</code> sebagai referensi yang tidak dijalankan di sini. Sebagai gantinya kita memakai parameter <code>trimLeft</code> dalam fungsi <code>filterAndTrim</code> dari DADA2 yang memangkas sejumlah basa tetap dari ujung kiri setiap <em>read</em>, pendekatan yang setara dan lebih praktis untuk dataset dengan panjang <em>primer</em> seragam.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># referensi (tidak dijalankan di sini): pemangkasan primer dengan cutadapt</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cutadapt</span> <span class="at">-g</span> CCTACGGGAGGCAGCAG <span class="at">-G</span> GACTACCAGGGTATCTAATCC <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> trimmed_1.fastq.gz <span class="at">-p</span> trimmed_2.fastq.gz sample_1.fastq.gz sample_2.fastq.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pada perintah <code>cutadapt</code> di atas, kode degenerasi IUPAC pada <em>primer</em> asli yaitu <code>N</code>, <code>W</code>, <code>H</code>, dan <code>V</code> ditulis dalam salah satu bentuk resolusinya agar contoh tetap sederhana. Pada praktik nyata Anda memberi <code>cutadapt</code> urutan <em>primer</em> lengkap beserta kode degenerasinya. Selain membuang <em>primer</em>, <code>filterAndTrim</code> juga menerapkan filter kualitas berupa batas <em>maximum expected errors</em> (<code>maxEE</code>) sebesar 2 untuk <em>forward</em> dan <em>reverse</em>, serta pemotongan basa berskor kualitas di bawah Q2 lewat parameter <code>truncQ</code>. Semua <em>reads</em> yang gagal melewati filter tidak diteruskan ke tahap berikutnya.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>filtFs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data/16s-demo/filtered"</span>, <span class="fu">paste0</span>(sample_names, <span class="st">"_F.fastq.gz"</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>filtRs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data/16s-demo/filtered"</span>, <span class="fu">paste0</span>(sample_names, <span class="st">"_R.fastq.gz"</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtFs) <span class="ot">&lt;-</span> sample_names; <span class="fu">names</span>(filtRs) <span class="ot">&lt;-</span> sample_names</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">filterAndTrim</span>(fnFs, filtFs, fnRs, filtRs,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">trimLeft   =</span> <span class="fu">c</span>(<span class="dv">17</span>, <span class="dv">21</span>),   <span class="co"># buang primer F/R</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">truncLen    =</span> <span class="dv">0</span>,           <span class="co"># reads sudah seragam</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">maxEE       =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">truncQ      =</span> <span class="dv">2</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">rm.phix     =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">compress    =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(out)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                reads.in reads.out
+AH01_1.fastq.gz     1947      1529
+AH02_1.fastq.gz     1992      1532
+AH03_1.fastq.gz     1977      1528
+AH04_1.fastq.gz     2043      1558
+AH05_1.fastq.gz     2036      1571
+AH06_1.fastq.gz     1997      1542</code></pre>
+</div>
+</div>
+<p>Kolom <code>reads.in</code> menunjukkan jumlah <em>reads</em> awal dan <code>reads.out</code> jumlah yang lolos filter. Pada dataset ini sekitar 23 persen <em>reads</em> tersaring keluar karena sebagian sengaja dibuat berkualitas rendah pada ujung 3’, persis seperti yang sering kita jumpai pada data Illumina nyata. Penurunan sebesar ini tergolong wajar dan menandakan tahap kendali mutu memang bekerja menyaring <em>reads</em> bermutu buruk sebelum <em>denoising</em>. Bila Anda melihat penurunan yang sangat ekstrem, misalnya lebih dari separuh <em>reads</em> hilang, itu pertanda parameter filter terlalu ketat atau mutu sekuensing memang bermasalah.</p>
+</section>
+<section id="denoising-menjadi-asv-dengan-dada2" class="level1">
+<h1>Denoising menjadi ASV dengan DADA2</h1>
+<p><em>Denoising</em> adalah proses membedakan varian sekuens biologis yang nyata dari <em>noise</em> sekuensing. Berbeda dengan pendekatan klasik berbasis <em>clustering</em> OTU yang mengelompokkan sekuens dengan kemiripan minimal 97 persen, DADA2 memakai model <em>error</em> probabilistik yang dipelajari langsung dari data untuk menghasilkan ASV, yaitu satuan beresolusi nukleotida tunggal yang merepresentasikan sekuens biologis sesungguhnya.</p>
+<p>Proses ini berlangsung dalam empat tahap utama. Pertama, <code>learnErrors</code> membangun model <em>error</em> khas dataset dari sebagian <em>reads</em>. Kedua, <code>dada</code> menerapkan model tersebut untuk mendekomposisi <em>reads</em> menjadi ASV. Ketiga, <code>mergePairs</code> menggabungkan <em>forward</em> dan <em>reverse read</em> memakai daerah <em>overlap</em> yang berukuran sekitar 30 bp pada desain V3 dan V4 ini. Keempat, <code>removeBimeraDenovo</code> menghapus artefak <em>bimera</em> berupa kontaminasi silang amplikon. Hasil akhirnya adalah tabel ASV bersih yang siap untuk penugasan taksonomi.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Kode DADA2, dari learnErrors hingga seqtab</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>errF <span class="ot">&lt;-</span> <span class="fu">learnErrors</span>(filtFs, <span class="at">multithread =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>errR <span class="ot">&lt;-</span> <span class="fu">learnErrors</span>(filtRs, <span class="at">multithread =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>dadaFs <span class="ot">&lt;-</span> <span class="fu">dada</span>(filtFs, <span class="at">err =</span> errF, <span class="at">multithread =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>dadaRs <span class="ot">&lt;-</span> <span class="fu">dada</span>(filtRs, <span class="at">err =</span> errR, <span class="at">multithread =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">mergePairs</span>(dadaFs, filtFs, dadaRs, filtRs, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>seqtab <span class="ot">&lt;-</span> <span class="fu">makeSequenceTable</span>(merged)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>seqtab.nochim <span class="ot">&lt;-</span> <span class="fu">removeBimeraDenovo</span>(seqtab, <span class="at">method =</span> <span class="st">"consensus"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">multithread =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"jumlah ASV:"</span>, <span class="fu">ncol</span>(seqtab.nochim),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">" | rentang panjang:"</span>, <span class="fu">paste</span>(<span class="fu">range</span>(<span class="fu">nchar</span>(<span class="fu">getSequences</span>(seqtab.nochim))), <span class="at">collapse =</span> <span class="st">"-"</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>jumlah ASV: 20  | rentang panjang: 400-400 </code></pre>
+</div>
+</div>
+<p>Keluaran di atas memberi tahu kita bahwa <em>denoising</em> memulihkan sekitar 20 ASV dengan panjang seragam 400 bp, persis sebanyak <em>genus</em> yang kita masukkan ke dalam data demo. Keseragaman panjang ini menandakan penggabungan pasangan berlangsung sempurna pada daerah <em>overlap</em> yang kita rancang. Pada data nyata Anda biasanya memperoleh ratusan hingga ribuan ASV, dan penyebaran panjang yang lebar bisa menjadi sinyal adanya artefak yang perlu disaring lebih lanjut.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>getN <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">getUniques</span>(x))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>track <span class="ot">&lt;-</span> <span class="fu">cbind</span>(out,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">denoisedF =</span> <span class="fu">sapply</span>(dadaFs, getN),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">denoisedR =</span> <span class="fu">sapply</span>(dadaRs, getN),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">merged    =</span> <span class="fu">sapply</span>(merged, getN),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">nonchim   =</span> <span class="fu">rowSums</span>(seqtab.nochim))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(track)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"input"</span>, <span class="st">"filtered"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(track)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                input filtered denoisedF denoisedR merged nonchim
+AH01_1.fastq.gz  1947     1529      1527      1518   1518    1518
+AH02_1.fastq.gz  1992     1532      1529      1518   1518    1518
+AH03_1.fastq.gz  1977     1528      1521      1522   1518    1518
+AH04_1.fastq.gz  2043     1558      1550      1550   1550    1550
+AH05_1.fastq.gz  2036     1571      1565      1557   1557    1557
+AH06_1.fastq.gz  1997     1542      1522      1531   1522    1522</code></pre>
+</div>
+</div>
+<p>Tabel pelacakan ini merangkum berapa banyak <em>reads</em> yang bertahan di setiap tahap pipeline, mulai dari input mentah, setelah pemfilteran, <em>denoising forward</em> dan <em>reverse</em>, penggabungan pasangan, sampai penghapusan <em>bimera</em>. Membaca tabel ini dari kiri ke kanan membantu kita menemukan tahap mana yang membuang <em>reads</em> paling banyak. Pada dataset ini sebagian besar <em>reads</em> yang lolos filter berhasil melewati seluruh tahap berikutnya, sehingga pola penurunannya landai dan sehat. Penurunan drastis pada satu tahap, misalnya penggabungan pasangan yang gagal massal, biasanya menunjuk pada masalah panjang <em>overlap</em> atau pemotongan yang keliru.</p>
+</section>
+<section id="penugasan-taksonomi" class="level1">
+<h1>Penugasan taksonomi</h1>
+<p>Setelah memperoleh sekuens ASV yang bersih, langkah terakhir pada tahap <em>upstream</em> adalah mengidentifikasi asal usul taksonomi setiap ASV. DADA2 memakai pengklasifikasi <em>naive</em> Bayes yang membandingkan <em>k-mer</em> dari sekuens ASV kita dengan basis data referensi terformat. Parameter <code>minBoot</code>, yaitu nilai <em>bootstrap</em> minimum, mengontrol tingkat kepercayaan penugasan sehingga nilai yang lebih tinggi menghasilkan penugasan yang lebih konservatif.</p>
+<p>Dalam tutorial ini kita memakai basis data demo yang hanya mencakup beberapa <em>genus</em> bakteri yang dimasukkan ke dalam data demo. Pada analisis nyata Anda akan memakai basis data lengkap seperti SILVA versi 138 ke atas, GTDB, atau RDP yang mencakup puluhan ribu sekuens referensi dan dapat diunduh dari situs resmi DADA2. Basis data yang lebih lengkap meningkatkan cakupan taksonomi tetapi juga menuntut lebih banyak RAM selama proses penugasan.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>taxa <span class="ot">&lt;-</span> <span class="fu">assignTaxonomy</span>(seqtab.nochim,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"data/16s-demo/ref/train_set_demo.fa.gz"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">taxLevels =</span> <span class="fu">c</span>(<span class="st">"Kingdom"</span>,<span class="st">"Phylum"</span>,<span class="st">"Class"</span>,<span class="st">"Order"</span>,<span class="st">"Family"</span>,<span class="st">"Genus"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">minBoot =</span> <span class="dv">50</span>, <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">unname</span>(taxa)) <span class="sc">|&gt;</span> <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"Kingdom"</span>,<span class="st">"Phylum"</span>,<span class="st">"Class"</span>,<span class="st">"Order"</span>,<span class="st">"Family"</span>,<span class="st">"Genus"</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Kingdom         Phylum               Class            Order
+1 Bacteria Proteobacteria Gammaproteobacteria      Vibrionales
+2 Bacteria Proteobacteria Gammaproteobacteria      Vibrionales
+3 Bacteria Proteobacteria Alphaproteobacteria  Rhodobacterales
+4 Bacteria Proteobacteria Alphaproteobacteria  Rhodobacterales
+5 Bacteria   Bacteroidota      Flavobacteriia Flavobacteriales
+6 Bacteria Proteobacteria Gammaproteobacteria  Alteromonadales
+             Family          Genus
+1      Vibrionaceae         Vibrio
+2      Vibrionaceae Photobacterium
+3  Rhodobacteraceae    Phaeobacter
+4  Rhodobacteraceae       Ruegeria
+5 Flavobacteriaceae  Tenacibaculum
+6    Shewanellaceae     Shewanella</code></pre>
+</div>
+</div>
+<p>Tabel taksonomi di atas memetakan setiap ASV ke peringkat <em>Kingdom</em> sampai <em>Genus</em>. Kita melihat <em>genus</em> yang relevan dengan kesehatan udang muncul dengan jelas, antara lain <em>Vibrio</em> dan <em>Photobacterium</em> dari famili <em>Vibrionaceae</em> yang kerap berasosiasi dengan AHPND. Pada data nyata sebagian ASV biasanya tidak teridentifikasi sampai tingkat <em>genus</em> dan akan terisi <code>NA</code>, terutama untuk takson yang belum terwakili baik di basis data referensi.</p>
+</section>
+<section id="membangun-objek-phyloseq" class="level1">
+<h1>Membangun objek phyloseq</h1>
+<p>Setelah proses <em>upstream</em> DADA2 selesai dan kita memiliki tabel ASV <code>seqtab.nochim</code> beserta anotasi taksonomi <code>taxa</code>, langkah berikutnya adalah menyatukan semua informasi, yaitu tabel hitungan, metadata sampel, dan taksonomi, ke dalam satu objek terpadu memakai paket phyloseq. Objek phyloseq memudahkan manipulasi data sekaligus menjadi fondasi untuk seluruh analisis komunitas berikutnya. Kita juga menyimpan sekuens ASV asli sebagai objek <code>DNAStringSet</code> di dalamnya, berguna bila nanti ingin membangun pohon filogenetik, lalu mengganti nama ASV panjang menjadi label pendek seperti ASV1 dan ASV2 agar keluaran lebih mudah dibaca.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(phyloseq); <span class="fu">library</span>(Biostrings)})</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/16s-demo/metadata.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ps <span class="ot">&lt;-</span> <span class="fu">phyloseq</span>(<span class="fu">otu_table</span>(seqtab.nochim, <span class="at">taxa_are_rows =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sample_data</span>(meta),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="fu">tax_table</span>(taxa))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>dna <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(<span class="fu">taxa_names</span>(ps)); <span class="fu">names</span>(dna) <span class="ot">&lt;-</span> <span class="fu">taxa_names</span>(ps)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>ps <span class="ot">&lt;-</span> <span class="fu">merge_phyloseq</span>(ps, dna)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">taxa_names</span>(ps) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"ASV"</span>, <span class="fu">seq_len</span>(<span class="fu">ntaxa</span>(ps)))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sample_data</span>(ps)<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sample_data</span>(ps)<span class="sc">$</span>group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"sehat"</span>,<span class="st">"AHPND"</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>ps</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 20 taxa and 20 samples ]
+sample_data() Sample Data:       [ 20 samples by 1 sample variables ]
+tax_table()   Taxonomy Table:    [ 20 taxa by 6 taxonomic ranks ]
+refseq()      DNAStringSet:      [ 20 reference sequences ]</code></pre>
+</div>
+</div>
+<p>Ringkasan objek menunjukkan struktur data yang kini rapi, yaitu sekitar 20 takson lintas 20 sampel lengkap dengan tabel taksonomi enam peringkat dan sekuens rujukannya. Satu objek ini menggantikan banyak tabel terpisah sehingga setiap analisis berikutnya cukup memanggil <code>ps</code> tanpa khawatir nama sampel atau urutan baris tertukar.</p>
+</section>
+<section id="analisis-komunitas-mikroba" class="level1">
+<h1>Analisis komunitas mikroba</h1>
+<p>Dengan objek phyloseq yang sudah terbentuk, kita siap menjalankan serangkaian analisis ekologi mikroba. Analisis ini mencakup enam pendekatan utama, yaitu <em>alpha diversity</em> untuk kekayaan dan keseragaman dalam satu sampel, kurva <em>rarefaction</em> untuk kecukupan kedalaman <em>sequencing</em>, komposisi taksonomi untuk melihat siapa yang ada dan seberapa banyak, <em>beta diversity</em> untuk perbedaan struktur komunitas antar sampel, <em>heatmap</em> kelimpahan untuk pola taksa teratas, dan kelimpahan diferensial untuk taksa yang berbeda secara statistik antar kelompok. Bersama-sama, keenam analisis ini memberikan gambaran menyeluruh tentang perubahan ekologi mikroba pada udang AHPND dibandingkan udang sehat.</p>
+<section id="alpha-diversity" class="level2">
+<h2 class="anchored" data-anchor-id="alpha-diversity">Alpha diversity, keragaman dalam sampel</h2>
+<p><em>Alpha diversity</em> mengukur kekayaan dan keseragaman komunitas mikroba di dalam satu sampel. Indeks <em>Observed</em> menghitung jumlah ASV unik, sedangkan indeks <em>Shannon</em> turut mempertimbangkan kelimpahan relatif setiap ASV sehingga lebih peka terhadap taksa yang jarang. Kita berharap sampel AHPND menampilkan keragaman lebih rendah karena infeksi patogen cenderung mengganggu komunitas normal dan mendorong dominasi satu atau beberapa taksa oportunistik.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_richness</span>(ps, <span class="at">x =</span> <span class="st">"group"</span>, <span class="at">color =</span> <span class="st">"group"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">measures =</span> <span class="fu">c</span>(<span class="st">"Observed"</span>,<span class="st">"Shannon"</span>)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">sehat =</span> <span class="st">"#2c7fb8"</span>, <span class="at">AHPND =</span> <span class="st">"#c0392b"</span>)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-alpha" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-metagenomics_files/figure-html/fig-alpha-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;1: Alpha diversity berupa indeks Observed dan Shannon per kelompok. Udang AHPND diharapkan memiliki keragaman lebih rendah.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Pada kedua indeks, kotak kelompok AHPND yang berwarna merah berada lebih rendah daripada kelompok sehat yang berwarna biru. Artinya, komunitas mikroba udang terinfeksi tidak hanya memuat lebih sedikit jenis ASV, tetapi juga lebih timpang karena didominasi sedikit takson. Pola ini sejalan dengan konsep <em>disbiosis</em>, di mana hilangnya keragaman menjadi penanda awal terganggunya keseimbangan ekosistem usus.</p>
+<p>Untuk menguji apakah perbedaan <em>alpha diversity</em> antar kelompok signifikan secara statistik, kita memakai uji <em>Wilcoxon rank-sum</em> yang bersifat non parametrik karena data keragaman sering tidak terdistribusi normal, terutama pada ukuran sampel kecil.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rich <span class="ot">&lt;-</span> <span class="fu">estimate_richness</span>(ps, <span class="at">measures =</span> <span class="fu">c</span>(<span class="st">"Observed"</span>,<span class="st">"Shannon"</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>rich<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">sample_data</span>(ps)<span class="sc">$</span>group</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(Shannon <span class="sc">~</span> group, <span class="at">data =</span> rich)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum exact test
+
+data:  Shannon by group
+W = 100, p-value = 1.083e-05
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+<p>Uji ini menghasilkan <em>p-value</em> yang jauh lebih kecil dari ambang 0,05, yang berarti perbedaan keragaman <em>Shannon</em> antara udang sehat dan AHPND sangat kecil kemungkinannya terjadi secara kebetulan. Dengan kata lain, penurunan keragaman pada udang terinfeksi bukan sekadar pola visual pada <em>boxplot</em>, melainkan perbedaan yang didukung bukti statistik yang kuat.</p>
+</section>
+<section id="kurva-rarefaction" class="level2">
+<h2 class="anchored" data-anchor-id="kurva-rarefaction">Kurva rarefaction</h2>
+<p>Kurva <em>rarefaction</em> menggambarkan hubungan antara jumlah <em>reads</em> yang di-<em>subsample</em> dan jumlah ASV yang ditemukan. Kurva yang mendatar menandakan kedalaman <em>sequencing</em> sudah memadai karena menambah <em>reads</em> tidak banyak lagi memunculkan ASV baru. Sebaliknya, kurva yang masih menanjak tajam menunjukkan masih banyak keragaman yang belum tertangkap.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(vegan))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>otu_mat <span class="ot">&lt;-</span> <span class="fu">as</span>(<span class="fu">otu_table</span>(ps), <span class="st">"matrix"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">taxa_are_rows</span>(ps)) otu_mat <span class="ot">&lt;-</span> <span class="fu">t</span>(otu_mat)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">sample_data</span>(ps)<span class="sc">$</span>group <span class="sc">==</span> <span class="st">"AHPND"</span>, <span class="st">"#c0392b"</span>, <span class="st">"#2c7fb8"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rarecurve</span>(otu_mat, <span class="at">step =</span> <span class="dv">50</span>, <span class="at">col =</span> cols, <span class="at">label =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">xlab =</span> <span class="st">"jumlah reads"</span>, <span class="at">ylab =</span> <span class="st">"jumlah ASV"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"sehat"</span>,<span class="st">"AHPND"</span>),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#2c7fb8"</span>,<span class="st">"#c0392b"</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-rarefaction" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rarefaction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-metagenomics_files/figure-html/fig-rarefaction-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rarefaction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;2: Kurva rarefaction yang memetakan kekayaan ASV terhadap kedalaman sampling. Kurva mendatar menandakan kedalaman sudah memadai.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Semua kurva mendatar jauh sebelum mencapai kedalaman maksimum, sehingga kita yakin jumlah <em>reads</em> per sampel sudah cukup untuk menangkap kekayaan ASV yang ada. Perhatikan pula bahwa garis merah milik kelompok AHPND mendatar pada jumlah ASV yang lebih rendah daripada garis biru, sebuah penegasan visual atas temuan <em>alpha diversity</em> sebelumnya bahwa komunitas udang terinfeksi memang lebih miskin jenis.</p>
+</section>
+<section id="komposisi-taksonomi" class="level2">
+<h2 class="anchored" data-anchor-id="komposisi-taksonomi">Komposisi taksonomi</h2>
+<p>Visualisasi komposisi taksonomi memperlihatkan siapa saja yang ada dalam komunitas dan berapa banyak secara relatif. Kita mengagregasi ASV ke tingkat <em>Genus</em> dengan <code>tax_glom</code> agar lebih mudah ditafsirkan, lalu mengubah hitungan menjadi kelimpahan relatif. Pada kasus AHPND, dominasi <em>Vibrio</em> atau <em>Photobacterium</em> diharapkan tampak mencolok pada kelompok terinfeksi.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ps_genus <span class="ot">&lt;-</span> <span class="fu">tax_glom</span>(ps, <span class="at">taxrank =</span> <span class="st">"Genus"</span>, <span class="at">NArm =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ps_rel   <span class="ot">&lt;-</span> <span class="fu">transform_sample_counts</span>(ps_genus, <span class="cf">function</span>(x) x <span class="sc">/</span> <span class="fu">sum</span>(x))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bar</span>(ps_rel, <span class="at">x =</span> <span class="st">"Sample"</span>, <span class="at">fill =</span> <span class="st">"Genus"</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> group, <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"kelimpahan relatif"</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.35</span>, <span class="st">"cm"</span>), <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-composition" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-metagenomics_files/figure-html/fig-composition-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;3: Komposisi genus berupa kelimpahan relatif per sampel yang dipisah menurut kelompok. Dominasi Vibrio dan Photobacterium diharapkan menonjol pada AHPND.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Perbedaan antara dua panel sangat kontras. Sampel sehat di panel kiri menampilkan komposisi yang relatif merata dengan banyak <em>genus</em> komensal laut seperti <em>Bacillus</em>, <em>Phaeobacter</em>, dan <em>Ruegeria</em> hadir berdampingan. Sebaliknya, sampel AHPND di panel kanan didominasi oleh blok besar <em>Vibrio</em> dan <em>Photobacterium</em> yang menggusur sebagian besar takson lain. Pergeseran komposisi inilah wujud konkret <em>disbiosis</em> yang sebelumnya hanya kita lihat sebagai angka pada indeks keragaman.</p>
+</section>
+<section id="beta-diversity" class="level2">
+<h2 class="anchored" data-anchor-id="beta-diversity">Beta diversity, keragaman antar sampel</h2>
+<p><em>Beta diversity</em> mengukur perbedaan komposisi komunitas antar sampel. Kita memakai jarak <em>Bray-Curtis</em> yang mempertimbangkan kelimpahan relatif, lalu memvisualisasikannya dengan PCoA (<em>Principal Coordinates Analysis</em>). Pemisahan yang jelas antara kelompok sehat dan AHPND pada plot ordinasi menandakan infeksi mengubah struktur komunitas mikroba secara mendasar. Agar kontras antar kelompok mudah dibaca, titik sampel sehat digambar sebagai lingkaran biru dan AHPND sebagai segitiga merah.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ps_relA <span class="ot">&lt;-</span> <span class="fu">transform_sample_counts</span>(ps, <span class="cf">function</span>(x) x <span class="sc">/</span> <span class="fu">sum</span>(x))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ord <span class="ot">&lt;-</span> <span class="fu">ordinate</span>(ps_relA, <span class="at">method =</span> <span class="st">"PCoA"</span>, <span class="at">distance =</span> <span class="st">"bray"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ord_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(ord<span class="sc">$</span>vectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])              <span class="co"># koordinat sampel PCoA</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ord_df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PCoA1"</span>, <span class="st">"PCoA2"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>ord_df<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(<span class="fu">sample_data</span>(ps_relA)<span class="sc">$</span>group)[</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">match</span>(<span class="fu">rownames</span>(ord_df), <span class="fu">sample_names</span>(ps_relA))],</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"sehat"</span>, <span class="st">"AHPND"</span>))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ord_df, <span class="fu">aes</span>(PCoA1, PCoA2, <span class="at">color =</span> group, <span class="at">shape =</span> group)) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="at">type =</span> <span class="st">"norm"</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">sehat =</span> <span class="st">"#2c7fb8"</span>, <span class="at">AHPND =</span> <span class="st">"#c0392b"</span>)) <span class="sc">+</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">sehat =</span> <span class="dv">16</span>, <span class="at">AHPND =</span> <span class="dv">17</span>)) <span class="sc">+</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"PCoA 1"</span>, <span class="at">y =</span> <span class="st">"PCoA 2"</span>) <span class="sc">+</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>, <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-beta" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-metagenomics_files/figure-html/fig-beta-1.png" class="img-fluid figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;4: Ordinasi PCoA berbasis jarak Bray-Curtis pada kelimpahan relatif. Lingkaran biru adalah udang sehat dan segitiga merah adalah udang AHPND.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Kedua kelompok membentuk gerombol yang terpisah jelas pada ruang ordinasi, dengan elips kepercayaan yang nyaris tidak bertumpang tindih. Jarak antar gerombol ini menandakan komunitas mikroba udang sehat dan udang AHPND berbeda secara menyeluruh, bukan sekadar berbeda pada satu atau dua takson. Sumbu pertama yang memisahkan keduanya biasanya menampung porsi terbesar variasi komposisi.</p>
+<p>Untuk menguji apakah pemisahan ini signifikan secara statistik, kita memakai PERMANOVA lewat fungsi <code>adonis2</code> dari paket vegan. PERMANOVA adalah uji permutasi multivariat yang tangguh dan tidak mengasumsikan distribusi normal data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bc <span class="ot">&lt;-</span> phyloseq<span class="sc">::</span><span class="fu">distance</span>(ps_relA, <span class="at">method =</span> <span class="st">"bray"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">adonis2</span>(bc <span class="sc">~</span> group, <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="fu">sample_data</span>(ps_relA)))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Permutation test for adonis under reduced model
+Permutation: free
+Number of permutations: 999
+
+adonis2(formula = bc ~ group, data = data.frame(sample_data(ps_relA)))
+         Df SumOfSqs      R2     F Pr(&gt;F)    
+Model     1   2.2275 0.60938 28.08  0.001 ***
+Residual 18   1.4279 0.39062                 
+Total    19   3.6554 1.00000                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Hasil PERMANOVA mengkonfirmasi kesan visual tadi. Nilai R2 yang berada di kisaran 0,6 berarti lebih dari separuh atau sekitar 60 persen total variasi struktur komunitas dapat dijelaskan hanya oleh status infeksi, sebuah efek yang sangat besar untuk data biologis. Nilai <em>p</em> sebesar 0,001 yang merupakan nilai terkecil yang dapat dicapai dengan jumlah permutasi default menegaskan bahwa pemisahan antara sehat dan AHPND hampir pasti bukan kebetulan.</p>
+</section>
+<section id="heatmap-kelimpahan" class="level2">
+<h2 class="anchored" data-anchor-id="heatmap-kelimpahan">Heatmap kelimpahan</h2>
+<p><em>Heatmap</em> memberi gambaran visual yang intuitif tentang pola kelimpahan relatif di seluruh sampel sekaligus. Kita memusatkan perhatian pada 15 <em>genus</em> teratas berdasarkan total kelimpahan, lalu melakukan <em>clustering</em> hierarki pada baris yang mewakili taksa dan kolom yang mewakili sampel agar pola berulang lebih mudah dikenali. Anotasi warna pada kolom membantu membedakan kelompok sehat dan AHPND.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(tidyr))</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(<span class="fu">taxa_sums</span>(ps_genus), <span class="at">decreasing =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>ps_top <span class="ot">&lt;-</span> <span class="fu">transform_sample_counts</span>(<span class="fu">prune_taxa</span>(top, ps_genus), <span class="cf">function</span>(x) x <span class="sc">/</span> <span class="fu">sum</span>(x))</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as</span>(<span class="fu">otu_table</span>(ps_top), <span class="st">"matrix"</span>); <span class="cf">if</span> (<span class="sc">!</span><span class="fu">taxa_are_rows</span>(ps_top)) mat <span class="ot">&lt;-</span> <span class="fu">t</span>(mat)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">tax_table</span>(ps_top)[<span class="fu">rownames</span>(mat), <span class="st">"Genus"</span>])</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">sample_data</span>(ps_top)<span class="sc">$</span>group); <span class="fu">names</span>(grp) <span class="ot">&lt;-</span> <span class="fu">sample_names</span>(ps_top)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">as.table</span>(mat))</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(long) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Genus"</span>, <span class="st">"Sample"</span>, <span class="st">"abundance"</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp[<span class="fu">as.character</span>(long<span class="sc">$</span>Sample)], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"sehat"</span>,<span class="st">"AHPND"</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>Genus <span class="ot">&lt;-</span> <span class="fu">factor</span>(long<span class="sc">$</span>Genus, <span class="at">levels =</span> <span class="fu">names</span>(<span class="fu">sort</span>(<span class="fu">rowSums</span>(mat))))</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(long, <span class="fu">aes</span>(Sample, Genus, <span class="at">fill =</span> abundance)) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> group, <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">space =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"#f7f7f7"</span>, <span class="at">high =</span> <span class="st">"#6f42c1"</span>, <span class="at">name =</span> <span class="st">"kelimpahan</span><span class="sc">\n</span><span class="st">relatif"</span>) <span class="sc">+</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-metagenomics_files/figure-html/fig-heatmap-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;5: Heatmap kelimpahan relatif 15 genus teratas. Sampel dikelompokkan menjadi panel sehat dan AHPND, dan genus diurutkan menurut total kelimpahan.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Kedua panel memisahkan sampel sehat dan AHPND sehingga pola antar kelompok mudah dibandingkan secara langsung. Pada panel AHPND, baris <em>Vibrio</em> dan <em>Photobacterium</em> menyala dengan warna pekat yang menandakan kelimpahan tinggi, sedangkan pada panel sehat warna pekat justru jatuh pada <em>genus</em> komensal laut seperti <em>Phaeobacter</em> dan <em>Ruegeria</em>. Pembacaan baris demi baris seperti ini memudahkan kita menebak takson mana yang menjadi penanda tiap kondisi.</p>
+</section>
+<section id="kelimpahan-diferensial" class="level2">
+<h2 class="anchored" data-anchor-id="kelimpahan-diferensial">Kelimpahan diferensial dengan DESeq2</h2>
+<p>Analisis kelimpahan diferensial bertujuan mengidentifikasi taksa yang secara statistik lebih tinggi atau lebih rendah antara dua kondisi. Di sini kita memakai DESeq2 yang semula dirancang untuk RNA-seq namun terbukti efektif untuk data mikrobioma berkat kemampuannya menangani <em>overdispersion</em> dan jumlah nol yang banyak. Normalisasi dilakukan dengan <em>geometric mean</em> untuk mengatasi kelimpahan nol pada sebagian taksa.</p>
+<p>Sebagai alternatif yang dirancang khusus untuk data komposisional, ANCOM-BC (<em>Analysis of Compositions of Microbiomes with Bias Correction</em>) lebih tepat secara statistik karena secara eksplisit memodelkan sifat komposisional data mikrobioma. Meski begitu, DESeq2 dengan normalisasi <em>geometric mean</em> tetap menjadi pilihan yang umum dan mudah ditafsirkan dalam praktik.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Kode DESeq2 untuk kelimpahan diferensial</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(DESeq2))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">phyloseq_to_deseq2</span>(ps_genus, <span class="sc">~</span> group)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>gm_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="fu">sum</span>(<span class="fu">log</span>(x[x <span class="sc">&gt;</span> <span class="dv">0</span>])) <span class="sc">/</span> <span class="fu">length</span>(x))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>geoMeans <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">counts</span>(dds), <span class="dv">1</span>, gm_mean)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds, <span class="at">geoMeans =</span> geoMeans)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">fitType =</span> <span class="st">"local"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">"group"</span>,<span class="st">"AHPND"</span>,<span class="st">"sehat"</span>))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(res)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>res_df<span class="sc">$</span>Genus <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">tax_table</span>(ps_genus)[<span class="fu">rownames</span>(res_df), <span class="st">"Genus"</span>])</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>sig <span class="ot">&lt;-</span> <span class="fu">subset</span>(res_df, <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>sig <span class="ot">&lt;-</span> sig[<span class="fu">order</span>(sig<span class="sc">$</span>log2FoldChange), ]</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>sig<span class="sc">$</span>Genus <span class="ot">&lt;-</span> <span class="fu">factor</span>(sig<span class="sc">$</span>Genus, <span class="at">levels =</span> sig<span class="sc">$</span>Genus)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sig, <span class="fu">aes</span>(log2FoldChange, Genus, <span class="at">fill =</span> log2FoldChange <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"#2c7fb8"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"#c0392b"</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log2 fold change (AHPND vs sehat)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-diffabund" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-diffabund-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="work-metagenomics_files/figure-html/fig-diffabund-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diffabund-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Gambar&nbsp;6: Genus dengan kelimpahan berbeda signifikan pada padj di bawah 0,05 antara AHPND dan sehat menurut DESeq2. Nilai positif berarti lebih tinggi pada AHPND.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Grafik ini merangkum cerita seluruh analisis dalam satu pandangan. Batang merah yang menjulur ke kanan adalah <em>genus</em> yang melonjak signifikan pada udang AHPND, dipimpin oleh <em>Vibrio</em> dan <em>Photobacterium</em>, persis patogen yang berasosiasi dengan penyakit ini. Batang biru yang menjulur ke kiri adalah <em>genus</em> komensal yang justru tertekan saat infeksi. Nilai <em>log2 fold change</em> sebesar satu berarti kelimpahan berlipat dua, sehingga batang yang sangat panjang menggambarkan perubahan kelimpahan yang berlipat banyak. Inilah daftar kandidat penanda hayati yang paling layak ditindaklanjuti pada studi lanjutan.</p>
+</section>
+</section>
+<section id="apa-yang-perlu-dipertimbangkan" class="level1">
+<h1>Apa yang perlu dipertimbangkan</h1>
+<p>Kualitas dan interpretasi studi metagenomik 16S sangat bergantung pada keputusan yang diambil jauh sebelum analisis bioinformatika dimulai. Berikut beberapa hal penting yang perlu dipertimbangkan.</p>
+<ol type="1">
+<li><p><strong>Pilihan region dan primer.</strong> Region V3 dan V4 memberikan resolusi taksonomi yang baik untuk sebagian besar bakteri, tetapi bias cakupannya berbeda dari V4 saja atau kombinasi lain. Primer tertentu dapat melewatkan takson tertentu, misalnya primer universal standar kurang efisien mendeteksi <em>Archaea</em> atau beberapa filum bakteri yang jarang. Pilihan primer sebaiknya disesuaikan dengan kelompok organisme target dan tujuan studi.</p></li>
+<li><p><strong>Bias jumlah salinan gen 16S.</strong> Jumlah salinan gen 16S rRNA berbeda antar spesies, mulai dari satu salinan pada beberapa <em>Archaea</em> hingga belasan salinan pada beberapa bakteri umum. Akibatnya, kelimpahan relatif yang diperoleh dari data amplikon tidak sama dengan kelimpahan sel sebenarnya dalam sampel. Koreksi jumlah salinan, misalnya memakai basis data <em>rrnDB</em>, dapat mengurangi bias ini walaupun tidak menghilangkannya sepenuhnya.</p></li>
+<li><p><strong>Kontrol negatif dan kontaminasi.</strong> <em>Reagent</em> dan <em>kit</em> ekstraksi DNA mengandung komunitas bakteri latar belakang yang rendah namun nyata, yang dapat mendominasi sinyal pada sampel berbiomassa rendah seperti usus larva atau jaringan steril. Selalu sertakan kontrol negatif berupa blanko ekstraksi dan blanko PCR di setiap <em>batch</em> pemrosesan, lalu analisis komunitasnya bersama sampel utama untuk mengenali dan menyingkirkan kontaminan.</p></li>
+<li><p><strong>Kedalaman sampling dan rarefaction.</strong> Kedalaman sekuensing yang tidak seragam antar sampel dapat membiaskan estimasi keanekaragaman. <em>Rarefaction</em> yang menyamakan jumlah <em>reads</em> per sampel lewat <em>subsampling</em> acak adalah cara tradisional mengatasinya, tetapi metode ini membuang sebagian data. Perdebatan aktif di komunitas metagenomik menyarankan alternatif seperti normalisasi berbasis model lewat DESeq2 atau edgeR, maupun estimator keanekaragaman yang lebih tangguh, sebelum Anda memutuskan pendekatan mana yang paling sesuai.</p></li>
+<li><p><strong>Sifat komposisional data.</strong> Kelimpahan yang diperoleh dari sekuensing adalah kelimpahan relatif yang nilainya bergantung pada komposisi keseluruhan sampel, bukan jumlah absolut. Sifat komposisional ini melanggar asumsi metode statistik berbasis jarak Euclidean. Untuk mengatasinya, pertimbangkan transformasi CLR (<em>centered log-ratio</em>) pada analisis ordinasi dan <em>clustering</em>, serta gunakan metode yang secara eksplisit memodelkan komposisi seperti ANCOM-BC atau ALDEx2 untuk uji kelimpahan diferensial.</p></li>
+<li><p><strong>Resolusi taksonomi.</strong> Amplikon 16S umumnya hanya mampu mengidentifikasi bakteri hingga tingkat <em>genus</em>, sedangkan resolusi sampai <em>species</em> atau <em>strain</em> sangat terbatas kecuali pada kasus tertentu dengan basis data referensi yang sangat lengkap. Jika tujuan studi menuntut identifikasi spesies secara tepat, karakterisasi jalur metabolik, atau deteksi virus dan fungi, maka <em>shotgun metagenomics</em> dengan sekuensing seluruh metagenom menjadi pilihan yang jauh lebih tepat.</p></li>
+</ol>
+</section>
+<section id="penutup" class="level1">
+<h1>Penutup</h1>
+<p>Dengan menyelesaikan alur DADA2 lalu phyloseq lalu analisis keanekaragaman dan kelimpahan diferensial, Anda kini memiliki gambaran utuh satu siklus studi metagenomik 16S, dari <em>reads</em> mentah hingga identifikasi taksa yang secara statistik berbeda antar kondisi. Pada studi kasus ini, sampel udang AHPND menampilkan keragaman alfa yang lebih rendah serta peningkatan kelimpahan <em>Vibrio</em> dan <em>Photobacterium</em>, konsisten dengan patogenesis penyakit akut yang dipicu toksin PirA dan PirB. Pola ini hanya dapat diungkap karena kita menyertakan replikasi biologis yang memadai dan memakai uji diferensial berbasis model. Bila Anda ingin memahami respons transkriptomik inang udang terhadap infeksi AHPND pada tingkat ekspresi gen, lihat <a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a> yang membahas pipeline HISAT2 lalu StringTie lalu DESeq2 secara mendalam. Pada <em>workflow</em> berikutnya kita akan melangkah lebih jauh ke <em>shotgun metagenomics</em>, pendekatan yang mampu mengungkap keragaman fungsional metagenom, identitas hingga tingkat <em>species</em>, serta potensi metabolik komunitas secara menyeluruh.</p>
+<p style="text-align: right; font-size: 0.9rem;">
+<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bowo1698\.github\.io\/Bioinfonote\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../docs/work-RNA-seq.html" class="pagination-link" aria-label="RNA-Seq workflow">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RNA-Seq workflow</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Agus Wibowo · MIT License</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
