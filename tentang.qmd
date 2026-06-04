@@ -1,0 +1,67 @@
+---
+title: "Tentang"
+---
+
+## Selamat datang 👋
+
+### 🔬 Sekilas tentang bioinformatika
+
+Bioinformatika adalah ilmu interdisipliner yang mengintegrasikan prinsip biologi, statistika, matematika, dan komputasi untuk menjawab tantangan biologi modern. Ketertarikan saya bermula dari perkembangan ilmu akuakultur yang kini tak lagi terbatas pada pemeliharaan ikan di kolam-kolam ataupun analisis di laboratorium basah (*wet lab*), tetapi merambah ke analisis data molekuler berskala besar. Di sinilah peran krusial bioinformatika, mengolah, menganalisis, dan memodelkan data biologis untuk mengungkap mekanisme kehidupan di tingkat molekuler. Ini seperti mempelajari suatu materi fisik, tetapi di level kuantum!
+
+<div style="text-align: center;">
+  <img src="assets/fish-with-com.jpg" alt="Fish With Code" style="width: 90%; height: auto;">
+</div>
+
+Yang menarik adalah, karena kita bermain dengan "ikan", eksplorasi biologi menjadi lebih *flexible* dan membuka banyak ruang inovasi. Misalnya, kita bisa menelusuri gen-gen yang terkait dengan pertumbuhan cepat, ketahanan terhadap penyakit, atau efisiensi pakan, semuanya hanya melalui data DNA. Bioinformatika memberi kita kacamata baru untuk melihat ikan bukan sekadar objek konsumsi, tetapi sebagai kumpulan informasi genetik yang bisa kita manfaatkan untuk perbaikan populasi secara presisi dan berkelanjutan, hingga akhirnya bisa menjadi model atau landasan penerapan untuk level yang lebih tinggi, seperti manusia.
+
+Perkembangan mesin sekuensing generasi mutakhir seperti [Illumina](https://en.wikipedia.org/wiki/Illumina,_Inc.) (*short-read*) dan [PacBio](https://en.wikipedia.org/wiki/Pacific_Biosciences) (*long-read*) telah menghasilkan data biologis dalam volume yang luar biasa besar. Bioinformatika menjadi kunci untuk mengekstrak wawasan dari kompleksitas ini, terutama dalam [tiga bidang utama terkait dengan akuakultur](https://doi.org/10.1007/978-981-97-8553-7_11):
+
+-   ***Genomics***: Bioinformatika digunakan untuk mempercepat program pemuliaan berbasis genom melalui identifikasi variasi berbagai marker polimorfik seperti [mikrosatelit](https://en.wikipedia.org/wiki/Microsatellite), [SNP](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism), atau bahkan yang terbaru, [mikrohaplotipe](https://pubmed.ncbi.nlm.nih.gov/30347322/). Yang paling dikejar adalah merancang *guide RNA* pada teknologi **CRISPR/Cas9** guna mengedit gen target (jika suatu sifat dikendalikan oleh sedikit gen, *non-polygenic*), seperti meningkatkan toleransi oksigen rendah pada udang atau ketahanan terhadap virus di ikan kerapu.
+
+-   ***Metagenomics***: Bioinformatika dapat membantu menganalisis keragaman mikroba dalam ekosistem akuatik (misalnya, air tambak atau saluran pencernaan ikan) untuk mengidentifikasi komunitas bakteri menguntungkan. Dari data ini, kita dapat mendesain probiotik spesifik yang dapat meningkatkan kesehatan ikan, mengurangi ketergantungan pada antibiotik, dan mengoptimalkan kualitas air.
+
+-   ***Transcriptomics***: Bioinformatika dapat memetakan ekspresi gen organisme akuatik di bawah kondisi tertentu (stres, penyakit, infeksi, perlakuan khusus, dll) untuk merancang program pemuliaan berbasis marker genetik. Contohnya, mengembangkan strain ikan dengan pertumbuhan cepat atau ketahanan terhadap patogen seperti *Vibrio*.
+
+### 🎓 Tujuan website
+
+Website ini dirancang sebagai wadah kolaborasi, di mana siapa pun dapat berkontribusi dalam berbagi pengetahuan seputar bioinformatika dan akuakultur. Tujuannya sederhana, membangun sumber belajar yang terbuka, mudah diakses, dan relevan dengan kebutuhan praktis, khususnya dalam konteks akuakultur di Indonesia yang memiliki potensi luar biasa.
+
+Seluruh konten, termasuk tutorial dan panduan, disajikan dalam bahasa Indonesia dengan gaya penyampaian yang sederhana agar mudah dipahami oleh berbagai kalangan. Semua materi dapat dipelajari secara gratis, menggunakan data *open access* dan perangkat lunak *open source*, sehingga tidak ada hambatan biaya maupun teknis untuk ikut serta.
+
+Dengan semangat kolaboratif, platform ini mengajak semua pihak untuk saling berbagi dan belajar, demi mewujudkan akuakultur yang berkelanjutan dan berbasis ilmu pengetahuan di Indonesia.
+
+> "*We are a great nation - what we need are people willing to make a difference, even from behind a screen full of code.*"
+
+## 💻 Catatan teknis
+
+Karena sebagian besar tools bioinformatika dikembangkan dan dioptimalkan untuk berjalan di lingkungan UNIX terutama [LINUX](https://en.wikipedia.org/wiki/Linux) dan MACOS, saya sangat menyarankan rekan-rekan pengguna Windows untuk mempertimbangkan "bermigrasi" ke sistem operasi berbasis Linux ini, seperti [Ubuntu](https://ubuntu.com/), [Debian](https://www.debian.org/), atau [Fedora](https://fedoraproject.org/).
+
+Mengapa demikian?
+
+1.  **Kompatibilitas** – Tools seperti HISAT2, STAR, Salmon, dan RSEM berjalan lebih stabil dan langsung didukung di lingkungan UNIX. "Sangat mudah" dalam hal instalasi dan eksekusinya
+
+2.  **Performa** – Linux cenderung menggunakan sumber daya sistem lebih efisien dibandingkan Windows, terutama dengan adanya sistem *swap* membuatnya ideal untuk komputasi bioinformatika, bahkan di perangkat berspesifikasi rendah.
+
+3.  **Minim gangguan** – Sistem Linux jauh lebih tahan (bahkan hampir mustahil) terhadap malware, dan mendukung scripting otomatis yang efisien (Bash/Shell).
+
+4.  **Ekosistem terbuka** – Hampir semua perangkat lunak bioinformatika bersifat *open-source* (gratis) dan dikembangkan di lingkungan Linux, membuat dokumentasi dan komunitas dukungannya jauh lebih luas.
+
+<div style="text-align: center;">
+  <img src="assets/linux-win-mac.jpeg" alt="Fish With Code" style="width: 90%; height: auto;">
+</div>
+
+> Seluruh materi dalam website ini disusun dengan asumsi bahwa Anda menjalankan Linux secara langsung (*full system install*), bukan melalui Windows. Panduan penggunaan *Windows Subsystem for Linux* (WSL) hanya disediakan sebagai opsi tambahan untuk keperluan eksplorasi atau pembelajaran awal. Namun, dalam praktiknya, WSL memiliki banyak keterbatasan dalam hal kompatibilitas dan kinerja, sehingga tidak direkomendasikan untuk analisis bioinformatika yang sesungguhnya.
+
+Untuk perangkat keras, saya merancang semua tutorial agar dapat dijalankan pada komputer/laptop dengan spesifikasi medium (*laptop dana pelajar* 😁), selama menggunakan sistem operasi berbasis Linux [cek disini](docs/basic-linux-in-win.qmd). Hal ini memungkinkan siapapun tetap dapat mengikuti alur tutorial ini, mulai dari unduhan data, pra-pemrosesan, analisis, hingga visualisasi, tanpa memerlukan perangkat mahal!!! (meskipun lebih baik jika setiap kampus punya *High Performance Computing* - HPC, yuk bikin!).
+
+## 💡 Kontribusi & kolaborasi
+
+Saya terbuka untuk kolaborasi dan diskusi, terutama dalam proyek penelitian bioinformatika di bidang akuakultur atau genomik fungsional.
+
+Jika anda berminat untuk mengirimkan artikel, silakan hubungi saya melalui:
+
+[Linkedln](https://www.linkedin.com/in/agus-wibowo-1608/) atau via [Email](mailto:agus.wibowo@my.jcu.edu.au)
+
+> ***Open science, open data, open collaboration — that’s how we make aquaculture smarter, together***
+>
+> *Agus wibowo*

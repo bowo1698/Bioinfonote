@@ -1,0 +1,79 @@
+# RNA-seq Pipeline Configuration
+# Author: Agus Wibowo
+# Email: aguswibowo@gmail.com
+
+# install dependencies
+# conda install hisat2 stringtie samtools fastqc multiqc pyyaml
+
+# System Resources
+system:
+  threads: 4
+  memory_gb: 8
+  disk_space_factor: 2  # multiplier for input data size
+
+# Pipeline Configuration
+pipeline:
+  output_dir: "HISAT-StringTie"
+  cleanup_intermediate: true
+  
+# Reference Files
+reference:
+  genome_fasta: "references/GCF_022379125.1_ASM2237912v1_genomic.fna"
+  annotation_gtf: "references/GCF_022379125.1_ASM2237912v1_genomic.gtf"
+  annotation_gff: "references/GCF_022379125.1_ASM2237912v1_genomic.gff"
+  
+# Samples Configuration
+samples:
+  - "SRR1695148"
+  - "SRR1695149" 
+  - "SRR1695150"
+  - "SRR1695151"
+  - "SRR1695152"
+  - "SRR1695153"
+  - "SRR1695154"
+  - "SRR1695155"
+  - "SRR1695156"
+  - "SRR1695157"
+  - "SRR1695158"
+  - "SRR1695159"
+
+# Input/Output Directories
+directories:
+  raw_data: "raw_data"
+  hisat_index: "HISAT-StringTie/index"
+  aligned_data: "HISAT-StringTie/aligned_data"
+  bam_data: "HISAT-StringTie/bam_data"
+  stringtie_output: "HISAT-StringTie/stringtie_output"
+  transcript_matrix: "HISAT-StringTie/transcript"
+
+# HISAT2 Parameters
+hisat2:
+  build_threads: 4
+  alignment_threads: 6
+  rna_strandness: "RF"  # Options: RF, FR, unstranded
+  index_name: "ASM2237912v1_hisat2_index"
+  extra_params: "--dta"  # downstream transcriptome analysis
+
+# StringTie Parameters
+stringtie:
+  threads: 6
+  strandness: "--rf"  # Options: --rf, --fr, (empty for unstranded)
+  abundance_estimation: true
+  ballgown_mode: true
+  
+# Samtools Parameters
+samtools:
+  threads: 6
+  compression_level: 6
+
+# Quality Control
+qc:
+  remove_intermediate_sam: true
+  remove_unsorted_bam: true
+  index_final_bam: true
+
+# Logging
+logging:
+  verbose: true
+  timestamp: true
+  progress_tracking: true

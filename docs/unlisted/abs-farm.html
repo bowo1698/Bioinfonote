@@ -1,0 +1,664 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ABS Aquaculture Business Analysis</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                color: #2c3e50;
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .header {
+                text-align: center;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 40px;
+                border-radius: 20px;
+                margin-bottom: 30px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo-container {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 30px;
+                margin-bottom: 15px;
+                padding-left: 50px;
+            }
+
+            .logo {
+                height: 200px;
+                width: auto;
+            }
+
+            @media (max-width: 768px) {
+                .logo-container {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+
+                .logo {
+                    height: 45px;
+                }
+            }
+
+            .header h1 {
+                font-size: 3.5rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, #2ecc71, #3498db);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 15px;
+            }
+
+            .header p {
+                font-size: 1.2rem;
+                color: #7f8c8d;
+                font-weight: 500;
+            }
+
+            .metrics-section {
+                margin-bottom: 40px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .section-title {
+                font-size: 2rem;
+                font-weight: 600;
+                background: linear-gradient(135deg, #2ecc71, #3498db);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+                margin-bottom: 40px;
+            }
+
+            .metric-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 30px;
+                border-radius: 15px;
+                text-align: center;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .metric-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            }
+
+            .metric-value {
+                display: block;
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #2ecc71;
+                margin-bottom: 10px;
+            }
+
+            .metric-label {
+                font-size: 1rem;
+                color: #7f8c8d;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .metric-trend {
+                font-size: 0.9rem;
+                font-weight: 600;
+                padding: 5px 12px;
+                border-radius: 20px;
+                display: inline-block;
+            }
+
+            .trend-positive {
+                background: rgba(46, 204, 113, 0.1);
+                color: #2ecc71;
+            }
+
+            .dashboard-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 30px;
+                margin-bottom: 40px;
+            }
+
+            .dashboard-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .dashboard-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            }
+
+            .chart-link {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+                height: 100%;
+            }
+
+            .card-header {
+                background: linear-gradient(135deg, #3498db, #2ecc71);
+                color: white;
+                padding: 25px;
+            }
+
+            .card-title {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .card-description {
+                font-size: 1rem;
+                opacity: 0.9;
+            }
+
+            .card-content {
+                padding: 25px;
+            }
+
+            .chart-features {
+                list-style: none;
+                margin-bottom: 20px;
+            }
+
+            .chart-features li {
+                padding: 8px 0;
+                border-bottom: 1px solid #ecf0f1;
+                font-size: 0.95rem;
+                color: #5d6d7e;
+            }
+
+            .chart-features li:before {
+                content: "✓ ";
+                color: #2ecc71;
+                font-weight: bold;
+                margin-right: 8px;
+            }
+
+            .cta-button {
+                background: linear-gradient(135deg, #3498db, #2ecc71);
+                color: white;
+                padding: 12px 25px;
+                border-radius: 25px;
+                font-weight: 600;
+                display: inline-block;
+                transition: all 0.3s ease;
+            }
+
+            .cta-button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            }
+
+            .insights-section {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 40px;
+                border-radius: 20px;
+                margin-bottom: 30px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .insights-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 25px;
+            }
+
+            .insight-item {
+                text-align: center;
+                padding: 20px;
+                border-radius: 15px;
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            }
+
+            .insight-title {
+                font-size: 0.9rem;
+                color: #7f8c8d;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .insight-value {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #2ecc71;
+                margin-bottom: 10px;
+            }
+
+            .insight-item p {
+                font-size: 0.85rem;
+                color: #5d6d7e;
+                line-height: 1.4;
+            }
+
+            .footer {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .footer-content {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 30px;
+                margin-bottom: 20px;
+            }
+
+            .footer-section h4 {
+                color: #2c3e50;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+            .footer-section p {
+                color: #7f8c8d;
+                line-height: 1.6;
+                font-size: 0.9rem;
+            }
+
+            @media (max-width: 768px) {
+                .header h1 {
+                    font-size: 2.5rem;
+                }
+                
+                .dashboard-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .metrics-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                }
+            }
+
+            .aquaculture-section {
+                margin: 40px 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .section-subtitle {
+                font-size: 1.8rem;
+                font-weight: 600;
+                background: linear-gradient(135deg, #2ecc71, #3498db);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .aqua-metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+            }
+
+            .aqua-product-card {
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                border-radius: 12px;
+                padding: 25px;
+                border: 2px solid rgba(52, 152, 219, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .aqua-product-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border-color: rgba(52, 152, 219, 0.3);
+            }
+
+            .aqua-product-card h4 {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 15px;
+                text-align: center;
+                border-bottom: 2px solid #3498db;
+                padding-bottom: 10px;
+            }
+
+            .aqua-metrics {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .aqua-metric {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                background: rgba(52, 152, 219, 0.05);
+                border-radius: 8px;
+                transition: background-color 0.2s ease;
+            }
+
+            .aqua-metric:hover {
+                background: rgba(52, 152, 219, 0.1);
+            }
+
+            .aqua-metric:last-child {
+                border-bottom: none;
+            }
+
+            .aqua-label {
+                font-weight: 500;
+                color: #5d6d7e;
+                font-size: 0.95rem;
+            }
+
+            .aqua-value {
+                font-weight: 600;
+                color: #3498db;
+                font-size: 1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="logo-container">
+                    <img src="fix-logo.svg" alt="ABS Farm" class="logo">
+                    <h1>ABS Farm Business Analysis</h1>
+                </div>
+                <p>Advanced Analytics & Strategic Insights Dashboard</p>
+            </div>
+            
+            <div class="content">
+                <div class="metrics-section">
+                    <h2 class="section-title">📊 Key Performance Indicators</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-value">$238,878</span>
+                            <div class="metric-label">Annual Revenue</div>
+                            <div class="metric-trend trend-positive">↗ 18% growth</div>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">$80,506</span>
+                            <div class="metric-label">Net Profit</div>
+                            <div class="metric-trend trend-positive">↗ 29% margin</div>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">40.7%</span>
+                            <div class="metric-label">Return on Investment</div>
+                            <div class="metric-trend trend-positive">↗ Above target</div>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">2.5 years</span>
+                            <div class="metric-label">Payback Period</div>
+                            <div class="metric-trend trend-positive">↗ Accelerating</div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <!-- NEW AQUACULTURE METRICS SECTION -->
+                <div class="aquaculture-section">
+                    <h3 class="section-subtitle">🐟 Production Targets</h3>
+                    <div class="aqua-metrics-grid">
+                        <div class="aqua-product-card">
+                            <h4>Barramundi</h4>
+                            <div class="aqua-metrics">
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Stocking Density</span>
+                                    <span class="aqua-value">40 ind/m<sup>3</sup></span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Survival Rate</span>
+                                    <span class="aqua-value">90%</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Avg Harvest Weight</span>
+                                    <span class="aqua-value">500g</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">FCR</span>
+                                    <span class="aqua-value">1.3</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Cultivation Period</span>
+                                    <span class="aqua-value">6 months</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="aqua-product-card">
+                            <h4>Sea Urchin</h4>
+                            <div class="aqua-metrics">
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Stocking Density</span>
+                                    <span class="aqua-value">80 ind/m<sup>3</sup></span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Survival Rate</span>
+                                    <span class="aqua-value">80%</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Avg Harvest Weight</span>
+                                    <span class="aqua-value">130g</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Gonad Ratio</span>
+                                    <span class="aqua-value">12%</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Cultivation Period</span>
+                                    <span class="aqua-value">8 months</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="aqua-product-card">
+                            <h4>Sea Lettuce</h4>
+                            <div class="aqua-metrics">
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Survival Rate</span>
+                                    <span class="aqua-value">95%</span>
+                                </div>
+                                <div class="aqua-metric">
+                                    <span class="aqua-label">Cultivation Period</span>
+                                    <span class="aqua-value">2 months</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <a href="01_strategic_overview.html" class="chart-link">
+                            <div class="card-header">
+                                <h3 class="card-title">🎯 Business Overview</h3>
+                                <p class="card-description">Comprehensive business analysis</p>
+                            </div>
+                            <div class="card-content">
+                                <ul class="chart-features">
+                                    <li>Revenue to Net Profit Breakdown</li>
+                                    <li>Revenue growth trajectory</li>
+                                    <li>Market positioning matrix</li>
+                                    <li>Sustainability scorecard</li>
+                                    <li>Cost optimization opportunities</li>
+                                    <li>Revenue diversification</li>
+                                </ul>
+                                <span class="cta-button">View Dashboard →</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <a href="02_production_intelligence.html" class="chart-link">
+                            <div class="card-header">
+                                <h3 class="card-title">🐟 Production Analysis</h3>
+                                <p class="card-description">Advanced production analysis & optimization</p>
+                            </div>
+                            <div class="card-content">
+                                <ul class="chart-features">
+                                    <li>Production efficiency matrix</li>
+                                    <li>Seasonal performance patterns</li>
+                                    <li>Sustainability impact</li>
+                                    <li>Cost-margin analysis</li>
+                                    <li>Market growth vs production</li>
+                                    <li>Water usage optimization</li>
+                                </ul>
+                                <span class="cta-button">Analyze Production →</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <a href="03_financial_intelligence.html" class="chart-link">
+                            <div class="card-header">
+                                <h3 class="card-title">💰 Financial Analysis</h3>
+                                <p class="card-description">Financial projections & scenario analysis</p>
+                            </div>
+                            <div class="card-content">
+                                <ul class="chart-features">
+                                    <li>Cash flow projections</li>
+                                    <li>ROI sensitivity analysis</li>
+                                    <li>Revenue stream performance</li>
+                                    <li>Cost structure evolution</li>
+                                    <li>Market share growth trajectory</li>
+                                    <li>Investment scenario analysis</li>
+                                </ul>
+                                <span class="cta-button">View Financials →</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <a href="04_sustainability_dashboard.html" class="chart-link">
+                            <div class="card-header">
+                                <h3 class="card-title">🌱 Sustainability Analysis</h3>
+                                <p class="card-description">ESG metrics & environmental impact</p>
+                            </div>
+                            <div class="card-content">
+                                <ul class="chart-features">
+                                    <li>Environmental impact score</li>
+                                    <li>Resource efficiency metrics</li>
+                                    <li>Circular economy flows</li>
+                                    <li>Carbon footprint</li>
+                                    <li>Water usage</li>
+                                    <li>Waste-to-value conversion</li>
+                                </ul>
+                                <span class="cta-button">Sustainability Report →</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <a href="06_data_tables.html" class="chart-link">
+                            <div class="card-header">
+                                <h3 class="card-title">📊 Data Tables</h3>
+                                <p class="card-description">Comprehensive data breakdown & financial details</p>
+                            </div>
+                            <div class="card-content">
+                                <ul class="chart-features">
+                                    <li>Infrastructure & equipment costs</li>
+                                    <li>Initial stock investment</li>
+                                    <li>Operational expenses breakdown</li>
+                                    <li>Production revenue analysis</li>
+                                    <li>Feed requirements by stage</li>
+                                    <li>Budget summary & utilization</li>
+                                </ul>
+                                <span class="cta-button">View Data Tables →</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="insights-section">
+                    <h2 class="section-title">💡 Key Business Insights</h2>
+                    <div class="insights-grid">
+                        <div class="insight-item">
+                            <div class="insight-title">Highest Growth Product</div>
+                            <div class="insight-value">Sea lettuce</div>
+                            <p>22.1% market growth rate with strong sustainability profile</p>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title">Best Profit Margin</div>
+                            <div class="insight-value">97.9%</div>
+                            <p>Sea lettuce leads profitability with established market presence</p>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title">Sustainability Score</div>
+                            <div class="insight-value">85/100</div>
+                            <p>Strong ESG performance with 75% waste conversion</p>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title">Revenue Diversification</div>
+                            <div class="insight-value">4%</div>
+                            <p>Additional revenue streams contributing $10,000 annually</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Dashboard Overview</h4>
+                        <p>Comprehensive business analysis for aquaculture operations with advanced analytics and strategic insights.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Key Metrics</h4>
+                        <p>Real-time tracking of financial performance, production efficiency, and sustainability indicators.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Generated by ABS Farm</h4>
+                        <p>Dashboard created on June 05, 2025 at 07:36 AM</p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #7f8c8d;">
+                    © 2025 ABS Farm Business Analysis
+                </p>
+            </div>
+        </div>
+    </body>
+    </html>
+    

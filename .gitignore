@@ -1,0 +1,7 @@
+/.quarto/
+**/*.quarto_ipynb
+/_site/
+.Rhistory
+**/.DS_Store
+docs/data/16s-demo/filtered/
+docs/data/rnaseq-demo/_pipe/

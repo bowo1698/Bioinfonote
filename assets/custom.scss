@@ -1,0 +1,136 @@
+/*-- scss:defaults --*/
+// Indigo accent over the flatly light base
+$primary: #6f42c1;
+$link-color: $primary;
+
+/*-- scss:rules --*/
+.navbar-brand {
+  font-weight: 600;
+}
+
+// Logo sizing (active once a logo SVG is added to the navbar)
+.navbar-brand-logo .navbar-logo {
+  height: 42px;
+  width: auto;
+  max-height: 42px;
+}
+
+// Always-visible code copy button
+.code-copy-button { opacity: 0.5 !important; }
+.code-copy-button:hover { opacity: 1 !important; }
+
+// Inline <code> spans — light lavender background, indigo text (legible on white)
+:not(pre) > code,
+li > code, p code, td code, th code,
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+  background-color: rgba(111, 66, 193, 0.10) !important;
+  color: #6f42c1 !important;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+a > code, a > :not(pre) > code { color: $primary !important; }
+
+// Keyboard tags
+kbd {
+  background-color: #f1edf9;
+  color: #3d2a63;
+  padding: 0.15em 0.45em;
+  border: 1px solid rgba(111, 66, 193, 0.25);
+  border-radius: 3px;
+}
+
+/* ─── Hero banner (home page) — light variant ─────────────────────────── */
+// Landing page sets `pagetitle` (not `title`), leaving an empty Quarto title
+// block; hide it so it adds no phantom spacing above the hero.
+#title-block-header:empty { display: none; }
+.hero-banner {
+  max-width: 1040px;
+  margin: 1.5rem auto 3rem;
+  text-align: center;
+}
+.hero-title { font-size: 2.4rem; font-weight: 700; margin: 0 0 0.4rem; }
+.hero-tagline {
+  max-width: 680px;
+  margin: 0 auto 1.5rem;
+  color: #555;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+.hero-badges > p {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 0.4rem; margin: 0 0 1.75rem;
+}
+.hero-badges img { display: block; height: 20px; }
+.hero-badges a { line-height: 0; }
+
+.hero-cards {
+  display: flex; justify-content: center; gap: 1.5rem;
+  flex-wrap: wrap; margin-bottom: 2rem;
+}
+.hero-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex: 1 1 200px; min-width: 200px; max-width: 320px;
+  min-height: 64px; padding: 1rem 1.1rem;
+  background: #fff;
+  border: 1px solid #e6e6e6; border-radius: 12px;
+  text-decoration: none; color: inherit; text-align: center;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.hero-card:hover {
+  transform: translateY(-3px);
+  border-color: $primary;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(111, 66, 193, 0.25);
+}
+.hero-card .hero-card-title { display: block; font-weight: 600; font-size: 1.1rem; color: $primary; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card { transition: none; }
+  .hero-card:hover { transform: none; }
+}
+@media (max-width: 576px) {
+  .hero-card { width: 100%; max-width: 260px; }
+  .hero-cards { gap: 1rem; }
+}
+
+/* ─── Download buttons (data files) ───────────────────────────────────── */
+.download-row {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0 1.5rem;
+}
+.btn-download {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  background: $primary; color: #fff !important;
+  border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+  border: 1px solid $primary;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+.btn-download:hover {
+  background: #5a34a0; transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(111, 66, 193, 0.25); color: #fff !important;
+}
+.btn-download .bd-sub { font-weight: 400; opacity: 0.85; font-size: 0.82rem; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-download { transition: none; }
+  .btn-download:hover { transform: none; }
+}
+
+/* ─── Section landing lists (content cards) ───────────────────────────── */
+.section-cards { display: flex; flex-direction: column; gap: 0.7rem; margin: 1.25rem 0; }
+.section-card {
+  display: block; padding: 0.9rem 1.15rem;
+  background: #fff; border: 1px solid #e6e6e6; border-radius: 10px;
+  text-decoration: none; color: inherit;
+  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+.section-card:hover {
+  border-color: $primary; transform: translateX(4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+.section-card .sc-num { color: $primary; font-weight: 700; margin-right: 0.5rem; }
+.section-card .sc-title { font-weight: 600; color: $primary; }
+.section-card .sc-sub { display: block; margin-top: 0.2rem; font-size: 0.88rem; color: #666; }
+@media (prefers-reduced-motion: reduce) {
+  .section-card { transition: none; }
+  .section-card:hover { transform: none; }
+}

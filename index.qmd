@@ -1,0 +1,38 @@
+---
+pagetitle: "Bioinformatic Notes"
+page-layout: full
+toc: false
+---
+
+::: {.hero-banner}
+
+# Bioinformatic Notes {.hero-title}
+
+::: {.hero-tagline}
+Panduan belajar bioinformatika dengan fokus kajian pada akuakultur
+
+Oleh **Agus Wibowo**
+:::
+
+::: {.hero-badges}
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![DOI](https://zenodo.org/badge/243280413.svg)](https://zenodo.org/badge/latestdoi/243280413)
+:::
+
+```{=html}
+<div class="hero-cards">
+  <a class="hero-card" href="docs/materi-dasar.html">
+    <span class="hero-card-title">Materi dasar</span>
+  </a>
+  <a class="hero-card" href="docs/skill-teknis.html">
+    <span class="hero-card-title">Skill Teknis</span>
+  </a>
+  <a class="hero-card" href="docs/workflows.html">
+    <span class="hero-card-title">Workflows</span>
+  </a>
+  <a class="hero-card" href="tentang.html">
+    <span class="hero-card-title">Tentang</span>
+  </a>
+</div>
+```
+
+:::

@@ -1,0 +1,20 @@
+---
+title: "Workflows"
+---
+
+<p style="text-align: right; font-size: 0.9rem;">
+  <a href="../index.qmd" style="font-weight: bold;">← Beranda</a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="../materi.qmd" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+# Workflows
+
+Alur analisis lengkap dari data mentah hingga interpretasi biologis. Setiap workflow dapat dijalankan langsung memakai data demo yang sudah disediakan. Silakan pilih alur di bawah ini.
+
+```{=html}
+<div class="section-cards">
+  <a class="section-card" href="work-RNA-seq.html"><span class="sc-num">1</span><span class="sc-title">RNA-Seq workflow</span><span class="sc-sub">Analisis ekspresi gen dari reads mentah hingga gen yang berbeda ekspresi memakai DESeq2.</span></a>
+  <a class="section-card" href="work-metagenomics.html"><span class="sc-num">2</span><span class="sc-title">Metagenomik 16S rRNA</span><span class="sc-sub">Profiling komunitas mikroba usus udang dari reads mentah hingga analisis keragaman dan kelimpahan diferensial.</span></a>
+</div>
+```

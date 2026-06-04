@@ -1,0 +1,26 @@
+---
+title: "Materi dasar"
+---
+
+<p style="text-align: right; font-size: 0.9rem;">
+  <a href="../index.qmd" style="font-weight: bold;">← Beranda</a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="../materi.qmd" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+# Materi dasar
+
+Kumpulan materi fondasi yang sebaiknya Anda pahami sebelum masuk ke analisis. Silakan pilih topik di bawah ini sesuai kebutuhan Anda.
+
+```{=html}
+<div class="section-cards">
+  <a class="section-card" href="basic-konsep-biomol.html"><span class="sc-num">1</span><span class="sc-title">Konsep dasar biologi molekuler</span><span class="sc-sub">Mengenal DNA, RNA, gen, serta dogma sentral biologi molekuler.</span></a>
+  <a class="section-card" href="basic-tren-terbaru.html"><span class="sc-num">2</span><span class="sc-title">Tren dan perkembangan terbaru</span><span class="sc-sub">Arah perkembangan bioinformatika dan penerapannya pada akuakultur.</span></a>
+  <a class="section-card" href="basic-marker-genetik.html"><span class="sc-num">3</span><span class="sc-title">Marker genetik</span><span class="sc-sub">Jenis penanda genetik dan kegunaannya dalam studi genomik.</span></a>
+  <a class="section-card" href="basic-hierarki-linux.html"><span class="sc-num">4</span><span class="sc-title">Memahami hierarki Linux</span><span class="sc-sub">Struktur direktori dan cara navigasi pada sistem Linux.</span></a>
+  <a class="section-card" href="basic-instalasi-tools.html"><span class="sc-num">5</span><span class="sc-title">Instalasi tools bioinformatika</span><span class="sc-sub">Cara memasang perangkat lunak yang dipakai untuk analisis.</span></a>
+  <a class="section-card" href="basic-linux-in-win.html"><span class="sc-num">6</span><span class="sc-title">Linux di dalam Windows</span><span class="sc-sub">Menjalankan lingkungan Linux pada komputer berbasis Windows.</span></a>
+  <a class="section-card" href="basic-library-preparation.html"><span class="sc-num">7</span><span class="sc-title">Library preparation</span><span class="sc-sub">Tahapan persiapan pustaka DNA sebelum proses sekuensing.</span></a>
+  <a class="section-card" href="basic-konsep-dasar-ml.html"><span class="sc-num">8</span><span class="sc-title">Konsep dasar machine learning</span><span class="sc-sub">Pengantar pembelajaran mesin untuk data biologis.</span></a>
+</div>
+```

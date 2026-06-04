@@ -1,0 +1,94 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "docs/*.qmd"
+
+lang: id
+
+website:
+  title: "Bioinformatic Notes"
+  description: "Panduan belajar bioinformatika dengan fokus kajian pada akuakultur."
+  site-url: https://bowo1698.github.io/Bioinfonote/
+  repo-url: https://github.com/bowo1698/Bioinfonote
+  page-navigation: true
+  # favicon: assets/logo.svg   # uncomment when a logo SVG is added to assets/
+
+  navbar:
+    background: primary
+    pinned: true
+    search: true
+    title: "Bioinformatic Notes"
+    # logo: assets/logo.svg     # uncomment when a logo SVG is added to assets/
+    left:
+      - href: index.qmd
+        text: Home
+      - href: materi.qmd
+        text: Materi
+      - href: tentang.qmd
+        text: Tentang
+      - href: docs/bio.qmd
+        text: Biografi
+    right:
+      - icon: github
+        href: https://github.com/bowo1698/Bioinfonote
+        aria-label: GitHub
+
+  sidebar:
+    - title: "Materi"
+      style: docked
+      collapse-level: 1
+      contents:
+        - materi.qmd
+        - section: "Materi dasar"
+          href: docs/materi-dasar.qmd
+          contents:
+            - docs/basic-konsep-biomol.qmd
+            - docs/basic-tren-terbaru.qmd
+            - docs/basic-marker-genetik.qmd
+            - docs/basic-hierarki-linux.qmd
+            - docs/basic-instalasi-tools.qmd
+            - docs/basic-linux-in-win.qmd
+            - docs/basic-library-preparation.qmd
+            - docs/basic-konsep-dasar-ml.qmd
+        - section: "Skill Teknis"
+          href: docs/skill-teknis.qmd
+          contents:
+            - docs/teknis-curl-wget.qmd
+            - docs/teknis-file-format.qmd
+            - docs/teknis-quality-control.qmd
+        - section: "Workflows"
+          href: docs/workflows.qmd
+          contents:
+            - docs/work-RNA-seq.qmd
+            - docs/work-metagenomics.qmd
+
+  search:
+    location: navbar
+    type: overlay
+    copy-button: true
+
+  page-footer:
+    left: "© 2026 Agus Wibowo · MIT License"
+    right:
+      - icon: github
+        href: https://github.com/bowo1698/Bioinfonote
+
+format:
+  html:
+    theme: [flatly, assets/custom.scss]
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    smooth-scroll: true
+    anchor-sections: true
+    link-external-newwindow: true
+
+execute:
+  freeze: auto

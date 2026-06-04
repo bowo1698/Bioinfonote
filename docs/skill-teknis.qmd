@@ -1,0 +1,21 @@
+---
+title: "Skill Teknis"
+---
+
+<p style="text-align: right; font-size: 0.9rem;">
+  <a href="../index.qmd" style="font-weight: bold;">← Beranda</a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="../materi.qmd" style="font-weight: bold;">Pilih materi →</a>
+</p>
+
+# Skill Teknis
+
+Keterampilan praktis untuk menyiapkan dan memeriksa data sebelum dianalisis. Silakan pilih topik di bawah ini.
+
+```{=html}
+<div class="section-cards">
+  <a class="section-card" href="teknis-curl-wget.html"><span class="sc-num">1</span><span class="sc-title">Variabel, loop, dan izin akses</span><span class="sc-sub">Dasar skrip Bash untuk mengotomasi pengolahan banyak berkas.</span></a>
+  <a class="section-card" href="teknis-file-format.html"><span class="sc-num">2</span><span class="sc-title">Mengenal berbagai format file NGS</span><span class="sc-sub">Memahami FASTA, FASTQ, SAM, BAM, GTF, dan format lain yang sering dipakai.</span></a>
+  <a class="section-card" href="teknis-quality-control.html"><span class="sc-num">3</span><span class="sc-title">Quality control hasil sequencing</span><span class="sc-sub">Memeriksa dan membersihkan data sekuensing sebelum analisis lanjut.</span></a>
+</div>
+```

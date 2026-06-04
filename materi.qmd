@@ -1,0 +1,15 @@
+---
+title: "Daftar Materi"
+---
+
+## 🚀 Materi
+
+Untuk mulai belajar, silakan pilih salah satu bagian di bawah ini. Setiap bagian akan membawa Anda ke halaman yang memuat daftar lengkap kontennya. Anda juga dapat memakai menu di sisi kiri untuk navigasi.
+
+```{=html}
+<div class="section-cards">
+  <a class="section-card" href="docs/materi-dasar.html"><span class="sc-title">Materi dasar</span><span class="sc-sub">Konsep biologi molekuler, marker genetik, instalasi tools, Linux, library preparation, dan dasar machine learning.</span></a>
+  <a class="section-card" href="docs/skill-teknis.html"><span class="sc-title">Skill Teknis</span><span class="sc-sub">Skrip Bash, pengenalan format file NGS, dan quality control hasil sekuensing.</span></a>
+  <a class="section-card" href="docs/workflows.html"><span class="sc-title">Workflows</span><span class="sc-sub">Alur analisis lengkap end to end, mulai dari RNA-Seq hingga metagenomik 16S.</span></a>
+</div>
+```

@@ -1,0 +1,34 @@
+### [1. Materi dasar](docs/part1.md)
+
+-   [Konsep-konsep dasar biologi molekuler](docs/basic-kosep-biomol.md)
+-   [Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur](docs/basic-tren-terbaru.md)
+-   [Linux di dalam Windows](docs/basic-linux-in-win.md)
+-   [Memahami hierarki Linux](docs/basic-hierarki-linux.md)
+-   [Instalasi tools bioinformatika](docs/basic-instalasi-tools.md)
+-   [Marker-marker genetik: Kunci revolusi genomik dalam akuakultur](docs/basic-marker-genetik.md)
+-   [Cara download file *sequencing*](docs/basic-curl-wget.md)
+<!--   [Pengenalan dasar-dasar Bash](docs/basic-bash.md) --->
+<!--   [Pengenalan dasar-dasar R](docs/basic-R.md) --->
+<!--   [Pengenalan dasar-dasar python](docs/basic-python.md) --->
+<!--   [Dokumentasi melalui Markdown](docs/basic-markdown.md) --->
+<!--   [Eksplorasi database genomic](docs/basic-eksplorasi-database.md) --->
+
+<!--   [Cara kerja *sequencing*](docs/basic-sequencing.md) --->
+
+<!--   [Kosep dasar *alignment*](docs/basic-alignment.md) --->
+<!--   [Statistik untuk biologi modern](docs/basic-stats.md) --->
+
+### [2. Materi lanjutan 1](docs/part2.md)
+
+<!--   [*Alignment*](docs/tutorial-alignment.md) --->
+<!--   [Pipeline metagenomics](docs/tutorial-metagenomics.md) --->
+<!--   [Pipeline RNA-Seq](docs/tutorial-RNA-Seq.md) --->
+<!--   [Pipeline genomic varians - SNP discovery](docs/tutorial-SNP-discovery.md) --->
+<!--   [Pipeline genomic varians - haplotype block discovery](docs/tutorial-haplotype.md) --->
+<!--   [Pipeline genomic varians - microhaplotype discovery](docs/tutorial-microhaplotype.md) --->
+
+### [3. Materi lanjutan 2](docs/part3.md)
+
+<!--   [Genetika populasi](docs/adv-GWAS.md) --->
+<!--   [Pemuliaan berbasis genomic - GWAS](docs/adv-GWAS.md) --->
+<!--   [Pemuliaan berbasis genomic - estimasi nilai breeding](docs/adv-EBV.md) --->
