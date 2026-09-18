@@ -63,6 +63,7 @@ website:
           contents:
             - docs/work-RNA-seq.qmd
             - docs/work-metagenomics.qmd
+            - docs/work-variant-calling.qmd
 
   search:
     location: navbar
@@ -70,25 +71,30 @@ website:
     copy-button: true
 
   page-footer:
-    left: "© 2026 Agus Wibowo · MIT License"
+    left: "© 2026 Agus Wibowo · [MIT License](https://bowo1698.github.io/Bioinfonote/LICENSE)"
     right:
       - icon: github
         href: https://github.com/bowo1698/Bioinfonote
 
 format:
   html:
-    theme: [flatly, assets/custom.scss]
+    theme:
+      light: [flatly, assets/custom.scss]
+      dark: [darkly, assets/custom-dark.scss, assets/custom.scss]
     toc: true
     toc-depth: 3
     toc-location: right
     code-copy: true
     code-overflow: wrap
-    highlight-style: github
+    syntax-highlighting: github
     fig-cap-location: bottom
     tbl-cap-location: top
     smooth-scroll: true
     anchor-sections: true
     link-external-newwindow: true
+
+filters:
+  - filters/article-frame.lua
 
 execute:
   freeze: auto

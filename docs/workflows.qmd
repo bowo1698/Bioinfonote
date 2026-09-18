@@ -2,19 +2,30 @@
 title: "Workflows"
 ---
 
-<p style="text-align: right; font-size: 0.9rem;">
-  <a href="../index.qmd" style="font-weight: bold;">← Beranda</a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="../materi.qmd" style="font-weight: bold;">Pilih materi →</a>
-</p>
-
-# Workflows
-
 Alur analisis lengkap dari data mentah hingga interpretasi biologis. Setiap workflow dapat dijalankan langsung memakai data demo yang sudah disediakan. Silakan pilih alur di bawah ini.
 
-```{=html}
-<div class="section-cards">
-  <a class="section-card" href="work-RNA-seq.html"><span class="sc-num">1</span><span class="sc-title">RNA-Seq workflow</span><span class="sc-sub">Analisis ekspresi gen dari reads mentah hingga gen yang berbeda ekspresi memakai DESeq2.</span></a>
-  <a class="section-card" href="work-metagenomics.html"><span class="sc-num">2</span><span class="sc-title">Metagenomik 16S rRNA</span><span class="sc-sub">Profiling komunitas mikroba usus udang dari reads mentah hingga analisis keragaman dan kelimpahan diferensial.</span></a>
-</div>
-```
+::: {.section-index}
+::: {.section-index-item}
+[01]{.index-number}
+
+[RNA-Seq workflow](work-RNA-seq.html){.section-index-title}
+
+[Analisis ekspresi gen dari reads mentah hingga gen yang berbeda ekspresi memakai DESeq2.](work-RNA-seq.html){.section-index-description}
+:::
+
+::: {.section-index-item}
+[02]{.index-number}
+
+[Metagenomik 16S rRNA](work-metagenomics.html){.section-index-title}
+
+[Profiling komunitas mikroba usus udang dari reads mentah hingga analisis keragaman dan kelimpahan diferensial.](work-metagenomics.html){.section-index-description}
+:::
+
+::: {.section-index-item}
+[03]{.index-number}
+
+[Variant Calling dengan GATK](work-variant-calling.html){.section-index-title}
+
+[Alignment reads *E. coli* ke genom referensi dan pemanggilan varian menggunakan GATK.](work-variant-calling.html){.section-index-description}
+:::
+:::

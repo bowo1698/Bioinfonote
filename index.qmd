@@ -4,35 +4,42 @@ page-layout: full
 toc: false
 ---
 
-::: {.hero-banner}
+::::: home-hero
+::: home-hero-copy
+# Bioinformatika untuk akuakultur berkelanjutan
 
-# Bioinformatic Notes {.hero-title}
+Bioinfonote adalah catatan belajar penulis dalam bahasa Indonesia untuk membantu pembaca memahami data hayati, dari konsep biologi molekuler hingga alur analisis bioinformatika yang dapat dipraktikkan.
 
-::: {.hero-tagline}
-Panduan belajar bioinformatika dengan fokus kajian pada akuakultur
-
-Oleh **Agus Wibowo**
+[Kenali Bioinfonote](tentang.html){.hero-link}
 :::
 
-::: {.hero-badges}
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![DOI](https://zenodo.org/badge/243280413.svg)](https://zenodo.org/badge/latestdoi/243280413)
+::: home-hero-visual
+![](assets/fish-with-com.jpg){.content-image fig-alt="Ikan dengan elemen kode"}
+:::
+:::::
+
+::::::: learning-index
+::: learning-index-heading
+[MULAI BELAJAR]{.index-label}
+
+## Pilih jalur sesuai tahap Anda.
 :::
 
-```{=html}
-<div class="hero-cards">
-  <a class="hero-card" href="docs/materi-dasar.html">
-    <span class="hero-card-title">Materi dasar</span>
-  </a>
-  <a class="hero-card" href="docs/skill-teknis.html">
-    <span class="hero-card-title">Skill Teknis</span>
-  </a>
-  <a class="hero-card" href="docs/workflows.html">
-    <span class="hero-card-title">Workflows</span>
-  </a>
-  <a class="hero-card" href="tentang.html">
-    <span class="hero-card-title">Tentang</span>
-  </a>
-</div>
-```
+::: learning-path
+[Materi dasar](docs/materi-dasar.html){.learning-path-title}
 
+[Fondasi konsep](docs/materi-dasar.html){.learning-path-description}
 :::
+
+::: learning-path
+[Skill teknis](docs/skill-teknis.html){.learning-path-title}
+
+[Alat dan format data](docs/skill-teknis.html){.learning-path-description}
+:::
+
+::: learning-path
+[Workflows](docs/workflows.html){.learning-path-title}
+
+[Alur analisis](docs/workflows.html){.learning-path-description}
+:::
+:::::::

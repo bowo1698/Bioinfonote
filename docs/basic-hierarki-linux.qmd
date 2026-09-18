@@ -2,41 +2,21 @@
 title: "Memahami hierarki Linux"
 ---
 
-<p style="text-align: right; font-size: 0.9rem;">
-  <a href="../index.qmd" style="font-weight: bold;">← Beranda</a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="../materi.qmd" style="font-weight: bold;">Pilih materi →</a>
-</p>
+![](https://media.licdn.com/dms/image/v2/C4E12AQFPvha4VBvb-Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1535910192895?e=2147483647&v=beta&t=8icwEGmeRprmA7ALE2Dp6iCaIShCpL8X3WpLrL4MFgQ){.content-image .article-hero-image fig-alt="Ilustrasi sistem operasi Linux"}
 
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-  <a href="basic-hierarki-linux.qmd" style="text-decoration: none; color: inherit;">
-    Memahami hierarki Linux
-  </a>
-</h1>
+## Daftar isi {#daftar-isi}
 
-<p style="text-align: center; font-size: 1.2rem;">
-  Oleh <a href="bio.qmd" target="_blank">Agus Wibowo</a>
-</p>
+- [Daftar isi](#daftar-isi)
+- [Linux file system](#linux-file-system-siapa-tinggal-di-mana)
+- [Tips navigasi](#tips-navigasi)
 
-<div style="text-align: center; margin-bottom: 1.5rem;">
-  <img src="https://media.licdn.com/dms/image/v2/C4E12AQFPvha4VBvb-Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1535910192895?e=2147483647&v=beta&t=8icwEGmeRprmA7ALE2Dp6iCaIShCpL8X3WpLrL4MFgQ" alt="Linux" style="max-width: 100%; height: auto;">
-</div>
-
-<br>
-
-# Daftar isi
-
--   [Daftar isi](#daftar-isi)
--   [Linux file system](#linux-file-system-siapa-tinggal-di-mana)
--   [Tips navigasi](#tips-navigasi)
-
-# Linux file system: Siapa tinggal di mana?
+## Linux file system: Siapa tinggal di mana? {#linux-file-system-siapa-tinggal-di-mana}
 
 Sebelum melangkah lebih jauh tentang bioinformatika, penting untuk memahami dasar-dasar sistem operasi yang menjadi fondasinya, yaitu Linux. Sebagian besar tools bioinformatika memang dikembangkan untuk dijalankan di lingkungan Linux, sehingga mengenal struktur sistem filenya adalah langkah awal yang sangat fundamental.
 
 Salah satu aspek penting adalah memahami hierarki berkas sistem (*system files*) di Linux. Struktur ini mengikuti standar yaitu *Filesystem Hierarchy Standard* (FHS), yang bertujuan agar semua distribusi Linux memiliki pola organisasi file yang seragam. Dengan standar ini, jika Anda sudah terbiasa dengan satu distro, maka akan jauh lebih mudah beradaptasi ketika menggunakan distro lainnya.
 
-<img src="images/linux-fhs.webp" alt="Linux FHS" style="width: 90%;">
+![](images/linux-fhs.webp){.content-image fig-alt="Hierarki filesystem Linux" width="90%"}
 
 Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ruang tamu, dapur, kamar tidur, gudang, dan sistem keamanan. Nah, Linux juga punya "rumah" seperti itu. Mari, kita menjelajahi bersama isi rumah Linux ini dan mengenali fungsi dari setiap bagiannya!
 
@@ -68,7 +48,7 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     📊 Tingkat penting: 🔥🔥🔥 (KRITIKAL)
 
-    👤 Akses: Hanya *superuser*    
+    👤 Akses: Hanya *superuser*
 
     Ini ruangan tempat menyimpan catatan penting dan pengaturan sistem. Anggap saja seperti laci arsip penting rumah tangga, seperti dokumen kepemilikan, tanah, surat hutang, ijazah ASLI dll. Di sini ada file konfigurasi seperti `/etc/passwd` untuk info user, `/etc/fstab` untuk mounting disk, dll. Jangan sembarangan otak-atik ruangan ini kalau tidak mau rumah Anda berantakan!
 
@@ -78,7 +58,7 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     👤 Akses: Hanya pengguna masing-masing
 
-    Nah ini kamar pribadi Anda! Setiap pengguna Linux punya kamarnya sendiri di sini, misalnya `/home/bowo` untuk user bernama "bowo". Di kamar ini Anda bebas naruh barang-barang pribadi seperti foto, dokumen, musik, dll. Ini "zona aman" buat menyimpan file-file pribadi, bebas tanpa hak akses *superuser*. 
+    Nah ini kamar pribadi Anda! Setiap pengguna Linux punya kamarnya sendiri di sini, misalnya `/home/bowo` untuk user bernama "bowo". Di kamar ini Anda bebas naruh barang-barang pribadi seperti foto, dokumen, musik, dll. Ini "zona aman" buat menyimpan file-file pribadi, bebas tanpa hak akses *superuser*.
 
 6.  `/root` - Direktori *superuser* 👑
 
@@ -112,10 +92,10 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     Ini seperti Anda punya mall di dalam rumah, yang berisi pertokoan dan fasilitas lainnya untuk penghuni rumah. Di dalam `/usr`, ada sub direktori seperti:
 
-    -   `/usr/bin`: Program-program tambahan (seperti toko barang mewah di mall)  
-    -   `/usr/lib`: Library pendukung (toko buku) 
-    -   `/usr/local`: Software yang Anda instal sendiri (toko perlengkapan harian)
-    -   `/usr/share`: Data yang bisa dipakai bersama (tempat berkumpul atau makan gratis)
+    - `/usr/bin`: Program-program tambahan (seperti toko barang mewah di mall)\
+    - `/usr/lib`: Library pendukung (toko buku)
+    - `/usr/local`: Software yang Anda instal sendiri (toko perlengkapan harian)
+    - `/usr/share`: Data yang bisa dipakai bersama (tempat berkumpul atau makan gratis)
 
 10. `/opt` - Optional 🛒
 
@@ -141,7 +121,7 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     Ini seperti garasi rumah atau tempat parkir, di mana Anda "memasang" perangkat eksternal seperti *flashdisk* (`/media`) atau *hard disk* (`/mnt`). Bedanya, `/media` biasanya untuk perangkat yang bisa terbuka otomatis (auto-mount), sementara `/mnt` baru bisa dibuka ketika Anda memasukkan *password*.
 
-13. `/proc` dan `/sys`  - Direktori virtual (informasi kernel) 🕵️‍♂️
+13. `/proc` dan `/sys` - Direktori virtual (informasi kernel) 🕵️‍♂️
 
     📊 Tingkat penting: 🔥🔥 (PENTING)
 
@@ -153,7 +133,7 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     📊 Tingkat penting: 🔥🔥🔥 (KRITIKAL)
 
-    👤 Akses: Hanya *superuser* 
+    👤 Akses: Hanya *superuser*
 
     Ini tempat Linux menyimpan "*remote control*" untuk semua perangkat keras, seperti AC, Televisi, dll. Setiap hardware di komputer punya file di sini. Misalnya `/dev/sda1`untuk *hard disk* pertama, `dev/sda2` untuk *hard disk* kedua, dst.
 
@@ -161,7 +141,7 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     📊 Tingkat penting: 🔥🔥🔥 (KRITIKAL)
 
-    👤 Akses: Hanya *superuser* 
+    👤 Akses: Hanya *superuser*
 
     Ini seperti ruangan yang berisi file-file penting untuk memulai (*boot*) sistem, seperti saklar utama rumah dan panel listrik. Jadi jangan otak-atik sembarangan, kalo tidak komputer Anda tidak bisa "nyala"!
 
@@ -173,7 +153,7 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
     Ruangan yang menyimpan data untuk layanan yang disediakan sistem, seperti web server atau FTP server. Ibarat ini adalah tempat penyimpanan barang jualan kalau rumah Anda juga jadi toko.
 
-# Tips navigasi
+## Tips navigasi {#tips-navigasi}
 
 1.  Jangan takut tersesat
 
@@ -193,14 +173,8 @@ Bayangkan Anda masuk ke sebuah rumah besar yang tertata rapi dan canggih, ada ru
 
 5.  Perhatian
 
-    Jangan sembarangan menggunakan `sudo` jika tidak tahu resikonya apa. Misal jangan jalankan `sudo rm /boot`, kecuali menginginkan sistem Linux Anda mati selamanya. 
+    Jangan sembarangan menggunakan `sudo` jika tidak tahu resikonya apa. Misal jangan jalankan `sudo rm /boot`, kecuali menginginkan sistem Linux Anda mati selamanya.
 
 Dengan memahami hierarki *file system* Linux ini, kita jadi tahu harus menyimpan atau mencari file di mana. Kita tahu di mana bisa mendapatkan sendok di rumah orang lain, karena biasanya ada di laci dapur, kita tau di mana seseorang menyimpan uang, karena biasanya di taruh di bawah kasur (oops). Jadi, meskipun awalnya seperti rumah yang sangat asing, lama kelamaan Anda akan familiar dan bisa dengan mudah bernavigasi di "rumahnya Linux" ini!
 
 --- Sekian ---
-
-<p style="text-align: right; font-size: 0.9rem;">
-  <a href="../index.qmd" style="font-weight: bold;">← Beranda</a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="../materi.qmd" style="font-weight: bold;">Pilih materi →</a>
-</p>
