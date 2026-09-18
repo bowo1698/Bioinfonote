@@ -1,17 +1,33 @@
 ---
-title: "Variant Calling dengan GATK"
+title: "Variant calling genom bakteri dengan GATK"
 ---
 
-## Tujuan pembelajaran
+![Single Nucleotide Polymorphisms](images/SNP.png){.content-image .article-hero-image width="871"}
 
-Setelah menyelesaikan praktik ini, Anda dapat:
+## Daftar isi
 
-- menyiapkan data *E. coli* dan genom referensi untuk analisis;
-- memeriksa kualitas *reads* dan hasil pemetaan;
-- melakukan *alignment* ke genom referensi serta menandai duplikat; dan
-- memanggil dan menyaring varian menggunakan GATK.
+1.  [Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas bai](#apa-itu-variant-calling)k
+2.  [Persiapan lingkungan analisis](#persiapan-lingkungan-analisis)
+3.  [Persiapan dataset](#persiapan-dataset)
+4.  [Kendali mutu reads](#kendali-mutu-reads)
+5.  [Alignment ke genom referensi](#alignment-ke-genom-referensi)
+6.  [Menandai duplikat](#menandai-duplikat)
+7.  [Variant calling dengan GATK HaplotypeCaller](#variant-calling-dengan-gatk-haplotypecaller)
+8.  [Memisahkan dan memfilter varian](#memisahkan-dan-memfilter-varian)
+9.  [Membaca hasil dan keterbatasan](#membaca-hasil-dan-keterbatasan)
+10. [Penutup](#penutup)
 
-## Project Setup
+## Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas baik {#variant-calling}
+
+Program pemuliaan bertujuan untuk menghasilkan individu dengan kualitas genetik unggul, seperti individu dengan kualitas daging yang lebih baik atau individu dengan tingkat ketahanan penyakit yang tinggi dibandingkan dengan individu lainnya pada suatu populasi. Pada dasarnya, pemuliaan memanfaatkan variasi genetik alami yang telah ada di dalam sebuah populasi. Sebagai contoh, jika individu dengan kualitas daging *grade* A diketahui memiliki variasi genetik spesifik berupa alel ATC pada kromosom 8, pendekatan genomik dapat digunakan untuk mengidentifikasi individu mana saja yang membawa alel tersebut. Individu yang teridentifikasi kemudian dipilih sebagai calon indukan untuk generasi berikutnya.
+
+*Single Nucleotide Polymorphisms* (SNP) merupakan marka genetik yang paling umum digunakan untuk menentukan varian mana yang berperan penting dalam proses pemuliaan. Di sinilah proses *variant calling* menjadi sangat penting. *Variant calling* berfungsi untuk mengidentifikasi dan mengisolasi SNP dalam suatu populasi berdasarkan hasil sekuensing genom dari banyak individu. Secara teknis, *variant calling* bekerja dengan menjajarkan (*aligning*) *reads* dari berbagai sampel terhadap genom referensi, lalu mengevaluasi apakah perbedaan basa pada posisi tertentu cukup signifikan untuk dikategorikan sebagai varian SNP yang sah.
+
+Berbagai algoritma dan *tools* telah dikembangkan untuk melakukan *variant calling*, salah satunya adalah **GATK HaplotypeCaller**. *Tool* ini bekerja dengan merekonstruksi *haplotype* secara *de novo* pada daerah-daerah yang terindikasi memiliki variasi (*active region*). Melalui algoritma grafik perakitan (*assembly graph*), GATK HaplotypeCaller menghitung probabilitas alel dari setiap sampel dan menentukan varian yang paling memungkinkan. Proses ini menghasilkan berkas berformat *Variant Call Format* (VCF) yang siap digunakan sebagai data input genotipe dalam program pemuliaan berbasis genomik (*genomic selection*).
+
+Pada tutorial ini, kita akan menggunakan *Short Read Archive* (SRA) dari bakteri *Escherichia coli* sebagai dataset latihan. Penggunaan data *E. coli* dilakukan untuk menghemat kapasitas penyimpanan dan meningkatkan efisiensi waktu komputasi, tanpa mengurangi pemahaman mendasar mengenai alur kerja (*pipeline*) *variant calling* menggunakan GATK.
+
+## Persiapan lingkungan analisis {#persiapan-lingkungan-analisis}
 
 Buka Terminal di VS Code lalu buat proyek.
 
@@ -27,7 +43,7 @@ Output:
 aligned  logs  qc  raw  ref  scripts  tmp  variants
 ```
 
-## Instalasi Tools
+### Instalasi tools
 
 Menggunakan Anconda, aktifkan solver:
 
@@ -89,7 +105,7 @@ datasets version: 18.37.0
 (gatk-snp) [aguswibowo@bun148 gatk_snp_training]$
 ```
 
-## Persiapan Dataset
+## Persiapan dataset {#persiapan-dataset}
 
 Untuk latihan, kita akan menggunakan data sangat kecil. Karenanya, kita akan menggunakan data bakteri *E.coli* yang diambil dari NCBI dengan kode akses: [SRR2584863](https://www.ncbi.nlm.nih.gov/sra/?term=SRR2584863), dengan detail sebagai berikut:
 
@@ -246,7 +262,7 @@ raw/fastq/SRR2584863_2.fastq.gz  FASTQ   DNA   1,553,259  232,988,850      150  
 
 Nilai dari `sum_len` mengindikasikan bahwa terdapat sekitar 232 juta base pair (bp) atau sekitar 466 mega base pair (Mb), dengan keseluruhan bacaan memiliki panjang konsisten yaitu 150 bp.
 
-## Quality Control
+## Kendali mutu reads {#kendali-mutu-reads}
 
 Langkah berikutnya kita perlu melakukan *quality control* (QC) untuk memastikan bahwa file reads yang kita gunakan memiliki kualitas yang baik. Proses QC dilakukan menggunakan `fastqc` dan untuk mempercepat prosesnya maka saya akan menggunakan 6 threads dengan perintah `--threads`. Terakhir, kita akan rangkum semua hasil QC menggunakan `multiqc` yang mana semua output QC akan disimpan di direktori `qc/.`
 
@@ -261,7 +277,7 @@ multiqc qc -o qc/multiqc
 
 Yang perlu kita lihat dari hasil QC adalah Per-base sequence quality, Adapter content, Per-base sequence content, Sequence duplication levels, dan jumlah reads per pasangan FASTQ. Karena secara umum file FASTQ dari sampe kita saat ini baik, maka kita tidak perlu melakukan proses trimming.
 
-## Alignment ke genom referensi
+## Alignment ke genom referensi {#alignment-ke-genom-referensi}
 
 Kita akan menggunakan BWA (*Burrows-Wheeler Aligner*) untuk melakukan proses alignment pada sample *short read* ini dan read group wajib ada agar GATK dapat mengenali identitas sampel.
 
@@ -340,7 +356,7 @@ Output:
 
 Yang penting dari output di atas adalah sebanyak 93.89% bacaan berhasil terpetakan pada genom referensi *E. coli*. Angka ini menunjukkan kualitas *sequencing* dan kesesuaian sampel yang **sangat baik** (umumnya standar keberhasilan di atas 80-90%). Sementara sebesar sisanya (\~6.11%) tidak terpetakan yang kemungkinan karena *noise*, kontaminasi, atau adapter.
 
-## Mark Duplicates
+## Menandai duplikat {#menandai-duplikat}
 
 Fungsi dari *mark duplicates* adalah untuk mengidentifikasi dan menandai duplikat PCR/optis pada berkas BAM. Proses ini menggunaka option `MarkDuplicates` dari `gatk:`
 
@@ -384,7 +400,7 @@ Output:
 
 Dari output di atas kita mengetahui bahwa pemetaan tetap konsisten pada 93.89%, namun sudah ada informasi bahwa terdapat **57.801 bacaan duplikat** yang berhasil ditandai oleh GATK dengan tingkat duplikasi yang cukup rendah, yaitu hanya sekitar 1.85% dari total bacaan. Ini mengindikasikan kualitas pustaka (*library preparation*) yang sangat bagus tanpa bias amplifikasi PCR yang berlebihan.
 
-## Variant calling dengan GATK HaplotypeCaller
+## Variant calling dengan GATK HaplotypeCaller {#variant-calling-dengan-gatk-haplotypecaller}
 
 Langkah selanjutnya kita bisa melakukan *variant calling* menggunakan GATK HaplotypeCaller. Kita akan menggunakan referensi dari `ref/ecoli_k12.fa` menggunakan option `-R`, input dari file hasil alignment yang telah ditandai deduplikasinya (`aligned/ecoli.dedup.bam`) menggunakan option `-I` untuk menghasilkan file dengan format GVCF (*Genomics Variant Call Format*) dengan option `-ERC GVCF`. Mode GVCF ini menyimpan informasi cakupan (*coverage*) pada situs non-varian, yang sangat berguna jika nanti kita ingin menggabungkan beberapa sampel (*joint calling*). Kemudian karena *E. coli* adalah organisme prokariotik dengan satu salinan kromosom tunggal (haploid), maka kita akan menggunakan `--sample-ploidy 1`. Proses *variant calling* ini akan menggunakan sebanyak 6 thread CPU (sesuaikan dengan jumlah CPU yang anda miliki), yang mana akan menggunakan algoritma HMM (*Hidden Markov Model*) dengan perintah `--native-pair-hmm-threads 6`. Adapun perintah lengkap nya adalah sebagai berikut:
 
@@ -498,7 +514,7 @@ SN  0   number of multiallelic SNP sites:   0
 
 Dari output awal ini kita dapat mengetahui bahwa dari 34.862 variant, terdapat 33.747 SNPs dan sisanya (1115) berupa indels (*insertion/deletion*). Ini adalah hasil yang sangat baik, karena mayoritas (96.6%) data merupakan murni SNPs. Langkah selanjutnya yang perlu kita lakukan adalah menghilangkan indels dan melakukan filtering.
 
-## Menghapus Indels dan Melakukan Filtering File VCF
+## Memisahkan dan memfilter varian {#memisahkan-dan-memfilter-varian}
 
 Dalam banyak analisis, indels sering kali dipisahkan dari SNPs atau bahkan dihapus sama sekali. Hal ini dikarenakan indels dapat menyebabkan pergeseran bingkai baca (*frameshift mutation*) yang mengubah seluruh struktur protein downstream atau menghentikan translasi (*premature stop codon*). Misalnya dalam genomic selection, hanya SNPs yang digunakan untuk mengetahui bagaimana pengaruhnya terhadap suatu sifat, karena SNPs terjadi secara konsisten dalam suatu populasi. Indels dapat dipisahkan dengan option `SelectVariants` pada GATK dengan argument berupa `--select-type-to-include SNP`:
 
@@ -587,4 +603,16 @@ NC_000913.3 966 .   T   C   4566.04 PASS    AC=1;AF=1;AN=1;DP=105;FS=0;MLEAC=1;M
 NC_000913.3 969 .   T   G   4566.04 PASS    AC=1;AF=1;AN=1;DP=102;FS=0;MLEAC=1;MLEAF=1;MQ=59.86;QD=29.56;SOR=1.157  GT:AD:DP:GQ:PL  1:0,102:102:99:4576,0
 ```
 
-Selesai.
+## Membaca hasil dan keterbatasan {#membaca-hasil-dan-keterbatasan}
+
+Angka 32.639 SNP yang lolos filter adalah ringkasan teknis, bukan kesimpulan biologis dengan sendirinya. Setiap posisi masih perlu dipertimbangkan bersama kedalaman (*DP*), kualitas pemetaan (*MQ*), keseimbangan untai (*FS* dan *SOR*), serta konteks gen atau wilayah genom tempat varian itu berada. Varian dengan dukungan *reads* yang kuat tetapi berada di daerah berulang tetap dapat menyesatkan, begitu pula varian dengan kualitas tinggi yang muncul akibat kontaminasi atau ketidaksesuaian antara sampel dan genom referensi.
+
+Ambang filter pada tutorial ini merupakan titik awal yang masuk akal untuk dataset latihan bakteri haploid. Nilainya tidak boleh dipindahkan begitu saja ke semua organisme atau semua eksperimen. Pada organisme diploid, misalnya, kita perlu memeriksa distribusi genotipe, frekuensi alel, dan kualitas panggilan heterozigot. Pada studi populasi, beberapa sampel perlu dipanggil dan dibandingkan bersama agar varian dapat ditafsirkan berdasarkan pola antarindividu, bukan hanya berdasarkan satu sampel.
+
+Untuk analisis lanjutan, VCF yang telah difilter dapat dianotasi terhadap fitur gen menggunakan alat seperti SnpEff atau VEP. Anotasi tersebut membantu menjawab apakah sebuah SNP berada di daerah pengode, mengubah asam amino, atau berpotensi memengaruhi fungsi gen. Jika tujuan penelitian adalah menghubungkan varian dengan fenotipe, tahap anotasi tetap perlu diikuti validasi biologis dan, bila memungkinkan, pemeriksaan eksperimental.
+
+## Penutup {#penutup}
+
+Pipeline ini memperlihatkan bagaimana *reads* mentah secara bertahap diubah menjadi panggilan SNP yang dapat ditelusuri: data disiapkan, kualitasnya diperiksa, *reads* dipetakan ke referensi, duplikat ditandai, varian dipanggil, kemudian hasilnya difilter. Nilai utama workflow ini bukan hanya daftar varian di akhir, melainkan jejak bukti yang menjelaskan mengapa setiap varian dipercaya.
+
+Pada proyek nyata, tahap berikutnya dapat berupa anotasi fungsional, perbandingan antarstrain, analisis filogenetik, atau pengujian hubungan antara varian dan sifat biologis. Apa pun tujuan akhirnya, interpretasi yang baik selalu dimulai dari pemeriksaan kualitas data dan pemilihan filter yang sesuai dengan organisme serta desain penelitian.
