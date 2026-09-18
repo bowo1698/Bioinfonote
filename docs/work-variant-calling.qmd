@@ -2,11 +2,11 @@
 title: "Variant calling genom bakteri dengan GATK"
 ---
 
-![Single Nucleotide Polymorphisms](images/SNP.png){.content-image .article-hero-image width="871"}
+![Single Nucleotide Polymorphisms](images/SNP.png){.content-image .article-hero-image width="936"}
 
 ## Daftar isi
 
-1.  [Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas bai](#apa-itu-variant-calling)k
+1.  [Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas baik](#apa-itu-variant-calling)
 2.  [Persiapan lingkungan analisis](#persiapan-lingkungan-analisis)
 3.  [Persiapan dataset](#persiapan-dataset)
 4.  [Kendali mutu reads](#kendali-mutu-reads)
@@ -23,7 +23,7 @@ Program pemuliaan bertujuan untuk menghasilkan individu dengan kualitas genetik 
 
 *Single Nucleotide Polymorphisms* (SNP) merupakan marka genetik yang paling umum digunakan untuk menentukan varian mana yang berperan penting dalam proses pemuliaan. Di sinilah proses *variant calling* menjadi sangat penting. *Variant calling* berfungsi untuk mengidentifikasi dan mengisolasi SNP dalam suatu populasi berdasarkan hasil sekuensing genom dari banyak individu. Secara teknis, *variant calling* bekerja dengan menjajarkan (*aligning*) *reads* dari berbagai sampel terhadap genom referensi, lalu mengevaluasi apakah perbedaan basa pada posisi tertentu cukup signifikan untuk dikategorikan sebagai varian SNP yang sah.
 
-Berbagai algoritma dan *tools* telah dikembangkan untuk melakukan *variant calling*, salah satunya adalah **GATK HaplotypeCaller**. *Tool* ini bekerja dengan merekonstruksi *haplotype* secara *de novo* pada daerah-daerah yang terindikasi memiliki variasi (*active region*). Melalui algoritma grafik perakitan (*assembly graph*), GATK HaplotypeCaller menghitung probabilitas alel dari setiap sampel dan menentukan varian yang paling memungkinkan. Proses ini menghasilkan berkas berformat *Variant Call Format* (VCF) yang siap digunakan sebagai data input genotipe dalam program pemuliaan berbasis genomik (*genomic selection*).
+Berbagai algoritma dan *tools* telah dikembangkan untuk melakukan *variant calling*, salah satunya adalah [**GATK HaplotypeCaller**](https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller). *Tool* ini bekerja dengan merekonstruksi *haplotype* secara *de novo* pada daerah-daerah yang terindikasi memiliki variasi (*active region*). Melalui algoritma grafik perakitan (*assembly graph*), GATK HaplotypeCaller menghitung probabilitas alel dari setiap sampel dan menentukan varian yang paling memungkinkan. Proses ini menghasilkan berkas berformat *Variant Call Format* (VCF) yang siap digunakan sebagai data input genotipe dalam program pemuliaan berbasis genomik (*genomic selection*).
 
 Pada tutorial ini, kita akan menggunakan *Short Read Archive* (SRA) dari bakteri *Escherichia coli* sebagai dataset latihan. Penggunaan data *E. coli* dilakukan untuk menghemat kapasitas penyimpanan dan meningkatkan efisiensi waktu komputasi, tanpa mengurangi pemahaman mendasar mengenai alur kerja (*pipeline*) *variant calling* menggunakan GATK.
 

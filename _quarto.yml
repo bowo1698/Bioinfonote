@@ -13,14 +13,14 @@ website:
   site-url: https://bowo1698.github.io/Bioinfonote/
   repo-url: https://github.com/bowo1698/Bioinfonote
   page-navigation: true
-  # favicon: assets/logo.svg   # uncomment when a logo SVG is added to assets/
+  favicon: assets/Bioinfonote.svg
 
   navbar:
     background: primary
     pinned: true
     search: true
     title: "Bioinformatic Notes"
-    # logo: assets/logo.svg     # uncomment when a logo SVG is added to assets/
+    logo: assets/Bioinfonote.svg
     left:
       - href: index.qmd
         text: Home
