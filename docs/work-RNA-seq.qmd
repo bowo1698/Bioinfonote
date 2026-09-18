@@ -21,7 +21,7 @@ title: "RNA-Seq workflow"
 
 ### Menyelami percakapan genetik
 
-RNA sequencing (RNA-seq) adalah teknologi sekuensing generasi baru yang memungkinkan kita “mendengar” aktivitas gen dalam sel untuk mengetahui gen mana yang aktif, seberapa besar ekspresinya, dan bagaimana ekspresi itu berubah dalam berbagai kondisi biologis. Tidak seperti microarray yang hanya mendeteksi gen yang telah diketahui sebelumnya, RNA-seq memetakan seluruh transkriptom (semua RNA yang aktif dalam sel pada waktu tertentu), termasuk RNA langka dan varian splicing baru yang belum pernah teridentifikasi.
+RNA sequencing (RNA-seq) adalah teknologi sekuensing generasi baru yang memungkinkan kita “mendengar” aktivitas gen dalam sel untuk mengetahui gen mana yang aktif, seberapa besar ekspresinya, dan bagaimana ekspresi itu berubah dalam berbagai kondisi biologis. RNA-seq memetakan seluruh transkriptom (semua RNA yang aktif dalam sel pada waktu tertentu), termasuk RNA langka dan varian splicing baru yang belum pernah teridentifikasi.
 
 Teknologi ini telah merevolusi biologi molekuler dengan menghadirkan gambaran menyeluruh tentang dinamika ekspresi gen, baik pada level jaringan maupun, lebih baru lagi, pada level sel tunggal melalui pendekatan *single-cell* RNA-seq. Pendekatan ini membuka jendela terhadap keragaman seluler yang sebelumnya tersembunyi, memungkinkan identifikasi tipe sel baru, jalur diferensiasi, dan respons sel spesifik terhadap lingkungan.
 
@@ -41,7 +41,7 @@ RNA-seq menjembatani dunia molekuler dan praktik budidaya. Dengan memahami "baha
 
 ### Studi kasus: regulasi lipid pada ragi
 
-Tutorial ini memakai enam sampel *paired-end* dari [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345), studi RNA-seq *Saccharomyces cerevisiae* tentang regulasi fluiditas membran, flokulasi, dan pertumbuhan terbatas oksigen. Kita hanya memakai kontras yang sederhana dan bereplikasi baik: strain `spt23p90` tanpa doxycycline (`tanpa_dox`) dibandingkan strain yang sama dengan doxycycline (`dox`), masing-masing tiga replikasi biologis.
+Tutorial ini memakai enam sampel *paired-end* dari [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345), studi RNA-seq *Saccharomyces cerevisiae* tentang regulasi fluiditas membran, flokulasi, dan pertumbuhan terbatas oksigen. Kita hanya memakai kontras yang sederhana dan bereplikasi baik, yaitu strain `spt23p90` tanpa doxycycline (`tanpa_dox`) dibandingkan dengan strain yang sama dengan doxycycline (`dox`), masing-masing tiga replikasi.
 
 | Kondisi     | Sampel GEO             | Run SRA                | Replikasi |
 |-------------|------------------------|------------------------|----------:|
@@ -485,7 +485,7 @@ Mendapatkan ratusan DEG barulah separuh cerita; pertanyaan berikutnya adalah **"
 
 Untuk studi ini, ragi memiliki paket anotasi resmi `org.Sc.sgd.db`. GO memakai Entrez ID hasil pemetaan dari ORF, sedangkan KEGG memakai ID ORF langsung karena organisme `"sce"` pada KEGG mengindeks gen dengan ID ORF, bukan Entrez ID. Kita memakai gen yang benar-benar lolos pengujian DESeq2 sebagai *universe*. Pendekatan ini berbeda dari organisme akuakultur non-model, yang sering memerlukan pemetaan ortolog atau anotasi kustom.
 
-``` {r}
+```{r}
 #| label: go-kegg-run
 #| warning: false
 #| message: false
