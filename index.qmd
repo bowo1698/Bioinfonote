@@ -22,7 +22,7 @@ Bioinfonote adalah catatan belajar penulis dalam bahasa Indonesia untuk membantu
 ::: learning-index-heading
 [MULAI BELAJAR]{.index-label}
 
-## Pilih jalur sesuai tahap Anda.
+## Mau Belajar Apa?
 :::
 
 ::: learning-path
