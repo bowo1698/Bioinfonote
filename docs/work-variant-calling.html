@@ -71,6 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../docs/work-metagenomics.html" rel="prev">
+<link href="../assets/Bioinfonote.svg" rel="icon" type="image/svg+xml">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -314,6 +315,10 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../assets/Bioinfonote.svg" alt="" class="navbar-logo light-content">
+    <img src="../assets/Bioinfonote.svg" alt="" class="navbar-logo dark-content">
+    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Bioinformatic Notes</span>
     </a>
@@ -547,14 +552,14 @@ window.Quarto = {
 <style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Variant calling genom bakteri dengan GATK</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/SNP.png" class="content-image article-hero-image img-fluid figure-img" width="871"></p>
+<p><img src="images/SNP.png" class="content-image article-hero-image img-fluid figure-img" width="936"></p>
 <figcaption>Single Nucleotide Polymorphisms</figcaption>
 </figure>
 </div>
 <section id="daftar-isi" class="level2">
 <h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ol type="1">
-<li><a href="#apa-itu-variant-calling">Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas bai</a>k</li>
+<li><a href="#apa-itu-variant-calling">Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas baik</a></li>
 <li><a href="#persiapan-lingkungan-analisis">Persiapan lingkungan analisis</a></li>
 <li><a href="#persiapan-dataset">Persiapan dataset</a></li>
 <li><a href="#kendali-mutu-reads">Kendali mutu reads</a></li>
@@ -570,7 +575,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="variant-calling">Variant calling: Langkah awal memperoleh informasi genetik individu berkualitas baik</h2>
 <p>Program pemuliaan bertujuan untuk menghasilkan individu dengan kualitas genetik unggul, seperti individu dengan kualitas daging yang lebih baik atau individu dengan tingkat ketahanan penyakit yang tinggi dibandingkan dengan individu lainnya pada suatu populasi. Pada dasarnya, pemuliaan memanfaatkan variasi genetik alami yang telah ada di dalam sebuah populasi. Sebagai contoh, jika individu dengan kualitas daging <em>grade</em> A diketahui memiliki variasi genetik spesifik berupa alel ATC pada kromosom 8, pendekatan genomik dapat digunakan untuk mengidentifikasi individu mana saja yang membawa alel tersebut. Individu yang teridentifikasi kemudian dipilih sebagai calon indukan untuk generasi berikutnya.</p>
 <p><em>Single Nucleotide Polymorphisms</em> (SNP) merupakan marka genetik yang paling umum digunakan untuk menentukan varian mana yang berperan penting dalam proses pemuliaan. Di sinilah proses <em>variant calling</em> menjadi sangat penting. <em>Variant calling</em> berfungsi untuk mengidentifikasi dan mengisolasi SNP dalam suatu populasi berdasarkan hasil sekuensing genom dari banyak individu. Secara teknis, <em>variant calling</em> bekerja dengan menjajarkan (<em>aligning</em>) <em>reads</em> dari berbagai sampel terhadap genom referensi, lalu mengevaluasi apakah perbedaan basa pada posisi tertentu cukup signifikan untuk dikategorikan sebagai varian SNP yang sah.</p>
-<p>Berbagai algoritma dan <em>tools</em> telah dikembangkan untuk melakukan <em>variant calling</em>, salah satunya adalah <strong>GATK HaplotypeCaller</strong>. <em>Tool</em> ini bekerja dengan merekonstruksi <em>haplotype</em> secara <em>de novo</em> pada daerah-daerah yang terindikasi memiliki variasi (<em>active region</em>). Melalui algoritma grafik perakitan (<em>assembly graph</em>), GATK HaplotypeCaller menghitung probabilitas alel dari setiap sampel dan menentukan varian yang paling memungkinkan. Proses ini menghasilkan berkas berformat <em>Variant Call Format</em> (VCF) yang siap digunakan sebagai data input genotipe dalam program pemuliaan berbasis genomik (<em>genomic selection</em>).</p>
+<p>Berbagai algoritma dan <em>tools</em> telah dikembangkan untuk melakukan <em>variant calling</em>, salah satunya adalah <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller"><strong>GATK HaplotypeCaller</strong></a>. <em>Tool</em> ini bekerja dengan merekonstruksi <em>haplotype</em> secara <em>de novo</em> pada daerah-daerah yang terindikasi memiliki variasi (<em>active region</em>). Melalui algoritma grafik perakitan (<em>assembly graph</em>), GATK HaplotypeCaller menghitung probabilitas alel dari setiap sampel dan menentukan varian yang paling memungkinkan. Proses ini menghasilkan berkas berformat <em>Variant Call Format</em> (VCF) yang siap digunakan sebagai data input genotipe dalam program pemuliaan berbasis genomik (<em>genomic selection</em>).</p>
 <p>Pada tutorial ini, kita akan menggunakan <em>Short Read Archive</em> (SRA) dari bakteri <em>Escherichia coli</em> sebagai dataset latihan. Penggunaan data <em>E. coli</em> dilakukan untuk menghemat kapasitas penyimpanan dan meningkatkan efisiensi waktu komputasi, tanpa mengurangi pemahaman mendasar mengenai alur kerja (<em>pipeline</em>) <em>variant calling</em> menggunakan GATK.</p>
 </section>
 <section id="persiapan-lingkungan-analisis" class="level2">
