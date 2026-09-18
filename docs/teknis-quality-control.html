@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -110,7 +117,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -153,6 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -288,6 +458,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -307,13 +483,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#interpretasi" id="toc-interpretasi" class="nav-link" data-scroll-target="#interpretasi">Interpretasi</a></li>
   </ul></li>
-  <li><a href="#kenapa-kualitas-data-sekuensing-bisa-jelek" id="toc-kenapa-kualitas-data-sekuensing-bisa-jelek" class="nav-link" data-scroll-target="#kenapa-kualitas-data-sekuensing-bisa-jelek">Kenapa kualitas data sekuensing bisa jelek?</a></li>
+  <li><a href="#kenapa-kualitas-data-sekuensing-bisa-jelek" id="toc-kenapa-kualitas-data-sekuensing-bisa-jelek" class="nav-link" data-scroll-target="#kenapa-kualitas-data-sekuensing-bisa-jelek">Kenapa kualitas data sekuensing bisa buruk?</a></li>
   <li><a href="#mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" id="toc-mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" class="nav-link" data-scroll-target="#mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp">Mengatasi data sekuensing berkualitas rendah dengan FASTP</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-quality-control.html">Quality control hasil sequencing</a></li></ol></nav>
 <div class="quarto-title">
@@ -334,21 +511,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/teknis-quality-control.html" style="text-decoration: none; color: inherit;"> Quality control hasil sequencing </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://www.integra-biosciences.com/sites/default/files/styles/large/public/images/data-analysis.jpg?itok=DX2veo4F" alt="QC" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Quality control hasil sequencing</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://www.integra-biosciences.com/sites/default/files/styles/large/public/images/data-analysis.jpg?itok=DX2veo4F" class="content-image article-hero-image img-fluid" alt="Ilustrasi analisis dan quality control data"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#apa-itu-quality-control-dan-mengapa-penting">Apa itu quality control dan mengapa penting?</a></li>
 <li><a href="#mendownload-data-sekuen">Mendownload data sekuen</a></li>
@@ -360,15 +526,15 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><strong>Catatan</strong>: Dalam tutorial ini, kita akan bekerja menggunakan pemrograman Bash dalam lingkungan Linux. Anda dapat menggunakan VS code baik untuk melihat dan mengedit script maupun menjalankan script Bash tersebut via terminal.</p>
 </blockquote>
 </section>
-<section id="apa-itu-quality-control-dan-mengapa-penting" class="level1">
-<h1>Apa itu <em>quality control</em> dan mengapa penting?</h1>
+<section id="apa-itu-quality-control-dan-mengapa-penting" class="level2">
+<h2 class="anchored" data-anchor-id="apa-itu-quality-control-dan-mengapa-penting">Apa itu <em>quality control</em> dan mengapa penting?</h2>
 <p>Bayangkan Anda mengambil foto dengan kamera harga ratusan juta, tapi lensa yang digunakan berembun. Hasilnya? Gambar blur yang nyaris tak bisa dilihat. Begitu juga dengan data sekuensing DNA yang kualitasnya buruk—tak peduli seberapa canggih analisisnya, hasilnya tetap tidak akan optimal.</p>
 <p><em>Next-Generation Sequencing</em> (NGS) telah membuka jendela baru untuk mengintip rahasia genetik makhluk hidup. Dalam sekali eksperimen, jutaan fragmen DNA berhasil dibaca! Tapi jumlah besar ini tidak otomatis menjamin kualitas. Seperti memilah berlian dari kerikil, <em>quality contro</em>l (QC) menjadi langkah krusial untuk memastikan data yang kita analisis benar-benar berharga.</p>
 </section>
-<section id="mendownload-data-sekuen" class="level1">
-<h1>Mendownload data sekuen</h1>
+<section id="mendownload-data-sekuen" class="level2">
+<h2 class="anchored" data-anchor-id="mendownload-data-sekuen">Mendownload data sekuen</h2>
 <p>Dalam tutorial ini, kita menggunakan data dari studi oleh <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-15-1149">Robledo et al.&nbsp;(2014)</a> yang meneliti respons transkriptomik ikan turbot (<em>Scophthalmus maximus</em>) terhadap infeksi <em>Enteromyxum scophthalmi</em>, penyebab enteromikosis. Penelitian ini menganalisis perubahan ekspresi gen di ginjal, limpa, dan usus menggunakan RNA-seq berbasis Illumina HiSeq 2000.</p>
-<p>Dataset lengkap dapat diakses melalui <a href="https://www.ebi.ac.uk/ena/browser/view/PRJNA269386">ENA (European Nucleotide Archive)</a> dengan kode proyek PRJNA269386. Karena ukuran total data mencapai sekitar 27 GB, dalam tutorial ini kita hanya menggunakan satu file sequencing yaitu SRR1695153, yang berasal dari organ limpa. Setiap file ini telah dimodifikasi untuk keperluan edukasi, sehingga ukurannya menjadi lebih kecil (60 MB) dan lebih mudah diolah. Bagi yang tertarik mempelajari proses manipulasi data tersebut, kode lengkapnya dapat didownload <a href="../code/fastq_manip.py" download="">di sini</a>.</p>
+<p>Dataset lengkap dapat diakses melalui <a href="https://www.ebi.ac.uk/ena/browser/view/PRJNA269386">ENA (European Nucleotide Archive)</a> dengan kode proyek PRJNA269386. Karena ukuran total data mencapai sekitar 27 GB, dalam tutorial ini kita hanya menggunakan satu file sequencing yaitu SRR1695153, yang berasal dari organ limpa. Setiap file ini telah dimodifikasi untuk keperluan edukasi, sehingga ukurannya menjadi lebih kecil (60 MB) dan lebih mudah diolah. Bagi yang tertarik mempelajari proses manipulasi data tersebut, kode lengkapnya dapat <a href="../code/fastq_manip.py" download="fastq_manip.py">diunduh di sini</a>.</p>
 <p>Buat forlder baru untuk menyimpan dan mendownload file FASTQ yang sudah dikompresi dengan gunzip dengan cara:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -388,8 +554,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><strong>Catatan:</strong> Setiap hasil sequencing yang menggunakan <em>paired-end reads</em> maka akan selalu memiliki 2 file reads (R1 dan R2) untuk setiap sampel.</p>
 </blockquote>
 </section>
-<section id="fastqc-dan-multiqc" class="level1">
-<h1>FASTQC dan MULTIQC</h1>
+<section id="fastqc-dan-multiqc" class="level2">
+<h2 class="anchored" data-anchor-id="fastqc-dan-multiqc">FASTQC dan MULTIQC</h2>
 <p>Setalah data didownload dan pada terminal kita berada di direktori <code>data_fastq/</code>, maka langkah selanjutnya adalah menginstall tools <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FASTQC</a>. FASTQC adalah tool yang digunakan untuk melakukan <em>quality control</em> awal terhadap data <em>sequencing</em>, dengan memberikan ringkasan visual mengenai kualitas base, <em>adapter contamination</em>, <em>overrepresented sequences</em>, dan metrik penting lainnya dalam file FASTQ. Sementara MULTIQC merupakan tools untuk membantu meringkas hasil dari FASTQC, sangat bermanfaat jika kita bekerja dengan banyak data sekuensing.</p>
 <p>Install FASTQC melalui anaconda Python dengan langkah-langkah sebagai berikut:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
@@ -415,12 +581,10 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><strong>Catatan:</strong> Setiap perintah yang menggunakan simbol <code>*</code> diikuti dengan jenis file, misalnya <code>*.fastq.gz</code> maka perintah tersebut akan memproses semua file dengan format .fastq.gz. Teknik ini sangat bermanfaat jika kita ingin memproses banyak file dengan jenis file yang sama.</p>
 </blockquote>
 <p>Setelah menjalankan FASTQC, di dalam folder <code>fastqc/</code> akan terdapat dua jenis file: file berakhiran <code>.html</code> yang berisi laporan visual hasil analisis kualitas, dan file <code>.zip</code> yang berisi data mentah serta detail dari laporan tersebut. Untuk keperluan evaluasi, kita cukup membuka file <code>.html</code> menggunakan browser seperti Chrome atau Safari, maka akan tampil hasil seperti ini.</p>
-<div style="text-align: center;">
-<p><img src="images/fastqc.png" alt="Contoh hasil FASTQC" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="images/fastqc.png" class="content-image img-fluid" style="width:90.0%" alt="Contoh hasil FastQC"></p>
 <p>Anda juga bisa observasi langsung hasil MULTIQC yang dikerjakan untuk semua file FASTQ tanpa tanpa harus menjalankan semua perintah tadi dengan klik link berikut: <a href="results/multiqc_report.html">Hasil MULTIQC</a></p>
-<section id="interpretasi" class="level2">
-<h2 class="anchored" data-anchor-id="interpretasi">Interpretasi</h2>
+<section id="interpretasi" class="level3">
+<h3 class="anchored" data-anchor-id="interpretasi">Interpretasi</h3>
 <p>Hasil FASTQC atau MULTIQC akan menampilakan beberapa hal diantaranya:</p>
 <ol type="1">
 <li><p><strong><em>Basic Statistics</em></strong></p>
@@ -447,22 +611,18 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p>Mengidentifikasi motif pendek yang muncul secara berlebih, yang bisa mengindikasikan kontaminasi atau bias teknis lainnya.</p></li>
 </ol>
 <p>Pada data yang kita kerjakan, terutama yang ditampilkan pada tab “<strong>Status Check</strong>” dalam hasil MULTIQC, metrik seperti <em>Per base sequence quality</em>, <em>Per base sequence content</em>, <em>Per sequence GC content</em>, dan <em>Adapter Content</em>, berwarna merah, mengindikasikan ada MASALAH pada sekuen yang kita kerjakan.</p>
-<div style="text-align: center;">
-<p><img src="images/multiqc.png" alt="Status check MULTIQC" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="images/multiqc.png" class="content-image img-fluid" style="width:90.0%" alt="Status pemeriksaan MultiQC"></p>
 </section>
 </section>
-<section id="kenapa-kualitas-data-sekuensing-bisa-jelek" class="level1">
-<h1>Kenapa kualitas data sekuensing bisa jelek?</h1>
+<section id="kenapa-kualitas-data-sekuensing-bisa-jelek" class="level2">
+<h2 class="anchored" data-anchor-id="kenapa-kualitas-data-sekuensing-bisa-jelek">Kenapa kualitas data sekuensing bisa buruk?</h2>
 <p>Dalam proses sekuensing, salah satu masalah umum yang sering terjadi adalah masuknya sekuan adapter ke dalam hasil pembacaan. Hal ini biasanya disebabkan oleh potongan/fragmen DNA yang terlalu pendek dibandingkan panjang read yang dihasilkan oleh mesin sekuensing. Akibatnya, saat mesin membaca DNA dari kedua arah (<em>paired-end</em>), ia tidak hanya membaca urutan target, tetapi juga melampaui ujung fragmen dan mulai membaca bagian adapter. Seperti ditunjukkan pada gambar di bawah, di mana urutan adapter muncul dalam read karena panjang insert terlalu pendek.</p>
-<div style="text-align: center;">
-<p><img src="images/qc-problem.png" alt="QC Problems" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="images/qc-problem.png" class="content-image img-fluid" style="width:90.0%" alt="Masalah yang terdeteksi pada quality control"></p>
 <p>Urutan adapter sendiri sebenarnya dibutuhkan pada tahap awal proses sekuensing, karena berfungsi sebagai tempat menempel primer dan memungkinkan amplifikasi serta pengikatan ke <em>flow cell</em>. Namun, apabila adapter tidak dihapus dari data mentah, keberadaannya dapat mengganggu proses downstream seperti pemetaan (mapping) atau anotasi. Oleh karena itu, langkah <em>trimming</em> adapter menjadi bagian penting dalam preprocessing data sekuensing, untuk memastikan hanya urutan biologis yang relevan yang dianalisis lebih lanjut.</p>
 <p>Di sisi lain, pada sekuensing <em>long-read</em> seperti Oxford nanophore atau PacBio, tantangan QC berbeda dari teknologi <em>short-read</em> (Illumina). Panjang read menjadi metrik penting, karena read panjang cenderung lebih informatif, meski read yang sangat panjang bisa merupakan artefak. Proses penghapusan adapter juga lebih sulit akibat tingkat kesalahan yang tinggi. Nilai kualitas basa di ujung read sering rendah, dan tidak selalu mencerminkan panjang read, tidak seperti pada platform Illumina.</p>
 </section>
-<section id="mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" class="level1">
-<h1>Mengatasi data sekuensing berkualitas rendah dengan FASTP</h1>
+<section id="mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" class="level2">
+<h2 class="anchored" data-anchor-id="mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp">Mengatasi data sekuensing berkualitas rendah dengan FASTP</h2>
 <p>Dalam contoh data yang kita kerjakan, ada 3 masalah utama:</p>
 <ol type="1">
 <li><p>Kualitas Basis Menurun di Bagian Akhir.</p>
@@ -497,7 +657,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><code>--adapter_sequence=AGATCGGAAGAGC</code> - Menentukan adapter sequence Illumina yang akan dicari dan dihapus dari read. Ini sangat penting karena sampel sekuens kita mengandung sisa adapter.</li>
 <li><code>-l 36</code> - Menyaring hasil akhir agar hanya menyimpan read yang memiliki panjang minimal 36 bp. Sehingga read yang lebih pendek dari ini setelah trimming akan dibuang.</li>
 </ul>
-<p>Untuk automatisasi proses trimming dengan FASTP serta menangani data yang mungkin banyak, saya sudah menyiapkan code bash yang bisa digunakan untuk menangani data <em>paired-end</em> apapun selama memiliki format file *_R1/R2.fastq.gz. Anda bisa download code bash nya <a href="../code/process_paired_fastq.sh" download="">di sini</a> dan menjalankan perintah sebagai berikut:</p>
+<p>Untuk automatisasi proses trimming dengan FASTP serta menangani data yang mungkin banyak, saya sudah menyiapkan code bash yang bisa digunakan untuk menangani data <em>paired-end</em> apapun selama memiliki format file *_R1/R2.fastq.gz. Anda bisa <a href="../code/process_paired_fastq.sh" download="process_paired_fastq.sh">mengunduh kode Bash di sini</a> dan menjalankan perintah sebagai berikut:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x process_paired_fastq.sh</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -513,21 +673,30 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># menjalankan opsi custom misalnya: 8 threat, dengan nilai kualitas minimum 30, panjang minimum read 50, dan menggunakan AGATCGGAAGAGC sebagai adapter</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> process_paired_fastq.sh <span class="at">-i</span> data_fastq/ <span class="at">-o</span> fastq_ready/ <span class="at">-t</span> 8 <span class="at">-q</span> 30 <span class="at">-l</span> 50 <span class="at">-a</span> AGATCGGAAGAGC</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Anda bisa lihat video demonstrasinya di bawah ini.</p>
-<div style="position: relative; padding-bottom: 75%; height: 0; overflow: hidden;">
-<p><iframe src="https://www.youtube.com/embed/UXbhQsSyCr8" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen=""></iframe></p>
-</div>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/UXbhQsSyCr8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 <p>Setelah diperbaiki, hasil pada “Status Check” MULTIQC menjadi sedikit lebih baik, terutama untuk R2. Bisa dilihat <a href="results/multiqc_report2.html">di sini</a></p>
 <p>— Sekian —</p>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -947,7 +1116,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

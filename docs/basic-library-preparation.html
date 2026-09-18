@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -40,10 +43,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -75,7 +82,169 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -118,6 +287,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -253,6 +423,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -277,23 +453,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#fragmentasi-dnarna" id="toc-fragmentasi-dnarna" class="nav-link" data-scroll-target="#fragmentasi-dnarna">Fragmentasi DNA/RNA</a></li>
   <li><a href="#end-repair-dan-da-tailing" id="toc-end-repair-dan-da-tailing" class="nav-link" data-scroll-target="#end-repair-dan-da-tailing">End repair dan dA-tailing</a></li>
   <li><a href="#ligasi-adapter" id="toc-ligasi-adapter" class="nav-link" data-scroll-target="#ligasi-adapter">Ligasi adapter</a></li>
-  <li><a href="#seleksi-ukuran" id="toc-seleksi-ukuran" class="nav-link" data-scroll-target="#seleksi-ukuran">Seleksi ukuran</a></li>
+  </ul></li>
+  <li><a href="#seleksi-ukuran" id="toc-seleksi-ukuran" class="nav-link" data-scroll-target="#seleksi-ukuran">Seleksi ukuran</a>
+  <ul class="collapse">
   <li><a href="#amplifikasi-pcr-opsional" id="toc-amplifikasi-pcr-opsional" class="nav-link" data-scroll-target="#amplifikasi-pcr-opsional">Amplifikasi PCR (opsional)</a></li>
   <li><a href="#validasi-library" id="toc-validasi-library" class="nav-link" data-scroll-target="#validasi-library">Validasi <em>Library</em></a></li>
   </ul></li>
   <li><a href="#jenis-jenis-library-preparation" id="toc-jenis-jenis-library-preparation" class="nav-link" data-scroll-target="#jenis-jenis-library-preparation">Jenis-jenis library preparation</a>
   <ul class="collapse">
-  <li><a href="#berdasarkan-metode-fragmentasi" id="toc-berdasarkan-metode-fragmentasi" class="nav-link" data-scroll-target="#berdasarkan-metode-fragmentasi">Berdasarkan metode fragmentasi</a>
-  <ul class="collapse">
-  <li><a href="#mechanical-fragmentation-libraries" id="toc-mechanical-fragmentation-libraries" class="nav-link" data-scroll-target="#mechanical-fragmentation-libraries"><em>Mechanical fragmentation libraries</em></a></li>
-  <li><a href="#enzymatic-fragmentation-libraries" id="toc-enzymatic-fragmentation-libraries" class="nav-link" data-scroll-target="#enzymatic-fragmentation-libraries"><em>Enzymatic fragmentation libraries</em></a></li>
-  </ul></li>
-  <li><a href="#berdasarkan-teknologi-sekuensing" id="toc-berdasarkan-teknologi-sekuensing" class="nav-link" data-scroll-target="#berdasarkan-teknologi-sekuensing">Berdasarkan teknologi sekuensing</a>
-  <ul class="collapse">
-  <li><a href="#short-read-sequencing-libraries" id="toc-short-read-sequencing-libraries" class="nav-link" data-scroll-target="#short-read-sequencing-libraries"><em>Short-read sequencing libraries</em></a></li>
-  <li><a href="#long-read-sequencing-libraries" id="toc-long-read-sequencing-libraries" class="nav-link" data-scroll-target="#long-read-sequencing-libraries"><em>Long-read sequencing libraries</em></a></li>
-  <li><a href="#single-stranded-libraries" id="toc-single-stranded-libraries" class="nav-link" data-scroll-target="#single-stranded-libraries"><em>Single-stranded libraries</em></a></li>
-  </ul></li>
+  <li><a href="#berdasarkan-metode-fragmentasi" id="toc-berdasarkan-metode-fragmentasi" class="nav-link" data-scroll-target="#berdasarkan-metode-fragmentasi">Berdasarkan metode fragmentasi</a></li>
+  <li><a href="#berdasarkan-teknologi-sekuensing" id="toc-berdasarkan-teknologi-sekuensing" class="nav-link" data-scroll-target="#berdasarkan-teknologi-sekuensing">Berdasarkan teknologi sekuensing</a></li>
   </ul></li>
   <li><a href="#faktor-yang-mempengaruhi-kualitas-library" id="toc-faktor-yang-mempengaruhi-kualitas-library" class="nav-link" data-scroll-target="#faktor-yang-mempengaruhi-kualitas-library">Faktor yang mempengaruhi kualitas <em>library</em></a>
   <ul class="collapse">
@@ -331,6 +500,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-library-preparation.html">Library preparation</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Library preparation</h1>
@@ -350,21 +520,10 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/basic-library-preparation.html" style="text-decoration: none; color: inherit;"> Library preparation </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://cdn.the-scientist.com/assets/articleNo/69901/aImg/45652/lab-scene-epmotion-5073m-the-gripper-tower-an-cmyk-jpg-l.jpg" alt="Library preparation" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Library preparation</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://cdn.the-scientist.com/assets/articleNo/69901/aImg/45652/lab-scene-epmotion-5073m-the-gripper-tower-an-cmyk-jpg-l.jpg" class="content-image article-hero-image img-fluid" alt="Proses persiapan library di laboratorium"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
 <li><a href="#prinsip-dasar-library-preparation">Prinsip dasar library preparation</a></li>
@@ -377,36 +536,36 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><a href="#tips-praktis-untuk-optimasi-library-preparation">Tips praktis untuk optimasi <em>library preparation</em></a></li>
 </ul>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Dalam beberapa tahun terakhir, perkembangan teknologi sekuensing terutama <em>Next-Generation Sequencing</em> (NGS) telah merevolusi cara kita memahami genom organisme dan menganalisis materi genetik. Di antara tahapan kunci dalam proses ini, <em>library preparation</em> (persiapan perpustakaan) memegang peran sentral karena menentukan kualitas hasil sekuensing. Proses ini melibatkan modifikasi DNA/RNA melalui serangkaian langkah biokimia untuk menghasilkan fragmen genetik terorganisir yang siap dibaca oleh mesin sekuensing, mirip seperti buku yang disusun rapi di perpustakaan.</p>
 <p><em>Library preparation</em> menjadi penghubung vital antara sampel biologis mentah dan data genetik yang dapat dianalisis. Tingkat keberhasilan proyek sekuensing sangat bergantung pada kualitas library, sehingga pemahaman mendalam tentang tahapan ini penting bagi peneliti genomik. Artikel ini akan mengulas prinsip dasar, tahapan teknis, variasi metode, serta inovasi terkini dalam <em>library preparation</em>. Pembahasan juga mencakup faktor penentu kualitas library dan strategi optimasi untuk memastikan hasil sekuensing yang akurat dan efisien.</p>
 </section>
-<section id="prinsip-dasar-library-preparation" class="level1">
-<h1>Prinsip dasar <em>library preparation</em></h1>
+<section id="prinsip-dasar-library-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="prinsip-dasar-library-preparation">Prinsip dasar <em>library preparation</em></h2>
 <p>Library preparation pada dasarnya adalah proses mengubah asam nukleat (DNA atau RNA) menjadi bentuk yang kompatibel dengan platform sekuensing. Tujuan utamanya adalah menciptakan kumpulan fragmen asam nukleat yang mewakili sampel asli dengan akurat, sekaligus memiliki struktur yang bisa dikenali dan diproses oleh mesin sekuensing.</p>
-<section id="mengapa-library-preparation-diperlukan" class="level2">
-<h2 class="anchored" data-anchor-id="mengapa-library-preparation-diperlukan">Mengapa <em>library preparation</em> diperlukan?</h2>
+<section id="mengapa-library-preparation-diperlukan" class="level3">
+<h3 class="anchored" data-anchor-id="mengapa-library-preparation-diperlukan">Mengapa <em>library preparation</em> diperlukan?</h3>
 <p>Teknologi sekuensing modern tidak dapat langsung membaca molekul DNA/RNA dalam ukuran penuh. Sebagai contoh, genome manusia terdiri dari sekitar 3 miliar pasang basa, sementara kemampuan teknologi sekuensing saat ini hanya mampu membaca beberapa ratus hingga beberapa ribu basa dalam satu kali proses (tergantung platform yang digunakan). Oleh karena itu, materi genetik perlu dipecah menjadi fragmen-fragmen yang lebih kecil.</p>
 <p>Selain itu, mesin sekuensing membutuhkan struktur khusus pada ujung-ujung fragmen DNA/RNA, seperti adapter (penghubung) dan barcode (penanda). Adapter berfungsi untuk menempelkan fragmen DNA ke permukaan <em>flow cell</em> pada mesin sekuensing, sementara barcode memungkinkan identifikasi sampel ketika beberapa library digabungkan dalam satu run sekuensing (<em>multiplexing</em>).</p>
-<figure style="text-align: center;" class="figure">
-<img src="https://nextgen.mgh.harvard.edu/images/LibStructure.png" alt="Illumina Library Structure" style="width: 85%;" class="figure-img">
-<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
-<strong>Struktur library DNA pada platform Illumina.</strong> Setiap fragmen DNA target memiliki adaptor khusus di kedua ujungnya: adaptor P5 dan P7. Adaptor ini memungkinkan fragmen menempel ke flow cell dan dikenali oleh mesin sekuensing. Selain itu, ada elemen-elemen penting lainnya, seperti primer Rd1 dan Rd2 yang digunakan untuk inisiasi proses sekuensing, Index (barcoding) untuk mengidentifikasi sampel berbeda dalam satu run sekuensing (multiplexing), dan primer index seq untuk membaca bagian index selama sekuensing. <br><em>Sumber gambar:</em> <a href="https://nextgen.mgh.harvard.edu/" target="_blank">Nextgen.mgh.harvard.edu</a>
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://nextgen.mgh.harvard.edu/images/LibStructure.png" class="content-image img-fluid figure-img" style="width:85.0%" alt="Struktur library DNA pada platform Illumina"></p>
+<figcaption><strong>Struktur library DNA pada platform Illumina.</strong> Setiap fragmen DNA target memiliki adaptor khusus di kedua ujungnya: adaptor P5 dan P7. Adaptor ini memungkinkan fragmen menempel ke <em>flow cell</em> dan dikenali oleh mesin sekuensing. Selain itu, ada elemen-elemen penting lainnya, seperti primer Rd1 dan Rd2 yang digunakan untuk inisiasi proses sekuensing, <em>index</em> (<em>barcoding</em>) untuk mengidentifikasi sampel berbeda dalam satu <em>run</em> sekuensing (<em>multiplexing</em>), dan primer <em>index seq</em> untuk membaca bagian <em>index</em> selama sekuensing. <em>Sumber gambar:</em> <a href="https://nextgen.mgh.harvard.edu/">Nextgen.mgh.harvard.edu</a></figcaption>
 </figure>
+</div>
 <p>Kualitas <em>library</em> sangat menentukan kualitas data sekuensing yang dihasilkan. <em>Library preparation</em> yang baik akan menghasilkan fragmen dengan ukuran yang sesuai, distribusi yang merata, dan <em>coverage</em> yang cukup di seluruh genom. Sebaliknya, <em>library preparation</em> yang buruk dapat menyebabkan bias dalam representasi beberapa region genom, coverage yang tidak merata, atau bahkan hilangnya informasi dari region genom tertentu.</p>
 </section>
 </section>
-<section id="tahapan-utama-library-preparation" class="level1">
-<h1>Tahapan utama library preparation</h1>
+<section id="tahapan-utama-library-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="tahapan-utama-library-preparation">Tahapan utama library preparation</h2>
 <p>Meskipun detail proses library preparation bervariasi tergantung pada jenis sampel dan platform sekuensing yang digunakan, secara umum terdapat 7 tahapannya yaitu:</p>
-<section id="ekstraksi-dan-purifikasi-asam-nukleat" class="level2">
-<h2 class="anchored" data-anchor-id="ekstraksi-dan-purifikasi-asam-nukleat">Ekstraksi dan purifikasi asam nukleat</h2>
+<section id="ekstraksi-dan-purifikasi-asam-nukleat" class="level3">
+<h3 class="anchored" data-anchor-id="ekstraksi-dan-purifikasi-asam-nukleat">Ekstraksi dan purifikasi asam nukleat</h3>
 <p>Tahap pertama adalah mendapatkan DNA atau RNA berkualitas tinggi dari sampel biologis. Ini melibatkan pemecahan sel (lisis), pemisahan asam nukleat dari komponen sel lainnya, dan pemurnian untuk menghilangkan kontaminan. Kualitas materi genetik awal sangat memengaruhi keberhasilan tahapan selanjutnya.</p>
 </section>
-<section id="fragmentasi-dnarna" class="level2">
-<h2 class="anchored" data-anchor-id="fragmentasi-dnarna">Fragmentasi DNA/RNA</h2>
+<section id="fragmentasi-dnarna" class="level3">
+<h3 class="anchored" data-anchor-id="fragmentasi-dnarna">Fragmentasi DNA/RNA</h3>
 <p>Pada tahap ini, DNA/RNA dipecah menjadi potongan-potongan yang lebih kecil dengan ukuran yang sesuai untuk platform sekuensing yang digunakan. Fragmentasi dapat dilakukan dengan beberapa metode:</p>
 <ul>
 <li><strong>Fragmentasi fisik</strong>: Menggunakan sonikasi, nebulisasi, atau <em>shearing</em> hidrodinamik.</li>
@@ -415,12 +574,12 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </ul>
 <p>Misalnya, pada protokol persiapan library Illumina, fragmentasi biasanya menghasilkan potongan DNA berukuran 200-800bp yang merupakan ukuran ideal untuk sekuensing jangka pendek (<em>short-read sequencing</em>).</p>
 </section>
-<section id="end-repair-dan-da-tailing" class="level2">
-<h2 class="anchored" data-anchor-id="end-repair-dan-da-tailing">End repair dan dA-tailing</h2>
+<section id="end-repair-dan-da-tailing" class="level3">
+<h3 class="anchored" data-anchor-id="end-repair-dan-da-tailing">End repair dan dA-tailing</h3>
 <p>Fragmentasi sering kali menghasilkan ujung DNA yang tidak rata, sehingga perbaikan (<em>end repairing</em>) pada ujung-ujung DNA ini diperlukan. Tahap <em>end repair</em> melibatkan proses pemotongan dan pengisian untuk menghasilkan ujung tumpul (blunt ends). Selanjutnya, proses dA-tailing dikerjakan untuk menambahkan nukleotida adenin (A) ke ujung 3’ fragmen, yang nantinya akan berpasangan dengan nukleotida timin (T) pada adapter.</p>
 </section>
-<section id="ligasi-adapter" class="level2">
-<h2 class="anchored" data-anchor-id="ligasi-adapter">Ligasi adapter</h2>
+<section id="ligasi-adapter" class="level3">
+<h3 class="anchored" data-anchor-id="ligasi-adapter">Ligasi adapter</h3>
 <p>Adapter, yang merupakan oligonukleotida pendek dengan sekuens khusus, ditambahkan ke kedua ujung fragmen DNA. Adapter ini berfungsi sebagai:</p>
 <ol type="1">
 <li>Tempat menempelnya primer untuk amplifikasi PCR</li>
@@ -428,89 +587,89 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li>Tempat inisiasi reaksi sekuensing</li>
 </ol>
 </section>
+</section>
 <section id="seleksi-ukuran" class="level2">
 <h2 class="anchored" data-anchor-id="seleksi-ukuran">Seleksi ukuran</h2>
 <p>Tahap ini memastikan bahwa fragmen yang akan disekuensing memiliki ukuran yang seragam dan optimal. Seleksi ukuran biasanya dilakukan menggunakan elektroforesis gel, AMPure XP beads, atau metode lainnya. Misalnya, protokol Illumina DNA Prep biasanya menyertakan tahap purifikasi menggunakan AMPure beads untuk memilih fragmen dalam rentang ukuran tertentu.</p>
-</section>
-<section id="amplifikasi-pcr-opsional" class="level2">
-<h2 class="anchored" data-anchor-id="amplifikasi-pcr-opsional">Amplifikasi PCR (opsional)</h2>
+<section id="amplifikasi-pcr-opsional" class="level3">
+<h3 class="anchored" data-anchor-id="amplifikasi-pcr-opsional">Amplifikasi PCR (opsional)</h3>
 <p>Untuk meningkatkan jumlah materi yang tersedia untuk sekuensing, <em>library</em> sering diamplifikasi menggunakan PCR. Tahap ini juga dapat digunakan untuk menambahkan barcode atau indeks ke <em>library</em>, yang memungkinkan <em>multiplexing</em> sampel dalam satu run sekuensing.</p>
 </section>
-<section id="validasi-library" class="level2">
-<h2 class="anchored" data-anchor-id="validasi-library">Validasi <em>Library</em></h2>
+<section id="validasi-library" class="level3">
+<h3 class="anchored" data-anchor-id="validasi-library">Validasi <em>Library</em></h3>
 <p>Sebelum sekuensing, kualitas dan kuantitas <em>library</em> perlu diperiksa menggunakan metode seperti elektroforesis kapiler (Bioanalyzer/TapeStation) dan kuantifikasi fluorometrik (Qubit). Validasi ini memastikan bahwa <em>library</em> memiliki konsentrasi yang cukup, ukuran fragmen yang sesuai, dan tidak mengandung kontaminan seperti dimer adapter.</p>
 <p>Rangkuman proses-proses penting dari <em>library preparation</em> diilustrasikan pada gambar berikut.</p>
-<figure style="text-align: center;" class="figure">
-<img src="images/lib-prep.png" alt="Illumina Library prep" style="width: 85%;" class="figure-img">
-<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
-<strong>Ilustrasi proses library preparation.</strong>. <br><em>Sumber gambar:</em> <a href="https://link.springer.com/book/10.1007/978-3-030-62490-3" target="_blank">NGS and Data Analysis</a>
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/lib-prep.png" class="content-image img-fluid figure-img" style="width:85.0%" alt="Ilustrasi proses library preparation Illumina"></p>
+<figcaption><strong>Ilustrasi proses library preparation.</strong> <em>Sumber gambar:</em> <a href="https://link.springer.com/book/10.1007/978-3-030-62490-3">NGS and Data Analysis</a></figcaption>
 </figure>
+</div>
 </section>
 </section>
-<section id="jenis-jenis-library-preparation" class="level1">
-<h1>Jenis-jenis library preparation</h1>
+<section id="jenis-jenis-library-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="jenis-jenis-library-preparation">Jenis-jenis library preparation</h2>
 <p>Berbagai metode library preparation telah dikembangkan untuk menyesuaikan dengan jenis sampel dan tujuan sekuensing. Beberapa jenis utama meliputi:</p>
-<section id="berdasarkan-metode-fragmentasi" class="level2">
-<h2 class="anchored" data-anchor-id="berdasarkan-metode-fragmentasi">Berdasarkan metode fragmentasi</h2>
-<section id="mechanical-fragmentation-libraries" class="level3">
-<h3 class="anchored" data-anchor-id="mechanical-fragmentation-libraries"><em>Mechanical fragmentation libraries</em></h3>
+<section id="berdasarkan-metode-fragmentasi" class="level3">
+<h3 class="anchored" data-anchor-id="berdasarkan-metode-fragmentasi">Berdasarkan metode fragmentasi</h3>
+<section id="mechanical-fragmentation-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="mechanical-fragmentation-libraries"><em>Mechanical fragmentation libraries</em></h4>
 <p>Menggunakan metode fisik seperti sonikasi (misalnya Covaris) untuk memecah DNA, metode ini menghasilkan fragmen acak dengan ukuran yang relatif seragam tapi membutuhkan peralatan khusus.</p>
 </section>
-<section id="enzymatic-fragmentation-libraries" class="level3">
-<h3 class="anchored" data-anchor-id="enzymatic-fragmentation-libraries"><em>Enzymatic fragmentation libraries</em></h3>
+<section id="enzymatic-fragmentation-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="enzymatic-fragmentation-libraries"><em>Enzymatic fragmentation libraries</em></h4>
 <p>Menggunakan enzim seperti transposase <a href="https://sapac.illumina.com/products/by-type/sequencing-kits/library-prep-kits/nextera-xt-dna.html">(Nextera)</a> atau endonuklease <a href="https://www.neb.com/en-au/products/restriction-endonucleases">(NEBNext)</a> untuk memotong DNA, metode ini lebih sederhana dan cepat, serta memerlukan input DNA yang lebih sedikit, tetapi kemungkinan bias pada sekuens tertentu bisa saja muncul.</p>
 </section>
 </section>
-<section id="berdasarkan-teknologi-sekuensing" class="level2">
-<h2 class="anchored" data-anchor-id="berdasarkan-teknologi-sekuensing">Berdasarkan teknologi sekuensing</h2>
-<section id="short-read-sequencing-libraries" class="level3">
-<h3 class="anchored" data-anchor-id="short-read-sequencing-libraries"><em>Short-read sequencing libraries</em></h3>
+<section id="berdasarkan-teknologi-sekuensing" class="level3">
+<h3 class="anchored" data-anchor-id="berdasarkan-teknologi-sekuensing">Berdasarkan teknologi sekuensing</h3>
+<section id="short-read-sequencing-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="short-read-sequencing-libraries"><em>Short-read sequencing libraries</em></h4>
 <p>Dioptimalkan untuk platform seperti <a href="https://emea.illumina.com/science/technology/next-generation-sequencing/sequencing-technology.html">Illumina</a> yang membaca fragmen pendek (biasanya 75-300bp). <em>Library</em> jenis ini biasanya melibatkan fragmen berukuran 200-800bp dengan adapter di kedua ujungnya.</p>
 </section>
-<section id="long-read-sequencing-libraries" class="level3">
-<h3 class="anchored" data-anchor-id="long-read-sequencing-libraries"><em>Long-read sequencing libraries</em></h3>
+<section id="long-read-sequencing-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="long-read-sequencing-libraries"><em>Long-read sequencing libraries</em></h4>
 <p>Untuk platform seperti <a href="https://www.pacb.com/technology/hifi-sequencing/how-it-works/">PacBio</a> atau <a href="https://nanoporetech.com/platform/technology">Oxford Nanopore</a> yang mampu membaca fragmen panjang (&gt;10kb). Protokol <em>library preparation</em> untuk teknologi ini biasanya lebih sederhana karena menghindari fragmentasi ekstensif, namun sering membutuhkan DNA input dengan kualitas sangat tinggi. Selain itu, tingkat error reads yang dihasilkan jauh lebih tinggi daripada short-reads meskipun masih bisa ditangani dengan teknik trimming.</p>
 </section>
-<section id="single-stranded-libraries" class="level3">
-<h3 class="anchored" data-anchor-id="single-stranded-libraries"><em>Single-stranded libraries</em></h3>
+<section id="single-stranded-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="single-stranded-libraries"><em>Single-stranded libraries</em></h4>
 <p>Digunakan terutama untuk sampel dengan DNA/RNA yang sangat terdegradasi, seperti sampel <em>ancient</em> DNA atau <em>formalin-fixed paraffin-embedded</em> (FFPE). Metode ini, seperti yang dikembangkan oleh <a href="https://doi.org/10.1038/s41596-020-0338-0">Gansauge et al.&nbsp;(2020)</a>, bekerja dengan DNA untai tunggal, meningkatkan recovery dari sampel berkualitas rendah.</p>
 </section>
 </section>
 </section>
-<section id="faktor-yang-mempengaruhi-kualitas-library" class="level1">
-<h1>Faktor yang mempengaruhi kualitas <em>library</em></h1>
+<section id="faktor-yang-mempengaruhi-kualitas-library" class="level2">
+<h2 class="anchored" data-anchor-id="faktor-yang-mempengaruhi-kualitas-library">Faktor yang mempengaruhi kualitas <em>library</em></h2>
 <p>Beberapa faktor kunci yang memengaruhi kualitas library DNA/RNA meliputi:</p>
-<section id="kualitas-dan-kuantitas-sampel-awal" class="level2">
-<h2 class="anchored" data-anchor-id="kualitas-dan-kuantitas-sampel-awal">Kualitas dan kuantitas sampel awal</h2>
+<section id="kualitas-dan-kuantitas-sampel-awal" class="level3">
+<h3 class="anchored" data-anchor-id="kualitas-dan-kuantitas-sampel-awal">Kualitas dan kuantitas sampel awal</h3>
 <p>DNA/RNA berkualitas tinggi dengan integritas baik adalah kunci keberhasilan <em>library preparation</em>. Sampel yang terdegradasi dapat menyebabkan <em>coverage</em> yang tidak merata dan representasi yang bias. Jumlah material awal juga penting, karena terlalu sedikit input dapat menghasilkan library dengan kompleksitas rendah, sementara input berlebihan dapat menyebabkan masalah dalam tahapan purifikasi.</p>
 </section>
-<section id="metode-fragmentasi" class="level2">
-<h2 class="anchored" data-anchor-id="metode-fragmentasi">Metode fragmentasi</h2>
+<section id="metode-fragmentasi" class="level3">
+<h3 class="anchored" data-anchor-id="metode-fragmentasi">Metode fragmentasi</h3>
 <p>Metode fragmentasi yang berbeda bisa menghasilkan bias berbeda. Sonikasi cenderung menghasilkan fragmentasi yang lebih acak, sementara metode enzimatik mungkin lebih bias terhadap sekuens tertentu. Misalnya, transposase yang digunakan dalam library preparation Nextera cenderung memiliki preferensi terhadap region dengan kandungan GC tertentu.</p>
 </section>
-<section id="siklus-pcr" class="level2">
-<h2 class="anchored" data-anchor-id="siklus-pcr">Siklus PCR</h2>
+<section id="siklus-pcr" class="level3">
+<h3 class="anchored" data-anchor-id="siklus-pcr">Siklus PCR</h3>
 <p>Terlalu banyak siklus PCR dapat meningkatkan bias dan duplikasi artifisial. Sehingga, jumlah siklus PCR harus dioptimalkan berdasarkan jumlah input DNA dan sensitivitas metode sekuensing. Beberapa protokol bahkan berusaha menghindari amplifikasi PCR sama sekali untuk mengurangi bias (<a href="https://sapac.illumina.com/products/by-type/sequencing-kits/library-prep-kits/dna-pcr-free-prep.html">PCR-<em>free libraries</em></a>).</p>
 </section>
-<section id="kandungan-gc-sampel" class="level2">
-<h2 class="anchored" data-anchor-id="kandungan-gc-sampel">Kandungan GC sampel</h2>
+<section id="kandungan-gc-sampel" class="level3">
+<h3 class="anchored" data-anchor-id="kandungan-gc-sampel">Kandungan GC sampel</h3>
 <p>Sampel dengan kandungan GC ekstrem (terlalu tinggi atau terlalu rendah) bisa mengalami bias saat amplifikasi PCR atau selama sekuensing. Sebagai contoh, penelitian menunjukkan bahwa library preparation menggunakan protokol Nextera XT menghasilkan bias terutama untuk bakteri dengan kandungan GC rendah, sementara protokol enzimatik seperti <a href="https://rochesequencingstore.com/catalog/kapa-hyper-plus-kit/">KAPA HyperPlus</a> dan NEBNext Ultra II FS menunjukkan bias GC yang lebih rendah.</p>
 </section>
-<section id="kontaminan-dan-inhibitor" class="level2">
-<h2 class="anchored" data-anchor-id="kontaminan-dan-inhibitor">Kontaminan dan inhibitor</h2>
+<section id="kontaminan-dan-inhibitor" class="level3">
+<h3 class="anchored" data-anchor-id="kontaminan-dan-inhibitor">Kontaminan dan inhibitor</h3>
 <p>Kehadiran kontaminan seperti fenol, etanol, EDTA, atau protein bisa mengganggu efisiensi enzim yang digunakan dalam <em>library preparation</em>. Pemurnian sampel yang baik sangat penting untuk menghindari masalah ini.</p>
 </section>
 </section>
-<section id="library-preparation-untuk-berbagai-jenis-sekuensing" class="level1">
-<h1><em>Library</em> preparation untuk berbagai jenis sekuensing</h1>
-<section id="library-untuk-dna-sekuensing" class="level2">
-<h2 class="anchored" data-anchor-id="library-untuk-dna-sekuensing">Library untuk DNA sekuensing</h2>
+<section id="library-preparation-untuk-berbagai-jenis-sekuensing" class="level2">
+<h2 class="anchored" data-anchor-id="library-preparation-untuk-berbagai-jenis-sekuensing"><em>Library</em> preparation untuk berbagai jenis sekuensing</h2>
+<section id="library-untuk-dna-sekuensing" class="level3">
+<h3 class="anchored" data-anchor-id="library-untuk-dna-sekuensing">Library untuk DNA sekuensing</h3>
 <p>Library untuk DNA sequencing dirancang untuk menangkap informasi dari seluruh genom atau region target. Untuk whole genome sequencing (WGS), fragmentasi acak diikuti dengan ligasi adapter adalah pendekatan umum. Untuk targeted sequencing, tahap pengayaan (enrichment) diperlukan, baik melalui PCR multiplex atau capture hybridization.</p>
 <p>Salah satu contoh <em>library preparation</em> kit yang populer untuk DNA sequencing adalah Illumina DNA Prep (sebelumnya dikenal sebagai Nextera DNA Flex), yang menggunakan teknologi <a href="https://doi.org/10.1186/s12864-018-5096-9"><em>bead-linked transposase</em></a> untuk fragmentasi dan tagmentasi DNA secara bersamaan, menyederhanakan workflow dan mengurangi bias.</p>
 </section>
-<section id="library-untuk-rna-sekuensing" class="level2">
-<h2 class="anchored" data-anchor-id="library-untuk-rna-sekuensing">Library untuk RNA sekuensing</h2>
+<section id="library-untuk-rna-sekuensing" class="level3">
+<h3 class="anchored" data-anchor-id="library-untuk-rna-sekuensing">Library untuk RNA sekuensing</h3>
 <p>RNA sequencing (RNA-seq) memerlukan konversi RNA menjadi cDNA melalui transkripsi balik. Tergantung pada aplikasi, <em>library preparation</em> untuk RNA-seq bisa difokuskan pada:</p>
 <ul>
 <li>mRNA: Menggunakan seleksi poly-A untuk memperkaya mRNA</li>
@@ -519,18 +678,18 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </ul>
 <p>Salah satu inovasi baru dalam <em>library preparation</em> untuk RNA-seq adalah TIRE-seq (<em>Turbocapture Integrated RNA Expression Sequencing</em>) yang mengintegrasikan purifikasi mRNA langsung ke dalam persiapan <em>library</em>, menghilangkan kebutuhan untuk langkah ekstraksi RNA terpisah. Pendekatan yang diperkenalkan oleh <a href="https://doi.org/10.1038/s41598-025-98282-8">O’Keeffe et al.&nbsp;(2025)</a> ini menyederhanakan alur kerja, mengurangi waktu, dan meminimalkan kehilangan sampel.</p>
 </section>
-<section id="library-untuk-single-cell-sekuensing" class="level2">
-<h2 class="anchored" data-anchor-id="library-untuk-single-cell-sekuensing"><em>Library</em> untuk single-cell sekuensing</h2>
+<section id="library-untuk-single-cell-sekuensing" class="level3">
+<h3 class="anchored" data-anchor-id="library-untuk-single-cell-sekuensing"><em>Library</em> untuk single-cell sekuensing</h3>
 <p><em>Single-cell sequencing</em> memerlukan pendekatan khusus karena jumlah material genetik yang sangat terbatas dari sel tunggal. Teknologi seperti <a href="https://www.10xgenomics.com/blog/the-next-generation-of-single-cell-rna-seq-an-introduction-to-gem-x-technology">10x Genomics Chromium</a> menggunakan <em>droplet-based microfluidics</em> untuk mengisolasi sel individual dan menghasilkan <em>library</em> dengan barcode unik untuk setiap sel.</p>
 <p>Kemudian, protocol seperti <a href="https://doi.org/10.1038/nprot.2014.006">Smart-seq2</a> dirancang khusus untuk sensitivitas tinggi dengan input sangat rendah, ideal untuk aplikasi single-cell. Protocol ini menggunakan <em>template-switching oligo</em> (TSO) untuk menangkap transkriptom lengkap dari sel individual.</p>
 </section>
-<section id="library-untuk-long-read-ssekuensing" class="level2">
-<h2 class="anchored" data-anchor-id="library-untuk-long-read-ssekuensing"><em>Library</em> untuk long-read Ssekuensing</h2>
+<section id="library-untuk-long-read-ssekuensing" class="level3">
+<h3 class="anchored" data-anchor-id="library-untuk-long-read-ssekuensing"><em>Library</em> untuk long-read Ssekuensing</h3>
 <p>Teknologi <em>long-read</em> seperti PacBio dan Oxford Nanopore memerlukan pendekatan <em>library preparation</em> yang berbeda. Fragmen DNA panjang dipertahankan, dengan fragmentasi minimal atau tanpa fragmentasi sama sekali. <em>Library preparation</em> untuk Oxford Nanopore, misalnya, bisa sesederhana menambahkan adapter ke ujung fragmen DNA panjang menggunakan motor protein khusus.</p>
 </section>
 </section>
-<section id="otomatisasi-dalam-library-preparation" class="level1">
-<h1>Otomatisasi dalam <em>library</em> preparation</h1>
+<section id="otomatisasi-dalam-library-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="otomatisasi-dalam-library-preparation">Otomatisasi dalam <em>library</em> preparation</h2>
 <p>Otomatisasi telah menjadi tren penting dalam <em>library preparation</em>, terutama untuk laboratorium dengan <em>throughput</em> tinggi. Sistem otomatis dapat meningkatkan repreducibility, mengurangi variasi antar operator, dan menghemat waktu.</p>
 <p>Beberapa platform otomatisasi yang populer untuk <em>library preparation</em> meliputi:</p>
 <ul>
@@ -546,58 +705,58 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li>Volume sampel minimum: Platform otomatisasi mungkin memerlukan volume minimum yang lebih tinggi dibandingkan protokol manual</li>
 </ul>
 </section>
-<section id="panduan-praktis-memilih-metode" class="level1">
-<h1>Panduan praktis memilih metode</h1>
+<section id="panduan-praktis-memilih-metode" class="level2">
+<h2 class="anchored" data-anchor-id="panduan-praktis-memilih-metode">Panduan praktis memilih metode</h2>
 <p><em>Library preparation</em> merupakan langkah krusial dalam analisis genomik yang menentukan keberhasilan dan kualitas data yang dihasilkan. Pemilihan metode yang tepat perlu disesuaikan dengan kebutuhan spesifik studi dan karakteristik sampel. Berikut panduan komprehensif untuk memilih metode <em>library preparation</em> yang optimal untuk berbagai aplikasi genomik.</p>
-<section id="pertimbangan-sampel-dalam-pemilihan-metode" class="level2">
-<h2 class="anchored" data-anchor-id="pertimbangan-sampel-dalam-pemilihan-metode">Pertimbangan sampel dalam pemilihan metode</h2>
+<section id="pertimbangan-sampel-dalam-pemilihan-metode" class="level3">
+<h3 class="anchored" data-anchor-id="pertimbangan-sampel-dalam-pemilihan-metode">Pertimbangan sampel dalam pemilihan metode</h3>
 <p>Jenis dan kualitas sampel sangat memengaruhi pemilihan metode <em>library preparation</em>. Untuk DNA genomik berkualitas tinggi, metode seperti PCR-<em>free library preparation</em> dapat menjadi pilihan ideal karena meminimalkan bias amplifikasi dan menghasilkan cakupan yang lebih seragam pada genom. Sementara itu, sampel terdegradasi seperti FFPE memerlukan protokol khusus dengan fragmentasi minimal dan tahap perbaikan DNA untuk memaksimalkan recovery.</p>
 <p>Kuantitas sampel juga menjadi faktor penentu. Sampel dengan jumlah nanogram hingga mikrogram dapat menggunakan protokol standar, sedangkan sampel dengan jumlah pikogram memerlukan metode dengan amplifikasi khusus seperti MALBAC (<em>Multiple Annealing and Looping-Based Amplification Cycles</em>) atau metode berbasis tagmentasi untuk memaksimalkan efisiensi konversi <em>library</em>.</p>
 </section>
-<section id="aplikasi-reference-genome-dan-de-novo-assembly" class="level2">
-<h2 class="anchored" data-anchor-id="aplikasi-reference-genome-dan-de-novo-assembly">Aplikasi <em>reference genome</em> dan <em>de novo assembly</em></h2>
+<section id="aplikasi-reference-genome-dan-de-novo-assembly" class="level3">
+<h3 class="anchored" data-anchor-id="aplikasi-reference-genome-dan-de-novo-assembly">Aplikasi <em>reference genome</em> dan <em>de novo assembly</em></h3>
 <p>Untuk studi <em>reference genome</em> dan <em>de novo assembly</em>, dibutuhkan metode <em>library preparation</em> yang menghasilkan cakupan seragam dengan bias minimal. Pendekatan PCR-free sangat direkomendasikan untuk menghindari distorsi pada representasi sekuens, terutama di daerah yang kaya GC atau AT. Kombinasi antara <em>library short-read</em> (seperti Illumina PCR-free) dan <em>long-read</em> (PacBio HiFi atau Oxford Nanopore) sudah terbukti sangat efektif untuk menghasilkan <em>assembly</em> berkualitas tinggi.</p>
 <p><em>Long-read</em> <em>library preparation</em> seperti SMRTbell (PacBio) atau <em>ligation-based library</em> (Oxford Nanopore) memungkinkan resolusi region berulang dan struktural varian yang sulit dideteksi dengan <em>short-read</em> saja. Hal ini penting untuk menghasilkan <em>assembly</em> yang akurat dan berkelanjutan, terutama untuk genom kompleks dengan banyak elemen berulang.</p>
 </section>
-<section id="rna-seq-dan-analisis-transkriptom" class="level2">
-<h2 class="anchored" data-anchor-id="rna-seq-dan-analisis-transkriptom">RNA-seq dan analisis transkriptom</h2>
+<section id="rna-seq-dan-analisis-transkriptom" class="level3">
+<h3 class="anchored" data-anchor-id="rna-seq-dan-analisis-transkriptom">RNA-seq dan analisis transkriptom</h3>
 <p>Studi transkriptom memerlukan metode <em>library preparation</em> yang menjaga integritas dan representasi proporsional dari transkrip. Untuk RNA-Seq standar, metode berbasis rRNA-<em>depletion</em> cocok untuk semua jenis RNA termasuk <em>non-coding</em> RNA, sementara seleksi poly-A berfokus pada mRNA dan ekonomis untuk studi ekspresi gen. <em>Library preparation stranded</em> sangat direkomendasikan karena memberikan informasi orientasi transkrip, penting untuk identifikasi <em>antisense transcription</em> dan <em>overlapping genes</em>.</p>
 <p>Untuk transkriptom lengkap, metode yang menjaga <em>full-length</em> mRNA seperti TruSeq Stranded Total RNA dengan Ribo-Zero atau NEBNext Ultra II Directional RNA sangat berguna. Hal ini memfasilitasi identifikasi isoform alternatif dan splice variants, memberikan pemahaman yang lebih komprehensif tentang kompleksitas transkriptom.</p>
 </section>
-<section id="metagenomics-dan-analisis-komunitas-mikroba" class="level2">
-<h2 class="anchored" data-anchor-id="metagenomics-dan-analisis-komunitas-mikroba">Metagenomics dan analisis komunitas mikroba</h2>
+<section id="metagenomics-dan-analisis-komunitas-mikroba" class="level3">
+<h3 class="anchored" data-anchor-id="metagenomics-dan-analisis-komunitas-mikroba">Metagenomics dan analisis komunitas mikroba</h3>
 <p>Studi metagenomik membutuhkan metode <em>library preparation</em> yang mampu menangkap keragaman genetik dari komunitas mikroba secara proporsional. Metode berbasis PCR-free sangat direkomendasikan untuk menghindari bias amplifikasi terhadap taksa tertentu. Untuk sampel dengan biomassa rendah, pendekatan tagmentasi seperti Nextera XT dapat memaksimalkan jumlah DNA yang dikonversi menjadi library.</p>
 <p>Kombinasi sekuensing shotgun dan amplikon (seperti 16S rRNA untuk bakteri atau ITS untuk fungi) memberikan resolusi taksonomi yang lebih baik. Di sisi lain, protokol seperti SMRTbell dari PacBio untuk <em>long-read sequencing</em> memungkinkan perakitan genom mikroba lengkap dari sampel metagenomik, memfasilitasi analisis fungsional yang lebih mendalam dan pemahaman tentang interaksi antar mikroba dalam komunitas.</p>
 </section>
-<section id="epigenetics-dan-modifikasi-dnahiston" class="level2">
-<h2 class="anchored" data-anchor-id="epigenetics-dan-modifikasi-dnahiston">Epigenetics dan modifikasi DNA/Histon</h2>
+<section id="epigenetics-dan-modifikasi-dnahiston" class="level3">
+<h3 class="anchored" data-anchor-id="epigenetics-dan-modifikasi-dnahiston">Epigenetics dan modifikasi DNA/Histon</h3>
 <p>Untuk studi epigenetik, metode <em>library preparation</em> harus mempertahankan modifikasi DNA atau pola protein histon yang menjadi target analisis. Untuk <em>bisulfite sequencing</em> yang menganalisis metilasi DNA, protokol <em>post-bisulfite adaptor tagging</em> (PBAT) atau Zymo Pico Methyl-Seq sangat efektif untuk sampel dengan input rendah, sementara metode seperti WGBS (<em>Whole Genome Bisulfite Sequencing</em>) memberikan resolusi tingkat basa untuk metilasi genom lengkap.</p>
 <p>Untuk ChIP-Seq yang menganalisis interaksi protein-DNA, metode seperti ThruPLEX atau NEBNext Ultra II DNA menawarkan sensitivitas tinggi untuk input rendah dari <em>immunoprecipitated</em> DNA. Kemudian, protokol ATAC-Seq untuk analisis aksesibilitas kromatin menggunakan tagmentasi untuk secara simultan memfragmentasi DNA dan menambahkan adaptor, memberikan efisiensi tinggi untuk sampel dengan jumlah sel terbatas.</p>
 </section>
-<section id="selective-breeding-dan-genomic-selection" class="level2">
-<h2 class="anchored" data-anchor-id="selective-breeding-dan-genomic-selection"><em>Selective breeding</em> dan <em>genomic selection</em></h2>
+<section id="selective-breeding-dan-genomic-selection" class="level3">
+<h3 class="anchored" data-anchor-id="selective-breeding-dan-genomic-selection"><em>Selective breeding</em> dan <em>genomic selection</em></h3>
 <p>Program pemuliaan selektif memerlukan genotipe yang akurat dan murah untuk seleksi berbasis genom. Metode <em>library preparation</em> seperti GBS (<em>Genotyping-by-Sequencing</em>) atau RAD-Seq sangat cocok karena mengurangi kompleksitas genom dengan menyekat fragmen DNA menggunakan enzim restriksi, memungkinkan genotipe berbiaya rendah pada populasi besar untuk program pemuliaan.</p>
 <p>Untuk studi transmisi alel dalam keluarga atau populasi, pendekatan <em>parent-progeny sequencing</em> memerlukan metode <em>library preparation</em> dengan <em>error rate</em> rendah seperti TruSeq DNA PCR-free untuk meminimalkan genotyping error. Konsistensi metode dalam seluruh cohort penting untuk menghindari <em>batch effect</em> yang dapat mengaburkan sinyal seleksi dalam analisis genetik populasi.</p>
 </section>
-<section id="gwas-genome-wide-association-study" class="level2">
-<h2 class="anchored" data-anchor-id="gwas-genome-wide-association-study">GWAS (<em>genome wide association study</em>)</h2>
+<section id="gwas-genome-wide-association-study" class="level3">
+<h3 class="anchored" data-anchor-id="gwas-genome-wide-association-study">GWAS (<em>genome wide association study</em>)</h3>
 <p>Studi GWAS memerlukan genotipe berkualitas tinggi pada ribuan hingga jutaan varian dalam populasi besar. Untuk <em>low-coverage sequencing</em> GWAS, metode <em>library preparation</em> dengan biaya rendah dan <em>multiplexing</em> tinggi seperti Illumina DNA Prep dengan Nextera technology atau metode berbasis enzim seperti KAPA HyperPlus sangat efisien.</p>
 <p>Di sisi lain, konsistensi dalam persiapan sampel sangat penting untuk menghindari stratifikasi populasi artifisial yang dapat menyebabkan asosiasi palsu. Metode berbasis panel seperti Illumina Infinium atau Affymetrix Axiom dapat lebih hemat biaya untuk studi skala besar, namun memiliki keterbatasan dalam hal fleksibilitas varian yang dapat dideteksi.</p>
 </section>
-<section id="single-cell-rna-seq-study" class="level2">
-<h2 class="anchored" data-anchor-id="single-cell-rna-seq-study">Single-cell RNA-seq study</h2>
+<section id="single-cell-rna-seq-study" class="level3">
+<h3 class="anchored" data-anchor-id="single-cell-rna-seq-study">Single-cell RNA-seq study</h3>
 <p>Analisis tingkat sel tunggal memerlukan metode <em>library preparation</em> khusus yang dapat menangani jumlah RNA sangat rendah sambil mempertahankan kompleksitas transkriptom. Protokol seperti Smart-seq2 atau Smart-seq3 sangat baik untuk sensitivitas tinggi dan cakupan <em>full-length transcript</em>, ideal untuk mendeteksi varian splicing dan isoform pada tingkat sel tunggal.</p>
 <p>Untuk throughput tinggi, metode berbasis droplet seperti 10x Genomics Chromium menggunakan barcode sel untuk secara simultan memproses ribuan sel, cocok untuk pemetaan heterogenitas populasi sel dalam jaringan. Sementara itu, metode dengan molecular barcoding seperti CITE-seq memungkinkan deteksi simultan RNA dan protein permukaan sel, memperkaya karakterisasi fenotipik sel.</p>
 </section>
-<section id="pertimbangan-platform-sekuensing" class="level2">
-<h2 class="anchored" data-anchor-id="pertimbangan-platform-sekuensing">Pertimbangan <em>platform</em> sekuensing</h2>
+<section id="pertimbangan-platform-sekuensing" class="level3">
+<h3 class="anchored" data-anchor-id="pertimbangan-platform-sekuensing">Pertimbangan <em>platform</em> sekuensing</h3>
 <p>Pemilihan <em>platform</em> sekuensing harus diintegrasikan dalam keputusan metode <em>library preparation</em>. Illumina memerlukan adaptor P5/P7 dan ukuran <em>insert</em> yang optimal (biasanya 300-500 bp), sementara PacBio SMRT sequencing membutuhkan <em>prepcircular</em> SMRTbell <em>templates</em>. Oxford Nanopore membutuhkan adaptor khusus dengan motor protein untuk translokasi molekul DNA melalui nanopore.</p>
 <p>Panjang <em>reads</em> juga memengaruhi pilihan metode. <em>Short-read sequencing</em> (Illumina) memerlukan fragmentasi yang terkontrol untuk ukuran <em>insert</em> yang konsisten, sementara <em>long-read sequencing</em> (PacBio, Oxford Nanopore) membutuhkan metode isolasi DNA dengan <em>shearing</em> minimal untuk memaksimalkan panjang fragmen.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 18%">
-<col style="width: 58%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 53%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -721,15 +880,15 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </table>
 </section>
 </section>
-<section id="tips-praktis-untuk-optimasi-library-preparation" class="level1">
-<h1>Tips praktis untuk optimasi <em>library preparation</em></h1>
+<section id="tips-praktis-untuk-optimasi-library-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="tips-praktis-untuk-optimasi-library-preparation">Tips praktis untuk optimasi <em>library preparation</em></h2>
 <p><em>Quality control</em> yang ketat pada setiap tahap persiapan <em>library</em> sangat penting, termasuk validasi integritas DNA/RNA input, pengukuran distribusi ukuran fragmen, dan kuantifikasi <em>library</em> akhir menggunakan metode sensitif seperti qPCR. Minimalisasi siklus PCR sangat direkomendasikan untuk mengurangi error rate dan bias amplifikasi.</p>
 <p>Otomatisasi persiapan <em>library</em> menggunakan platform seperti Hamilton, Beckman, atau Agilent Bravo dapat meningkatkan konsistensi dan throughput untuk studi skala besar. Pilot study untuk membandingkan beberapa metode <em>library preparation</em> di sisi lain akan sangat berguna untuk mengoptimalkan protokol sebelum menginvestasikan sumber daya penuh dalam proyek sekuensing berskala besar.</p>
 <p>Dengan mempertimbangkan faktor-faktor di atas dan mencocokkan metode <em>library preparation</em> dengan kebutuhan spesifik studi, peneliti dapat memaksimalkan kualitas dan kegunaan data genomik yang dihasilkan, memfasilitasi penemuan biologis yang bermakna dan aplikasi klinis yang berdampak.</p>
 <p>— Sekian —</p>
 </section>
-<section id="referensi" class="level1">
-<h1>Referensi</h1>
+<section id="referensi" class="level2">
+<h2 class="anchored" data-anchor-id="referensi">Referensi</h2>
 <ul>
 <li><a href="https://doi.org/10.1007/978-3-030-62490-3">Melanie Kappelmann-Fenzl. (2021). NGS and Data Analysis. Springer Cham</a></li>
 <li><a href="https://doi.org/10.1186/s12864-025-11598-7">Bearzatto, B., et al.&nbsp;Rapid, user-friendly, cost-effective DNA and library Preparation methods for whole-genome sequencing of bacteria with varying cell wall composition and GC content using minimal DNA on the illumina platform. BMC Genomics 2025;26(1):396.</a></li>
@@ -747,16 +906,27 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><a href="https://doi.org/10.1038/nmeth.1270">Quail, M.A., et al.&nbsp;A large genome center’s improvements to the Illumina sequencing system. Nature Methods 2008;5(12):1005-1010.</a></li>
 <li><a href="https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2022.944770">Segerman, B., et al.&nbsp;The efficiency of Nextera XT tagmentation depends on G and C bases in the binding motif leading to uneven coverage in bacterial species with low and neutral GC-content. Frontiers in Microbiology 2022;Volume 13 - 2022.</a></li>
 </ul>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1176,7 +1346,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

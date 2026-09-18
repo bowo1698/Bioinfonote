@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -110,7 +117,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -153,6 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -288,6 +458,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -339,6 +515,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">RNA-Seq workflow</h1>
@@ -358,21 +535,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/work-RNA-seq.html" style="text-decoration: none; color: inherit;"> RNA-Seq: Dari reads ke ekspresi gen </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://www.marketresearchintellect.com/images/blogs/rising-tide-the-surge-of-farmed-whiteleg-shrimps-in-global-aquaculture.webp" alt="RNA-seq" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>RNA-Seq workflow</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://www.marketresearchintellect.com/images/blogs/rising-tide-the-surge-of-farmed-whiteleg-shrimps-in-global-aquaculture.webp" class="content-image article-hero-image img-fluid" alt="Udang vanamei dalam sistem akuakultur"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#apa-itu-studi-rna-seq">Apa itu studi RNA-seq?</a></li>
 <li><a href="#tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</a></li>
@@ -387,75 +553,75 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><strong>Catatan.</strong> Seluruh tutorial ini dapat dijalankan langsung di komputer biasa karena memakai data demo berukuran kecil. Kita memakai Bash untuk tahap <em>alignment</em> dan kuantifikasi, lalu R untuk analisis ekspresi diferensial, dan Anda dapat memakai VS Code untuk mengedit serta menjalankan skrip melalui terminal. Pada penelitian nyata dengan data berukuran puluhan GB, tahap <em>alignment</em> dan kuantifikasi menuntut waktu serta sumber daya komputasi yang jauh lebih besar.</p>
 </blockquote>
 </section>
-<section id="apa-itu-studi-rna-seq" class="level1">
-<h1>Apa itu studi RNA-Seq?</h1>
-<section id="menyelami-percakapan-genetik" class="level2">
-<h2 class="anchored" data-anchor-id="menyelami-percakapan-genetik">Menyelami percakapan genetik</h2>
+<section id="apa-itu-studi-rna-seq" class="level2">
+<h2 class="anchored" data-anchor-id="apa-itu-studi-rna-seq">Apa itu studi RNA-Seq?</h2>
+<section id="menyelami-percakapan-genetik" class="level3">
+<h3 class="anchored" data-anchor-id="menyelami-percakapan-genetik">Menyelami percakapan genetik</h3>
 <p>RNA sequencing (RNA-seq) adalah teknologi sekuensing generasi baru yang memungkinkan kita “mendengar” aktivitas gen dalam sel untuk mengetahui gen mana yang aktif, seberapa besar ekspresinya, dan bagaimana ekspresi itu berubah dalam berbagai kondisi biologis. Tidak seperti microarray yang hanya mendeteksi gen yang telah diketahui sebelumnya, RNA-seq memetakan seluruh transkriptom (semua RNA yang aktif dalam sel pada waktu tertentu), termasuk RNA langka dan varian splicing baru yang belum pernah teridentifikasi.</p>
 <p>Teknologi ini telah merevolusi biologi molekuler dengan menghadirkan gambaran menyeluruh tentang dinamika ekspresi gen, baik pada level jaringan maupun, lebih baru lagi, pada level sel tunggal melalui pendekatan <em>single-cell</em> RNA-seq. Pendekatan ini membuka jendela terhadap keragaman seluler yang sebelumnya tersembunyi, memungkinkan identifikasi tipe sel baru, jalur diferensiasi, dan respons sel spesifik terhadap lingkungan.</p>
 </section>
-<section id="mengapa-penting-untuk-akuakultur" class="level2">
-<h2 class="anchored" data-anchor-id="mengapa-penting-untuk-akuakultur">Mengapa penting untuk akuakultur?</h2>
+<section id="mengapa-penting-untuk-akuakultur" class="level3">
+<h3 class="anchored" data-anchor-id="mengapa-penting-untuk-akuakultur">Mengapa penting untuk akuakultur?</h3>
 <p>Dalam konteks akuakultur, RNA-seq menjadi alat yang strategis dan canggih untuk memahami bagaimana respon organisme budidaya terhadap suatu kondisi tertentu, misalnya stres, penyakit, pakan, serta kondisi lingkungan secara molekuler. Sehingga kita dapat mengungkap gen-gen yang terlibat dalam imunitas, pertumbuhan, metabolisme, hingga adaptasi terhadap budidaya intensif.</p>
 <p>Penerapannya mencakup identifikasi biomarker untuk deteksi dini penyakit, seleksi genomik berbasis ekspresi gen, optimalisasi pakan, pengembangan strain unggul, hingga penerapan <em>gene editing</em> (CRISPR). Misalnya, dengan menggunakan <em>single-cell</em> RNA-seq, kita bisa mengeksplorasi peran masing-masing sel dalam organ penting seperti hati, usus, insang atau organ lain untuk menghadirkan wawasan yang jauh lebih tajam untuk manajemen kesehatan dan nutrisi.</p>
 </section>
-<section id="dari-gen-ke-keputusan-produksi" class="level2">
-<h2 class="anchored" data-anchor-id="dari-gen-ke-keputusan-produksi">Dari gen ke keputusan produksi</h2>
+<section id="dari-gen-ke-keputusan-produksi" class="level3">
+<h3 class="anchored" data-anchor-id="dari-gen-ke-keputusan-produksi">Dari gen ke keputusan produksi</h3>
 <p>RNA-seq menjembatani dunia molekuler dan praktik budidaya. Dengan memahami “bahasa” genetik secara mendalam, kita tak hanya menjawab pertanyaan biologis, tetapi juga membuat keputusan produksi yang lebih presisi, efisien, dan berkelanjutan. RNA-seq bukan sekadar teknologi, melainkan fondasi untuk membangun akuakultur yang cerdas, yang tidak lagi menebak, tapi memahami langsung apa yang sebenarnya dibutuhkan oleh organisme budidaya.</p>
-<figure style="text-align: center;" class="figure">
-<img src="https://pub.mdpi-res.com/ijms/ijms-25-10784/article_deploy/html/images/ijms-25-10784-ag.png?1728550988" alt="Omics" style="width: 85%;" class="figure-img">
-<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
-<strong>Integrasi RNA-Seq dan data serologi untuk prediksi alergi ikan.</strong> Dengan menganalisis ekspresi dan konservasi gen alergen, terutama parvalbumin (PV), studi kita bisa mengaitkan data molekuler ikan dengan respons imun seseorang. Hasilnya digunakan untuk merancang strategi diagnosis alergi ikan yang lebih spesifik dan personal untuk meningkatkan akurasi deteksi alergi antarspesies. <br><em>Sumber gambar:</em> <a href="https://www.mdpi.com/1422-0067/25/19/10784" target="_blank">Liu et al 2024</a>
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://pub.mdpi-res.com/ijms/ijms-25-10784/article_deploy/html/images/ijms-25-10784-ag.png?1728550988" class="content-image img-fluid figure-img" style="width:85.0%" alt="Integrasi RNA-Seq dan data serologi"></p>
+<figcaption>Integrasi RNA-Seq dan data serologi untuk prediksi alergi ikan. Dengan menganalisis ekspresi dan konservasi gen alergen, terutama parvalbumin (PV), studi kita bisa mengaitkan data molekuler ikan dengan respons imun seseorang. Hasilnya digunakan untuk merancang strategi diagnosis alergi ikan yang lebih spesifik dan personal untuk meningkatkan akurasi deteksi alergi antarspesies. <em>Sumber gambar:</em> <a href="https://www.mdpi.com/1422-0067/25/19/10784">Liu et al.&nbsp;2024</a></figcaption>
 </figure>
+</div>
 </section>
 </section>
-<section id="tentang-data-yang-digunakan-dan-persiapannya" class="level1">
-<h1>Tentang data yang digunakan dan persiapannya</h1>
-<section id="studi-analisis-ekspresi-gen-pada-ikan-turbot" class="level2">
-<h2 class="anchored" data-anchor-id="studi-analisis-ekspresi-gen-pada-ikan-turbot">Studi analisis ekspresi gen pada ikan Turbot</h2>
+<section id="tentang-data-yang-digunakan-dan-persiapannya" class="level2">
+<h2 class="anchored" data-anchor-id="tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</h2>
+<section id="studi-analisis-ekspresi-gen-pada-ikan-turbot" class="level3">
+<h3 class="anchored" data-anchor-id="studi-analisis-ekspresi-gen-pada-ikan-turbot">Studi analisis ekspresi gen pada ikan Turbot</h3>
 <p>Dalam tutorial ini, kita menggunakan data dari studi oleh <a href="https://doi.org/10.1016/j.fsi.2022.108502">Lange et al.&nbsp;(2014)</a> yang meneliti tentang bagaimana perbedaan ekspresi gen pada udang vanamei (<em>Liptopenaeus vannamei</em>) pasca terinfeksi oleh toxin Pir A/B dari bakteri <em>Vibrio sp</em> yang umumnya menyebabkan penyakit <em>acute hepatopancreatic necrosis disease</em> (AHPND). Penelitian ini sangat relevan dan penting karena sering kali AHPND menyebabkan kematian massal pada udang budidaya sebelum 30 hari pemeliharaan.</p>
 <p>Penelitian ini menganalisis perubahan ekspresi gen pada sampel hepatopankreas menggunakan RNA-seq berbasis <em>short reads sequencing</em> (Illumina HiSeq X Ten - <em>paired-end reads</em>). Sehingga dengan memahami bagaimana respon molekuler terutama ekspresi gen bekerja ketika udang terinfeksi, ini akan membantu dalam pengembangan strategi pencegahan yang lebih efektif, seperti seleksi genetik untuk ketahanan penyakit, pengembangan vaksin, atau pengelolaan lingkungan yang lebih tepat dalam sistem budidaya.</p>
-<figure style="text-align: center;" class="figure">
-<img src="https://d1a39lp0neyni6.cloudfront.net/media/blog/image/528/dbea2264dba27cf099377a18a479d3b5.webp" alt="ahpnd" style="width: 85%;" class="figure-img">
-<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
-<strong>AHPND pada udang vanamei yang menyebabkan kekosongan pada hepatopankreas (atas) vs udang normal dengan hepatopankreas yang utuh (bawah)</strong> <br><em>Sumber gambar:</em> <a href="https://nusantics.com/en/blog/tackling-pira-and-pirb-toxins-causing-ahpnd-in-shrimp" target="_blank">Nusantics</a>
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://d1a39lp0neyni6.cloudfront.net/media/blog/image/528/dbea2264dba27cf099377a18a479d3b5.webp" class="content-image img-fluid figure-img" style="width:85.0%" alt="Perbandingan hepatopankreas udang dengan AHPND dan udang normal"></p>
+<figcaption>AHPND pada udang vanamei yang menyebabkan kekosongan pada hepatopankreas (atas) dibandingkan udang normal dengan hepatopankreas yang utuh (bawah). <em>Sumber gambar:</em> <a href="https://nusantics.com/en/blog/tackling-pira-and-pirb-toxins-causing-ahpnd-in-shrimp">Nusantics</a></figcaption>
 </figure>
+</div>
 </section>
-<section id="data-demo-untuk-pembelajaran" class="level2">
-<h2 class="anchored" data-anchor-id="data-demo-untuk-pembelajaran">Data demo untuk pembelajaran</h2>
+<section id="data-demo-untuk-pembelajaran" class="level3">
+<h3 class="anchored" data-anchor-id="data-demo-untuk-pembelajaran">Data demo untuk pembelajaran</h3>
 <blockquote class="blockquote">
 <p><strong>Catatan penting.</strong> Dataset asli di atas berukuran sangat besar (sekitar 86 GB) dan membutuhkan waktu serta sumber daya komputasi yang besar untuk diproses. Agar Anda dapat menjalankan keseluruhan pipeline ini dengan cepat di komputer biasa, tutorial ini memakai <strong>data demo</strong> berukuran kecil yang meniru struktur data nyata. Semua perintah dan tools pada pipeline tetap sama persis, yaitu HISAT2 untuk alignment, StringTie untuk kuantifikasi, prepDE untuk matriks hitungan, dan DESeq2 untuk analisis diferensial. Hanya datanya yang diperkecil. Pada penelitian nyata, data Anda akan jauh lebih besar dan menuntut waktu komputasi yang lebih lama.</p>
 </blockquote>
 <p>Silakan unduh data demo berikut untuk mengikuti tutorial dengan menekan tombol unduh, lalu berkas akan tersimpan di komputer Anda.</p>
 <div class="download-row">
-  <a class="btn-download" href="data/rnaseq-demo/raw_reads.tar.gz" download="">⬇&nbsp; Raw reads <span class="bd-sub">10 sampel paired-end, .tar.gz</span></a>
-  <a class="btn-download" href="data/rnaseq-demo/gene_count_matrix.csv" download="">⬇&nbsp; Count matrix <span class="bd-sub">gene_count_matrix.csv</span></a>
-  <a class="btn-download" href="data/rnaseq-demo/metadata.csv" download="">⬇&nbsp; Metadata <span class="bd-sub">metadata.csv</span></a>
+<p><a href="data/rnaseq-demo/raw_reads.tar.gz" class="btn-download" download="raw_reads.tar.gz">⬇ Raw reads — 10 sampel paired-end, .tar.gz</a></p>
+<p><a href="data/rnaseq-demo/gene_count_matrix.csv" class="btn-download" download="gene_count_matrix.csv">⬇ Count matrix — gene_count_matrix.csv</a></p>
+<p><a href="data/rnaseq-demo/metadata.csv" class="btn-download" download="metadata.csv">⬇ Metadata — metadata.csv</a></p>
 </div>
-<p>Genom referensi demo (<code>demo_genome.fa</code>) beserta anotasinya (<code>demo_annotation.gtf</code>) tersedia di folder <a href="https://github.com/bowo1698/Bioinfonote/tree/main/docs/data/rnaseq-demo/ref" target="_blank">docs/data/rnaseq-demo/ref</a>. Seluruh pipeline alignment hingga matriks hitungan pada data demo dapat dijalankan sekaligus lewat skrip <a href="https://github.com/bowo1698/Bioinfonote/blob/main/code/run-rnaseq-pipeline.sh" target="_blank"><code>code/run-rnaseq-pipeline.sh</code></a> yang menjalankan persis perintah HISAT2 → StringTie → prepDE pada bagian-bagian berikut. Hasil akhirnya adalah <code>gene_count_matrix.csv</code> yang dipakai pada analisis DESeq2 di bagian akhir tutorial.</p>
+<p>Genom referensi demo (<code>demo_genome.fa</code>) beserta anotasinya (<code>demo_annotation.gtf</code>) tersedia di folder <a href="https://github.com/bowo1698/Bioinfonote/tree/main/docs/data/rnaseq-demo/ref">docs/data/rnaseq-demo/ref</a>. Seluruh pipeline alignment hingga matriks hitungan pada data demo dapat dijalankan sekaligus lewat skrip <a href="https://github.com/bowo1698/Bioinfonote/blob/main/code/run-rnaseq-pipeline.sh"><code>code/run-rnaseq-pipeline.sh</code></a> yang menjalankan persis perintah HISAT2 → StringTie → prepDE pada bagian-bagian berikut. Hasil akhirnya adalah <code>gene_count_matrix.csv</code> yang dipakai pada analisis DESeq2 di bagian akhir tutorial.</p>
 </section>
-<section id="struktur-data-demo" class="level2">
-<h2 class="anchored" data-anchor-id="struktur-data-demo">Struktur data demo</h2>
+<section id="struktur-data-demo" class="level3">
+<h3 class="anchored" data-anchor-id="struktur-data-demo">Struktur data demo</h3>
 <p>Setelah mengunduh dan mengekstrak data demo di atas, Anda akan memiliki susunan berkas seperti berikut. <em>Reads</em> berada di folder <code>raw_reads/</code>, sedangkan genom referensi dan anotasinya berada di folder <code>ref/</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">data/rnaseq-demo/</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> raw_reads/</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── kontrol1_R1.fastq.gz   kontrol1_R2.fastq.gz</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── ...                     <span class="er">(</span><span class="ex">kontrol1..kontrol5,</span> infeksi1..infeksi5<span class="kw">)</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── infeksi5_R1.fastq.gz   infeksi5_R2.fastq.gz</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> ref/</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── demo_genome.fa          <span class="co"># genom referensi</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── demo_annotation.gtf     <span class="co"># anotasi gen</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> metadata.csv                <span class="co"># daftar sampel dan kelompoknya</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text terminal-output"><code># bash
+data/rnaseq-demo/
+├── raw_reads/
+│   ├── kontrol1_R1.fastq.gz   kontrol1_R2.fastq.gz
+│   ├── ...                     (kontrol1..kontrol5, infeksi1..infeksi5)
+│   └── infeksi5_R1.fastq.gz   infeksi5_R2.fastq.gz
+├── ref/
+│   ├── demo_genome.fa          # genom referensi
+│   └── demo_annotation.gtf     # anotasi gen
+└── metadata.csv                # daftar sampel dan kelompoknya</code></pre>
 <p>Pada studi nyata, langkah ini setara dengan mengunduh <em>reads</em> dari basis data seperti ENA atau NCBI-SRA serta mengunduh genom referensi beserta anotasinya dari NCBI. Karena ukuran data nyata bisa puluhan GB, proses pengunduhan saja dapat memakan waktu lama, sementara data demo ini cukup beberapa megabyte sehingga ringan dijalankan.</p>
 </section>
 </section>
-<section id="quality-control-data-sequencing" class="level1">
-<h1>Quality control data sequencing</h1>
-<section id="inspeksi-awal-file-sequencing" class="level2">
-<h2 class="anchored" data-anchor-id="inspeksi-awal-file-sequencing">Inspeksi awal file sequencing</h2>
+<section id="quality-control-data-sequencing" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control-data-sequencing">Quality control data sequencing</h2>
+<section id="inspeksi-awal-file-sequencing" class="level3">
+<h3 class="anchored" data-anchor-id="inspeksi-awal-file-sequencing">Inspeksi awal file sequencing</h3>
 <p>Sebelum analisis, ada baiknya kita melihat langsung struktur berkas FASTQ. Setiap <em>read</em> pada FASTQ terdiri dari empat baris, yaitu header yang diawali <code>@</code>, urutan basa nukleotida, tanda <code>+</code>, dan string skor kualitas.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># lihat struktur salah satu file reads demo</span></span>
@@ -466,8 +632,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p>Perintah pertama menampilkan dua <em>read</em> pertama, sedangkan perintah kedua menghitung jumlah total <em>read</em> dengan membagi banyaknya baris dengan empat. Pada data nyata, di sinilah Anda menjalankan FastQC dan MultiQC untuk menilai mutu menyeluruh lalu memangkas <em>adapter</em> serta basa bermutu rendah. Karena data demo sudah bersih dan seragam, kita dapat langsung melangkah ke tahap <em>alignment</em>. Penjelasan lengkap tentang tahap QC tersedia pada artikel <a href="../docs/teknis-quality-control.html">Quality control hasil sequencing</a>.</p>
 </section>
 </section>
-<section id="memilih-dan-memasang-tools" class="level1">
-<h1>Memilih dan memasang tools</h1>
+<section id="memilih-dan-memasang-tools" class="level2">
+<h2 class="anchored" data-anchor-id="memilih-dan-memasang-tools">Memilih dan memasang tools</h2>
 <p>Pipeline ini memakai tiga tools utama yang bekerja berurutan, yaitu <code>HISAT2</code> untuk menyejajarkan (<em>align</em>) <em>reads</em> ke genom referensi, <code>StringTie</code> untuk mengkuantifikasi ekspresi tiap gen mengikuti anotasi, dan <code>samtools</code> untuk menangani berkas hasil <em>alignment</em>. Tahap analisis diferensial di akhir memakai paket R <code>DESeq2</code>. Pilihan HISAT2 dan StringTie tepat untuk tutorial ini karena keduanya akurat, hemat memori, dan dapat berjalan pada komputer biasa tanpa HPC.</p>
 <p>Semua tools alignment dipasang melalui conda lewat kanal bioconda.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
@@ -480,11 +646,11 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DESeq2"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="pipeline-dari-reads-ke-matriks-hitungan" class="level1">
-<h1>Pipeline dari reads ke matriks hitungan</h1>
+<section id="pipeline-dari-reads-ke-matriks-hitungan" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-dari-reads-ke-matriks-hitungan">Pipeline dari reads ke matriks hitungan</h2>
 <p>Tiga langkah berikut mengubah <em>reads</em> mentah menjadi <code>gene_count_matrix.csv</code>, yaitu matriks jumlah baca per gen per sampel yang menjadi masukan DESeq2. Semua perintah di bawah ini persis seperti yang dijalankan otomatis oleh skrip <code>code/run-rnaseq-pipeline.sh</code>, sehingga Anda dapat menjalankannya satu per satu untuk memahami tiap tahap atau sekaligus lewat skrip tersebut.</p>
-<section id="membangun-index-dan-menyejajarkan-reads" class="level2">
-<h2 class="anchored" data-anchor-id="membangun-index-dan-menyejajarkan-reads">Membangun index dan menyejajarkan reads</h2>
+<section id="membangun-index-dan-menyejajarkan-reads" class="level3">
+<h3 class="anchored" data-anchor-id="membangun-index-dan-menyejajarkan-reads">Membangun index dan menyejajarkan reads</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>data/rnaseq-demo</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$DD</span>/_pipe/bam</span>
@@ -503,8 +669,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>hisat2-build</code> membangun semacam peta navigasi genom sehingga proses penyejajaran berjalan cepat dan presisi. Opsi <code>--no-spliced-alignment</code> dipakai karena gen pada data demo tidak memiliki intron. Pada genom nyata yang penuh intron, opsi ini dilepas agar HISAT2 dapat mengenali <em>splice junction</em> antar-exon.</p>
 </section>
-<section id="kuantifikasi-ekspresi-dengan-stringtie" class="level2">
-<h2 class="anchored" data-anchor-id="kuantifikasi-ekspresi-dengan-stringtie">Kuantifikasi ekspresi dengan StringTie</h2>
+<section id="kuantifikasi-ekspresi-dengan-stringtie" class="level3">
+<h3 class="anchored" data-anchor-id="kuantifikasi-ekspresi-dengan-stringtie">Kuantifikasi ekspresi dengan StringTie</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$DD</span>/_pipe/ballgown</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="op">&gt;</span> <span class="va">$DD</span>/_pipe/sample_list.txt</span>
@@ -517,8 +683,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Opsi <code>-e -B</code> membuat StringTie hanya mengkuantifikasi transkrip yang sudah ada pada anotasi referensi (<code>-G</code>) lalu menulis berkas Ballgown yang dibutuhkan tahap berikutnya. Pendekatan ini sesuai untuk genom yang sudah teranotasi baik karena kita tidak perlu merakit transkrip baru.</p>
 </section>
-<section id="menyusun-matriks-hitungan-dengan-prepde" class="level2">
-<h2 class="anchored" data-anchor-id="menyusun-matriks-hitungan-dengan-prepde">Menyusun matriks hitungan dengan prepDE</h2>
+<section id="menyusun-matriks-hitungan-dengan-prepde" class="level3">
+<h3 class="anchored" data-anchor-id="menyusun-matriks-hitungan-dengan-prepde">Menyusun matriks hitungan dengan prepDE</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># unduh prepDE.py3 (skrip resmi StringTie) bila belum ada</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://ccb.jhu.edu/software/stringtie/dl/prepDE.py3 <span class="at">-o</span> prepDE.py3</span>
@@ -528,8 +694,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p>Hasil akhirnya adalah <code>gene_count_matrix.csv</code>, yaitu matriks berukuran gen kali sampel yang berisi jumlah baca per gen. Berkas inilah yang menjadi masukan analisis ekspresi diferensial berikutnya. Untuk menjalankan ketiga langkah di atas sekaligus, cukup jalankan <code>bash code/run-rnaseq-pipeline.sh</code> dari root repositori.</p>
 </section>
 </section>
-<section id="analisis-perbedaan-ekspresi" class="level1">
-<h1>Analisis perbedaan ekspresi</h1>
+<section id="analisis-perbedaan-ekspresi" class="level2">
+<h2 class="anchored" data-anchor-id="analisis-perbedaan-ekspresi">Analisis perbedaan ekspresi</h2>
 <p>Setelah memperoleh <code>gene_count_matrix.csv</code> dari tahap sebelumnya, kita sampai pada inti studi RNA-seq, yaitu <strong>analisis ekspresi diferensial</strong> (<em>differential expression</em>, DE). Tujuannya adalah menemukan gen-gen yang tingkat ekspresinya berubah secara signifikan antara dua kondisi, dalam kasus ini antara udang <strong>kontrol</strong> (sehat) dan udang <strong>terinfeksi</strong> AHPND. Gen-gen inilah yang menjadi kandidat <em>biomarker</em> dan petunjuk mekanisme molekuler respons terhadap infeksi.</p>
 <p>Kita akan menggunakan <code>DESeq2</code>, salah satu paket R paling banyak digunakan untuk DE. <code>DESeq2</code> memodelkan <em>count</em> dengan distribusi <em>negative binomial</em>, melakukan normalisasi antar-sampel (mengoreksi perbedaan <em>sequencing depth</em>), serta menstabilkan estimasi <em>dispersion</em> sehingga andal walaupun jumlah replikasi terbatas.</p>
 <p>Mulai dari sini analisis dijalankan langsung pada matriks hitungan data demo <code>gene_count_matrix.csv</code>, yaitu berkas yang sama persis dengan hasil tahap prepDE di atas. Kode berikut benar-benar dieksekusi saat halaman ini dibangun.</p>
@@ -569,8 +735,8 @@ low counts [2]     : 0, 0%
 <li><code>padj</code>: <em>p-value</em> yang telah dikoreksi untuk <em>multiple testing</em> dengan metode Benjamini-Hochberg (mengontrol <em>false discovery rate</em>). <strong>Selalu gunakan <code>padj</code>, bukan <code>pvalue</code> mentah</strong>, untuk menentukan signifikansi.</li>
 </ul>
 <p>Lazimnya, sebuah gen disebut <em>differentially expressed</em> (DEG) jika memenuhi dua syarat sekaligus: signifikan secara statistik (<code>padj &lt; 0.05</code>) <strong>dan</strong> punya besar perubahan yang berarti secara biologis (<code>|log2FoldChange| &gt; 1</code>).</p>
-<section id="memvisualisasikan-hasil-dengan-volcano-plot" class="level2">
-<h2 class="anchored" data-anchor-id="memvisualisasikan-hasil-dengan-volcano-plot">Memvisualisasikan hasil dengan volcano plot</h2>
+<section id="memvisualisasikan-hasil-dengan-volcano-plot" class="level3">
+<h3 class="anchored" data-anchor-id="memvisualisasikan-hasil-dengan-volcano-plot">Memvisualisasikan hasil dengan volcano plot</h3>
 <p>Cara paling umum untuk meringkas hasil DE adalah <strong>volcano plot</strong>, yaitu sebar antara besarnya perubahan (<code>log2FoldChange</code> pada sumbu-x) dan signifikansi (<code>-log10(p-value)</code> pada sumbu-y). Disebut “<em>volcano</em>” karena bentuk sebarannya menyerupai semburan gunung berapi: gen yang paling menarik (perubahan besar <strong>dan</strong> sangat signifikan) terlempar ke pojok kiri-atas dan kanan-atas.</p>
 <p>Volcano plot di bawah ini dibuat langsung dari objek <code>res</code> data demo yang baru kita hitung.</p>
 <div class="cell">
@@ -612,8 +778,8 @@ Gambar&nbsp;1: Volcano plot ekspresi diferensial data demo. Tiap titik satu gen.
 </div>
 <p>Cara membacanya: makin ke <strong>kanan/kiri</strong>, makin besar perubahan ekspresinya; makin ke <strong>atas</strong>, makin meyakinkan secara statistik. Gen di pojok kanan-atas (merah) adalah gen yang menyala lebih kuat saat infeksi, sedangkan pojok kiri-atas (biru) adalah gen yang ditekan. Daftar DEG inilah yang kemudian kita bawa ke analisis fungsi gen untuk dimaknai secara biologis.</p>
 </section>
-<section id="ma-plot" class="level2">
-<h2 class="anchored" data-anchor-id="ma-plot">MA plot</h2>
+<section id="ma-plot" class="level3">
+<h3 class="anchored" data-anchor-id="ma-plot">MA plot</h3>
 <p><em>MA plot</em> memetakan rata-rata ekspresi tiap gen pada sumbu mendatar terhadap <em>log2 fold change</em> pada sumbu tegak. Plot ini berguna untuk melihat apakah gen yang berubah tersebar di seluruh rentang ekspresi atau hanya terpusat pada gen ber-ekspresi tinggi, sekaligus memperlihatkan pola penyusutan estimasi pada gen ber-count rendah.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>DESeq2<span class="sc">::</span><span class="fu">plotMA</span>(res, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="at">main =</span> <span class="st">"infeksi vs kontrol"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
@@ -632,8 +798,8 @@ Gambar&nbsp;2: MA plot. Sumbu mendatar rata-rata count ternormalisasi, sumbu teg
 </div>
 <p>Titik biru yang menyebar jauh dari garis nol adalah gen yang ekspresinya benar-benar berbeda antar kelompok. Pada data demo ini titik signifikan muncul di kedua arah dan pada berbagai tingkat ekspresi rata-rata, menandakan respons terhadap infeksi tidak terbatas pada segelintir gen yang sangat aktif saja.</p>
 </section>
-<section id="pca-antar-sampel" class="level2">
-<h2 class="anchored" data-anchor-id="pca-antar-sampel">PCA antar sampel</h2>
+<section id="pca-antar-sampel" class="level3">
+<h3 class="anchored" data-anchor-id="pca-antar-sampel">PCA antar sampel</h3>
 <p>Sebelum menelaah gen satu per satu, kita lihat dulu gambaran besarnya dengan <em>Principal Component Analysis</em> pada nilai ekspresi yang sudah distabilkan variansinya. Jika kedua kelompok memang berbeda secara global, sampel kontrol dan infeksi akan membentuk dua gerombol terpisah.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vsd <span class="ot">&lt;-</span> <span class="fu">varianceStabilizingTransformation</span>(dds, <span class="at">blind =</span> <span class="cn">FALSE</span>)</span>
@@ -655,8 +821,8 @@ Gambar&nbsp;3: PCA sampel berdasarkan ekspresi tervariance-stabilized. Pemisahan
 </div>
 <p>Sampel kontrol dan infeksi terpisah jelas di sepanjang komponen utama pertama, yang biasanya menampung porsi variasi terbesar. Pemisahan global seperti ini menambah keyakinan bahwa perbedaan yang kita temukan pada level gen bukan kebetulan, melainkan mencerminkan pergeseran profil ekspresi menyeluruh akibat infeksi.</p>
 </section>
-<section id="heatmap-gen-paling-diferensial" class="level2">
-<h2 class="anchored" data-anchor-id="heatmap-gen-paling-diferensial">Heatmap gen paling diferensial</h2>
+<section id="heatmap-gen-paling-diferensial" class="level3">
+<h3 class="anchored" data-anchor-id="heatmap-gen-paling-diferensial">Heatmap gen paling diferensial</h3>
 <p>Terakhir, kita tampilkan 25 gen dengan <em>padj</em> terkecil sebagai <em>heatmap</em>. Nilai ekspresi tervariance-stabilized dipusatkan per gen sehingga warna menunjukkan apakah suatu gen relatif lebih tinggi (merah) atau lebih rendah (biru) pada tiap sampel.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>topg <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">rownames</span>(res[<span class="fu">order</span>(res<span class="sc">$</span>padj), ]), <span class="dv">25</span>)</span>
@@ -690,8 +856,8 @@ Gambar&nbsp;4: Heatmap 25 gen paling signifikan. Warna adalah ekspresi tervarian
 <p>Pola blok warna yang berlawanan antara dua panel menegaskan temuan kita. Gen yang menyala merah pada panel infeksi umumnya biru pada panel kontrol, dan sebaliknya. Inilah daftar kandidat penanda hayati yang paling layak ditindaklanjuti, misalnya untuk validasi dengan RT-qPCR atau penelusuran fungsinya pada analisis berikutnya.</p>
 </section>
 </section>
-<section id="analisis-fungsi-gen---go-dan-kegg-pathway" class="level1">
-<h1>Analisis fungsi gen - GO dan KEGG <em>pathway</em></h1>
+<section id="analisis-fungsi-gen---go-dan-kegg-pathway" class="level2">
+<h2 class="anchored" data-anchor-id="analisis-fungsi-gen---go-dan-kegg-pathway">Analisis fungsi gen - GO dan KEGG <em>pathway</em></h2>
 <p>Mendapatkan ratusan DEG barulah separuh cerita; pertanyaan berikutnya adalah <strong>“gen-gen ini sebenarnya mengerjakan apa?”</strong>. Untuk menjawabnya, kita lakukan <strong>analisis pengayaan fungsional</strong> (<em>functional enrichment</em>) yang menguji apakah daftar DEG kita diperkaya oleh fungsi biologis tertentu dibanding yang diharapkan secara kebetulan. Dua kerangka anotasi yang paling umum:</p>
 <ul>
 <li><strong>Gene Ontology (GO)</strong>: mengelompokkan gen ke dalam tiga ranah, <em>Biological Process</em> (BP), <em>Molecular Function</em> (MF), dan <em>Cellular Component</em> (CC).</li>
@@ -773,8 +939,8 @@ Gambar&nbsp;5: Ilustrasi dotplot GO enrichment (data ilustrasi). Istilah di atas
 </div>
 <p>Dari pola seperti ini, kita bisa menyimpulkan cerita biologisnya, misalnya bahwa infeksi AHPND memicu pengayaan kuat pada <strong>respons imun bawaan</strong>, <strong>fagositosis</strong>, dan <strong>jalur sinyal Toll</strong>, sejalan dengan aktifnya pertahanan udang terhadap toksin <em>Vibrio</em>. Temuan inilah yang memberi makna pada daftar gen mentah dari DESeq2.</p>
 </section>
-<section id="apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" class="level1">
-<h1>Apa yang perlu dipertimbangkan sebelum studi RNA-seq</h1>
+<section id="apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" class="level2">
+<h2 class="anchored" data-anchor-id="apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq">Apa yang perlu dipertimbangkan sebelum studi RNA-seq</h2>
 <p>Kualitas hasil RNA-seq lebih banyak ditentukan di meja desain daripada di depan komputer. Sebelum mengeluarkan biaya sekuensing, pertimbangkan hal-hal berikut.</p>
 <ol type="1">
 <li><strong>Desain eksperimen dan replikasi biologis.</strong> Gunakan minimal <strong>3-4 replikasi biologis</strong> per kelompok (bukan replikasi teknis). Replikasi yang cukup jauh lebih menentukan kekuatan statistik daripada menambah <em>sequencing depth</em>.</li>
@@ -787,18 +953,29 @@ Gambar&nbsp;5: Ilustrasi dotplot GO enrichment (data ilustrasi). Istilah di atas
 <li><strong>Validasi dan interpretasi biologis.</strong> Idealnya, sebagian DEG kunci divalidasi dengan <strong>RT-qPCR</strong>, dan temuan ditafsirkan dalam konteks biologis, bukan sekadar daftar gen dengan <em>p-value</em> kecil.</li>
 </ol>
 <blockquote class="blockquote">
-<p><strong>Penutup.</strong> Dengan menyelesaikan alur HISAT2 → StringTie → DESeq2 hingga visualisasi dan pemaknaan fungsional, Anda kini memiliki gambaran utuh satu siklus studi RNA-seq, dari <em>reads</em> mentah sampai cerita biologis. Pada <em>workflow</em> berikutnya kita akan menempuh jalur alternatif <strong>STAR + RSEM</strong> untuk data yang sama dan membandingkan hasilnya. Skrip otomatis untuk seluruh pipeline ini tersedia di <a href="../code/All-hisat-stringtie.sh" download="">All-hisat-stringtie.sh</a> beserta <a href="../code/config.yaml" download="">config.yaml</a>.</p>
+<p><strong>Penutup.</strong> Dengan menyelesaikan alur HISAT2 → StringTie → DESeq2 hingga visualisasi dan pemaknaan fungsional, Anda kini memiliki gambaran utuh satu siklus studi RNA-seq, dari <em>reads</em> mentah sampai cerita biologis. Pada <em>workflow</em> berikutnya kita akan menempuh jalur alternatif <strong>STAR + RSEM</strong> untuk data yang sama dan membandingkan hasilnya. Skrip otomatis untuk seluruh pipeline ini tersedia di <a href="../code/All-hisat-stringtie.sh" download="All-hisat-stringtie.sh">All-hisat-stringtie.sh</a> beserta <a href="../code/config.yaml" download="config.yaml">config.yaml</a>.</p>
 </blockquote>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1218,7 +1395,7 @@ Gambar&nbsp;5: Ilustrasi dotplot GO enrichment (data ilustrasi). Istilah di atas
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -110,7 +117,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -153,6 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -288,6 +458,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -312,6 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-instalasi-tools.html">Instalasi Tools Bioinformatika</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Instalasi Tools Bioinformatika</h1>
@@ -331,21 +508,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/basic-instalasi-tools.html" style="text-decoration: none; color: inherit;"> Instalasi Tools Bioinformatika </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://static.vecteezy.com/system/resources/thumbnails/055/370/498/small_2x/scientist-analyzing-dna-strands-on-a-digital-screen-with-glowing-data-in-a-lab-environment-photo.jpg" alt="Tools instalation" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Instalasi Tools Bioinformatika</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://static.vecteezy.com/system/resources/thumbnails/055/370/498/small_2x/scientist-analyzing-dna-strands-on-a-digital-screen-with-glowing-data-in-a-lab-environment-photo.jpg" class="content-image article-hero-image img-fluid" alt="Ilmuwan menganalisis data DNA pada layar digital"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
 <li><a href="#instalasi-r">Instalasi R</a></li>
@@ -354,15 +520,15 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><a href="#basic-instalasi-tools-r-dan-conda">Basic instalasi tools R dan Conda</a></li>
 </ul>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Sebelum mempelajari bioinformatika, kita perlu memahami terlebih dahulu apa saja perangkat dan lingkungan kerja yang dibutuhkan untuk menunjang berbagai analisis yang akan dilakukan. Seperti halnya memancing ikan, keberhasilan sangat bergantung pada persiapan dan pemilihan alat yang tepat, dari joran, umpan, hingga teknik memancing. Dalam bioinformatika, “alat pancing” kita adalah software dan lingkungan komputasi, yang masing-masing memiliki fungsi dan keunggulan tersendiri.</p>
 <p>Misalnya dalam bahasa pemrograman, R sangat ungul dalam analisis statistik, karena menawarkan kesederhanaan dan keberlimpahan paket mulai dari yang disediakan oleh <code>r-base</code> hingga <code>Bioconductor</code>. Sementara itu, Python unggul dalam fleksibilitas dan integrasi dengan pipeline otomatis, serta didukung oleh pustaka seperti <code>Bioconda</code>, <code>Biopython</code>, <code>scikit-learn</code>, dan <code>pandas</code>. Adapun bash scripting sangat penting dalam otomasi proses dan pemrosesan file besar di sistem Linux.</p>
 <p>Dalam hal penyejajaran sekuen RNA (RNA-seq alignment) misalnya, tool seperti <code>STAR</code> digunakan untuk pemetaan akurat genom referensi. Tool ini sangat cocok untuk studi yang membutuhkan informasi detail tentang struktur gen, terutama dalam mendeteksi titik sambung antar-ekson (<em>splice junctions</em>) serta mengidentifikasi varian transkrip mRNA yang dihasilkan melalui <em>alternative splicing</em>. Di sisi lain, <code>Salmon</code> dan <code>Kallisto</code> menggunakan pendekatan <em>pseudoalignment</em> yang jauh lebih cepat dan efisien dalam menghitung ekspresi gen, namun tidak mampu mendapatkan informasi tentang struktur gen seperti halnya <code>STAR</code>.</p>
 <p>Oleh karena itu, sebelum masuk ke tahap analisis, kita perlu terlebih dahulu menyiapkan lingkungan kerja, mulai dari instalasi R, Anaconda, hingga IDE (<em>integrated development environemnt</em>) seperti RStudio atau VS Code, yang akan digunakan sebagai “kotak alat” dalam menjalankan berbagai tahap bioinformatika selain menggunakan Terminal bash.</p>
 </section>
-<section id="instalasi-r" class="level1">
-<h1>Instalasi R</h1>
+<section id="instalasi-r" class="level2">
+<h2 class="anchored" data-anchor-id="instalasi-r">Instalasi R</h2>
 <p>R ada bahasa pemrograman yang didesain khusus untuk analisis data. Untuk menginstalnya, kita bisa merujuk pada halaman instalasi dari <a href="https://cloud.r-project.org/">CRAN</a>. Di Ubuntu atau UNIX lainnya (kali ini saya menggunakan Ubuntu via WSL), kita bisa mengikuti langkah-langkah berikut.</p>
 <ol type="1">
 <li><p>Buka terminal Ubuntu anda (wsl dengan cara: <code>wsl -d Ubuntu</code>), pastikan anda berada di direktori <code>/home</code> dan lakukan update sistem dengan menjalankan perintah:</p>
@@ -385,12 +551,10 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">--no-install-recommends</span> r-base</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Hingga tahap ini, anda sudah berhasil install R di dalam Linux. Untuk cek instalasinya cukup ketikkan <code>R</code> pada terminal, maka akan muncul interpreter R dan detail versi yang digunakan.</p></li>
 </ol>
-<div style="position: relative; padding-bottom: 75%; height: 0; overflow: hidden;">
-<p><iframe src="https://www.youtube.com/embed/f8TM83h4DbA" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen=""></iframe></p>
-</div>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/f8TM83h4DbA" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 </section>
-<section id="instalasi-anaconda" class="level1">
-<h1>Instalasi Anaconda</h1>
+<section id="instalasi-anaconda" class="level2">
+<h2 class="anchored" data-anchor-id="instalasi-anaconda">Instalasi Anaconda</h2>
 <p>Anaconda (bukan ular) merupakan distribusi <em>open-source</em> dari bahasa pemrograman Python yang dirancang khusus untuk <em>data science</em>, <em>machine learning</em>, dan <em>scientific computing</em>. Ditrubusi ini mencakup: Python interpreter, Conda manager, dan ribuan paket populer seperti Numpy, scikit-learn, hingga paket-paket bioinformatika seperti samtools, RSEM, STAR, HISAT, dan masih banyak lagi. Untuk instalasinya di Linux, kita bisa mengikuti tutorial berikut.</p>
 <ol type="1">
 <li><p>Unduh installer Anaconda</p>
@@ -404,12 +568,10 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> Anaconda3-2024.10-1-Linux-aarch64.sh</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ikuti semua petunjuk yang muncul. Anda hanya perlu tekan tombol <code>ENTER + SPACE</code> untuk langsung menuju bagian akhir dimana anda harus ketik “yes” untuk menerima <em>license terms</em>. Di akhir, tekan ENTER untuk menginstall <code>base</code> PREFIX secara default di terminal, sehingga Anacona dapat dipanggil hanya dengan mengetikkan <code>conda</code>.</p></li>
 </ol>
-<div style="position: relative; padding-bottom: 75%; height: 0; overflow: hidden;">
-<p><iframe src="https://www.youtube.com/embed/LzuMruPOT9c" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen=""></iframe></p>
-</div>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/LzuMruPOT9c" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 </section>
-<section id="instalasi-ide-integrated-development-environment" class="level1">
-<h1>Instalasi IDE (<em>Integrated development environment</em>)</h1>
+<section id="instalasi-ide-integrated-development-environment" class="level2">
+<h2 class="anchored" data-anchor-id="instalasi-ide-integrated-development-environment">Instalasi IDE (<em>Integrated development environment</em>)</h2>
 <p>Agar dapat menulis, menjalankan, dan mengelola skrip bioinformatika secara efisien, kita memerlukan sebuah IDE (Integrated Development Environment) atau lingkungan pengembangan terpadu. Dalam semua tutorial di situs ini, kita akan menggunakan Visual Studio Code (VS Code) sebagai IDE utama.</p>
 <p>VS Code dipilih karena bersifat ringan, fleksibel, dan mudah diintegrasikan dengan berbagai kernel interpreter seperti R, Python, dan Bash, serta mendukung lingkungan Conda secara langsung. Hal ini menjadikan VS Code sebagai pusat kendali yang ideal untuk seluruh proses analisis.</p>
 <p>Lebih lanjut, dengan dukungan ekstensi seperti Jupyter, kita dapat menjalankan skrip-skrip tersebut dalam bentuk notebook interaktif, sehingga kode, output, dan dokumentasi dapat ditulis dan dibaca dalam satu tampilan yang terstruktur dan mudah dikelola.</p>
@@ -430,8 +592,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><p>Hingga langkah ini, kita sudah berhasil menginstall VS code dan mengintegrasikannya dengan R dan Anaconda.</p></li>
 </ol>
 </section>
-<section id="basic-instalasi-tools-r-dan-conda" class="level1">
-<h1>Basic instalasi tools R dan Conda</h1>
+<section id="basic-instalasi-tools-r-dan-conda" class="level2">
+<h2 class="anchored" data-anchor-id="basic-instalasi-tools-r-dan-conda">Basic instalasi tools R dan Conda</h2>
 <p>Untuk instalasi tools, baik R maupun Conda memiliki cara yang berbeda.</p>
 <p>Perintah dasar instalasi pada R secara umum untuk kebutuhan bioinformatika, dibagi menjadi 3 jenis:</p>
 <ol type="1">
@@ -511,20 +673,29 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># export</span></span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> alignment_tools.yml</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="position: relative; padding-bottom: 75%; height: 0; overflow: hidden;">
-<p><iframe src="https://www.youtube.com/embed/e9EpqCcru5M" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen=""></iframe></p>
-</div>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/e9EpqCcru5M" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 <p>— Sekian —</p>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -944,7 +1115,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Variant Calling dengan GATK – Bioinformatic Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../docs/work-metagenomics.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim",
+    "search-label": "Mencari"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Bioinformatic Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../materi.html" aria-current="page"> 
+<span class="menu-text">Materi</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tentang.html"> 
+<span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/bio.html"> 
+<span class="menu-text">Biografi</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-variant-calling.html">Variant Calling dengan GATK</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Daftar Materi</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/materi-dasar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Materi dasar</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-biomol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep-konsep dasar biologi molekuler</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-tren-terbaru.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tren dan perkembangan aplikasi biologi molekuler dan bioinformatika untuk akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-marker-genetik.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-hierarki-linux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Memahami hierarki Linux</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-instalasi-tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instalasi Tools Bioinformatika</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-linux-in-win.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux di dalam Windows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-library-preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Library preparation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/basic-konsep-dasar-ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Konsep dasar pembelajaran mesin</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/skill-teknis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skill Teknis</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-curl-wget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variabel, loop, dan izin akses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-file-format.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mengenal berbagai format file NGS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality control hasil sequencing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../docs/workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Workflows</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-RNA-seq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RNA-Seq workflow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-metagenomics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Di halaman ini</h2>
+   
+  <ul>
+  <li><a href="#tujuan-pembelajaran" id="toc-tujuan-pembelajaran" class="nav-link active" data-scroll-target="#tujuan-pembelajaran">Tujuan pembelajaran</a></li>
+  <li><a href="#project-setup" id="toc-project-setup" class="nav-link" data-scroll-target="#project-setup">Project Setup</a></li>
+  <li><a href="#instalasi-tools" id="toc-instalasi-tools" class="nav-link" data-scroll-target="#instalasi-tools">Instalasi Tools</a></li>
+  <li><a href="#persiapan-dataset" id="toc-persiapan-dataset" class="nav-link" data-scroll-target="#persiapan-dataset">Persiapan Dataset</a></li>
+  <li><a href="#quality-control" id="toc-quality-control" class="nav-link" data-scroll-target="#quality-control">Quality Control</a></li>
+  <li><a href="#alignment-ke-genom-referensi" id="toc-alignment-ke-genom-referensi" class="nav-link" data-scroll-target="#alignment-ke-genom-referensi">Alignment ke genom referensi</a></li>
+  <li><a href="#mark-duplicates" id="toc-mark-duplicates" class="nav-link" data-scroll-target="#mark-duplicates">Mark Duplicates</a></li>
+  <li><a href="#variant-calling-dengan-gatk-haplotypecaller" id="toc-variant-calling-dengan-gatk-haplotypecaller" class="nav-link" data-scroll-target="#variant-calling-dengan-gatk-haplotypecaller">Variant calling dengan GATK HaplotypeCaller</a></li>
+  <li><a href="#menghapus-indels-dan-melakukan-filtering-file-vcf" id="toc-menghapus-indels-dan-melakukan-filtering-file-vcf" class="nav-link" data-scroll-target="#menghapus-indels-dan-melakukan-filtering-file-vcf">Menghapus Indels dan Melakukan Filtering File VCF</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-variant-calling.html">Variant Calling dengan GATK</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Variant Calling dengan GATK</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Variant Calling dengan GATK</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<section id="tujuan-pembelajaran" class="level2">
+<h2 class="anchored" data-anchor-id="tujuan-pembelajaran">Tujuan pembelajaran</h2>
+<p>Setelah menyelesaikan praktik ini, Anda dapat:</p>
+<ul>
+<li>menyiapkan data <em>E. coli</em> dan genom referensi untuk analisis;</li>
+<li>memeriksa kualitas <em>reads</em> dan hasil pemetaan;</li>
+<li>melakukan <em>alignment</em> ke genom referensi serta menandai duplikat; dan</li>
+<li>memanggil dan menyaring varian menggunakan GATK.</li>
+</ul>
+</section>
+<section id="project-setup" class="level2">
+<h2 class="anchored" data-anchor-id="project-setup">Project Setup</h2>
+<p>Buka Terminal di VS Code lalu buat proyek.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/projects/gatk_snp_training/<span class="dt">{raw/sra</span><span class="op">,</span><span class="dt">raw/fastq</span><span class="op">,</span><span class="dt">ref</span><span class="op">,</span><span class="dt">aligned</span><span class="op">,</span><span class="dt">variants</span><span class="op">,</span><span class="dt">qc</span><span class="op">,</span><span class="dt">tmp</span><span class="op">,</span><span class="dt">logs</span><span class="op">,</span><span class="dt">scripts}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/projects/gatk_snp_training</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$ ls
+aligned  logs  qc  raw  ref  scripts  tmp  variants</code></pre>
+</section>
+<section id="instalasi-tools" class="level2">
+<h2 class="anchored" data-anchor-id="instalasi-tools">Instalasi Tools</h2>
+<p>Menggunakan Anconda, aktifkan solver:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--set</span> solver libmamba</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Buat environment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> gatk-snp <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  openjdk=17 gatk4 bwa samtools sra-tools <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  fastqc multiqc bcftools seqkit pigz <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ncbi-datasets-cli r-vcfr r-tidyverse <span class="dt">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-y</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Aktifkan <code>gatk-snp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate gatk-snp</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cek hasil instalasi:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> <span class="at">--version</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-version</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> <span class="at">--version</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">prefetch</span> <span class="at">--version</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">datasets</span> version</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$ gatk --version
+java -version
+bwa 2&gt;&amp;1 | head -n 1
+samtools --version | head -n 1
+prefetch --version
+datasets version
+Using GATK jar /home/aguswibowo/anaconda3/envs/gatk-snp/share/gatk4-4.6.2.0-1/gatk-package-4.6.2.0-local.jar
+Running:
+    java -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=2 -jar /home/aguswibowo/anaconda3/envs/gatk-snp/share/gatk4-4.6.2.0-1/gatk-package-4.6.2.0-local.jar --version
+The Genome Analysis Toolkit (GATK) v4.6.2.0
+HTSJDK Version: 4.2.0
+Picard Version: 3.4.0
+openjdk version "17.0.18-internal" 2026-01-20
+OpenJDK Runtime Environment (build 17.0.18-internal+0-adhoc.rattler.src)
+OpenJDK 64-Bit Server VM (build 17.0.18-internal+0-adhoc.rattler.src, mixed mode, sharing)
+
+samtools 1.24
+prefetch : 3.4.1
+
+datasets version: 18.37.0
+(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$</code></pre>
+</section>
+<section id="persiapan-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="persiapan-dataset">Persiapan Dataset</h2>
+<p>Untuk latihan, kita akan menggunakan data sangat kecil. Karenanya, kita akan menggunakan data bakteri <em>E.coli</em> yang diambil dari NCBI dengan kode akses: <a href="https://www.ncbi.nlm.nih.gov/sra/?term=SRR2584863">SRR2584863</a>, dengan detail sebagai berikut:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Study</td>
+<td>E. coli genome evolution over 50,000 generations</td>
+</tr>
+<tr class="even">
+<td>Name</td>
+<td>REL7179B</td>
+</tr>
+<tr class="odd">
+<td>Instrumen sequencing</td>
+<td>Illumina HiSeq 2500</td>
+</tr>
+<tr class="even">
+<td>Metode sequencing</td>
+<td>Whole genome sequencing (WGS)</td>
+</tr>
+<tr class="odd">
+<td>Sequencing layout</td>
+<td>Paired end</td>
+</tr>
+</tbody>
+</table>
+<p>Download genome referensi dari <em>E. coli</em> K-12 MG1655 RefSeq: <code>GCF_000005845.2</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">datasets</span> download genome accession GCF_000005845.2 <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--include</span> genome <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filename</span> ref/ecoli_k12.zip</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-q</span> ref/ecoli_k12.zip <span class="at">-d</span> ref/ncbi_dataset</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ref/ncbi_dataset/ncbi_dataset/data/GCF_000005845.2/GCF_000005845.2_ASM584v2_genomic.fna <span class="dt">\</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ref/ecoli_k12.fa</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Periksa dengan:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">seqkit</span> stats ref/ecoli_k12.fa</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$ seqkit stats ref/ecoli_k12.fa
+file              format  type  num_seqs    sum_len    min_len    avg_len    max_len
+ref/ecoli_k12.fa  FASTA   DNA          1  4,641,652  4,641,652  4,641,652  4,641,652</code></pre>
+<p>Siapkan indeks yang diperlukan GATK, BWA, dan samtools:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> faidx ref/ecoli_k12.fa</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> CreateSequenceDictionary <span class="dt">\</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> ref/ecoli_k12.dict</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> index ref/ecoli_k12.fa</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Tiga file penting referensi sekarang mencakup 3 file dengan ektensi: *.dict, *.fa, *.fa.fai</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$ ls -l ref
+total 13907
+-rw-r----- 1 aguswibowo qris-jcu     147 Sep 17 12:58 ecoli_k12.dict
+-rw------- 1 aguswibowo qris-jcu 4699745 Sep 17 12:57 ecoli_k12.fa
+-rw-r----- 1 aguswibowo qris-jcu      29 Sep 17 12:58 ecoli_k12.fa.fai
+(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$</code></pre>
+<p>Selanjutnya kita akan mendownload raw reads (SRA) dari NCBI (SRR2584863) menggunakan <code>prefetch</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prefetch</span> <span class="at">--progress</span> <span class="dt">\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max-size</span> u <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-directory</span> raw/sra <span class="dt">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  SRR2584863</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Validasi hasil download dengan:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vdb-validate</span> raw/sra/SRR2584863/SRR2584863.sra</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$ vdb-validate raw/sra/SRR2584863/SRR2584863.sra
+2026-09-17T03:03:05 vdb-validate.3.4.1 info: Table 'SRR2584863.sra' metadata: md5 ok
+2026-09-17T03:03:05 vdb-validate.3.4.1 info: Column 'ALTREAD': md5 ok
+2026-09-17T03:03:06 vdb-validate.3.4.1 info: Column 'QUALITY': md5 ok
+2026-09-17T03:03:06 vdb-validate.3.4.1 info: Column 'READ': md5 ok
+2026-09-17T03:03:06 vdb-validate.3.4.1 info: Column 'X': md5 ok
+2026-09-17T03:03:06 vdb-validate.3.4.1 info: Column 'Y': md5 ok
+2026-09-17T03:03:06 vdb-validate.3.4.1 info: Table 'SRR2584863.sra' is consistent
+(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$</code></pre>
+<p>Terlihat semua file *.sra terdownload dengan baik dan lengkap. Selanjutnya kita perlu monversi ke FASTQ paired-end:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fasterq-dump</span> <span class="dt">\</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  raw/sra/SRR2584863/SRR2584863.sra <span class="dt">\</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--split-files</span> <span class="dt">\</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--threads</span> 6 <span class="dt">\</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--temp</span> tmp <span class="dt">\</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> raw/fastq</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pada perintah di atas, kita memisahkan data <em>paired-end</em> menjadi dua file terpisah yaitu <code>_1.fastq</code> dan <code>_2.fastq</code> menggunakan perintah <code>--split-files</code> . Untuk mempercepat proses, maka kita menggunakan 6 <em>thread</em> CPU menggunakan perintah <code>--threads</code>, yang mana hal ini perlu disesuaikan dengan spesifikasi komputer yang anda punya. Karena saya memiliki 12 thread CPU, maka saya menggunakan 6. Perintah <code>--temp tmp</code> berarti kita menyimpan file sementara di folder <code>tmp</code> sebelum menyimpan hasil akhir nya di <code>raw/fastq</code> menggunakan perintah <code>--outdir</code>.</p>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$ fasterq-dump \
+  raw/sra/SRR2584863/SRR2584863.sra \
+  --split-files \
+  --threads 6 \
+  --temp tmp \
+  --outdir raw/fastq
+spots read      : 1,553,259
+reads read      : 3,106,518
+reads written   : 3,106,518
+(gatk-snp) [aguswibowo@bun148 gatk_snp_training]$</code></pre>
+<p>Interpretasi output:</p>
+<ul>
+<li><p><code>spots read : 1,553,259</code></p>
+<p>Terdapat <strong>1.553.259 <em>spots</em></strong> (posisi fisik pada <em>flow cell</em> sekuensing) yang berhasil dibaca. Angka ini mencerminkan jumlah total fragmen DNA/RNA unik yang diurutkan.</p></li>
+<li><p><code>reads read : 3,106,518</code></p>
+<p>Total bacaan (<em>reads</em>) individual yang dibaca adalah <strong>3.106.518.</strong> Angka ini tepat 2 kali lipat dari jumlah <em>spots</em> (<span class="math inline">\(1.553.259 \times 2 = 3.106.518\)</span>), yang mengonfirmasi bahwa data ini merupakan <strong>paired-end sequencing</strong> (setiap <em>spot</em> menghasilkan bacaan <em>Forward</em> dan <em>Reverse</em>).</p></li>
+<li><p>reads written : 3,106,518</p>
+<p>Seluruh <strong>3.106.518 bacaan</strong> berhasil ditulis ke dalam berkas FASTQ tanpa ada yang hilang atau rusak. Berkas hasil konversi di folder <code>raw/fastq</code> sudah lengkap dan siap digunakan untuk tahap analisis berikutnya.</p></li>
+</ul>
+<p>Selanjutnya kita bisa melakukan kompresi FASTQ untuk menghemat disk:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pigz</span> <span class="at">-p</span> 6 raw/fastq/<span class="pp">*</span>.fastq</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cek hasil:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">seqkit</span> stats raw/fastq/<span class="pp">*</span>.fastq.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun132 gatk_snp_training]$ seqkit stats raw/fastq/*.fastq.gz
+processed files:  2 / 2 [======================================] ETA: 0s. done
+file                             format  type   num_seqs      sum_len  min_len  avg_len  max_len
+raw/fastq/SRR2584863_1.fastq.gz  FASTQ   DNA   1,553,259  232,988,850      150      150      150
+raw/fastq/SRR2584863_2.fastq.gz  FASTQ   DNA   1,553,259  232,988,850      150      150      150</code></pre>
+<p>Nilai dari <code>sum_len</code> mengindikasikan bahwa terdapat sekitar 232 juta base pair (bp) atau sekitar 466 mega base pair (Mb), dengan keseluruhan bacaan memiliki panjang konsisten yaitu 150 bp.</p>
+</section>
+<section id="quality-control" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control">Quality Control</h2>
+<p>Langkah berikutnya kita perlu melakukan <em>quality control</em> (QC) untuk memastikan bahwa file reads yang kita gunakan memiliki kualitas yang baik. Proses QC dilakukan menggunakan <code>fastqc</code> dan untuk mempercepat prosesnya maka saya akan menggunakan 6 threads dengan perintah <code>--threads</code>. Terakhir, kita akan rangkum semua hasil QC menggunakan <code>multiqc</code> yang mana semua output QC akan disimpan di direktori <code>qc/.</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="dt">\</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--threads</span> 6 <span class="dt">\</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> qc <span class="dt">\</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  raw/fastq/<span class="pp">*</span>.fastq.gz</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> qc <span class="at">-o</span> qc/multiqc</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Yang perlu kita lihat dari hasil QC adalah Per-base sequence quality, Adapter content, Per-base sequence content, Sequence duplication levels, dan jumlah reads per pasangan FASTQ. Karena secara umum file FASTQ dari sampe kita saat ini baik, maka kita tidak perlu melakukan proses trimming.</p>
+</section>
+<section id="alignment-ke-genom-referensi" class="level2">
+<h2 class="anchored" data-anchor-id="alignment-ke-genom-referensi">Alignment ke genom referensi</h2>
+<p>Kita akan menggunakan BWA (<em>Burrows-Wheeler Aligner</em>) untuk melakukan proses alignment pada sample <em>short read</em> ini dan read group wajib ada agar GATK dapat mengenali identitas sampel.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="dt">\</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-t</span> 6 <span class="dt">\</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> <span class="st">'@RG\tID:SRR2584863\tSM:ecoli_training\tPL:ILLUMINA\tLB:lib1\tPU:SRR2584863'</span> <span class="dt">\</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  raw/fastq/SRR2584863_1.fastq.gz <span class="dt">\</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  raw/fastq/SRR2584863_2.fastq.gz <span class="dt">\</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-@</span> 6 <span class="at">-o</span> aligned/ecoli.sorted.bam</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pada perintah di atas kita menggunakan:</p>
+<ul>
+<li><p>Algoritma BWA-MEM, dengan alokasi thread 6 (<code>-t 6</code>).</p></li>
+<li><p><code>-R '@RG\tID:SRR2584863\tSM:ecoli_training\tPL:ILLUMINA\tLB:lib1\tPU:SRR2584863'</code></p>
+<p>Menambahkan <strong>Read Group (RG)</strong> ke dalam header file SAM. Metadata ini <strong>wajib</strong> untuk analisis lanjutan seperti pemanggilan varian (<em>variant calling</em>) dengan GATK. <code>ID</code>: Identifikasi unik untuk kelompok bacaan (<em>SRR2584863</em>). <code>SM</code>: Nama sampel (<em>ecoli_training</em>). <code>PL</code>: Platform sekuensing (<em>ILLUMINA</em>). <code>LB</code>: Perpustakaan DNA (<em>lib1</em>). <code>PU</code>: Unit platform/run (<em>SRR2584863</em>).</p></li>
+<li><p><code>ref/ecoli_k12.fa</code></p>
+<p>Berkas genom referensi bakteri <em>E. coli</em> K-12 yang menjadi acuan alignment.</p></li>
+<li><p><code>raw/fastq/SRR2584863_1.fastq.gz</code> &amp; <code>raw/fastq/SRR2584863_2.fastq.gz</code></p>
+<p>Dua berkas input FASTQ <em>paired-end</em> (Forward &amp; Reverse) yang akan dipetakan.</p></li>
+<li><p><code>|</code> (Pipe)</p>
+<p>Meneruskan output hasil pemetaan (format SAM) langsung ke perintah berikutnya di dalam memori tanpa menyimpannya ke disk terlebih dahulu untuk menghemat ruang penyimpanan.</p></li>
+<li><p><code>samtools sort -@ 6 -o aligned/ecoli.sorted.bam</code></p>
+<p>Menerima data SAM, mengonversinya ke format biner yang terkompresi (<strong>BAM</strong>), lalu mengurutkannya (<em>sort</em>) berdasarkan koordinat kromosom menggunakan 6 thread. Hasil akhirnya disimpan sebagai <code>aligned/ecoli.sorted.bam</code>.</p></li>
+</ul>
+<p>Kemudian kita melakukan indexing dan QC mapping menggunakan <code>samtools</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># indexing</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index aligned/ecoli.sorted.bam</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># qc mapping</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat aligned/ecoli.sorted.bam <span class="op">&gt;</span> qc/flagstat.txt</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> stats aligned/ecoli.sorted.bam <span class="op">&gt;</span> qc/alignment.stats.txt</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Lihat ringkasan mapping dengan perintah <code>cat</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> qc/flagstat.txt</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun132 gatk_snp_training]$ cat qc/flagstat.txt
+3131059 + 0 in total (QC-passed reads + QC-failed reads)
+3106518 + 0 primary
+0 + 0 secondary
+24541 + 0 supplementary
+0 + 0 duplicates
+0 + 0 primary duplicates
+2939901 + 0 mapped (93.89% : N/A)
+2915360 + 0 primary mapped (93.85% : N/A)
+3106518 + 0 paired in sequencing
+1553259 + 0 read1
+1553259 + 0 read2
+2796770 + 0 properly paired (90.03% : N/A)
+2874716 + 0 with itself and mate mapped
+40644 + 0 singletons (1.31% : N/A)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</code></pre>
+<p>Yang penting dari output di atas adalah sebanyak 93.89% bacaan berhasil terpetakan pada genom referensi <em>E. coli</em>. Angka ini menunjukkan kualitas <em>sequencing</em> dan kesesuaian sampel yang <strong>sangat baik</strong> (umumnya standar keberhasilan di atas 80-90%). Sementara sebesar sisanya (~6.11%) tidak terpetakan yang kemungkinan karena <em>noise</em>, kontaminasi, atau adapter.</p>
+</section>
+<section id="mark-duplicates" class="level2">
+<h2 class="anchored" data-anchor-id="mark-duplicates">Mark Duplicates</h2>
+<p>Fungsi dari <em>mark duplicates</em> adalah untuk mengidentifikasi dan menandai duplikat PCR/optis pada berkas BAM. Proses ini menggunaka option <code>MarkDuplicates</code> dari <code>gatk:</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> <span class="at">--java-options</span> <span class="st">"-Xmx6G"</span> MarkDuplicates <span class="dt">\</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-I</span> aligned/ecoli.sorted.bam <span class="dt">\</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> aligned/ecoli.dedup.bam <span class="dt">\</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-M</span> qc/duplicate_metrics.txt <span class="dt">\</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--CREATE_INDEX</span> true</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pada perintah di atas, kita melakukan pembatasan penggunaan RAM sebesar 6 GB menggunakan option <code>Xmx6G</code> , menggunakan input (<code>-I</code>) dari file <code>aligned/ecoli.sorted.bam</code> , menyimpannya (<code>-O</code>) di <code>aligned/ecoli.dedup.bam</code> , membuat berkas laporan QC (<code>-M</code>) hasil duplicates di <code>qc/duplicate_metrics.txt</code> , dan secara otomatis membuat berkas indeks baru (<code>--CREATE_INDEX true</code>) di <code>aligned/ecoli.dedup.bai</code> .</p>
+<p>Kita bisa cek hasil deduplikasi dengan perintah <code>cat</code> pada file <code>qc/duplicate_metrics.txt</code> kemudian menghitung ulang statistik alignment yang baru saja dideduplikasi menggunakan <code>samtools</code> dengan opsi <code>flagstat</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> qc/duplicate_metrics.txt</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat aligned/ecoli.dedup.bam</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>3131059 + 0 in total (QC-passed reads + QC-failed reads)
+3106518 + 0 primary
+0 + 0 secondary
+24541 + 0 supplementary
+57801 + 0 duplicates
+57801 + 0 primary duplicates
+2939901 + 0 mapped (93.89% : N/A)
+2915360 + 0 primary mapped (93.85% : N/A)
+3106518 + 0 paired in sequencing
+1553259 + 0 read1
+1553259 + 0 read2
+2796770 + 0 properly paired (90.03% : N/A)
+2874716 + 0 with itself and mate mapped
+40644 + 0 singletons (1.31% : N/A)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</code></pre>
+<p>Dari output di atas kita mengetahui bahwa pemetaan tetap konsisten pada 93.89%, namun sudah ada informasi bahwa terdapat <strong>57.801 bacaan duplikat</strong> yang berhasil ditandai oleh GATK dengan tingkat duplikasi yang cukup rendah, yaitu hanya sekitar 1.85% dari total bacaan. Ini mengindikasikan kualitas pustaka (<em>library preparation</em>) yang sangat bagus tanpa bias amplifikasi PCR yang berlebihan.</p>
+</section>
+<section id="variant-calling-dengan-gatk-haplotypecaller" class="level2">
+<h2 class="anchored" data-anchor-id="variant-calling-dengan-gatk-haplotypecaller">Variant calling dengan GATK HaplotypeCaller</h2>
+<p>Langkah selanjutnya kita bisa melakukan <em>variant calling</em> menggunakan GATK HaplotypeCaller. Kita akan menggunakan referensi dari <code>ref/ecoli_k12.fa</code> menggunakan option <code>-R</code>, input dari file hasil alignment yang telah ditandai deduplikasinya (<code>aligned/ecoli.dedup.bam</code>) menggunakan option <code>-I</code> untuk menghasilkan file dengan format GVCF (<em>Genomics Variant Call Format</em>) dengan option <code>-ERC GVCF</code>. Mode GVCF ini menyimpan informasi cakupan (<em>coverage</em>) pada situs non-varian, yang sangat berguna jika nanti kita ingin menggabungkan beberapa sampel (<em>joint calling</em>). Kemudian karena <em>E. coli</em> adalah organisme prokariotik dengan satu salinan kromosom tunggal (haploid), maka kita akan menggunakan <code>--sample-ploidy 1</code>. Proses <em>variant calling</em> ini akan menggunakan sebanyak 6 thread CPU (sesuaikan dengan jumlah CPU yang anda miliki), yang mana akan menggunakan algoritma HMM (<em>Hidden Markov Model</em>) dengan perintah <code>--native-pair-hmm-threads 6</code>. Adapun perintah lengkap nya adalah sebagai berikut:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> <span class="at">--java-options</span> <span class="st">"-Xmx6G"</span> HaplotypeCaller <span class="dt">\</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-I</span> aligned/ecoli.dedup.bam <span class="dt">\</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> variants/ecoli.g.vcf.gz <span class="dt">\</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-ERC</span> GVCF <span class="dt">\</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--sample-ploidy</span> 1 <span class="dt">\</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--native-pair-hmm-threads</span> 6</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Proses ini akan memakan waktu yang cukup lama (<em>take your coffee and relax</em>) tergantung dengan berapa banyak CPU threads yang anda gunakan. Semakin banyak CPU threads yang anda gunakan, maka proses akan semakin cepat.</p>
+<p>Output:</p>
+<pre class="text terminal-output"><code>14:25:51.928 INFO  HaplotypeCaller - 103373 read(s) filtered by: MappingQualityReadFilter
+0 read(s) filtered by: MappingQualityAvailableReadFilter
+0 read(s) filtered by: MappedReadFilter
+0 read(s) filtered by: NotSecondaryAlignmentReadFilter
+54769 read(s) filtered by: NotDuplicateReadFilter
+0 read(s) filtered by: PassesVendorQualityCheckReadFilter
+0 read(s) filtered by: NonZeroReferenceLengthAlignmentReadFilter
+0 read(s) filtered by: GoodCigarReadFilter
+0 read(s) filtered by: WellformedReadFilter
+158142 total reads filtered out of 2980545 reads processed
+14:25:51.928 INFO  ProgressMeter -  NC_000913.3:4640748              4.4                 26519           5965.4
+14:25:51.928 INFO  ProgressMeter - Traversal complete. Processed 26519 total regions in 4.4 minutes.
+14:25:51.934 INFO  VectorLoglessPairHMM - Time spent in setup for JNI call : 0.268291944
+14:25:51.934 INFO  PairHMM - Total compute time in PairHMM computeLogLikelihoods() : 51.104056261000004
+14:25:51.934 INFO  SmithWatermanAligner - Total compute time in native Smith-Waterman : 41.68 sec
+14:25:51.935 INFO  HaplotypeCaller - Shutting down engine
+[17 September 2026 at 2:25:51 pm AEST] org.broadinstitute.hellbender.tools.walkers.haplotypecaller.HaplotypeCaller done. Elapsed time: 4.45 minutes.
+Runtime.totalMemory()=1136656384</code></pre>
+<p>Hasil <em>variant calling</em> kita peroleh bahwa terdapat <strong>2.980.545 <em>reads</em></strong> yang berhasil dianalisis dengan <strong>103.373 <em>reads</em></strong> diabaikan karena kualitas pemetaan rendah dan <strong>54.769 <em>reads</em></strong> diabaikan karena ditandai sebagai duplikat.</p>
+<p>Selanjutnya kita bisa mengubah file dari GVCF ke VCF biasa dengan option <code>GenotypeGVCFs</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> <span class="at">--java-options</span> <span class="st">"-Xmx6G"</span> GenotypeGVCFs <span class="dt">\</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-V</span> variants/ecoli.g.vcf.gz <span class="dt">\</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> variants/ecoli.raw.vcf.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Kita bisa lihat 7 variant awal dari hasil final VCF menggunakan <code>bcftools</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view variants/ecoli.raw.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^#CHROM/ || !/^#/'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>#CHROM  POS ID  REF ALT QUAL    FILTER  INFO    FORMAT  ecoli_training
+NC_000913.3 301 .   CT  C   2599.01 .   AC=1;AF=1;AN=1;DP=100;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=29.87;SOR=1.153 GT:AD:DP:GQ:PL  1:0,87:87:99:2609,0
+NC_000913.3 393 .   T   G   2125.04 .   AC=1;AF=1;AN=1;DP=57;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=25.36;SOR=1.412  GT:AD:DP:GQ:PL  1:0,56:56:99:2135,0
+NC_000913.3 588 .   G   A   2385.04 .   AC=1;AF=1;AN=1;DP=66;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=28.73;SOR=1.033  GT:AD:DP:GQ:PL  1:0,66:66:99:2395,0
+NC_000913.3 774 .   T   C   2414.04 .   AC=1;AF=1;AN=1;DP=62;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=30.97;SOR=1.255  GT:AD:DP:GQ:PL  1:0,60:60:99:2424,0
+NC_000913.3 867 .   C   T   1637.04 .   AC=1;AF=1;AN=1;DP=44;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=27.24;SOR=2.409  GT:AD:DP:GQ:PL  1:0,44:44:99:1647,0
+NC_000913.3 939 .   G   A   3538.04 .   AC=1;AF=1;AN=1;DP=100;FS=0;MLEAC=1;MLEAF=1;MQ=59.85;QD=28.2;SOR=1.237   GT:AD:DP:GQ:PL  1:0,98:98:99:3548,0
+NC_000913.3 966 .   T   C   4566.04 .   AC=1;AF=1;AN=1;DP=105;FS=0;MLEAC=1;MLEAF=1;MQ=59.87;QD=25;SOR=1.157 GT:AD:DP:GQ:PL  1:0,102:102:99:4576,0</code></pre>
+<p>Beberapa bagian penting yang perlu dipahami diantaranya:</p>
+<ul>
+<li><p><code>CHROM</code>: lokasi kromosom. Pada contoh di atas, semua SNP yang ditampilkan berlokasi di kromosom 1.</p></li>
+<li><p><code>POS</code>: posisi perubahan nucleotida (SNP) dalam genome. Misalnya <code>NC_000913.3</code> berlokasi di kromosom 1 pada basa ke 393.</p></li>
+<li><p><code>REF</code> - <code>ALT</code>: Basa acuan (<em>Reference</em>) yang mengalami perubahan menjadi basa mutan (<em>Alternative</em>). Misalnya <code>NC_000913.3</code> mengalami perubahan (mutasi) dari T ke G.</p></li>
+<li><p><code>QUAL</code>: Skor kepercayaan pemanggilan varian dalam skala Phred (semakin tinggi semakin bagus).</p></li>
+<li><p><code>GT</code>(Genotype): <code>1</code> berarti mutasi terdeteksi secara murni/homozigot haploid.</p></li>
+<li><p><code>AD</code>(Allele Depth): <code>[basa_REF],[basa_ALT]</code>. Menunjukkan jumlah <em>reads</em> yang membaca alel acuan vs alel mutan.</p></li>
+<li><p><code>DP</code> (Filtered depth): Total jumlah <em>reads</em> berkualitas baik di posisi tersebut.</p></li>
+</ul>
+<p>Kita juga bisa melakukan pelaporan statistik awal untuk mengetahui bagaimana kualitas dari variant calling:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats variants/ecoli.raw.vcf.gz <span class="op">&gt;</span> qc/ecoli_variants.stats</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Gunakan <code>grep</code> untuk mengekstrak bagian <strong>SN (Summary Numbers):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"^SN"</span> qc/ecoli_variants.stats</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun132 gatk_snp_training]$ grep "^SN" qc/ecoli_variants.stats
+SN  0   number of samples:  1
+SN  0   number of records:  34862
+SN  0   number of no-ALTs:  0
+SN  0   number of SNPs: 33747
+SN  0   number of MNPs: 0
+SN  0   number of indels:   1115
+SN  0   number of others:   0
+SN  0   number of multiallelic sites:   0
+SN  0   number of multiallelic SNP sites:   0</code></pre>
+<p>Dari output awal ini kita dapat mengetahui bahwa dari 34.862 variant, terdapat 33.747 SNPs dan sisanya (1115) berupa indels (<em>insertion/deletion</em>). Ini adalah hasil yang sangat baik, karena mayoritas (96.6%) data merupakan murni SNPs. Langkah selanjutnya yang perlu kita lakukan adalah menghilangkan indels dan melakukan filtering.</p>
+</section>
+<section id="menghapus-indels-dan-melakukan-filtering-file-vcf" class="level2">
+<h2 class="anchored" data-anchor-id="menghapus-indels-dan-melakukan-filtering-file-vcf">Menghapus Indels dan Melakukan Filtering File VCF</h2>
+<p>Dalam banyak analisis, indels sering kali dipisahkan dari SNPs atau bahkan dihapus sama sekali. Hal ini dikarenakan indels dapat menyebabkan pergeseran bingkai baca (<em>frameshift mutation</em>) yang mengubah seluruh struktur protein downstream atau menghentikan translasi (<em>premature stop codon</em>). Misalnya dalam genomic selection, hanya SNPs yang digunakan untuk mengetahui bagaimana pengaruhnya terhadap suatu sifat, karena SNPs terjadi secara konsisten dalam suatu populasi. Indels dapat dipisahkan dengan option <code>SelectVariants</code> pada GATK dengan argument berupa <code>--select-type-to-include SNP</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> SelectVariants <span class="dt">\</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-V</span> variants/ecoli.raw.vcf.gz <span class="dt">\</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--select-type-to-include</span> SNP <span class="dt">\</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> variants/ecoli.raw.snp.vcf.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Setelah pemisahan indels dan SNPs dilakukan, kita bisa melakukan filtering dasar untuk hanya menggunakan SNPs yang memiliki kriteria standar seperti:</p>
+<ul>
+<li><p><strong>QD (QualbyDepth):</strong> Kualitas varian yang dinormalisasi berdasarkan kedalaman pembacaan (<em>depth</em>). Nilai QD &lt; 2.0 harus dibuang karena mengindikasikan bahwa kepercayaan mutasi sangat lemah meskipun dibaca oleh banyak <em>reads</em>.</p></li>
+<li><p><strong>MQ (RMSMappingQuality)</strong>: Rata-rata kualitas pemetaan (<em>mapping quality</em>) dari seluruh <em>reads</em> yang mencakup suatu posisi. Nilai MQ &lt; 40 harus dibuang karena menandakan <em>reads</em> dipetakan pada daerah genom yang ambigu/berulang (<em>repetitive</em>).</p></li>
+<li><p><strong>FS (Phred-scaled Strand Bias) &amp; SOR (Strand Odds Ratio)</strong>: Mengukur ketidakseimbangan untai DNA (<em>strand bias</em>), yaitu kondisi di mana varian hanya terdeteksi pada <em>read Forward</em> saja atau <em>Reverse</em> saja. Nilai FS &gt; 60 dan SOR &gt; 3.0 mengindikasikan ketidakseimbangan untai yang tinggi dan merupakan indikator kuat adanya artefak teknis/kesalahan sekuensing.</p></li>
+<li><p><strong>DP (Depth):</strong> Total jumlah <em>reads</em> yang memetakan posisi tersebut. Nilai DP &lt; 10 mengindikasikan bahwa cakupan di bawah 10x dianggap terlalu rendah untuk memastikan mutasi riil.</p></li>
+</ul>
+<p>Filtering ini dapat dilakukan dengan option <code>VariantFiltration</code> dari GATK:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> VariantFiltration <span class="dt">\</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-V</span> variants/ecoli.raw.snp.vcf.gz <span class="dt">\</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> variants/ecoli.filtered.snp.vcf.gz <span class="dt">\</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-name</span> <span class="st">"LowQD"</span> <span class="dt">\</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-expression</span> <span class="st">"QD &lt; 2.0"</span> <span class="dt">\</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-name</span> <span class="st">"LowMQ"</span> <span class="dt">\</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-expression</span> <span class="st">"MQ &lt; 40.0"</span> <span class="dt">\</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-name</span> <span class="st">"HighFS"</span> <span class="dt">\</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-expression</span> <span class="st">"FS &gt; 60.0"</span> <span class="dt">\</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-name</span> <span class="st">"HighSOR"</span> <span class="dt">\</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-expression</span> <span class="st">"SOR &gt; 3.0"</span> <span class="dt">\</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-name</span> <span class="st">"LowDP"</span> <span class="dt">\</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">--filter-expression</span> <span class="st">"DP &lt; 10"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Kemudian kita ambil yang benar-benar PASS dengan option <code>SelectVariants</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gatk</span> SelectVariants <span class="dt">\</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-R</span> ref/ecoli_k12.fa <span class="dt">\</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-V</span> variants/ecoli.filtered.snp.vcf.gz <span class="dt">\</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--exclude-filtered</span> <span class="dt">\</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-O</span> variants/ecoli.pass.snp.vcf.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Karena kita hanya menggunakan organisme haploid (bakteri), maka filter dasar di atas sudah cukup. Namun jika kita bekerja dengan organisme lebih tinggi yang diploid dengan banyak individu, maka kita perlu menerapkan filter lanjutan seperti hanya memasaukkan SNPs dengan <em>minor allele frequency</em> (MAF) lebih dari 5% dan dengan probabilitas bahwa penyimpangan frekuensi genotipe yang kita lihat dari pola Hardy–Weinberg Equilibrium (HWE) terjadi hanya karena variasi acak adalah <strong>kurang dari</strong> 0.000001 (<code>HWE p-value &lt; 10⁻⁶).</code></p>
+<p>Terkahir, kita bisa cek ulang hasil filtering dengan <code>bcftools</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># buat file statistik</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> stats variants/ecoli.pass.snp.vcf.gz <span class="op">&gt;</span> qc/snp_stats.txt</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cek ada berapa SNP akhir</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-H</span> variants/ecoli.pass.snp.vcf.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>(gatk-snp) [aguswibowo@bun132 gatk_snp_training]$ bcftools view -H variants/ecoli.pass.snp.vcf.gz | wc -l
+32639</code></pre>
+<p>Pasca filtering, SNP final yang lolos ada 32.639. Kita juga bisa lihat 7 SNP awal dengan perintah:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view variants/ecoli.pass.snp.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'/^#CHROM/ || !/^#/'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<pre class="text terminal-output"><code>#CHROM  POS ID  REF ALT QUAL    FILTER  INFO    FORMAT  ecoli_training
+NC_000913.3 393 .   T   G   2125.04 PASS    AC=1;AF=1;AN=1;DP=57;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=25.36;SOR=1.412  GT:AD:DP:GQ:PL  1:0,56:56:99:2135,0
+NC_000913.3 588 .   G   A   2385.04 PASS    AC=1;AF=1;AN=1;DP=66;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=28.73;SOR=1.033  GT:AD:DP:GQ:PL  1:0,66:66:99:2395,0
+NC_000913.3 774 .   T   C   2414.04 PASS    AC=1;AF=1;AN=1;DP=62;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=30.97;SOR=1.255  GT:AD:DP:GQ:PL  1:0,60:60:99:2424,0
+NC_000913.3 867 .   C   T   1637.04 PASS    AC=1;AF=1;AN=1;DP=44;FS=0;MLEAC=1;MLEAF=1;MQ=60;QD=27.24;SOR=2.409  GT:AD:DP:GQ:PL  1:0,44:44:99:1647,0
+NC_000913.3 939 .   G   A   3538.04 PASS    AC=1;AF=1;AN=1;DP=100;FS=0;MLEAC=1;MLEAF=1;MQ=59.85;QD=28.2;SOR=1.237   GT:AD:DP:GQ:PL  1:0,98:98:99:3548,0
+NC_000913.3 966 .   T   C   4566.04 PASS    AC=1;AF=1;AN=1;DP=105;FS=0;MLEAC=1;MLEAF=1;MQ=59.87;QD=25;SOR=1.157 GT:AD:DP:GQ:PL  1:0,102:102:99:4576,0
+NC_000913.3 969 .   T   G   4566.04 PASS    AC=1;AF=1;AN=1;DP=102;FS=0;MLEAC=1;MLEAF=1;MQ=59.86;QD=29.56;SOR=1.157  GT:AD:DP:GQ:PL  1:0,102:102:99:4576,0</code></pre>
+<p>Selesai.</p>
+
+
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bowo1698\.github\.io\/Bioinfonote\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../docs/work-metagenomics.html" class="pagination-link" aria-label="Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bowo1698/Bioinfonote">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

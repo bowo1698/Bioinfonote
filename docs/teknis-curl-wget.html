@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -110,7 +117,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -153,6 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -288,6 +458,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -316,6 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-curl-wget.html">Variabel, loop, dan izin akses</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Variabel, loop, dan izin akses</h1>
@@ -335,21 +512,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/teknis-curl-wget.html" style="text-decoration: none; color: inherit;"> Variabel, loop, dan izin akses </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://collections.museumsvictoria.com.au/content/media/12/397512-large.jpg" alt="Gurita Cincin Biru" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Variabel, loop, dan izin akses</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://collections.museumsvictoria.com.au/content/media/12/397512-large.jpg" class="content-image article-hero-image img-fluid" alt="Gurita cincin biru"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
 <li><a href="#memahami-nama-file-dan-ekstensi">Memahami nama file dan ekstensi</a></li>
@@ -361,26 +527,20 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><strong>Catatan</strong>: Dalam tutorial ini, kita akan bekerja menggunakan pemrograman Bash dalam lingkungan Linux. Anda dapat menggunakan VS code baik untuk membuat script bash maupun menjalankan script tersebut via terminal.</p>
 </blockquote>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Dalam tutorial ini, kita akan bekerja dengan dataset dari sebuah studi yang menganalisis transkriptom Gurita Cincin Biru (<em>Hapalochlaena maculosa</em>) dari berbagai jaringan tubuh. Studi ini merupakan bagian dari proyek sekuensing genom Gurita Cincin Biru yang dipublikasikan di <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.6b00452">Giga Science</a> pada tahun 2020. Proyek tersebut dipimpin oleh mahasiswa doktoral Brooke Whitelaw yang merupakan anggota dari kelompok riset <a href="http://marine-omics.net/">Marine Omics</a> di James Cook University (JCU).</p>
 <p>Tutorial ini mencerminkan tahapan umum yang sering dilakukan untuk mengunduh data dari pusat sekuensing. Selain itu, tutorial ini juga memperkenalkan konsep dasar seperti loop dan variabel, yang sangat berguna dalam berbagai konteks, terutama saat bekerja dengan banyak berkas input.</p>
 <p>Memahami nama file dan ekstensi</p>
 </section>
-<section id="memahami-nama-file-dan-ekstensi" class="level1">
-<h1>Memahami nama file dan ekstensi</h1>
+<section id="memahami-nama-file-dan-ekstensi" class="level2">
+<h2 class="anchored" data-anchor-id="memahami-nama-file-dan-ekstensi">Memahami nama file dan ekstensi</h2>
 <p>Pusat sekuensing baru saja mengirimkan email yang menginformasikan bahwa data sudah tersedia. Dalam email tersebut, mereka menyebutkan bahwa terdapat 24 berkas terpisah yang siap diunduh. Mengunduh satu per satu tentu akan memakan waktu dan rentan terhadap kesalahan. Untungnya, nama berkas dan URL unduhan mengikuti pola tertentu, sehingga proses ini dapat diotomatisasi.</p>
 <p>Dalam proyek nyata, kita sering kali harus menangani ratusan hingga ribuan berkas hasil sekuensing. Oleh karena itu, melakukan proses ini secara manual bukanlah pilihan yang realistis, sehingga otomatisasi menjadi keharusan.</p>
 <p>Pusat sekuensing juga memberikan contoh pola URL untuk mengunduh berkas-berkas tersebut, yaitu sebagai berikut:</p>
-<div style="text-align: center;">
-<p><img src="images/fastq-file-format.png" alt="Contoh format file" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="images/fastq-file-format.png" class="content-image img-fluid" style="width:90.0%" alt="Contoh format file FASTQ"></p>
 <p>Saat kita mengirimkan sampel ke pusat sekuensing, maka kita akan menyertakan kode sampel, misalnya dalam kasus ini berasal dari dua belas jaringan yang diambil dari satu individu hewan (lihat tabel di bawah). Proses sekuensing dilakukan dengan metode <em>paired-end</em>, sehingga untuk setiap sampel akan tersedia dua berkas: satu berkas <code>R1</code> yang berisi <code>forward reads</code> dan satu berkas <code>R2</code> yang berisi <code>reverse reads</code>.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 85%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Kode Sampel</th>
@@ -439,8 +599,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </tbody>
 </table>
 <p>Tugas kita kali ini adalah membuat sebuah skrip sederhana untuk mengunduh seluruh data. Untuk menyelesaikan tugas ini, kita akan mempelajari beberapa konsep baru yang penting. Kita akan membangunnya secara bertahap agar prosesnya mudah diikuti dan dipahami.</p>
-<section id="variabel" class="level2">
-<h2 class="anchored" data-anchor-id="variabel">Variabel</h2>
+<section id="variabel" class="level3">
+<h3 class="anchored" data-anchor-id="variabel">Variabel</h3>
 <p>Variabel adalah penampung sementara untuk menyimpan informasi. Konsep ini digunakan dalam semua bahasa pemrograman, termasuk <em>Bash</em>. Sebagai contoh, kita dapat membuat sebuah variabel bernama <code>sample</code> dan menetapkan nilainya dengan salah satu nama sampel kita, seperti berikut:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">sample</span><span class="op">=</span><span class="st">"EM1"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
@@ -472,8 +632,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p>Tapi sejauh ini, cara tersebut belum terlalu berguna, bukan? Bayangkan jika kita bisa mengotomatisasi proses pemberian nilai baru ke variabel <code>sample</code>, sehingga secara otomatis bisa memproses seluruh daftar 12 sampel kita. Nah, itu baru benar-benar berguna!</p>
 <p>Di sinilah konsep <em>loop</em> (perulangan) mulai berperan.</p>
 </section>
-<section id="loop" class="level2">
-<h2 class="anchored" data-anchor-id="loop">Loop</h2>
+<section id="loop" class="level3">
+<h3 class="anchored" data-anchor-id="loop">Loop</h3>
 <p>Loop memungkinkan kita untuk melakukan tugas yang sama secara berulang dalam konteks yang berbeda, misalnya pada berbagai berkas, nama-nama dalam daftar, kolom dalam sebuah tabel, dan sebagainya.</p>
 <p>Hampir semua bahasa pemrograman mendukung konsep perulangan (loop) dalam berbagai bentuk. Di dalam bash, sintaks dasar untuk sebuah <em>for loop</em> adalah seperti ini:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> placeholder <span class="kw">in</span> <span class="op">&lt;</span>list<span class="op">&gt;</span></span>
@@ -489,12 +649,12 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Mengunduh file </span><span class="va">${sample}</span><span class="st">_R2.fastq"</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Hasil dari skrip ini adalah:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">Mengunduh file EM1_R1.fastq</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">Mengunduh file EM1_R2.fastq</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">Mengunduh file EM2_R1.fastq</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">Mengunduh file EM2_R2.fastq</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">Mengunduh file EM3_R1.fastq</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">Mengunduh file EM3_R2.fastq</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text terminal-output"><code>Mengunduh file EM1_R1.fastq
+Mengunduh file EM1_R2.fastq
+Mengunduh file EM2_R1.fastq
+Mengunduh file EM2_R2.fastq
+Mengunduh file EM3_R1.fastq
+Mengunduh file EM3_R2.fastq</code></pre>
 <p>Anda bisa mengekplorasi konsep loop ini sembari menjawab pertanyaan berikut:</p>
 <ul>
 <li>Apa yang terjadi jika Anda mengubah nama variabel <code>placeholder</code>?</li>
@@ -503,15 +663,15 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </ul>
 </section>
 </section>
-<section id="aplikasi-loop-untuk-mendownload-file-sekuen" class="level1">
-<h1>Aplikasi loop untuk mendownload file sekuen</h1>
+<section id="aplikasi-loop-untuk-mendownload-file-sekuen" class="level2">
+<h2 class="anchored" data-anchor-id="aplikasi-loop-untuk-mendownload-file-sekuen">Aplikasi loop untuk mendownload file sekuen</h2>
 <p>Pada contoh <em>for loop</em> sebelumnya, kita harus mengetik secara manual semua nama sampel seperti “EM1”, “EM2”, “EM3”, dan seterusnya. Pola yang berulang seperti ini sebenarnya sangat mudah untuk diotomatisasi.</p>
 <p>Dalam kasus ini, kita memiliki urutan kode sampel yang hanya berupa angka 1 sampai 12 dengan awalan “EM”. Untuk membuat deretan angka tersebut, kita bisa menggunakan perintah seq di bash.</p>
 <p>Sebagai contoh:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span> 1 3</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Perintah di atas akan menghasilkan:</p>
-<pre><code>1
+<pre class="text terminal-output"><code>1
 2
 3</code></pre>
 <p>Sering kali, saat kita menjalankan sebuah perintah di terminal, hasilnya akan langsung ditampilkan di layar. Sebelumnya, kita telah melihat bahwa hasil keluaran (<em>output</em>) ini bisa diarahkan ke sebuah berkas menggunakan simbol <code>&gt;</code> (untuk menimpa) atau <code>&gt;&gt;</code> (untuk menambahkan).</p>
@@ -523,7 +683,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="va">angka</span><span class="op">=</span><span class="va">$(</span><span class="fu">seq</span> 1 5<span class="va">)</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Urutan angka: </span><span class="va">$angka</span><span class="st">"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Outputnya:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Urutan angka</span><span class="kw">:</span><span class="at"> 1 2 3 4 5</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text terminal-output"><code>Urutan angka: 1 2 3 4 5</code></pre>
 <p>Output yang telah ditangkap dalam sebuah variabel juga bisa digunakan untuk membuat daftar (list) dalam perulangan. Misalnya, kita bisa membuat sebuah <em>loop</em> untuk mencetak semua nama file yang diinginkan pada 12 sampel yang ada, mulai dari EM1, EM2 EM3, dst secara berurutan.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="va">samples</span><span class="op">=</span><span class="va">$(</span><span class="fu">seq</span> 1 12<span class="va">)</span></span>
@@ -541,14 +701,14 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><p>Di dalam perulangan, kita menyisipkan angka tersebut ke dalam nama sampel menggunakan <code>EM${i}</code>.</p></li>
 </ul>
 <p>Output yang dihasilkan akan berupa:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Memproses sampel</span><span class="kw">:</span><span class="at"> EM1_R1.fastq.gz</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Memproses sampel</span><span class="kw">:</span><span class="at"> EM2_R1.fastq.gz</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">...</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">Memproses sampel: EM12_R1.fastq.gz</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text terminal-output"><code>Memproses sampel: EM1_R1.fastq.gz
+Memproses sampel: EM2_R1.fastq.gz
+...
+Memproses sampel: EM12_R1.fastq.gz</code></pre>
 <p>Dengan pendekatan ini, kita dapat menghemat waktu dan menghindari kesalahan pengetikan saat bekerja dengan pola nama yang berulang.</p>
 </section>
-<section id="mendownload-file-sekuen" class="level1">
-<h1>Mendownload file sekuen</h1>
+<section id="mendownload-file-sekuen" class="level2">
+<h2 class="anchored" data-anchor-id="mendownload-file-sekuen">Mendownload file sekuen</h2>
 <p><a href="https://en.wikipedia.org/wiki/Wget">wget</a> merupakan perintah yang sangat <em>powerful</em> untuk mengunduh berkas dari internet. <code>wget</code> mendukung berbagai protokol jaringan, metode autentikasi, serta menyediakan banyak opsi untuk menyesuaikan cara kerjanya.</p>
 <p>Untuk mendapatkan gambaran seberapa fleksibel dan canggih perintah ini, kita bisa melihat halaman manualnya dengan menjalankan perintah berikut di terminal:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
@@ -572,22 +732,20 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wget</span> https://s3-ap-southeast-2.amazonaws.com/bc3203/EM_10k/<span class="va">${s}</span>_R2.fastq.gz <span class="at">-O</span> data/sequencing/<span class="va">${s}</span>_R2.fastq.gz</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="mengamankan-data-sekuen" class="level1">
-<h1>Mengamankan data sekuen</h1>
+<section id="mengamankan-data-sekuen" class="level2">
+<h2 class="anchored" data-anchor-id="mengamankan-data-sekuen">Mengamankan data sekuen</h2>
 <p>Data sekuensing umumnya mahal dan memerlukan waktu lama untuk dihasilkan. Seiring berjalannya berbagai analisis, kita akan menghasilkan banyak data turunan (<em>derived data</em>), yaitu hasil dari analisis yang dilakukan. Dengan menggunakan alat seperti Vscode dan menjalankan analisis melalui <em>command line</em>, data turunan ini biasanya bisa diregenerasi dengan cukup mudah.</p>
 <p>Namun, data mentah (<em>raw data</em>) hasil sekuensing tidak bisa dibuat ulang begitu saja. Oleh karena itu, setelah mengunduh data mentah, kita selalu disarankan untuk menjadikannya hanya-baca (<em>read-only</em>). Langkah ini membantu melindungi data dari kesalahan seperti menimpanya secara tidak sengaja, atau menghapusnya dengan perintah <code>rm</code>.</p>
 <p>Tentu saja, ini bukan perlindungan penuh, membuat salinan cadangan (<em>backup</em>) tetap sangat penting tetapi menjadikan berkas <em>read-only</em> adalah langkah awal yang sangat disarankan.</p>
 <p>Semua berkas di sistem Unix memiliki informasi izin akses (<em>permissions</em>) yang mengatur siapa yang bisa membaca, menulis, atau mengeksekusi berkas tersebut. Gambar berikut ini memberikan ringkasan singkat tentang cara kerja sistem izin tersebut:</p>
-<div style="text-align: center;">
-<p><img src="images/chmod.png" alt="Contoh format file" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="images/chmod.png" class="content-image img-fluid" style="width:90.0%" alt="Ilustrasi izin akses chmod"></p>
 <p>Izin akses untuk sebuah berkas dapat dilihat menggunakan perintah <code>ls</code> dengan opsi <code>-l</code>. Perintah ini akan menampilkan daftar berkas dalam format yang lebih rinci, termasuk informasi tentang siapa yang dapat membaca, menulis, atau mengeksekusi berkas tersebut.</p>
 <p>Sebagai contoh, untuk melihat izin dari salah satu berkas hasil unduhan, kita bisa menggunakan perintah:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> data/sequencing/EM1_R1.fastq.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Output-nya mungkin akan serupa seperti contoh berikut:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode csharp code-with-copy"><code class="sourceCode cs"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>total <span class="dv">56</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>rwxr<span class="op">-</span>xr<span class="op">-</span>x@ <span class="dv">1</span> aguswibowo  staff  <span class="dv">25900</span> <span class="dv">12</span> Jun  <span class="dv">2018</span> EM1_R1<span class="op">.</span><span class="fu">fastq</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text terminal-output"><code>total 56
+-rwxr-xr-x@ 1 aguswibowo  staff  25900 12 Jun  2018 EM1_R1.fastq</code></pre>
 <p>Perhatikan hasil dari perintah <code>ls -l</code> tersebut. Kemungkinan besar Anda akan melihat bahwa pengguna (user), yaitu Anda sendiri, memiliki izin membaca (r) dan menulis (w) terhadap berkas. Pengguna lain dalam grup yang sama biasanya memiliki izin membaca (r) saja, dan pengguna lain di luar grup juga hanya bisa membaca (r).</p>
 <p>Dalam kasus saya, simbol seperti <code>@</code> ini umum ditemui di macOS, dan digunakan untuk fitur-fitur khusus sistem seperti sandboxing atau metadata. Untuk saat ini, Anda tidak perlu khawatir mengenai hal tersebut.</p>
 <p>Perintah <code>chmod</code> digunakan untuk mengubah izin akses pada sebuah berkas. Salah satu cara termudah menggunakan <code>chmod</code> adalah dengan sintaks berikut:</p>
@@ -616,19 +774,30 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> data/sequencing/EM1_R1.fastq.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Sehingga hasilnya akan seperti contoh berikut:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode csharp code-with-copy"><code class="sourceCode cs"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>total <span class="dv">56</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>r<span class="op">--</span>r<span class="op">--</span>r<span class="op">--</span>@ <span class="dv">1</span> aguswibowo  staff  <span class="dv">25900</span> <span class="dv">12</span> Jun  <span class="dv">2018</span> EM1_R1<span class="op">.</span><span class="fu">fastq</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text terminal-output"><code>total 56
+-r--r--r--@ 1 aguswibowo  staff  25900 12 Jun  2018 EM1_R1.fastq</code></pre>
 <p>— Sekian —</p>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1048,7 +1217,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -40,10 +43,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -75,7 +82,169 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -118,6 +287,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -253,6 +423,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -290,6 +466,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-marker-genetik.html">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</h1>
@@ -309,21 +486,10 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/basic-marker-genetik.html" style="text-decoration: none; color: inherit;"> Marker-marker genetik: Kunci revolusi genomik dalam akuakultur </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://static.vecteezy.com/system/resources/thumbnails/055/370/498/small_2x/scientist-analyzing-dna-strands-on-a-digital-screen-with-glowing-data-in-a-lab-environment-photo.jpg" alt="Tools instalation" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Marker-marker genetik: Kunci revolusi genomik dalam akuakultur</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://static.vecteezy.com/system/resources/thumbnails/055/370/498/small_2x/scientist-analyzing-dna-strands-on-a-digital-screen-with-glowing-data-in-a-lab-environment-photo.jpg" class="content-image article-hero-image img-fluid" alt="Ilmuwan menganalisis data DNA pada layar digital"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
 <li><a href="#sejarah-dan-evolusi-marker-genetik">Sejarah dan evolusi marker genetik</a></li>
@@ -334,89 +500,89 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><a href="#tantangan-dan-arah-masa-depan">Tantangan dan arah masa depan</a></li>
 </ul>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Akuakultur merupakan salah satu sektor pangan yang berkembang pesat di dunia saat ini, dengan produksi yang terus meningkat untuk memenuhi kebutuhan protein hewani global. Namun, untuk mencapai keberlanjutan dan produktivitas maksimal, industri akuakultur membutuhkan kemajuan genetik yang signifikan, sebagai salah satu kunci produktifitas dan keberlanjutan (<em>sustainable aquaculture</em>). Di sinilah marker genetik hadir sebagai alat revolusioner yang mengubah cara kita memahami dan memanfaatkan informasi genetik biota akuatik.</p>
 <p>Marker genetik adalah segmen DNA yang dapat diidentifikasi dengan posisi fisik spesifik dalam genom dan berfungsi sebagai penanda variasi genetik antar individu. Berbeda dengan metode pemuliaan tradisional yang mengandalkan seleksi fenotipik, marker genetik memungkinkan seleksi pada level DNA, memberikan presisi yang lebih tinggi dan mempercepat proses pemuliaan. Keunggulan ini menjadi sangat penting dalam akuakultur, mengingat banyak sifat ekonomis penting pada ikan dan biota air lainnya sulit diukur, memiliki heritabilitas rendah, atau baru terekspresi pada tahap kehidupan lanjut.</p>
 <p>Perkembangan teknologi marker genetik telah mengalami evolusi luar biasa dalam tiga dekade terakhir. Dari marker konvensional seperti RFLP dan RAPD hingga teknologi marker modern seperti SNP dan microhaplotypes, kemajuan ini telah membuka peluang baru dalam pemahaman struktur populasi, seleksi berbasis genom, dan konservasi sumber daya genetik akuatik. Artikel ini akan mengeksplorasi berbagai jenis marker genetik, aplikasinya dalam akuakultur, serta tantangan dan arah masa depan dalam pemanfaatan marker genetik untuk peningkatan produktivitas akuakultur.</p>
 </section>
-<section id="sejarah-dan-evolusi-marker-genetik" class="level1">
-<h1>Sejarah dan evolusi marker genetik</h1>
+<section id="sejarah-dan-evolusi-marker-genetik" class="level2">
+<h2 class="anchored" data-anchor-id="sejarah-dan-evolusi-marker-genetik">Sejarah dan evolusi marker genetik</h2>
 <p>Perjalanan marker genetik dimulai dari era pra-molekuler dengan penggunaan marker morfologi dan biokimia. Marker morfologi mengandalkan ciri-ciri fisik yang dapat diamati secara langsung, sementara marker biokimia menganalisis variasi protein dan enzim. Namun, kedua jenis marker ini memiliki keterbatasan signifikan: marker morfologi sering terbatas pada jenis kelamin, tergantung usia, dan sangat dipengaruhi oleh lingkungan, sedangkan marker biokimia hanya mampu menunjukkan tingkat polimorfisme (variasi genetik) yang rendah.</p>
 <p>Revolusi sejati dalam bidang marker genetik dimulai pada tahun 1974 dengan diperkenalkannya <em>Restriction Fragment Length Polymorphism</em> (RFLP), yang menandai era marker molekuler pertama. RFLP memungkinkan deteksi polimorfisme langsung pada tingkat DNA. Kemajuan signifikan berikutnya terjadi pada akhir 1980-an hingga awal 1990-an dengan pengembangan teknik PCR (<em>Polymerase Chain Reaction</em>) yang membuka jalan bagi marker berbasis PCR seperti <em>Random Amplified Polymorphic DNA</em> (RAPD) pada 1990 dan <em>Amplified Fragment Length Polymorphism</em> (AFLP) pada 1995.</p>
 <p>Pada pertengahan 1990-an, pengembangan marker microsatellite atau <em>Simple Sequence Repeats</em> (SSR) membawa tingkat resolusi yang lebih tinggi dalam analisis genetik. Masuk ke abad ke-21, teknologi sekuensing generasi baru memungkinkan identifikasi dan pemanfaatan <em>Single Nucleotide Polymorphism</em> (SNP) dalam skala besar. Terkahir, perkembangan terbaru dengan microhaplotypes sebagai marker multi-alel yang diidentifikasi melalui sekuensing paralel masif (MPS) menunjukkan bahwa evolusi marker genetik terus berlangsung hingga saat ini.</p>
 <p>Evolusi teknologi marker genetik ini merefleksikan peningkatan dalam beberapa aspek kunci: (i) jumlah loci (lokasi genetik) yang dapat dianalisis secara simultan, (ii) tingkat otomatisasi, (iii) kemampuan deteksi variasi genetik, dan (iv) kemudahan akses data genom referensi. Transisi dari marker dominan (seperti RAPD) ke marker kodominan (seperti microsatellite dan SNP) juga menandai peningkatan dalam keakuratan dan aplikasi marker genetik, terutama untuk program pemuliaan.</p>
 </section>
-<section id="marker-marker-genetik-konvensional" class="level1">
-<h1>Marker-marker genetik konvensional</h1>
-<section id="rflp-restriction-fragment-length-polymorphism" class="level2">
-<h2 class="anchored" data-anchor-id="rflp-restriction-fragment-length-polymorphism">RFLP (<em>Restriction Fragment Length Polymorphism</em>)</h2>
+<section id="marker-marker-genetik-konvensional" class="level2">
+<h2 class="anchored" data-anchor-id="marker-marker-genetik-konvensional">Marker-marker genetik konvensional</h2>
+<section id="rflp-restriction-fragment-length-polymorphism" class="level3">
+<h3 class="anchored" data-anchor-id="rflp-restriction-fragment-length-polymorphism">RFLP (<em>Restriction Fragment Length Polymorphism</em>)</h3>
 <p>RFLP merupakan marker genetik generasi pertama yang diperkenalkan pada tahun 1974 dan menjadi pionir dalam analisis variasi DNA. Teknik ini mendeteksi perbedaan panjang fragmen DNA setelah pemotongan dengan enzim restriksi, yang mengenali dan memotong DNA pada sekuens spesifik.</p>
 <p>Prinsip kerjanya mulai dari DNA diisolasi, dipotong dengan enzim restriksi, difragmentasi melalui elektroforesis, ditransfer ke membran melalui Southern blotting, dan dihybridisasi dengan probe berlabel untuk mengidentifikasi fragmen target. Sehingga, adanya perbedaan pola pemotongan antarindividu merefleksikan variasi genetik.</p>
 <p>RFLP merupakan terobosan besar karena memungkinkan deteksi polimorfisme langsung pada level DNA, tidak seperti marker morfologi atau biokimia sebelumnya. Marker ini juga bersifat kodominan yang memungkinkan identifikasi heterozigot dan homozigot.</p>
 <p>RFLP telah digunakan untuk identifikasi spesies ikan, studi filogenetik, dan analisis struktur populasi. Dalam konteks pemuliaan, RFLP membantu mengidentifikasi lokus (satu lokasi genetik) yang terkait dengan sifat penting seperti pertumbuhan dan resistensi penyakit. Studi oleh Ravago-Gotanco et al (2010) menggunakan RFLP untuk identifikasi cepat tiga spesies target (<em>Siganus canaliculatus</em>, <em>S. corallines</em>, dan <em>S. javus</em>) menggunakan region gen mitokondria untuk memfasilitasi studi pola penyebaran larva dan konektivitas populasi.</p>
 <p>Meskipun revolusioner, RFLP memiliki beberapa kelemahan, seperti (i) membutuhkan jumlah DNA yang relatif besar, (ii) proses analisis sangat tidak efisien, (iii) level polimorfisme terbatas, dan (iv) sulit diotomasikan untuk analisis skala besar. Sehingga saat ini penggunaan RFLP sudah banyak ditinggalkan.</p>
 </section>
-<section id="rapd-random-amplified-polymorphic-dna" class="level2">
-<h2 class="anchored" data-anchor-id="rapd-random-amplified-polymorphic-dna">RAPD (<em>Random Amplified Polymorphic DNA</em>)</h2>
+<section id="rapd-random-amplified-polymorphic-dna" class="level3">
+<h3 class="anchored" data-anchor-id="rapd-random-amplified-polymorphic-dna">RAPD (<em>Random Amplified Polymorphic DNA</em>)</h3>
 <p>RAPD diperkenalkan pada tahun 1990 sebagai teknik marker berbasis PCR yang menggunakan primer pendek acak untuk mengamplifikasi segmen DNA tanpa memerlukan pengetahuan awal tentang sekuens DNA target. RAPD menggunakan primer tunggal (biasanya 10-mer) untuk amplifikasi acak di bawah kondisi PCR spesifik. Kemudian, primer akan mengikat pada situs komplementer di kedua untai DNA jika jaraknya tidak lebih dari 3-4 kb. Produk PCR kemudian dideteksi pada gel agarosa, dan pola pita yang dihasilkan merepresentasikan “sidik jari DNA”.</p>
 <p>RAPD menawarkan keunggulan signifikan dibandingkan RFLP, misalnya: (i) tidak memerlukan informasi sekuens awal, (2) membutuhkan DNA dalam jumlah lebih sedikit, (3) prosedur yang lebih sederhana dan cepat, dan (iv) dapat menghasilkan jumlah marker yang tidak terbatas hanya dengan mengubah kombinasi basa pada primer.</p>
 <p>RAPD telah banyak digunakan untuk identifikasi takson, studi hibridisasi, perilaku reproduksi, dan struktur populasi genetik pada ikan. Bhattacharya et al.&nbsp;(2003) menggunakan analisis RAPD pada 20 sampel acak dari tiga breed sapi India untuk mengestimasi koefisien inbreeding, informasi penting untuk formulasi program pemuliaan di tingkat peternakan. Sementara dalam akuakultur, RAPD digunakan untuk studi keanekaragaman genetik pada spesies ikan ekonomis penting.</p>
 <p>Namun demikian, sifat dominan RAPD (tidak dapat membedakan homozigot dominan dari heterozigot) membatasi interpretasi pola multi-lokus. Isu reproduktibilitas juga sering muncul karena sensitivitas teknik terhadap kondisi reaksi, kualitas DNA, dan konsentrasi reagen.</p>
 </section>
-<section id="aflp-amplified-fragment-length-polymorphism" class="level2">
-<h2 class="anchored" data-anchor-id="aflp-amplified-fragment-length-polymorphism">AFLP (<em>Amplified Fragment Length Polymorphism</em>)</h2>
+<section id="aflp-amplified-fragment-length-polymorphism" class="level3">
+<h3 class="anchored" data-anchor-id="aflp-amplified-fragment-length-polymorphism">AFLP (<em>Amplified Fragment Length Polymorphism</em>)</h3>
 <p>Diperkenalkan pada tahun 1995, AFLP menggabungkan kelebihan RFLP dan PCR untuk menghasilkan marker dengan tingkat resolusi tinggi tanpa memerlukan informasi sekuens awal. AFLP melibatkan beberapa tahap, maulai dari pemotongan DNA dengan enzim restriksi, ligasi adaptor oligonukleotida ke ujung setiap fragmen, amplifikasi selektif menggunakan primer komplementer dengan sekuens adaptor dan situs restriksi, dan analisis produk amplifikasi melalui elektroforesis.</p>
 <p>AFLP menawarkan keunggulan dibandingkan RAPD dalam hal reproduktibilitas dan kemampuan mengidentifikasi lebih dari 50 lokus dalam satu reaksi. Teknik ini juga menggabungkan keandalan RFLP dengan kemudahan PCR. Sehingga, AFLP efektif untuk karakterisasi genetik populasi ikan, analisis variasi genetik antar dan dalam populasi, serta studi sistem perkawinan. Questiau et al.&nbsp;(1999) menguji AFLP untuk menilai frekuensi orang tua ekstra-pasangan dalam populasi bluethroat (<em>Luscinia svecica namnetum</em>). Analisis 36 keluarga dengan total 162 anak burung menunjukkan bahwa fertilisasi ekstra-pasangan sangat umum, di mana 63,8% dari semua sarang mengandung setidaknya satu anak ekstra-pasangan, total 41,9% dari semua anak yang dianalisis.</p>
 <p>Dominansi sifat marker yang membatasi analisis genetik, kompleksitas protokol yang relatif tinggi, memerlukan DNA berkualitas tinggi, dan produksi data yang membutuhkan peralatan dan keahlian khusus merupakan keterbatasan utama AFLP, sehingga membutuhkan pendekatan atau alternatif marker yang lebih baik.</p>
 </section>
 </section>
-<section id="marker-marker-genetik-modern" class="level1">
-<h1>Marker-marker genetik modern</h1>
-<section id="microsatellites-ssr---simple-sequence-repeats" class="level2">
-<h2 class="anchored" data-anchor-id="microsatellites-ssr---simple-sequence-repeats">Microsatellites (SSR - <em>Simple Sequence Repeats</em>)</h2>
+<section id="marker-marker-genetik-modern" class="level2">
+<h2 class="anchored" data-anchor-id="marker-marker-genetik-modern">Marker-marker genetik modern</h2>
+<section id="microsatellites-ssr---simple-sequence-repeats" class="level3">
+<h3 class="anchored" data-anchor-id="microsatellites-ssr---simple-sequence-repeats">Microsatellites (SSR - <em>Simple Sequence Repeats</em>)</h3>
 <p>Microsatellites atau SSR adalah sekuens DNA pendek yang terdiri dari motif 2-6 pasang basa yang berulang secara tandem (berurutan). Marker ini mulai populer pada awal 1990-an dan menjadi pilihan utama untuk studi genetika populasi dan pemetaan genom hingga munculnya SNP. Microsatellites diidentifikasi dengan cara mendesain primer PCR yang unik untuk lokus tertentu dan menempel pada daerah yang mengapit bagian berulang. Produk PCR kemudian dipisahkan berdasarkan ukuran untuk menentukan jumlah unit pengulangan pada setiap alel.</p>
 <p>Microsatellites merupakan marker kodominan dengan tingkat polimorfisme yang tinggi dan distribusi merata di seluruh genom. Marker ini ideal untuk analisis keragaman genetik, pemetaan QTL (<em>Quantitative Trait Loci</em>), dan studi <em>parentage</em>. Dibandingkan marker konvensional, microsatellites menawarkan daya diskriminasi yang jauh lebih tinggi. Dalam akuakultur misalnya, microsatellites telah digunakan secara luas dalam program pemuliaan akuakultur untuk karakterisasi stok induk, verifikasi silsilah, penilaian struktur populasi, dan seleksi berbasis marker. FAO bahkan mengusulkan program terintegrasi untuk manajemen sumber daya genetik ternak global menggunakan microsatellites referensi. Sementara aplikasinya pada hewan terestrial, Shakyawar et al.&nbsp;(2009) menggunakan SSR pada lima spesies hewan domestik (kerbau, sapi, kambing, domba, dan yak) untuk menyelidiki kelimpahan relatif jenis motif berulang, distribusinya di wilayah coding dan non-coding, dan evaluasi data mitokondrial SSR.</p>
 <p>Meskipun sangat informatif, microsatellites masih memiliki beberapa keterbatasan, misalnya pengembangan primer spesifik yang memakan waktu dan biaya, keberadaan “s<em>tutter bands</em>” yang dapat mengaburkan interpretasi, homoplasi di mana alel yang sama ukurannya mungkin memiliki asal evolusioner berbeda, dan rendahnya standarisasi antar laboratorium.</p>
 </section>
-<section id="snp-single-nucleotide-polymorphism" class="level2">
-<h2 class="anchored" data-anchor-id="snp-single-nucleotide-polymorphism">SNP (<em>Single Nucleotide Polymorphism</em>)</h2>
+<section id="snp-single-nucleotide-polymorphism" class="level3">
+<h3 class="anchored" data-anchor-id="snp-single-nucleotide-polymorphism">SNP (<em>Single Nucleotide Polymorphism</em>)</h3>
 <p>SNP (dibaca snip) adalah variasi nukleotida tunggal pada posisi genom tertentu yang terjadi dengan frekuensi lebih dari 1% dalam populasi. Diperkenalkan sebagai marker genomik pada tahun 1994, SNP telah menjadi marker pilihan hingga era genomika modern. SNP diidentifikasi melalui sekuensing DNA atau teknologi genotyping khusus yang mendeteksi mutasi, seperti substitusi, delesi, atau insersi nukleotida tunggal. Berbagai platform deteksi tersedia, mulai dari sistem berbasis PCR hingga microarray dan sekuensing generasi baru (misalnya Illumina).</p>
-<figure style="text-align: center;" class="figure">
-<img src="https://static.wixstatic.com/media/15b941_47df96ee398a416f9dbadfcae7369219~mv2.png/v1/fill/w_961,h_516,al_c,q_90/15b941_47df96ee398a416f9dbadfcae7369219~mv2.png" alt="Genomic selection" style="width: 85%;" class="figure-img">
-<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
-<strong>Single Nucleotide Polymorphism.</strong> Salah satu marker untuk menandai adanya variasi genetik pada level populasi, ditandai dengan adanya satu basa tunggal dalam urutan DNA yang berbeda pada posisi tertentu di antara banyak individu. <br><em>Sumber gambar:</em> <a href="https://www.nutrigeneticsspecialists.com/single-post/2017/03/27/what-is-a-snp" target="_blank">Nutrigenetics</a>
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://static.wixstatic.com/media/15b941_47df96ee398a416f9dbadfcae7369219~mv2.png/v1/fill/w_961,h_516,al_c,q_90/15b941_47df96ee398a416f9dbadfcae7369219~mv2.png" class="content-image img-fluid figure-img" style="width:85.0%" alt="Single Nucleotide Polymorphism"></p>
+<figcaption><strong>Single Nucleotide Polymorphism.</strong> Salah satu marker untuk menandai adanya variasi genetik pada level populasi, ditandai dengan adanya satu basa tunggal dalam urutan DNA yang berbeda pada posisi tertentu di antara banyak individu. <em>Sumber gambar:</em> <a href="https://www.nutrigeneticsspecialists.com/single-post/2017/03/27/what-is-a-snp">Nutrigenetics</a></figcaption>
 </figure>
+</div>
 <p>Disini, SNP menawarkan keunggulan signifikan, yang tidak dimiliki marker genetik lain, seperti kelimpahan luar biasa dalam genom (jutaan SNP dalam genom vertebrata), distribusi merata di seluruh genom, tingkat mutasi yang sangat rendah dibandingkan microsatellites, dan kemampuan genotyping berbiaya rendah dan <em>throughput</em> tinggi.</p>
 <p>Dalam akuakultur, SNP merupakan marker yang paling banyak dipakai. SNP telah merevolusi pemuliaan dalam akuakultur melalui seleksi genomik, di mana ribuan marker digunakan untuk memprediksi nilai pemuliaan individu. Moen et al.&nbsp;(2008) menggunakan SNP pada ikan Atlantik cod (<em>Gadus morhua</em>) dari empat lokasi berbeda untuk studi struktur populasi, dengan heterozigositas rata-rata SNP adalah 0,25 dan frekuensi alel minor rata-rata adalah 0,18. Selain itu, SNP juga merupakan alat yang kuat untuk pekerjaan genetik di masa depan terkait dengan manajemen dan akuakultur, dengan beberapa SNP menunjukkan tingkat divergensi populasi tinggi yang berpotensi meningkatkan studi struktur populasi ikan Atlantik cod.</p>
 <p>Salah satu keterbatasan utama SNP adalah sifatnya yang bi-alelik (umumnya hanya memiliki dua varian), sehingga setiap SNP tunggal cenderung kurang informatif dibandingkan mikrosatelit. Keterbatasan ini dapat diatasi dengan menggunakan jumlah SNP yang sangat besar, meskipun pendekatan tersebut membutuhkan biaya genotipe yang tinggi serta infrastruktur laboratorium yang canggih. Karena itu, banyak peneliti dan pelaku industri kini mengembangkan panel SNP berdensitas rendah namun memiliki tingkat informasi yang tinggi untuk spesies tertentu, contohnya 5K SNP Array AXIOM untuk ikan barramundi, 1K AQUAarray untuk udang vannamei, dan masih banyak lagi.</p>
 </section>
-<section id="microhaplotypes" class="level2">
-<h2 class="anchored" data-anchor-id="microhaplotypes">Microhaplotypes</h2>
+<section id="microhaplotypes" class="level3">
+<h3 class="anchored" data-anchor-id="microhaplotypes">Microhaplotypes</h3>
 <p>Microhaplotype merupakan penanda genetik yang relatif baru, pertama kali diperkenalkan oleh Kenneth K. Kidd pada tahun 2014, dan kini mulai banyak diterapkan dalam bidang forensik. Microhaplotype adalah segmen DNA pendek (&lt;300 nukleotida) yang terdiri dari dua atau lebih SNP yang terletak berdekatan dan membentuk kombinasi multi-alel. Identifikasi dan analisisnya dilakukan menggunakan teknologi <em>Massively Parallel Sequencing</em> (MPS), yang memungkinkan pembacaan dua untai DNA secara langsung serta penentuan fase alel tanpa memerlukan phasing statistik. Menariknya, microhaplotype menggabungkan keunggulan SNP (stabilitas, distribusi merata di genom) dengan karakteristik multi-alelik seperti pada mikrosatelit, menjadikannya ideal untuk keperluan identifikasi individu, analisis hubungan kekerabatan, dan deteksi campuran DNA.</p>
-<figure style="text-align: center;" class="figure">
-<img src="images/mh.png" alt="Genomic selection" style="width: 85%;" class="figure-img">
-<figcaption style="font-size: 0.95em; margin-top: 8px; text-align: left;">
-<strong>Genotipe berbasis mikrohaplotipe.</strong> Pendekatan microhaplotype-based genotyping menggabungkan beberapa SNP berdekatan dalam satu blok pendek (~200 bp) untuk membentuk unit genetik yang bersifat multi-allelic. Hal ini memberikan informasi lebih kaya dan memungkinkan pemetaan genetik yang lebih akurat dibandingkan SNP tunggal. <br><em>Sumber gambar:</em> <a href="https://www.nature.com/articles/s41467-024-51015-3" target="_blank">Siegel et al.&nbsp;2024</a>
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/mh.png" class="content-image img-fluid figure-img" style="width:85.0%" alt="Genotipe berbasis mikrohaplotipe"></p>
+<figcaption><strong>Genotipe berbasis mikrohaplotipe.</strong> Pendekatan <em>microhaplotype-based genotyping</em> menggabungkan beberapa SNP berdekatan dalam satu blok pendek (~200 bp) untuk membentuk unit genetik yang bersifat <em>multi-allelic</em>. Hal ini memberikan informasi lebih kaya dan memungkinkan pemetaan genetik yang lebih akurat dibandingkan SNP tunggal. <em>Sumber gambar:</em> <a href="https://www.nature.com/articles/s41467-024-51015-3">Siegel et al.&nbsp;2024</a></figcaption>
 </figure>
+</div>
 <p>Dalam konteks akuakultur, penggunaan microhaplotype masih berada pada tahap awal, khususnya untuk meningkatkan akurasi imputasi dan seleksi genomik berbiaya rendah. Studi simulasi oleh Delomas et al.&nbsp;(2024) menunjukkan bahwa panel microhaplotype berdensitas rendah dapat menghasilkan akurasi imputasi dan prediksi nilai pemuliaan genomik yang lebih tinggi dibandingkan panel SNP dengan ukuran setara. Simulasi pada tiram Pasifik, tiram timur, dan salmon menunjukkan bahwa 150–250 microhaplotype dapat memberikan akurasi setara dengan 350–450 SNP pada tiram, sementara 350–450 microhaplotype setara dengan 650–750 SNP pada salmon.</p>
 <p>Meski potensinya besar, pengembangan dan penerapan microhaplotype dalam akuakultur masih terbatas, terutama karena konversi data genotipe SNP ke bentuk microhaplotype masih menghadapi tantangan bioinformatika. Oleh karena itu, pengembangan perangkat analisis yang khusus menangani microhaplotype akan menjadi langkah yang sangat revolusioner ke depannya.</p>
 </section>
 </section>
-<section id="perbandingan-marker-genetik" class="level1">
-<h1>Perbandingan marker genetik</h1>
+<section id="perbandingan-marker-genetik" class="level2">
+<h2 class="anchored" data-anchor-id="perbandingan-marker-genetik">Perbandingan marker genetik</h2>
 <p>Untuk memberikan gambaran singkat tentang berbagai marker genetik, berikut adalah tabel perbandingan yang merangkum karakteristik kunci, kelebihan, keterbatasan, dan aplikasi utama dari setiap jenis marker.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 6%">
-<col style="width: 10%">
-<col style="width: 15%">
 <col style="width: 14%">
 <col style="width: 14%">
-<col style="width: 22%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -550,8 +716,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </tbody>
 </table>
 </section>
-<section id="aplikasi-marker-genetik-dalam-akuakultur" class="level1">
-<h1>Aplikasi marker genetik dalam akuakultur</h1>
+<section id="aplikasi-marker-genetik-dalam-akuakultur" class="level2">
+<h2 class="anchored" data-anchor-id="aplikasi-marker-genetik-dalam-akuakultur">Aplikasi marker genetik dalam akuakultur</h2>
 <p>Penggunaan marker genetik telah merevolusi program pemuliaan dalam akuakultur. Dengan pendekatan ini, seleksi tidak lagi hanya bergantung pada pengamatan fenotipik, tetapi juga didasarkan pada informasi genetik individu. Hal ini memungkinkan proses seleksi dilakukan dengan lebih cepat, akurat, dan efisien, terutama untuk sifat-sifat kompleks. Beberapa pendekatan utama dalam penerapan marker genetik untuk seleksi antara lain:</p>
 <ol type="1">
 <li><p><em>Marker-Assisted Selection</em> (MAS)</p>
@@ -568,8 +734,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p>Imputasi genotipe adalah strategi untuk mengurangi biaya genotyping dalam program seleksi genomik. Pendekatan ini menggunakan panel marker kepadatan rendah (<em>low-density</em>) untuk sebagian besar populasi, sementara panel kepadatan tinggi hanya digunakan untuk individu atau populasi referensi. Data genetik yang hilang pada panel <em>low-density</em> kemudian diimputasi (diprediksi) berdasarkan hubungan keluarga atau data populasi.</p></li>
 </ol>
 </section>
-<section id="tantangan-dan-arah-masa-depan" class="level1">
-<h1>Tantangan dan arah masa depan</h1>
+<section id="tantangan-dan-arah-masa-depan" class="level2">
+<h2 class="anchored" data-anchor-id="tantangan-dan-arah-masa-depan">Tantangan dan arah masa depan</h2>
 <p>Meskipun penggunaan marker genetik telah merevolusi strategi pemuliaan dan manajemen genetik dalam akuakultur, berbagai tantangan teknis, biologis, dan bioinformatika masih menghambat adopsinya, terutama di tingkat industri skala kecil dan spesies non-model. Sehingga, mengatasi tantangan-tantangan ini akan menjadi kunci untuk memperluas pemanfaatan teknologi genomik secara inklusif, efisien, dan berkelanjutan. Saya merangkum beberapa tantangan utama dan arah pengembangan strategis yang mungkin dapat ditempuh</p>
 <ol type="1">
 <li><p>Kesenjangan biaya dan aksesibilitas</p>
@@ -594,24 +760,35 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </blockquote>
 <p>— Sekian —</p>
 </section>
-<section id="referensi" class="level1">
-<h1>Referensi</h1>
+<section id="referensi" class="level2">
+<h2 class="anchored" data-anchor-id="referensi">Referensi</h2>
 <ul>
 <li>Hartl, D.L. Essential genetics and genomics. Burlington, MA: Jones &amp; Bartlett Learning; 2020.</li>
 <li><a href="https://doi.org/10.1016/j.fishres.2015.10.019">Cuéllar-Pinzón, J., et al.&nbsp;Genetic markers in marine fisheries: Types, tasks and trends. Fisheries Research 2016;173:194-205.</a></li>
 <li><a href="https://doi.org/10.1016/B978-0-12-811710-1.00016-1">Marwal, A. and Gaur, R.K. Chapter 18 - Molecular markers: tool for genetic analysis. In: Verma, A.S. and Singh, A., editors, Animal Biotechnology (Second Edition). Boston: Academic Press; 2020. p.&nbsp;353-372.</a></li>
 <li><a href="https://doi.org/10.1016/j.fsigen.2018.09.009">Oldoni, F., Kidd, K.K. and Podini, D. Microhaplotypes in forensic genetics. Forensic Science International: Genetics 2019;38:54-69.</a></li>
 </ul>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1031,7 +1208,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

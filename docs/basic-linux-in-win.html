@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -110,7 +117,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -153,6 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -288,6 +458,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -312,6 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-linux-in-win.html">Linux di dalam Windows</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Linux di dalam Windows</h1>
@@ -331,21 +508,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/basic-linux-in-win.html" style="text-decoration: none; color: inherit;"> Linux di dalam Windows </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://wallpapers.com/images/hd/linux-pictures-g8nflkx3vjw6v0xq.jpg" alt="Linux in Windows" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Linux di dalam Windows</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://wallpapers.com/images/hd/linux-pictures-g8nflkx3vjw6v0xq.jpg" class="content-image article-hero-image img-fluid" alt="Linux di dalam Windows"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
 <li><a href="#spesifikasi-minimal-komputer">Spesifikasi minimal komputer</a></li>
@@ -354,8 +520,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><a href="#migrasi-wsl-linux-ke-direktori-non-c">Migrasi WSL Linux ke direktori non-C</a></li>
 </ul>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Sebagian besar tools bioinformatika dikembangkan untuk lingkungan UNIX karena fleksibilitas, kompatibilitas tinggi, dan sifatnya yang <em>open source</em> (pengembangan dapat dilakukan oleh siapapun). Karena itu, memahami dan menggunakan sistem operasi UNIX, terutama Linux, sangat penting bagi siapa pun yang ingin mendalami bioinformatika.</p>
 <p>Sayangnya, banyak pelajar dan peneliti di Indonesia sangat asing dengan sistem operasi berbasis UNIX, lebih familiar menggunakan Windows yang kurang kompatibel dengan tools berbasis <em>command line</em>. Namun jangan khawatir, tutorial ini akan memandu Anda menjalankan Linux langsung di dalam Windows, agar tetap bisa mengakses berbagai tools bioinformatika secara optimal. Dalam hal ini, ada beberapa pilihan:</p>
 <ol type="1">
@@ -365,8 +531,8 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </ol>
 <p>Pilihan metode ini tergantung dengan spesifikasi komputer/laptop yang anda miliki. Namun pada tutorial ini, saya hanya akan memberikan panduan untuk pilihan pertama (Instalasi Linux via WSL), karena merupakan pilihan paling cepat dan mudah untuk siapapun. Sementara itu, virtual machine dan dual boot anda bisa cari tutorialnya di youtube.</p>
 </section>
-<section id="spesifikasi-minimal-komputer" class="level1">
-<h1>Spesifikasi minimal komputer</h1>
+<section id="spesifikasi-minimal-komputer" class="level2">
+<h2 class="anchored" data-anchor-id="spesifikasi-minimal-komputer">Spesifikasi minimal komputer</h2>
 <p>Pada dasarnya, analisis bioinformatika, terutama yang melibatkan data genomik berskala besar membutuhkan spesifikasi komputer dengan performa tinggi, terutama infrastruktur seperti <a href="https://cloud.google.com/discover/what-is-high-performance-computing">HPC (<em>High Performance Computing</em>)</a>. Namun karena tujuan utama website ini adalah edukasi, maka fokusnya adalah pada pemahaman konsep-konsep dasar dan metode analisis bioinformatika. Untuk itu, komputer atau laptop dengan spesifikasi menengah masih cukup memadai, asalkan dapat menjalankan sistem operasi berbasis UNIX.</p>
 <p>Berikut ini adalah spesifikasi minimal yang disarankan:</p>
 <table class="caption-top table">
@@ -410,15 +576,15 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p>Untuk pengguna Mac-OSX baik dengan arsitektur x64 maupun ARM (M1-M4) masih cukup kompatible dalam menjalankan tools bioinformatika, tanpa harus install Linux. Karena Mac-OSX memang pada dasarnya adalah UNIX-<em>based operating system</em>. Namun perlu dicatat, Mac-OSX berbasis ARM terbilang sangat baru, dan ada beberapa tools belum dikembangkan untuk berjalan pada arsitektur ini, seperti <code>RSEM</code> dan <code>STAR</code>, sehingga memerlukan sedikit <em>tweak</em>. Mungkin saya akan menjelaskan ini pada tutorial lainnya.</p>
 </blockquote>
 </section>
-<section id="memilih-distro-linux" class="level1">
-<h1>Mengenal dan memilih distro Linux</h1>
+<section id="memilih-distro-linux" class="level2">
+<h2 class="anchored" data-anchor-id="memilih-distro-linux">Mengenal dan memilih distro Linux</h2>
 <p>Hingga saat ini, ada sekitar 250 lebih distribusi Linux aktif (<em>distro</em>) yang tercatat di <a href="https://distrowatch.com/">DistroWatch</a>. Sebagian besar distro tersebut merupakan hasil pengembangan atau turunan dari 5 distro induk utama, yaitu: <strong>Debian, Red Hat, Arch Linux, Slackware,</strong> dan <strong>Gentoo</strong>. Banyaknya varian Linux ini muncul dari keinginan komunitas dan pengembang untuk menciptakan sistem operasi yang sesuai dengan kebutuhan spesifik, mulai dari penggunaan sehari-hari, keperluan keamanan, hingga komputasi ilmiah.</p>
 <p>Sebagai contoh, <a href="https://ubuntu.com/">Ubuntu</a> dikembangkan dari Debian dengan fokus pada kemudahan penggunaan sehari-hari; <a href="https://www.kali.org/">Kali Linux</a> dibangun untuk kebutuhan pengujian keamanan siber (<em>penetration testing</em>); sedangkan <a href="https://manjaro.org/">Manjaro</a>, turunan Arch, dibuat untuk menghadirkan kemudahan instalasi dan manajemen sistem <em>rolling release</em>. Dalam hal ini, ekosistem Linux bisa dianalogikan seperti tabel periodik unsur, di mana setiap distro mewakili elemen dengan karakteristik unik yang dapat disesuaikan dengan kebutuhan pengguna.</p>
-<p><img src="images/Periodic Table of Distros.png" alt="Linux Distro" style="width: 85%;"></p>
+<p><img src="images/Periodic Table of Distros.png" class="content-image img-fluid" style="width:85.0%" alt="Tabel periodik distribusi Linux"></p>
 <p>Untuk kebutuhan analisis bioinformatika, distro turunan Debian seperti Ubuntu adalah yang paling direkomendasikan. Kemudahan, stabilitas, dan jaringan komunitas yang luas pada Debian memungkinankan kita untuk menginstal berbagai tools bioinformatika dengan cepat, mendapatkan dukungan dari dokumentasi yang melimpah, serta memecahkan masalah teknis dengan lebih mudah melalui forum atau repositori publik.</p>
 </section>
-<section id="instalasi-linux-via-wsl" class="level1">
-<h1>Instalasi Linux via WSL</h1>
+<section id="instalasi-linux-via-wsl" class="level2">
+<h2 class="anchored" data-anchor-id="instalasi-linux-via-wsl">Instalasi Linux via WSL</h2>
 <p><em>Windows subsystem for Linux</em> (WSL) merupakan fitur baru pada sistem operasi windows, dimana menungkinkan kita untuk menginstall distro Linux dan menggunakan semua aplikasi termasuk Bash command-line secara langsung. Berikut tahapan instalasi Linux dengan WSL.</p>
 <blockquote class="blockquote">
 <p><strong>Catatan:</strong> Instalasi Linux membutuhkan koneksi internet yang stabil.</p>
@@ -429,7 +595,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># powershell</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>wsl <span class="op">--</span>list <span class="op">--</span>online</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Perintah ini akan menginstal WSL terlebih dahulu, cukup tekan enter untuk menginstall WSL, maka setelah instalasi, akan muncul list distro Linux yang tersedia seperti gambar berikut.</p>
-<p><img src="images/list-distro.png" alt="WSL Distro" style="width: 90%;"></p></li>
+<p><img src="images/list-distro.png" class="content-image img-fluid" style="width:90.0%" alt="Daftar distribusi WSL"></p></li>
 <li><p>Dari list ini, pada dasarnya kita bisa memilih distro manapun, namun untuk kebutuhan bioinformatika, saya merekomendasikan Debian atau Ubuntu. Namun sebelum menginstall distro Linux, restart komputer diperlukan. Maka restart komputer anda sebelum melanjutkan ke proses instalasi distro Linux pada WSL.</p></li>
 <li><p>Setelah restart kita bisa menjalankan proses instalasi Linux dengan perintah dasar <code>wsl --install &lt;nama distro&gt;</code>. Misalnya kita memilih distro <code>Ubuntu</code>, maka jalankan perintah berikut untuk mendownload dan menginstalnya.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># powershell</span></span>
@@ -438,7 +604,12 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># powershell</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>wsl <span class="op">-</span>d Ubuntu</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Perintah di atas akan memuat permintaan untuk mengatur Linux, seperti nama user, password, dll. Maka isi semua permintaan yang diminta.</p>
-<p><img src="images/wsl-linux-set-01.png" alt="WSL Set" style="width: 90%;"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/wsl-linux-set-01.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>WSL Set</figcaption>
+</figure>
+</div>
 <blockquote class="blockquote">
 <p><strong>Catatan:</strong> ketika menulis password, secara default tidak akan muncul apa yang kita ketik. Jadi pastikan anda mengingat password yang anda buat.</p>
 </blockquote></li>
@@ -448,11 +619,11 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 </blockquote></li>
 </ol>
 <p>Untuk mengakses Superuser, anda bisa menjalankan perintah <code>sudo su</code> diikuti dengan mengisi password, maka hak akses akan berubah ke <code>root #</code> . Dan untuk keluar dari Superuser, hanya perlu mengetikkan <code>exit</code>.</p>
-<p><img src="images/sudo-su.png" alt="Superuser" style="width: 90%;"></p>
+<p><img src="images/sudo-su.png" class="content-image img-fluid" style="width:90.0%" alt="Contoh penggunaan superuser"></p>
 <p>Untuk keluar dari Linux, anda hanya perlu ketikkan <code>exit</code> dan kembali ke powershell windows.</p>
 </section>
-<section id="migrasi-wsl-linux-ke-direktori-non-c" class="level1">
-<h1>Migrasi WSL Linux ke direktori non-C</h1>
+<section id="migrasi-wsl-linux-ke-direktori-non-c" class="level2">
+<h2 class="anchored" data-anchor-id="migrasi-wsl-linux-ke-direktori-non-c">Migrasi WSL Linux ke direktori non-C</h2>
 <p>Untuk banyak kasus, drive C biasanya tersisa sedikit ruang, sementara bioinformatika membutuhkan penyimpanan yang cukup untuk menanpung data-data genomic. Sehingga migrasi WSL-Linux dari drive C/ ke drive lain yang masih memiliki banyak ruang mungkin menjadi solusi yang baik. Berikut langkah-langkahnya.</p>
 <ol type="1">
 <li><p>Buka powershell dan jalankan perintah berikut:</p>
@@ -467,11 +638,11 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># powershell</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mkdir D<span class="op">:/</span>Ubuntu <span class="op">|</span> wsl <span class="op">--</span>import Ubuntu D<span class="op">:/</span>Ubuntu D<span class="op">:/</span>wsl<span class="op">/</span>ubuntu<span class="op">.</span><span class="fu">tar</span> <span class="op">--</span>version <span class="dv">2</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Perintah ini akan membuat direktori target lokasi penyimpanan Linux di <code>D:/Ubuntu</code> dan mengimport file Linux yang sudah dicadangkan.</p>
-<p><img src="images/wsl-import-success.png" alt="WSL Import" style="width: 90%;"></p></li>
+<p><img src="images/wsl-import-success.png" class="content-image img-fluid" style="width:90.0%" alt="Proses impor WSL berhasil"></p></li>
 <li><p>Atur <em>mounting</em> Linux dengan cara menjalankan perintah berikut:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># powershell</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">[</span> <span class="st">"</span><span class="va">$PWD</span><span class="st">"</span> <span class="op">=</span> <span class="st">"/mnt/c/Users/</span><span class="va">$USER</span><span class="st">"</span> <span class="op">]</span> <span class="op">&amp;&amp;</span> <span class="fu">cd</span> <span class="op">~</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p><img src="images/wsl-mounting-set.png" alt="WSL mounting set" style="width: 90%;"></p></li>
+<p><img src="images/wsl-mounting-set.png" class="content-image img-fluid" style="width:90.0%" alt="Pengaturan mounting WSL"></p></li>
 <li><p>Nonaktifkan otomatis mount Linux ke drive <code>C:/</code> dengan cara menjalankan perintah berikut:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sudo nano <span class="op">/</span>etc<span class="op">/</span>wsl<span class="op">.</span><span class="fu">conf</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
@@ -479,7 +650,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode ini code-with-copy"><code class="sourceCode ini"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[automount]</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">enabled </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Kemudian simpan dengan menekan tombol <code>CTRL X</code> dilanjutkan dengan memilih <code>Y</code> untuk mengkonfirmasi perubahan</p>
-<p><img src="images/wsl-nano-set.png" alt="WSL nano set" style="width: 90%;"></p>
+<p><img src="images/wsl-nano-set.png" class="content-image img-fluid" style="width:90.0%" alt="Pengaturan WSL menggunakan Nano"></p>
 <p>Close jendela termial, dan aktifkan kembali wsl dengan <code>wsl -d Ubuntu</code></p></li>
 </ol>
 <p>Sekarang semua file Linux sudah berpindah ke direktori yang baru dan dapat dijalankan seperti biasa tanpa harus mengatur dan menginstall semua file dari awal.</p>
@@ -488,16 +659,27 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><em>Agus Wibowo</em></p>
 </blockquote>
 <p>— Sekian —</p>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -917,7 +1099,7 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

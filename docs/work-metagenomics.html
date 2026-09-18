@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -67,6 +70,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../docs/work-variant-calling.html" rel="next">
 <link href="../docs/work-RNA-seq.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -74,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -109,7 +117,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -152,6 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -287,6 +458,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -332,6 +509,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/workflows.html">Workflows</a></li><li class="breadcrumb-item"><a href="../docs/work-metagenomics.html">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</h1>
@@ -351,23 +529,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/work-metagenomics.html" style="text-decoration: none; color: inherit;"> Metagenomik 16S rRNA </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<figure style="text-align: center; margin-bottom: 1.5rem;" class="figure">
-<img src="https://www.globalseafood.org/wp-content/uploads/2020/08/ARANGUREN-Pic-0_960.jpg" alt="Udang vanamei pada budidaya intensif" style="max-width: 100%; height: auto; border-radius: 8px;" class="figure-img">
-<figcaption style="font-size: 0.9em; margin-top: 8px; color: #666;">
-Udang vanamei (<em>Litopenaeus vannamei</em>) pada sistem budidaya intensif. Gambar atas dan bawah masing-masing adalah udang sehat dan yang terinfeksi AHPND. <br><em>Sumber gambar</em> <a href="https://www.globalseafood.org/advocate/the-role-of-vibrio-in-shrimp-aquaculture/" target="_blank">Global Seafood Alliance</a>.
-</figcaption>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.globalseafood.org/wp-content/uploads/2020/08/ARANGUREN-Pic-0_960.jpg" class="content-image article-hero-image img-fluid figure-img" alt="Udang vanamei pada budidaya intensif"></p>
+<figcaption>Udang vanamei (<em>Litopenaeus vannamei</em>) pada sistem budidaya intensif. Gambar atas dan bawah masing-masing adalah udang sehat dan yang terinfeksi AHPND. <em>Sumber gambar:</em> <a href="https://www.globalseafood.org/advocate/the-role-of-vibrio-in-shrimp-aquaculture/">Global Seafood Alliance</a>.</figcaption>
 </figure>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+</div>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ol type="1">
 <li><a href="#apa-itu-metagenomik-16s">Apa itu metagenomik 16S?</a></li>
 <li><a href="#desain-studi-data">Desain studi dan data</a></li>
@@ -380,45 +550,47 @@ Udang vanamei (<em>Litopenaeus vannamei</em>) pada sistem budidaya intensif. Gam
 <li><a href="#apa-yang-perlu-dipertimbangkan">Apa yang perlu dipertimbangkan</a></li>
 </ol>
 </section>
-<section id="apa-itu-metagenomik-16s" class="level1">
-<h1>Apa itu metagenomik 16S?</h1>
-<section id="gen-16s-rrna-sebagai-penanda-taksonomi" class="level2">
-<h2 class="anchored" data-anchor-id="gen-16s-rrna-sebagai-penanda-taksonomi">Gen 16S rRNA sebagai penanda taksonomi</h2>
+<section id="apa-itu-metagenomik-16s" class="level2">
+<h2 class="anchored" data-anchor-id="apa-itu-metagenomik-16s">Apa itu metagenomik 16S?</h2>
+<section id="gen-16s-rrna-sebagai-penanda-taksonomi" class="level3">
+<h3 class="anchored" data-anchor-id="gen-16s-rrna-sebagai-penanda-taksonomi">Gen 16S rRNA sebagai penanda taksonomi</h3>
 <p>Di setiap sel bakteri terdapat subunit ribosom kecil yang mengandung molekul RNA berukuran sekitar 1.500 pasang basa, yang dikenal sebagai 16S rRNA. Gen yang mengkodenya sangat istimewa karena strukturnya tersusun dari daerah-daerah lestari (<em>conserved</em>) yang sangat terjaga di seluruh kehidupan prokariot dan diapit oleh sembilan daerah hipervariabel bernama V1 hingga V9. Daerah lestari berfungsi sebagai dermaga bagi <em>primer</em> PCR yang mampu menempel hampir di semua bakteri, sementara daerah hipervariabel bertindak seperti sidik jari khas tiap takson. Pada tutorial ini kita menargetkan wilayah V3 dan V4 karena kombinasinya memberikan resolusi taksonomi yang baik hingga tingkat <em>genus</em> sekaligus menghasilkan amplikon sepanjang sekitar 460 pasang basa, panjang yang ideal untuk <em>sequencing paired-end</em> Illumina. Khusus pada data demo tutorial ini, panjang amplikon sengaja disederhanakan menjadi 400 bp agar ringan dijalankan.</p>
-<figure style="text-align: center; margin: 1.5rem 0;" class="figure">
-<img src="images/metagenomics-overview.png" alt="Overview alur kerja metagenomik" style="max-width: 100%; height: auto;" class="figure-img">
-<figcaption style="font-size: 0.9em; margin-top: 8px; color: #666;">
-Gambaran umum alur kerja metagenomik, mulai dari pengambilan sampel dan ekstraksi DNA, amplifikasi serta <em>sequencing</em>, hingga analisis komunitas mikroba secara komputasional.
-</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/metagenomics-overview.png" class="content-image img-fluid figure-img" alt="Gambaran umum alur kerja metagenomik"></p>
+<figcaption>Gambaran umum alur kerja metagenomik, mulai dari pengambilan sampel dan ekstraksi DNA, amplifikasi serta <em>sequencing</em>, hingga analisis komunitas mikroba secara komputasional.</figcaption>
 </figure>
+</div>
 <p>Alur kerja <em>metabarcoding</em> 16S dimulai dari pengambilan sampel dan ekstraksi DNA total, lalu amplifikasi daerah V3 dan V4 dengan PCR memakai <em>primer</em> universal. Amplikon yang dihasilkan kemudian di-<em>sequencing</em> secara massal. Setelah melewati tahap kendali mutu dan pemotongan <em>primer</em>, <em>reads</em> yang tersisa dikelompokkan menjadi satuan biologis bernama ASV (<em>Amplicon Sequence Variant</em>) atau OTU (<em>Operational Taxonomic Unit</em>). ASV yang dihasilkan oleh metode <em>denoising</em> seperti DADA2 merupakan satuan beresolusi tinggi karena mewakili urutan biologis yang tepat tanpa ambiguitas <em>clustering</em>. Setiap ASV lalu dibandingkan dengan basis data referensi seperti SILVA untuk memperoleh identitas taksonominya.</p>
 </section>
-<section id="metabarcoding-16s-dibandingkan-sekuensing-shotgun" class="level2">
-<h2 class="anchored" data-anchor-id="metabarcoding-16s-dibandingkan-sekuensing-shotgun">Metabarcoding 16S dibandingkan sekuensing shotgun</h2>
+<section id="metabarcoding-16s-dibandingkan-sekuensing-shotgun" class="level3">
+<h3 class="anchored" data-anchor-id="metabarcoding-16s-dibandingkan-sekuensing-shotgun">Metabarcoding 16S dibandingkan sekuensing shotgun</h3>
 <p>Dua pendekatan utama dalam metagenomik memiliki profil kelebihan dan kekurangan yang berbeda. Pendekatan <em>metabarcoding</em> amplikon 16S berbiaya rendah, hanya membutuhkan sedikit <em>reads</em> karena 10.000 sampai 50.000 <em>reads</em> per sampel sudah informatif, dan memberikan resolusi taksonomi hingga tingkat <em>genus</em> atau kadang <em>species</em> untuk bakteri serta <em>archaea</em>, walaupun tidak mampu mendeteksi virus, fungi, maupun jalur metabolik secara langsung. Sebaliknya, <em>shotgun metagenomics</em> berbiaya lebih tinggi dan membutuhkan jutaan <em>reads</em> per sampel, namun mampu memberikan resolusi hingga tingkat <em>species</em> atau <em>strain</em> sekaligus mengungkap potensi fungsional berupa gen dan <em>pathway</em> metabolik, dan mencakup seluruh domain kehidupan termasuk virus dan fungi.</p>
 <p>Untuk studi komunitas bakteri dalam konteks kesehatan organisme budidaya, pendekatan amplikon 16S umumnya menjadi pilihan pertama karena efisiensi biaya dan kemampuannya menangani banyak sampel dalam satu <em>run</em> sekuensing.</p>
 </section>
-<section id="relevansi-untuk-akuakultur" class="level2">
-<h2 class="anchored" data-anchor-id="relevansi-untuk-akuakultur">Relevansi untuk akuakultur</h2>
+<section id="relevansi-untuk-akuakultur" class="level3">
+<h3 class="anchored" data-anchor-id="relevansi-untuk-akuakultur">Relevansi untuk akuakultur</h3>
 <p>Sistem budidaya intensif menciptakan tekanan biologis yang tidak sederhana sehingga kesehatan hewan budidaya tidak hanya bergantung pada genotipe inang atau kualitas air, tetapi juga pada ekosistem mikroba di dalam dan sekitarnya. Mikrobioma usus udang dan ikan berperan aktif dalam pencernaan nutrisi, stimulasi sistem imun mukosa, serta produksi metabolit antimikroba yang menekan pertumbuhan patogen. Di tambak, komunitas mikroba air dan sedimen membentuk sabuk pengaman ekologis yang memengaruhi ketersediaan nutrisi sekaligus laju proliferasi bakteri oportunistik.</p>
 <p>Ketika terjadi <em>disbiosis</em>, yaitu ketidakseimbangan komposisi komunitas mikroba, sistem pertahanan ini melemah dan pintu terbuka bagi infeksi. Pada penyakit seperti <em>Vibriosis</em>, <em>Early Mortality Syndrome</em> (EMS), maupun AHPND, pergeseran dramatis komposisi mikrobioma usus sering mendahului tanda-tanda klinis yang terlihat. Hal inilah yang menjadikan metagenomik 16S sebagai alat yang sangat berharga karena kemampuannya mendeteksi perubahan komposisi komunitas mikroba dengan cepat dan biaya terjangkau membuka peluang untuk deteksi dini patogen, pemilihan kandidat probiotik yang tepat, serta evaluasi dampak perubahan manajemen pakan atau kualitas air terhadap kesehatan usus secara menyeluruh.</p>
 </section>
 </section>
-<section id="desain-studi-data" class="level1">
-<h1>Desain studi dan data</h1>
-<section id="skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd" class="level2">
-<h2 class="anchored" data-anchor-id="skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd">Skenario mikrobioma usus udang vanamei sehat dan AHPND</h2>
+<section id="desain-studi-data" class="level2">
+<h2 class="anchored" data-anchor-id="desain-studi-data">Desain studi dan data</h2>
+<section id="skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd" class="level3">
+<h3 class="anchored" data-anchor-id="skenario-mikrobioma-usus-udang-vanamei-sehat-dan-ahpnd">Skenario mikrobioma usus udang vanamei sehat dan AHPND</h3>
 <p>Tutorial ini menggunakan skenario yang dirancang untuk melengkapi studi transkriptomik yang sudah dibahas pada <a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a>. Di sana kita menelusuri respon ekspresi gen hepatopankreas udang vanamei (<em>Litopenaeus vannamei</em>) saat terinfeksi toksin Pir A/B dari <em>Vibrio</em> penyebab AHPND. Kini kita mendekati sistem yang sama dari sudut pandang berbeda, bukan ekspresi gen inang melainkan komunitas mikroba yang menghuni usus udang tersebut.</p>
 <p>Dataset tutorial ini terdiri dari 20 sampel usus udang vanamei, yaitu 10 sampel dari udang sehat tanpa tanda klinis dan 10 sampel dari udang yang terdiagnosis AHPND berdasarkan histopatologi hepatopankreas. DNA total diekstraksi dari isi usus memakai protokol <em>bead-beating</em> standar, kemudian daerah V3 dan V4 dari gen 16S rRNA diamplifikasi memakai pasangan <em>primer</em> 341F (<code>5'-CCTACGGGNGGCWGCAG-3'</code>) dan 805R (<code>5'-GACTACHVGGGTATCTAATCC-3'</code>). Produk amplikon lalu di-<em>sequencing</em> dengan platform Illumina MiSeq memakai <em>paired-end</em> 2×300 bp.</p>
 <p>Perbandingan dua kondisi ini memungkinkan kita menjawab beberapa pertanyaan penting. Apakah ada perbedaan komposisi <em>genus</em> bakteri antara udang sehat dan yang terinfeksi, apakah terjadi <em>disbiosis</em> misalnya penurunan <em>Lactobacillales</em> atau peningkatan <em>Vibrionaceae</em>, serta seberapa beragam komunitas mikroba dalam masing-masing kelompok. Semua pertanyaan ini akan kita jawab secara kuantitatif memakai analisis <em>alpha diversity</em>, <em>beta diversity</em>, dan perbandingan komposisi taksonomi.</p>
 <p>Semua data pada tutorial ini adalah data demo untuk pembelajaran yang dibuat dengan skrip <code>code/generate-16s-demo.R</code> agar seluruh pipeline dapat dijalankan langsung dan tetap ringan di komputer biasa. Perlu diingat bahwa data nyata umumnya jauh lebih besar, terdiri atas puluhan ribu hingga jutaan <em>reads</em> per sampel, sehingga menuntut sumber daya komputasi yang besar serta basis data taksonomi penuh seperti SILVA atau GTDB. Semua <em>genus</em> pada data demo ini sengaja dipilih dari kelompok bakteri laut dan payau yang lazim dijumpai di lingkungan tambak serta saluran pencernaan udang vanamei, sehingga tidak ada genus khas air tawar. Silakan unduh berkas berikut dengan menekan tombol unduh, lalu berkas akan tersimpan di komputer Anda.</p>
 <div class="download-row">
-<p><a class="btn-download" href="data/16s-demo/raw_reads.tar.gz" download="">⬇&nbsp; Raw reads <span class="bd-sub">20 sampel paired-end, .tar.gz</span></a> <a class="btn-download" href="data/16s-demo/metadata.csv" download="">⬇&nbsp; Metadata sampel <span class="bd-sub">metadata.csv</span></a> <a class="btn-download" href="data/16s-demo/ref/train_set_demo.fa.gz" download="">⬇&nbsp; Basis data taksonomi <span class="bd-sub">train_set_demo.fa.gz</span></a></p>
+<p><a href="data/16s-demo/raw_reads.tar.gz" class="btn-download" download="raw_reads.tar.gz">⬇ Raw reads — 20 sampel paired-end, .tar.gz</a></p>
+<p><a href="data/16s-demo/metadata.csv" class="btn-download" download="metadata.csv">⬇ Metadata sampel — metadata.csv</a></p>
+<p><a href="data/16s-demo/ref/train_set_demo.fa.gz" class="btn-download" download="train_set_demo.fa.gz">⬇ Basis data taksonomi — train_set_demo.fa.gz</a></p>
 </div>
 </section>
 </section>
-<section id="inspeksi-raw-reads" class="level1">
-<h1>Inspeksi raw reads</h1>
+<section id="inspeksi-raw-reads" class="level2">
+<h2 class="anchored" data-anchor-id="inspeksi-raw-reads">Inspeksi raw reads</h2>
 <p>Sebelum memulai analisis, kita lihat dulu struktur dan jumlah <em>reads</em> yang kita miliki. Langkah ini penting untuk memastikan semua berkas terbaca dengan benar dan jumlah <em>reads</em> per sampel berada dalam rentang yang wajar. Kita juga perlu memverifikasi bahwa penamaan berkas konsisten sehingga DADA2 dapat mencocokkan pasangan <em>forward</em> dan <em>reverse</em> dengan tepat. Paket <code>ShortRead</code> memungkinkan kita membaca langsung metadata dari berkas FASTQ terkompresi tanpa perlu mengekstraknya lebih dulu sehingga inspeksi awal ini berjalan efisien bahkan untuk dataset besar.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(dada2); <span class="fu">library</span>(ggplot2)})</span>
@@ -440,8 +612,8 @@ data/16s-demo/raw_reads/AH06_1.fastq.gz   AH06  1997</code></pre>
 </div>
 <p>Tabel di atas memperlihatkan nama sampel beserta jumlah <em>reads</em> yang berhasil dibaca dari masing-masing berkas. Setiap sampel berisi sekitar dua ribu pasang <em>reads</em>, jumlah yang sengaja dibuat kecil untuk demo namun cukup untuk menggambarkan seluruh alur. Pada data nyata, jumlah ini biasanya berada pada kisaran puluhan ribu <em>reads</em> per sampel. Penjelasan lebih dalam tentang format berkas yang kita pakai dapat Anda baca pada artikel <a href="../docs/teknis-file-format.html">Mengenal berbagai format file NGS</a>.</p>
 </section>
-<section id="qc-pemangkasan-primer" class="level1">
-<h1>Kendali mutu dan pemangkasan primer</h1>
+<section id="qc-pemangkasan-primer" class="level2">
+<h2 class="anchored" data-anchor-id="qc-pemangkasan-primer">Kendali mutu dan pemangkasan primer</h2>
 <p>Setiap amplikon yang kita sekuensing mengandung urutan <em>primer</em> PCR di ujung-ujungnya, yaitu 341F sepanjang 17 nt di awal <em>forward read</em> dan 805R sepanjang 21 nt di awal <em>reverse read</em>. Urutan <em>primer</em> ini bukan bagian dari sekuens biologis bakteri sehingga harus dibuang sebelum analisis lebih lanjut. Jika dibiarkan, urutan <em>primer</em> akan memperkenalkan artefak pada tahap <em>error learning</em> dan <em>denoising</em> DADA2 yang berpotensi menghasilkan ASV palsu.</p>
 <p>Alat standar untuk pemangkasan <em>primer</em> dalam pipeline produksi adalah <code>cutadapt</code>. Blok berikut menampilkan contoh perintah <code>cutadapt</code> sebagai referensi yang tidak dijalankan di sini. Sebagai gantinya kita memakai parameter <code>trimLeft</code> dalam fungsi <code>filterAndTrim</code> dari DADA2 yang memangkas sejumlah basa tetap dari ujung kiri setiap <em>read</em>, pendekatan yang setara dan lebih praktis untuk dataset dengan panjang <em>primer</em> seragam.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># referensi (tidak dijalankan di sini): pemangkasan primer dengan cutadapt</span></span>
@@ -473,8 +645,8 @@ AH06_1.fastq.gz     1997      1542</code></pre>
 </div>
 <p>Kolom <code>reads.in</code> menunjukkan jumlah <em>reads</em> awal dan <code>reads.out</code> jumlah yang lolos filter. Pada dataset ini sekitar 23 persen <em>reads</em> tersaring keluar karena sebagian sengaja dibuat berkualitas rendah pada ujung 3’, persis seperti yang sering kita jumpai pada data Illumina nyata. Penurunan sebesar ini tergolong wajar dan menandakan tahap kendali mutu memang bekerja menyaring <em>reads</em> bermutu buruk sebelum <em>denoising</em>. Bila Anda melihat penurunan yang sangat ekstrem, misalnya lebih dari separuh <em>reads</em> hilang, itu pertanda parameter filter terlalu ketat atau mutu sekuensing memang bermasalah.</p>
 </section>
-<section id="denoising-menjadi-asv-dengan-dada2" class="level1">
-<h1>Denoising menjadi ASV dengan DADA2</h1>
+<section id="denoising-menjadi-asv-dengan-dada2" class="level2">
+<h2 class="anchored" data-anchor-id="denoising-menjadi-asv-dengan-dada2">Denoising menjadi ASV dengan DADA2</h2>
 <p><em>Denoising</em> adalah proses membedakan varian sekuens biologis yang nyata dari <em>noise</em> sekuensing. Berbeda dengan pendekatan klasik berbasis <em>clustering</em> OTU yang mengelompokkan sekuens dengan kemiripan minimal 97 persen, DADA2 memakai model <em>error</em> probabilistik yang dipelajari langsung dari data untuk menghasilkan ASV, yaitu satuan beresolusi nukleotida tunggal yang merepresentasikan sekuens biologis sesungguhnya.</p>
 <p>Proses ini berlangsung dalam empat tahap utama. Pertama, <code>learnErrors</code> membangun model <em>error</em> khas dataset dari sebagian <em>reads</em>. Kedua, <code>dada</code> menerapkan model tersebut untuk mendekomposisi <em>reads</em> menjadi ASV. Ketiga, <code>mergePairs</code> menggabungkan <em>forward</em> dan <em>reverse read</em> memakai daerah <em>overlap</em> yang berukuran sekitar 30 bp pada desain V3 dan V4 ini. Keempat, <code>removeBimeraDenovo</code> menghapus artefak <em>bimera</em> berupa kontaminasi silang amplikon. Hasil akhirnya adalah tabel ASV bersih yang siap untuk penugasan taksonomi.</p>
 <div class="cell">
@@ -518,8 +690,8 @@ AH06_1.fastq.gz  1997     1542      1522      1531   1522    1522</code></pre>
 </div>
 <p>Tabel pelacakan ini merangkum berapa banyak <em>reads</em> yang bertahan di setiap tahap pipeline, mulai dari input mentah, setelah pemfilteran, <em>denoising forward</em> dan <em>reverse</em>, penggabungan pasangan, sampai penghapusan <em>bimera</em>. Membaca tabel ini dari kiri ke kanan membantu kita menemukan tahap mana yang membuang <em>reads</em> paling banyak. Pada dataset ini sebagian besar <em>reads</em> yang lolos filter berhasil melewati seluruh tahap berikutnya, sehingga pola penurunannya landai dan sehat. Penurunan drastis pada satu tahap, misalnya penggabungan pasangan yang gagal massal, biasanya menunjuk pada masalah panjang <em>overlap</em> atau pemotongan yang keliru.</p>
 </section>
-<section id="penugasan-taksonomi" class="level1">
-<h1>Penugasan taksonomi</h1>
+<section id="penugasan-taksonomi" class="level2">
+<h2 class="anchored" data-anchor-id="penugasan-taksonomi">Penugasan taksonomi</h2>
 <p>Setelah memperoleh sekuens ASV yang bersih, langkah terakhir pada tahap <em>upstream</em> adalah mengidentifikasi asal usul taksonomi setiap ASV. DADA2 memakai pengklasifikasi <em>naive</em> Bayes yang membandingkan <em>k-mer</em> dari sekuens ASV kita dengan basis data referensi terformat. Parameter <code>minBoot</code>, yaitu nilai <em>bootstrap</em> minimum, mengontrol tingkat kepercayaan penugasan sehingga nilai yang lebih tinggi menghasilkan penugasan yang lebih konservatif.</p>
 <p>Dalam tutorial ini kita memakai basis data demo yang hanya mencakup beberapa <em>genus</em> bakteri yang dimasukkan ke dalam data demo. Pada analisis nyata Anda akan memakai basis data lengkap seperti SILVA versi 138 ke atas, GTDB, atau RDP yang mencakup puluhan ribu sekuens referensi dan dapat diunduh dari situs resmi DADA2. Basis data yang lebih lengkap meningkatkan cakupan taksonomi tetapi juga menuntut lebih banyak RAM selama proses penugasan.</p>
 <div class="cell">
@@ -547,8 +719,8 @@ AH06_1.fastq.gz  1997     1542      1522      1531   1522    1522</code></pre>
 </div>
 <p>Tabel taksonomi di atas memetakan setiap ASV ke peringkat <em>Kingdom</em> sampai <em>Genus</em>. Kita melihat <em>genus</em> yang relevan dengan kesehatan udang muncul dengan jelas, antara lain <em>Vibrio</em> dan <em>Photobacterium</em> dari famili <em>Vibrionaceae</em> yang kerap berasosiasi dengan AHPND. Pada data nyata sebagian ASV biasanya tidak teridentifikasi sampai tingkat <em>genus</em> dan akan terisi <code>NA</code>, terutama untuk takson yang belum terwakili baik di basis data referensi.</p>
 </section>
-<section id="membangun-objek-phyloseq" class="level1">
-<h1>Membangun objek phyloseq</h1>
+<section id="membangun-objek-phyloseq" class="level2">
+<h2 class="anchored" data-anchor-id="membangun-objek-phyloseq">Membangun objek phyloseq</h2>
 <p>Setelah proses <em>upstream</em> DADA2 selesai dan kita memiliki tabel ASV <code>seqtab.nochim</code> beserta anotasi taksonomi <code>taxa</code>, langkah berikutnya adalah menyatukan semua informasi, yaitu tabel hitungan, metadata sampel, dan taksonomi, ke dalam satu objek terpadu memakai paket phyloseq. Objek phyloseq memudahkan manipulasi data sekaligus menjadi fondasi untuk seluruh analisis komunitas berikutnya. Kita juga menyimpan sekuens ASV asli sebagai objek <code>DNAStringSet</code> di dalamnya, berguna bila nanti ingin membangun pohon filogenetik, lalu mengganti nama ASV panjang menjadi label pendek seperti ASV1 dan ASV2 agar keluaran lebih mudah dibaca.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(phyloseq); <span class="fu">library</span>(Biostrings)})</span>
@@ -571,11 +743,11 @@ refseq()      DNAStringSet:      [ 20 reference sequences ]</code></pre>
 </div>
 <p>Ringkasan objek menunjukkan struktur data yang kini rapi, yaitu sekitar 20 takson lintas 20 sampel lengkap dengan tabel taksonomi enam peringkat dan sekuens rujukannya. Satu objek ini menggantikan banyak tabel terpisah sehingga setiap analisis berikutnya cukup memanggil <code>ps</code> tanpa khawatir nama sampel atau urutan baris tertukar.</p>
 </section>
-<section id="analisis-komunitas-mikroba" class="level1">
-<h1>Analisis komunitas mikroba</h1>
+<section id="analisis-komunitas-mikroba" class="level2">
+<h2 class="anchored" data-anchor-id="analisis-komunitas-mikroba">Analisis komunitas mikroba</h2>
 <p>Dengan objek phyloseq yang sudah terbentuk, kita siap menjalankan serangkaian analisis ekologi mikroba. Analisis ini mencakup enam pendekatan utama, yaitu <em>alpha diversity</em> untuk kekayaan dan keseragaman dalam satu sampel, kurva <em>rarefaction</em> untuk kecukupan kedalaman <em>sequencing</em>, komposisi taksonomi untuk melihat siapa yang ada dan seberapa banyak, <em>beta diversity</em> untuk perbedaan struktur komunitas antar sampel, <em>heatmap</em> kelimpahan untuk pola taksa teratas, dan kelimpahan diferensial untuk taksa yang berbeda secara statistik antar kelompok. Bersama-sama, keenam analisis ini memberikan gambaran menyeluruh tentang perubahan ekologi mikroba pada udang AHPND dibandingkan udang sehat.</p>
-<section id="alpha-diversity" class="level2">
-<h2 class="anchored" data-anchor-id="alpha-diversity">Alpha diversity, keragaman dalam sampel</h2>
+<section id="alpha-diversity" class="level3">
+<h3 class="anchored" data-anchor-id="alpha-diversity">Alpha diversity, keragaman dalam sampel</h3>
 <p><em>Alpha diversity</em> mengukur kekayaan dan keseragaman komunitas mikroba di dalam satu sampel. Indeks <em>Observed</em> menghitung jumlah ASV unik, sedangkan indeks <em>Shannon</em> turut mempertimbangkan kelimpahan relatif setiap ASV sehingga lebih peka terhadap taksa yang jarang. Kita berharap sampel AHPND menampilkan keragaman lebih rendah karena infeksi patogen cenderung mengganggu komunitas normal dan mendorong dominasi satu atau beberapa taksa oportunistik.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_richness</span>(ps, <span class="at">x =</span> <span class="st">"group"</span>, <span class="at">color =</span> <span class="st">"group"</span>,</span>
@@ -613,8 +785,8 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 <p>Uji ini menghasilkan <em>p-value</em> yang jauh lebih kecil dari ambang 0,05, yang berarti perbedaan keragaman <em>Shannon</em> antara udang sehat dan AHPND sangat kecil kemungkinannya terjadi secara kebetulan. Dengan kata lain, penurunan keragaman pada udang terinfeksi bukan sekadar pola visual pada <em>boxplot</em>, melainkan perbedaan yang didukung bukti statistik yang kuat.</p>
 </section>
-<section id="kurva-rarefaction" class="level2">
-<h2 class="anchored" data-anchor-id="kurva-rarefaction">Kurva rarefaction</h2>
+<section id="kurva-rarefaction" class="level3">
+<h3 class="anchored" data-anchor-id="kurva-rarefaction">Kurva rarefaction</h3>
 <p>Kurva <em>rarefaction</em> menggambarkan hubungan antara jumlah <em>reads</em> yang di-<em>subsample</em> dan jumlah ASV yang ditemukan. Kurva yang mendatar menandakan kedalaman <em>sequencing</em> sudah memadai karena menambah <em>reads</em> tidak banyak lagi memunculkan ASV baru. Sebaliknya, kurva yang masih menanjak tajam menunjukkan masih banyak keragaman yang belum tertangkap.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(vegan))</span>
@@ -640,8 +812,8 @@ Gambar&nbsp;2: Kurva rarefaction yang memetakan kekayaan ASV terhadap kedalaman 
 </div>
 <p>Semua kurva mendatar jauh sebelum mencapai kedalaman maksimum, sehingga kita yakin jumlah <em>reads</em> per sampel sudah cukup untuk menangkap kekayaan ASV yang ada. Perhatikan pula bahwa garis merah milik kelompok AHPND mendatar pada jumlah ASV yang lebih rendah daripada garis biru, sebuah penegasan visual atas temuan <em>alpha diversity</em> sebelumnya bahwa komunitas udang terinfeksi memang lebih miskin jenis.</p>
 </section>
-<section id="komposisi-taksonomi" class="level2">
-<h2 class="anchored" data-anchor-id="komposisi-taksonomi">Komposisi taksonomi</h2>
+<section id="komposisi-taksonomi" class="level3">
+<h3 class="anchored" data-anchor-id="komposisi-taksonomi">Komposisi taksonomi</h3>
 <p>Visualisasi komposisi taksonomi memperlihatkan siapa saja yang ada dalam komunitas dan berapa banyak secara relatif. Kita mengagregasi ASV ke tingkat <em>Genus</em> dengan <code>tax_glom</code> agar lebih mudah ditafsirkan, lalu mengubah hitungan menjadi kelimpahan relatif. Pada kasus AHPND, dominasi <em>Vibrio</em> atau <em>Photobacterium</em> diharapkan tampak mencolok pada kelompok terinfeksi.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ps_genus <span class="ot">&lt;-</span> <span class="fu">tax_glom</span>(ps, <span class="at">taxrank =</span> <span class="st">"Genus"</span>, <span class="at">NArm =</span> <span class="cn">FALSE</span>)</span>
@@ -667,8 +839,8 @@ Gambar&nbsp;3: Komposisi genus berupa kelimpahan relatif per sampel yang dipisah
 </div>
 <p>Perbedaan antara dua panel sangat kontras. Sampel sehat di panel kiri menampilkan komposisi yang relatif merata dengan banyak <em>genus</em> komensal laut seperti <em>Bacillus</em>, <em>Phaeobacter</em>, dan <em>Ruegeria</em> hadir berdampingan. Sebaliknya, sampel AHPND di panel kanan didominasi oleh blok besar <em>Vibrio</em> dan <em>Photobacterium</em> yang menggusur sebagian besar takson lain. Pergeseran komposisi inilah wujud konkret <em>disbiosis</em> yang sebelumnya hanya kita lihat sebagai angka pada indeks keragaman.</p>
 </section>
-<section id="beta-diversity" class="level2">
-<h2 class="anchored" data-anchor-id="beta-diversity">Beta diversity, keragaman antar sampel</h2>
+<section id="beta-diversity" class="level3">
+<h3 class="anchored" data-anchor-id="beta-diversity">Beta diversity, keragaman antar sampel</h3>
 <p><em>Beta diversity</em> mengukur perbedaan komposisi komunitas antar sampel. Kita memakai jarak <em>Bray-Curtis</em> yang mempertimbangkan kelimpahan relatif, lalu memvisualisasikannya dengan PCoA (<em>Principal Coordinates Analysis</em>). Pemisahan yang jelas antara kelompok sehat dan AHPND pada plot ordinasi menandakan infeksi mengubah struktur komunitas mikroba secara mendasar. Agar kontras antar kelompok mudah dibaca, titik sampel sehat digambar sebagai lingkaran biru dan AHPND sebagai segitiga merah.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ps_relA <span class="ot">&lt;-</span> <span class="fu">transform_sample_counts</span>(ps, <span class="cf">function</span>(x) x <span class="sc">/</span> <span class="fu">sum</span>(x))</span>
@@ -720,8 +892,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Hasil PERMANOVA mengkonfirmasi kesan visual tadi. Nilai R2 yang berada di kisaran 0,6 berarti lebih dari separuh atau sekitar 60 persen total variasi struktur komunitas dapat dijelaskan hanya oleh status infeksi, sebuah efek yang sangat besar untuk data biologis. Nilai <em>p</em> sebesar 0,001 yang merupakan nilai terkecil yang dapat dicapai dengan jumlah permutasi default menegaskan bahwa pemisahan antara sehat dan AHPND hampir pasti bukan kebetulan.</p>
 </section>
-<section id="heatmap-kelimpahan" class="level2">
-<h2 class="anchored" data-anchor-id="heatmap-kelimpahan">Heatmap kelimpahan</h2>
+<section id="heatmap-kelimpahan" class="level3">
+<h3 class="anchored" data-anchor-id="heatmap-kelimpahan">Heatmap kelimpahan</h3>
 <p><em>Heatmap</em> memberi gambaran visual yang intuitif tentang pola kelimpahan relatif di seluruh sampel sekaligus. Kita memusatkan perhatian pada 15 <em>genus</em> teratas berdasarkan total kelimpahan, lalu melakukan <em>clustering</em> hierarki pada baris yang mewakili taksa dan kolom yang mewakili sampel agar pola berulang lebih mudah dikenali. Anotasi warna pada kolom membantu membedakan kelompok sehat dan AHPND.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(tidyr))</span>
@@ -757,8 +929,8 @@ Gambar&nbsp;5: Heatmap kelimpahan relatif 15 genus teratas. Sampel dikelompokkan
 </div>
 <p>Kedua panel memisahkan sampel sehat dan AHPND sehingga pola antar kelompok mudah dibandingkan secara langsung. Pada panel AHPND, baris <em>Vibrio</em> dan <em>Photobacterium</em> menyala dengan warna pekat yang menandakan kelimpahan tinggi, sedangkan pada panel sehat warna pekat justru jatuh pada <em>genus</em> komensal laut seperti <em>Phaeobacter</em> dan <em>Ruegeria</em>. Pembacaan baris demi baris seperti ini memudahkan kita menebak takson mana yang menjadi penanda tiap kondisi.</p>
 </section>
-<section id="kelimpahan-diferensial" class="level2">
-<h2 class="anchored" data-anchor-id="kelimpahan-diferensial">Kelimpahan diferensial dengan DESeq2</h2>
+<section id="kelimpahan-diferensial" class="level3">
+<h3 class="anchored" data-anchor-id="kelimpahan-diferensial">Kelimpahan diferensial dengan DESeq2</h3>
 <p>Analisis kelimpahan diferensial bertujuan mengidentifikasi taksa yang secara statistik lebih tinggi atau lebih rendah antara dua kondisi. Di sini kita memakai DESeq2 yang semula dirancang untuk RNA-seq namun terbukti efektif untuk data mikrobioma berkat kemampuannya menangani <em>overdispersion</em> dan jumlah nol yang banyak. Normalisasi dilakukan dengan <em>geometric mean</em> untuk mengatasi kelimpahan nol pada sebagian taksa.</p>
 <p>Sebagai alternatif yang dirancang khusus untuk data komposisional, ANCOM-BC (<em>Analysis of Compositions of Microbiomes with Bias Correction</em>) lebih tepat secara statistik karena secara eksplisit memodelkan sifat komposisional data mikrobioma. Meski begitu, DESeq2 dengan normalisasi <em>geometric mean</em> tetap menjadi pilihan yang umum dan mudah ditafsirkan dalam praktik.</p>
 <div class="cell">
@@ -798,8 +970,8 @@ Gambar&nbsp;6: Genus dengan kelimpahan berbeda signifikan pada padj di bawah 0,0
 <p>Grafik ini merangkum cerita seluruh analisis dalam satu pandangan. Batang merah yang menjulur ke kanan adalah <em>genus</em> yang melonjak signifikan pada udang AHPND, dipimpin oleh <em>Vibrio</em> dan <em>Photobacterium</em>, persis patogen yang berasosiasi dengan penyakit ini. Batang biru yang menjulur ke kiri adalah <em>genus</em> komensal yang justru tertekan saat infeksi. Nilai <em>log2 fold change</em> sebesar satu berarti kelimpahan berlipat dua, sehingga batang yang sangat panjang menggambarkan perubahan kelimpahan yang berlipat banyak. Inilah daftar kandidat penanda hayati yang paling layak ditindaklanjuti pada studi lanjutan.</p>
 </section>
 </section>
-<section id="apa-yang-perlu-dipertimbangkan" class="level1">
-<h1>Apa yang perlu dipertimbangkan</h1>
+<section id="apa-yang-perlu-dipertimbangkan" class="level2">
+<h2 class="anchored" data-anchor-id="apa-yang-perlu-dipertimbangkan">Apa yang perlu dipertimbangkan</h2>
 <p>Kualitas dan interpretasi studi metagenomik 16S sangat bergantung pada keputusan yang diambil jauh sebelum analisis bioinformatika dimulai. Berikut beberapa hal penting yang perlu dipertimbangkan.</p>
 <ol type="1">
 <li><p><strong>Pilihan region dan primer.</strong> Region V3 dan V4 memberikan resolusi taksonomi yang baik untuk sebagian besar bakteri, tetapi bias cakupannya berbeda dari V4 saja atau kombinasi lain. Primer tertentu dapat melewatkan takson tertentu, misalnya primer universal standar kurang efisien mendeteksi <em>Archaea</em> atau beberapa filum bakteri yang jarang. Pilihan primer sebaiknya disesuaikan dengan kelompok organisme target dan tujuan studi.</p></li>
@@ -810,19 +982,30 @@ Gambar&nbsp;6: Genus dengan kelimpahan berbeda signifikan pada padj di bawah 0,0
 <li><p><strong>Resolusi taksonomi.</strong> Amplikon 16S umumnya hanya mampu mengidentifikasi bakteri hingga tingkat <em>genus</em>, sedangkan resolusi sampai <em>species</em> atau <em>strain</em> sangat terbatas kecuali pada kasus tertentu dengan basis data referensi yang sangat lengkap. Jika tujuan studi menuntut identifikasi spesies secara tepat, karakterisasi jalur metabolik, atau deteksi virus dan fungi, maka <em>shotgun metagenomics</em> dengan sekuensing seluruh metagenom menjadi pilihan yang jauh lebih tepat.</p></li>
 </ol>
 </section>
-<section id="penutup" class="level1">
-<h1>Penutup</h1>
+<section id="penutup" class="level2">
+<h2 class="anchored" data-anchor-id="penutup">Penutup</h2>
 <p>Dengan menyelesaikan alur DADA2 lalu phyloseq lalu analisis keanekaragaman dan kelimpahan diferensial, Anda kini memiliki gambaran utuh satu siklus studi metagenomik 16S, dari <em>reads</em> mentah hingga identifikasi taksa yang secara statistik berbeda antar kondisi. Pada studi kasus ini, sampel udang AHPND menampilkan keragaman alfa yang lebih rendah serta peningkatan kelimpahan <em>Vibrio</em> dan <em>Photobacterium</em>, konsisten dengan patogenesis penyakit akut yang dipicu toksin PirA dan PirB. Pola ini hanya dapat diungkap karena kita menyertakan replikasi biologis yang memadai dan memakai uji diferensial berbasis model. Bila Anda ingin memahami respons transkriptomik inang udang terhadap infeksi AHPND pada tingkat ekspresi gen, lihat <a href="../docs/work-RNA-seq.html">RNA-Seq workflow</a> yang membahas pipeline HISAT2 lalu StringTie lalu DESeq2 secara mendalam. Pada <em>workflow</em> berikutnya kita akan melangkah lebih jauh ke <em>shotgun metagenomics</em>, pendekatan yang mampu mengungkap keragaman fungsional metagenom, identitas hingga tingkat <em>species</em>, serta potensi metabolik komunitas secara menyeluruh.</p>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1233,13 +1416,16 @@ Gambar&nbsp;6: Genus dengan kelimpahan berbeda signifikan pada padj di bawah 0,0
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../docs/work-variant-calling.html" class="pagination-link" aria-label="Variant Calling dengan GATK">
+        <span class="nav-page-text">Variant Calling dengan GATK</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

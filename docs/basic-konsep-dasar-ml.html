@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -40,10 +43,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -73,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -104,7 +111,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -147,6 +316,7 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -282,6 +452,12 @@ window.Quarto = {
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -303,6 +479,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/materi-dasar.html">Materi dasar</a></li><li class="breadcrumb-item"><a href="../docs/basic-konsep-dasar-ml.html">Konsep dasar pembelajaran mesin</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Konsep dasar pembelajaran mesin</h1>
@@ -322,21 +499,10 @@ window.Quarto = {
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/basic-konsep-dasar-ml.html" style="text-decoration: none; color: inherit;"> Konsep dasar pembelajaran mesin (<em>machine learning</em>) </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://www.fsm.ac.in/blog/wp-content/uploads/2022/08/ml-e1610553826718.jpg" alt="AI" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Konsep dasar pembelajaran mesin</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://www.fsm.ac.in/blog/wp-content/uploads/2022/08/ml-e1610553826718.jpg" class="content-image article-hero-image img-fluid" alt="Ilustrasi kecerdasan buatan dan machine learning"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
 <li><a href="#hanya-ada-dua-masalah">Hanya ada dua masalah</a></li>
@@ -344,15 +510,13 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><a href="#resampling-">Resampling: Bagaimana kita tahu model benar-benar bekerja?</a></li>
 </ul>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Bagaimana kita mengetahui bahwa kualitas air dapat memengaruhi pertumbuhan udang? atau jika kita punya semua data laboratorium dan performa udang, bagaimana kita bisa mengestimasi tonase panen di siklus depan atau mengestimasi jumlah pakan yang kita butuhkan untuk satu siklus?</p>
 <p>Untuk menjawab pertanyaan-pertanyaan tadi, pada dasarnya kita hanya akan memanfaatkan 2 hal: data dan polanya. Dalam data yang ada, kita hanya perlu mencari bagaimana pola umum yang terbentuk dari data-data tersebut. Misalnya, pada kondisi ideal dalam 3 siklus terakhir, kita butuh 60 ton pakan untuk menghasilkan 40 ton udang, dan di sisi lain kita juga telah merekam data kualitas air, kepadatan plankton, dan bakteri di setiap siklus. Sehingga, jika kita bisa “membaca” bagaimana pola umum dari kumpulan-kumpulan data tersebut (jumlah pakan, tonase panen, kualitas air, kepadatan plankton, dan bakteri), maka kita akan bisa memprediksi berapa ton udang yang akan kita peroleh di siklus depan. Cabang ilmu statistik yang berusaha mencari pola dalam data untuk menghasilkan prediksi di masa depan adalah <strong><em>statistical learning</em></strong>.</p>
 <p>Dalam <em>statistical learning</em>, jumlah pakan, kualitas air, kepadatan plankton dan bakteri disebut juga sebagai <strong>variabel <em>predictors</em></strong> atau secara matematis disimbolkan sebagai <span class="math inline">\(x_i\)</span>, sementara tonase panen adalah <strong>varibel <em>response</em></strong> atau secara matematis disimbolkan sebagai <span class="math inline">\(y\)</span>, dan jika kita ingin memprediksi nilai selanjutnya dari <span class="math inline">\(y\)</span> setelah kita mengetahui pola umum dalam data, maka disimbolkan sebagai <span class="math inline">\(\hat{y}\)</span> (dibaca y hat).</p>
 <p><em>Statistical learning</em> berangkat dari asumsi bahwa terdapat hubungan sistematis antara variabel-variabel <em>predictors</em> dalam data, dan hubungan tersebut dapat dipelajari atau diestimasi, sehingga dapat diringkas dalam bentuk persamaan:</p>
-<p><span class="math display">\[
-Y = f(X) + \epsilon
-\]</span></p>
+<p><span class="math display">\[Y = f(X) + \epsilon\]</span></p>
 <p>Di sini, <span class="math inline">\(Y\)</span> merepresentasikan variabel respons yang ingin kita jelaskan atau prediksi, <span class="math inline">\(X\)</span> adalah kumpulan variabel penjelas, fungsi <span class="math inline">\(f\)</span> adalah hubungan antar <em>predictors</em> dan <em>response</em>, dan <span class="math inline">\(\epsilon\)</span> menyatakan komponen galat atau noise yang tidak dapat dijelaskan oleh model.</p>
 <p>Masalahnya, bentuk <span class="math inline">\(f\)</span> yang sesungguhnya hampir tidak pernah kita ketahui. Yang dapat kita lakukan hanyalah <strong>mengestimasi</strong> nilai-nilai dalam fungsi <span class="math inline">\(f\)</span> menggunakan data yang tersedia, lalu memanfaatkan hasil estimasi tersebut untuk baik untuk inferensi maupun prediksi.</p>
 <p>Pada <strong>inferensi</strong>, fokus kita adalah memahami <strong>hubungan</strong> antar variabel. &gt; <em>Apakah suhu air berpengaruh signifikan terhadap berat udang? Seberapa besar pengaruhnya?</em></p>
@@ -379,9 +543,9 @@ Y = f(X) + \epsilon
 </div>
 <p>Namun pada pembahasan ini, kita hanya akan belajar tentang <em>statistical</em> dan <em>machine learning</em>, mengingat kedua kelompok ini merupakan fondasi utama dari pengembangan model-model lanjutan, sehingga pemahaman mendasar terlebih dahulu tentang konsep linearitas dan non-linearitas menjadi sangat penting.</p>
 </section>
-<section id="hanya-ada-dua-masalah" class="level1">
-<h1>Hanya ada dua masalah</h1>
-<p>Sebelum memilih model apa pun, pertanyaan paling mendasar yang harus dijawab adalah: <strong>seperti apa variabel <em>response</em> <span class="math inline">\(Y\)</span> yang ingin kita prediksi?</strong></p>
+<section id="hanya-ada-dua-masalah" class="level2">
+<h2 class="anchored" data-anchor-id="hanya-ada-dua-masalah">Hanya ada dua masalah</h2>
+<p>Sebelum memilih model apa pun, pertanyaan paling mendasar yang harus dijawab adalah: <strong>seperti apa variabel <em>response</em></strong> <span class="math inline">\(Y\)</span> yang ingin kita prediksi?</p>
 <p>Jawaban atas pertanyaan ini akan menentukan banyak hal, mulai dari jenis model yang digunakan hingga cara kita mengevaluasi performa model.</p>
 <p>Jika target yang ingin diprediksi berupa <strong>nilai numerik yang kontinu</strong>, maka permasalahannya disebut <strong>regresi</strong>. Artinya, model diminta untuk menghasilkan sebuah angka.</p>
 <blockquote class="blockquote">
@@ -401,11 +565,25 @@ Y = f(X) + \epsilon
 <p>Menariknya, hampir semua model yang akan kita pelajari mampu menangani <strong>regresi maupun klasifikasi</strong>, sering kali hanya dengan sedikit penyesuaian pada bagian akhir model. Perbedaannya bukan terletak pada cara model belajar dari data, melainkan pada <strong>bentuk keluaran</strong> yang dihasilkan dan <strong>metrik evaluasi</strong> yang digunakan. Inilah sebabnya mengapa memahami perbedaan antara regresi dan klasifikasi sejak awal sangat penting, karena konsep ini menjadi fondasi bagi seluruh keputusan pemodelan selanjutnya.</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -825,7 +1003,7 @@ Y = f(X) + \epsilon
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

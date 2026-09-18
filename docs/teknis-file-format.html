@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -108,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -139,7 +146,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -182,6 +351,7 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -317,6 +487,12 @@ window.Quarto = {
  <span class="menu-text">Metagenomik 16S rRNA untuk profiling komunitas mikroba usus udang</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/work-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Variant Calling dengan GATK</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -344,6 +520,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-file-format.html">Mengenal berbagai format file NGS</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Mengenal berbagai format file NGS</h1>
@@ -363,21 +540,10 @@ window.Quarto = {
 </header>
 
 
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
-<h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-<a href="../docs/teknis-file-format.html" style="text-decoration: none; color: inherit;"> Mengenal berbagai format file Next Generation Sequencing </a>
-</h1>
-<p style="text-align: center; font-size: 1.2rem;">
-Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
-</p>
-<div style="text-align: center; margin-bottom: 1.5rem;">
-<p><img src="https://www.genengnews.com/wp-content/uploads/2024/04/A-List_GettyImages-1316511842.jpg" alt="NGS Files" style="max-width: 100%; height: auto;"></p>
-</div>
-<p><br></p>
-<section id="daftar-isi" class="level1">
-<h1>Daftar isi</h1>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Mengenal berbagai format file NGS</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<p><img src="https://www.genengnews.com/wp-content/uploads/2024/04/A-List_GettyImages-1316511842.jpg" class="content-image article-hero-image img-fluid" alt="Ilustrasi data sekuensing generasi berikutnya"></p>
+<section id="daftar-isi" class="level2">
+<h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="">Pendahuluan</a></li>
 <li><a href="#apa-itu-read-mate-dan-coverage">Apa itu read, mate, dan coverage?</a></li>
@@ -392,14 +558,14 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <p><strong>Catatan</strong>: Dalam tutorial ini, kita akan bekerja menggunakan pemrograman Bash dan R dalam lingkungan Linux. Anda dapat menggunakan VS code baik untuk membuat script R maupun menjalankan script Bash tersebut via terminal.</p>
 </blockquote>
 </section>
-<section id="pendahuluan" class="level1">
-<h1>Pendahuluan</h1>
+<section id="pendahuluan" class="level2">
+<h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
 <p>Bayangkan kita baru saja mendapatkan data hasil sekuensing dari laboratorium. Dan <em>ngebatin</em>: “Wah, sebentar lagi saya bisa tahu gen apa yang rusak atau SNP apa yang unik.” Tapi, begitu buka foldernya… jeng jeng kita dihadapkan dengan berbagai file berakhiran .fastq, .bam, .gff, .vcf, dan entah apa lagi. “mumet wes” 😵‍💫</p>
 <p>Yup, dunia <em>Next-Generation Sequencing</em> (NGS) memang penuh dengan format file yang bagi pemula bisa sangat membingungkan, berukuran besar, dan bahkan diantaranya tidak bisa dibaca. Tapi jangan khawatir, setiap format punya fungsinya sendiri dan punya cara unik dalam penangananya. Seperti alat-alat di toolbox, mereka bekerja bersama untuk menjawab pertanyaan besar di biologi molekuler: variasi genetik, ekspresi gen, struktur genom, dan banyak lagi.</p>
 <p>Jadi dalam materi ini, kita akan berkenalan dengan “bahasa” NGS: format file yang menjadi jembatan antara data mentah dan hasil analisis ilmiah.</p>
 </section>
-<section id="apa-itu-read-mate-dan-coverage" class="level1">
-<h1>Apa itu read, mate, dan coverage?</h1>
+<section id="apa-itu-read-mate-dan-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="apa-itu-read-mate-dan-coverage">Apa itu read, mate, dan coverage?</h2>
 <p>Sebelum terjun lebih jauh, mari kita luruskan beberapa istilah kunci:</p>
 <ul>
 <li><p><strong><em>Read</em></strong> - adalah potongan sekuens DNA hasil dari satu kali pembacaan oleh mesin sekuenser.</p></li>
@@ -407,34 +573,30 @@ Oleh <a href="../docs/bio.html" target="_blank">Agus Wibowo</a>
 <li><p><strong><em>Fragment</em></strong> - adalah molekul DNA asli yang disekuens.</p></li>
 <li><p><strong><em>Coverage</em></strong> - adalah ukuran seberapa dalam sebuah lokasi pada genom dibaca ulang oleh <em>read</em>.</p></li>
 </ul>
-<p><img src="images/se-reads.png" alt="Seqcov" style="width: 90%;"></p>
+<p><img src="images/se-reads.png" class="content-image img-fluid" style="width:90.0%" alt="Ilustrasi single-end reads"></p>
 <p><strong>Rumus <em>coverage</em>:</strong></p>
-<p><span class="math display">\[
-\text{Coverage} = \frac{L \times N}{G}
-\]</span></p>
+<p><span class="math display">\[\text{Coverage} = \frac{L \times N}{G}\]</span></p>
 <p>di mana:</p>
 <p>𝐿 = panjang read,</p>
 <p>𝑁 = jumlah read,</p>
 <p>𝐺 = ukuran genom.</p>
 <p>Misalnya, jika kita punya 30 juta read, masing-masing sepanjang 100 bp, dan genomnya 3 miliar bp, maka coveragenya:</p>
-<p><span class="math display">\[
-\frac{100 \times 30\,000\,000}{3\,000\,000\,000} = 1X
-\]</span></p>
+<p><span class="math display">\[\frac{100 \times 30\,000\,000}{3\,000\,000\,000} = 1X\]</span></p>
 <p>Artinya, rata-rata tiap posisi hanya dibaca sekali dan terlalu dangkal (<em>low depth</em>) untuk analisis varian, misalnya.</p>
 </section>
-<section id="fasta-fastq-format-dasar-ngs-dan-kualitasnya" class="level1">
-<h1>FASTA &amp; FASTQ: Format dasar NGS dan kualitasnya</h1>
+<section id="fasta-fastq-format-dasar-ngs-dan-kualitasnya" class="level2">
+<h2 class="anchored" data-anchor-id="fasta-fastq-format-dasar-ngs-dan-kualitasnya">FASTA &amp; FASTQ: Format dasar NGS dan kualitasnya</h2>
 <p>Format FASTA adalah format berbasis teks untuk merepresentasikan sekuens nukleotida atau peptida, di mana nukleotida atau asam amino direpresentasikan menggunakan kode satu huruf. Kesederhanaan format FASTA membuatnya mudah dimanipulasi dan diurai menggunakan alat pemrosesan teks dan bahasa skrip seperti R, Python, Ruby, dan Perl.</p>
 <p>Setiap sekuens dalam format FASTA dimulai dengan baris deskripsi tunggal, diikuti oleh baris-baris data sekuens. Baris deskripsi, yang sering disebut sebagai “<em>defline</em>”, dimulai dengan simbol “&gt;” untuk membedakan antar data sekuens. Defline biasanya berisi pengidentifikasi unik dan informasi tentang sekuens tersebut.</p>
 <p>Contoh format FASTA sederhana:</p>
-<pre class="shell"><code>&gt;NM_001276760.1 Homo sapiens tumor protein p53 (TP53), transcript variant 1, mRNA
+<pre class="text terminal-output"><code>&gt;NM_001276760.1 Homo sapiens tumor protein p53 (TP53), transcript variant 1, mRNA
 GTGGAGTATTTGGATGACAGAAACACTTTTCGACATAGTGTGGTGGTGCCCTATGAGCCGCCTGAGG
 TTGGCTCTGACTGTACCACCATCCACTACAACTACATGTGTAACAGTTCCTGCATGGGCGGCATGAA
 CCGGAGGCCCATCCTCACCATCATCACACTGGAAGACTCCAGTGGTAATCTACTGGGACGGAACAGC</code></pre>
 <p>Meskipun sangat sederhana, FASTA tidak memiliki informasi tentang kualitas sekuens atau metadata lainnya yang sangat penting untuk analisis lebih lanjut. Nah, disinilah FASTQ berperan.</p>
 <p>Format FASTQ adalah format standar berbasis teks untuk menyimpan sekuens DNA dan skor kualitas yang sesuai dari NGS. Setiap sekuens pembacaan terdiri dari empat baris.</p>
 <p>Contohnya:</p>
-<pre class="shell"><code>@HWI-K00288_BSF_0436:4:1101:10003:10669
+<pre class="text terminal-output"><code>@HWI-K00288_BSF_0436:4:1101:10003:10669
 GTGGAGTATTTGGATGACAGAAACACTTTTCGACATAGTGTGGTGGTGC
 +
 #4!DBDDDHFHFFHIGHIII</code></pre>
@@ -448,15 +610,13 @@ GTGGAGTATTTGGATGACAGAAACACTTTTCGACATAGTGTGGTGGTGC
 <p>Proses inferensi basa (A, C, G, atau T) pada posisi spesifik dari fragmen DNA yang disekuensing selama proses sekuensing disebut <em>base calling</em>. Perlu dicatat bahwa, platform sekuensing tidaklah sempurna dan kesalahan dapat terjadi selama proses sekuensing ketika mesin mencoba menginferensikan basa dari setiap sinyal yang diukur. Untuk semua platform, kekuatan sinyal dan fitur karakteristik lainnya diukur dan diinterpretasikan oleh software <em>base caller</em>. Kesalahan mempengaruhi data sekuens secara langsung dan membuatnya kurang dapat diandalkan. Oleh karena itu, penting untuk mengetahui probabilitas kesalahan tersebut agar pengguna dapat mengetahui kualitas data sekuens mereka dan dapat mencari cara untuk menangani kesalahan kualitas tersebut.</p>
 <p>Sebagian besar platform dilengkapi dengan program <em>base calling</em> yang memberikan skor kualitas <strong>Phred</strong> untuk mengukur akurasi setiap basa yang dipanggil. Skor kualitas Phred (Q-score) ini dapat mengubah probabilitas kesalahan pemanggilan basa menjadi skor integer yang mudah diinterpretasikan.</p>
 <p>Skor Phred didefinisikan sebagai:</p>
-<p><span class="math display">\[
-Q = -10 \cdot \log_{10}(p)
-\]</span></p>
+<p><span class="math display">\[Q = -10 \cdot \log_{10}(p)\]</span></p>
 <p>Dimana <span class="math inline">\(p\)</span> adalah probabilitas kesalahan pemanggilan basa yang diestimasi oleh software caller.</p>
 <p>Skor kualitas Phred diencode menggunakan karakter ASCII tunggal. Semua karakter ASCII memiliki angka desimal yang terkait dengannya. Encoding ini memungkinkan penyimpanan nilai kualitas yang kompak dalam format teks.</p>
 <p>Skor Q yang lebih tinggi menunjukkan probabilitas kesalahan yang lebih kecil dan skor Q yang lebih rendah menunjukkan kualitas basa yang rendah yang lebih mungkin bahwa basa tersebut dipanggil secara salah. Misalnya, skor kualitas 20 menunjukkan tingkat kesalahan 1 dalam 100, yang sesuai dengan akurasi panggilan 99%. Secara umum, skor Q 30 dianggap sebagai tolok ukur yang menunjukkan akurasi panggilan 99,9%.</p>
 </section>
-<section id="sam-bam-dari-read-ke-posisi-di-genom" class="level1">
-<h1>SAM &amp; BAM: Dari read ke posisi di genom</h1>
+<section id="sam-bam-dari-read-ke-posisi-di-genom" class="level2">
+<h2 class="anchored" data-anchor-id="sam-bam-dari-read-ke-posisi-di-genom">SAM &amp; BAM: Dari read ke posisi di genom</h2>
 <p>SAM (Sequence Alignment/Map format), merupakan file yang kita dapatkan setelah memetakan file fastq ke genom referensi. Isi dari file ini memiliki 2 bagian utama:</p>
 <ul>
 <li><p><strong><em>Header</em></strong> (opsional), dimulai dengan <code>@</code></p></li>
@@ -467,7 +627,7 @@ Q = -10 \cdot \log_{10}(p)
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view data/normal.bam <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n5</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
-<p><strong>Catatan</strong>: Anda bisa mendownload contoh file .bam <a href="../assets/data/normal.bam" download="">di sini</a> melalui <code>wget https://bowo1698.github.io/Bioinfonote/assets/data/normal.bam</code></p>
+<p><strong>Catatan</strong>: Anda bisa mengunduh contoh file <code>.bam</code> <a href="../assets/data/normal.bam" download="normal.bam">di sini</a> melalui <code>wget https://bowo1698.github.io/Bioinfonote/assets/data/normal.bam</code>.</p>
 </blockquote>
 <p>Maka output yang dihasilkan akan sangat panjang. Alternatifnya, kita bisa menggunakan <code>GenomicAlignments</code> dari R-Bioconductor dan menspesifikasikan kolom informasi apa yang diinginkan, dengan menulis script di VScode sebagai berikut:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r</span></span>
@@ -493,16 +653,14 @@ Q = -10 \cdot \log_{10}(p)
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># menampilkan 5 baris pertama</span></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bam_df, <span class="dv">5</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Berikut adalah contoh isi dari file .bam.</p>
-<div style="text-align: center;">
-<p><img src="images/bam.png" alt="Contoh format bam" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="images/bam.png" class="content-image img-fluid" style="width:90.0%" alt="Contoh format BAM"></p>
 <p>File .bam pada dasarnya memiliki 11 parameter, diantaranya:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 11%">
-<col style="width: 10%">
-<col style="width: 71%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 47%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -583,8 +741,8 @@ Q = -10 \cdot \log_{10}(p)
 </table>
 <p>Selain ukuran yang lebih sederhana, format file BAM memiliki akses yang lebih cepat ke data karena indeksing. File BAM dapat diindeks menggunakan file indeks (*.bai), yang memungkinkan program untuk melompat langsung ke bagian tertentu dari file BAM tanpa membaca semua sekuens.</p>
 </section>
-<section id="gffgtf-bed-menyematkan-makna-pada-genom" class="level1">
-<h1>GFF/GTF &amp; BED: Menyematkan makna pada genom</h1>
+<section id="gffgtf-bed-menyematkan-makna-pada-genom" class="level2">
+<h2 class="anchored" data-anchor-id="gffgtf-bed-menyematkan-makna-pada-genom">GFF/GTF &amp; BED: Menyematkan makna pada genom</h2>
 <p>GFF (<em>General Feature Format</em>) dan GTF (<em>Gene Transfer Format</em>) merupakan file anotasi genom untuk menggambarkan fitur genom seperti gen, ekson, intron, dan elemen fungsional lainnya. Strukturnya tab-delimited, dengan kolom ke-9 menyimpan atribut seperti <code>gene_id</code> dan <code>transcript_id</code>.</p>
 <p>Supaya lebih mudah, kita bisa menggunakan data genom dari Turbot (<em>Scophthalmus maximus</em>).</p>
 <p>Pertama download file gtf dari <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/379/125/GCF_022379125.1_ASM2237912v1/">NCBI</a> dengan menggunakan <code>wget</code> kemudian dekompresi dengan <code>gunzip</code>.</p>
@@ -608,11 +766,11 @@ Q = -10 \cdot \log_{10}(p)
 <ol type="1">
 <li><p>Gen:</p>
 <p>Misalnya: <code>fbl</code></p>
-<pre><code>NC_061515.1 Gnomon  gene    6189    13235   .   +   .   gene_id "fbl"; ...</code></pre>
+<pre class="text terminal-output"><code>NC_061515.1 Gnomon  gene    6189    13235   .   +   .   gene_id "fbl"; ...</code></pre>
 <p>Dimana Gen ini berada di kromosom/scaffold NC_061515.1, dengan panjang dari posisi 6189 sampai 13235 di strand plus (+) dan merupakan protein-coding gene</p></li>
 <li><p>Transkrip</p>
 <p>Misalnya: <code>XM_035607005.2</code></p>
-<pre><code>NC_061515.1 Gnomon  transcript  6189    13235   .   +   .   gene_id "fbl"; transcript_id "XM_035607005.2"; ...</code></pre>
+<pre class="text terminal-output"><code>NC_061515.1 Gnomon  transcript  6189    13235   .   +   .   gene_id "fbl"; transcript_id "XM_035607005.2"; ...</code></pre>
 <p>Transkrip ini mencakup keseluruhan gen <code>fbl</code> dan memiliki bukti kuat dari RNA-seq dan EST/Protein homologi. Produk dari transkrip ini adalah fibrillarin, protein penting dalam pembentukan ribonukleoprotein nukleolus (nucleolar ribonucleoprotein)</p></li>
 <li><p>Ekson-ekson Transkrip</p>
 <p>Setiap ekson diberi anotasi terpisah, menunjukkan struktur ekson dari transkrip tersebut, misalnya:</p>
@@ -626,12 +784,12 @@ Q = -10 \cdot \log_{10}(p)
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> GCF_022379125.1_ASM2237912v1_genomic.gtf</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ini akan memberikan output:</p>
-<pre class="shell"><code>1722738 GCF_022379125.1_ASM2237912v1_genomic.gtf</code></pre>
+<pre class="text terminal-output"><code>1722738 GCF_022379125.1_ASM2237912v1_genomic.gtf</code></pre>
 <p>Kita juga bisa melihat semua fitur dalam file GTF dengan perintah dasar <code>grep</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^#"</span> GCF_022379125.1_ASM2237912v1_genomic.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f3</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Maka akan menampilkan:</p>
-<pre class="shell"><code>727878 CDS
+<pre class="text terminal-output"><code>727878 CDS
 807421 exon
 26628 gene
 51090 start_codon
@@ -644,8 +802,8 @@ Q = -10 \cdot \log_{10}(p)
 <p>Perintah tersebut mengekstrak ekson dari file GTF dan mengubahnya ke format BED 6 kolom. <code>bedtools intersect</code> mempertahankan semua baris asli, lalu <code>awk</code> memfilter hanya baris bertipe <code>"exon"</code> dan mengkonversi formatnya (termasuk mengubah posisi awal dari 1-based menjadi 0-based) sebelum menyimpan hasilnya ke file <code>outputBED.bed</code>.</p>
 <p>Untuk visualisasi menggunakan IGV, akan saya siapkan tutorialnya dalam artikel terpisah.</p>
 </section>
-<section id="vcf-menyimpan-informasi-variasi-genetik" class="level1">
-<h1>VCF: Menyimpan informasi variasi genetik</h1>
+<section id="vcf-menyimpan-informasi-variasi-genetik" class="level2">
+<h2 class="anchored" data-anchor-id="vcf-menyimpan-informasi-variasi-genetik">VCF: Menyimpan informasi variasi genetik</h2>
 <p>VCF (Variant Call Format) berisi informasi tentang varian genetik seperti SNP, insertions/deletions (indels), dan varian struktural yang ditemukan pada posisi tertentu dalam genom referensi. Contoh file VCF anda bisa download <a href="https://myjcuedu-my.sharepoint.com/:u:/g/personal/agus_wibowo_my_jcu_edu_au/EVSErYDha09DixrSwz9DOMABNrS2yb4zaiJSJOFuXSh6Fw?e=tKWXAc">di sini</a>. Ini adalah data dari studi oleh <a href="https://gsejournal.biomedcentral.com/articles/10.1186/s12711-023-00832-z#Abs1">Fraslin et al .(2023)</a> tentang <em>genomic selection</em> untuk resistensi bakteri <em>Flavobacterium columnare</em> pada rainbow trout, dimana menggunakan SNP sebagai marker genetiknya.</p>
 <p>Untuk melihat bagaimana struktur dari file VCF, kita akan menggunakan paket <code>vcfR</code> dan <code>tidyverse</code> di R.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r</span></span>
@@ -678,7 +836,7 @@ Q = -10 \cdot \log_{10}(p)
 <span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CHROM) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ketika kita menjalankan fungsi <code>read.vcfR()</code>, ini akan menghasilkan output sebagai berikut:</p>
-<pre class="shell"><code>File attributes:
+<pre class="text terminal-output"><code>File attributes:
   meta lines: 8
   header_line: 9
   variant count: 27907
@@ -702,24 +860,35 @@ All variants processed</code></pre>
 <li><code>meta</code> -&gt; Data frame yang berisi metadata dari file VCF, misalnya informasi tentang sampel dan genom referensi.</li>
 </ul>
 </section>
-<section id="sra-gudangnya-data-ngs-dunia" class="level1">
-<h1>SRA: Gudangnya data NGS dunia</h1>
+<section id="sra-gudangnya-data-ngs-dunia" class="level2">
+<h2 class="anchored" data-anchor-id="sra-gudangnya-data-ngs-dunia">SRA: Gudangnya data NGS dunia</h2>
 <p>SRA (<em>Sequence Read Archive</em>) adalah database bioinformatika dari NCBI (<em>National Center for Biotechnology Information</em>) yang menyediakan repositori publik untuk data sekuensing. SRA menggunakan format biner untuk menyimpan data sekuensing mentah dalam bentuk yang efisien dan terkompresi, memungkinkan penyimpanan dan distribusi data sekuensing dalam jumlah besar.</p>
 </section>
-<section id="memahami-format-menguasai-analisis" class="level1">
-<h1>Memahami format = Menguasai analisis</h1>
+<section id="memahami-format-menguasai-analisis" class="level2">
+<h2 class="anchored" data-anchor-id="memahami-format-menguasai-analisis">Memahami format = Menguasai analisis</h2>
 <p>Format file NGS itu bukan sekadar teknis, ia adalah bahasa data yang harus kita kuasai untuk bisa menggali wawasan biologis. Tiap format punya perannya. Kalau Anda ingin jadi bioinformatikawan yang andal, jangan hanya belajar cara menjalankan perintah, tapi pahami struktur dan makna datanya. Karena jawaban dari analisis bukan di tools-nya, tapi di interpretasi datanya.</p>
 <p>— Sekian —</p>
-<p style="text-align: right; font-size: 0.9rem;">
-<a href="../index.html" style="font-weight: bold;">← Beranda</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../materi.html" style="font-weight: bold;">Pilih materi →</a>
-</p>
 
 
+<nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1139,7 +1308,7 @@ All variants processed</code></pre>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

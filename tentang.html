@@ -2,20 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tentang – Bioinformatic Notes</title>
+<title>Selamat Datang – Bioinformatic Notes</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -38,10 +41,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-4dbe7d9e87876d60b8f6d00e1828628a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-b4ec3e8e8734e34a932f979562a1c947.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-78edd83df0eb7646045b2b8bcf8a0f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -73,7 +80,169 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -116,6 +285,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -129,22 +299,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Di halaman ini</h2>
    
   <ul>
-  <li><a href="#selamat-datang" id="toc-selamat-datang" class="nav-link active" data-scroll-target="#selamat-datang">Selamat datang 👋</a>
-  <ul class="collapse">
-  <li><a href="#sekilas-tentang-bioinformatika" id="toc-sekilas-tentang-bioinformatika" class="nav-link" data-scroll-target="#sekilas-tentang-bioinformatika">🔬 Sekilas tentang bioinformatika</a></li>
-  <li><a href="#tujuan-website" id="toc-tujuan-website" class="nav-link" data-scroll-target="#tujuan-website">🎓 Tujuan website</a></li>
-  </ul></li>
-  <li><a href="#catatan-teknis" id="toc-catatan-teknis" class="nav-link" data-scroll-target="#catatan-teknis">💻 Catatan teknis</a></li>
-  <li><a href="#kontribusi-kolaborasi" id="toc-kontribusi-kolaborasi" class="nav-link" data-scroll-target="#kontribusi-kolaborasi">💡 Kontribusi &amp; kolaborasi</a></li>
+  <li><a href="#sekilas-tentang-bioinformatika" id="toc-sekilas-tentang-bioinformatika" class="nav-link active" data-scroll-target="#sekilas-tentang-bioinformatika">Sekilas tentang bioinformatika</a></li>
+  <li><a href="#tujuan-website" id="toc-tujuan-website" class="nav-link" data-scroll-target="#tujuan-website">Tujuan website</a></li>
+  <li><a href="#catatan-teknis" id="toc-catatan-teknis" class="nav-link" data-scroll-target="#catatan-teknis">Catatan teknis</a></li>
+  <li><a href="#kontribusi-kolaborasi" id="toc-kontribusi-kolaborasi" class="nav-link" data-scroll-target="#kontribusi-kolaborasi">Kontribusi &amp; kolaborasi</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tentang</h1>
+<h1 class="title">Selamat Datang</h1>
 </div>
 
 
@@ -161,14 +329,10 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="selamat-datang" class="level2">
-<h2 class="anchored" data-anchor-id="selamat-datang">Selamat datang 👋</h2>
 <section id="sekilas-tentang-bioinformatika" class="level3">
-<h3 class="anchored" data-anchor-id="sekilas-tentang-bioinformatika">🔬 Sekilas tentang bioinformatika</h3>
+<h3 class="anchored" data-anchor-id="sekilas-tentang-bioinformatika">Sekilas tentang bioinformatika</h3>
 <p>Bioinformatika adalah ilmu interdisipliner yang mengintegrasikan prinsip biologi, statistika, matematika, dan komputasi untuk menjawab tantangan biologi modern. Ketertarikan saya bermula dari perkembangan ilmu akuakultur yang kini tak lagi terbatas pada pemeliharaan ikan di kolam-kolam ataupun analisis di laboratorium basah (<em>wet lab</em>), tetapi merambah ke analisis data molekuler berskala besar. Di sinilah peran krusial bioinformatika, mengolah, menganalisis, dan memodelkan data biologis untuk mengungkap mekanisme kehidupan di tingkat molekuler. Ini seperti mempelajari suatu materi fisik, tetapi di level kuantum!</p>
-<div style="text-align: center;">
-<p><img src="assets/fish-with-com.jpg" alt="Fish With Code" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="assets/fish-with-com.jpg" class="content-image img-fluid" alt="Ikan dengan elemen kode"></p>
 <p>Yang menarik adalah, karena kita bermain dengan “ikan”, eksplorasi biologi menjadi lebih <em>flexible</em> dan membuka banyak ruang inovasi. Misalnya, kita bisa menelusuri gen-gen yang terkait dengan pertumbuhan cepat, ketahanan terhadap penyakit, atau efisiensi pakan, semuanya hanya melalui data DNA. Bioinformatika memberi kita kacamata baru untuk melihat ikan bukan sekadar objek konsumsi, tetapi sebagai kumpulan informasi genetik yang bisa kita manfaatkan untuk perbaikan populasi secara presisi dan berkelanjutan, hingga akhirnya bisa menjadi model atau landasan penerapan untuk level yang lebih tinggi, seperti manusia.</p>
 <p>Perkembangan mesin sekuensing generasi mutakhir seperti <a href="https://en.wikipedia.org/wiki/Illumina,_Inc.">Illumina</a> (<em>short-read</em>) dan <a href="https://en.wikipedia.org/wiki/Pacific_Biosciences">PacBio</a> (<em>long-read</em>) telah menghasilkan data biologis dalam volume yang luar biasa besar. Bioinformatika menjadi kunci untuk mengekstrak wawasan dari kompleksitas ini, terutama dalam <a href="https://doi.org/10.1007/978-981-97-8553-7_11">tiga bidang utama terkait dengan akuakultur</a>:</p>
 <ul>
@@ -178,7 +342,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="tujuan-website" class="level3">
-<h3 class="anchored" data-anchor-id="tujuan-website">🎓 Tujuan website</h3>
+<h3 class="anchored" data-anchor-id="tujuan-website">Tujuan website</h3>
 <p>Website ini dirancang sebagai wadah kolaborasi, di mana siapa pun dapat berkontribusi dalam berbagi pengetahuan seputar bioinformatika dan akuakultur. Tujuannya sederhana, membangun sumber belajar yang terbuka, mudah diakses, dan relevan dengan kebutuhan praktis, khususnya dalam konteks akuakultur di Indonesia yang memiliki potensi luar biasa.</p>
 <p>Seluruh konten, termasuk tutorial dan panduan, disajikan dalam bahasa Indonesia dengan gaya penyampaian yang sederhana agar mudah dipahami oleh berbagai kalangan. Semua materi dapat dipelajari secara gratis, menggunakan data <em>open access</em> dan perangkat lunak <em>open source</em>, sehingga tidak ada hambatan biaya maupun teknis untuk ikut serta.</p>
 <p>Dengan semangat kolaboratif, platform ini mengajak semua pihak untuk saling berbagi dan belajar, demi mewujudkan akuakultur yang berkelanjutan dan berbasis ilmu pengetahuan di Indonesia.</p>
@@ -186,9 +350,8 @@ ul.task-list li input[type="checkbox"] {
 <p>“<em>We are a great nation - what we need are people willing to make a difference, even from behind a screen full of code.</em>”</p>
 </blockquote>
 </section>
-</section>
-<section id="catatan-teknis" class="level2">
-<h2 class="anchored" data-anchor-id="catatan-teknis">💻 Catatan teknis</h2>
+<section id="catatan-teknis" class="level3">
+<h3 class="anchored" data-anchor-id="catatan-teknis">Catatan teknis</h3>
 <p>Karena sebagian besar tools bioinformatika dikembangkan dan dioptimalkan untuk berjalan di lingkungan UNIX terutama <a href="https://en.wikipedia.org/wiki/Linux">LINUX</a> dan MACOS, saya sangat menyarankan rekan-rekan pengguna Windows untuk mempertimbangkan “bermigrasi” ke sistem operasi berbasis Linux ini, seperti <a href="https://ubuntu.com/">Ubuntu</a>, <a href="https://www.debian.org/">Debian</a>, atau <a href="https://fedoraproject.org/">Fedora</a>.</p>
 <p>Mengapa demikian?</p>
 <ol type="1">
@@ -197,16 +360,14 @@ ul.task-list li input[type="checkbox"] {
 <li><p><strong>Minim gangguan</strong> – Sistem Linux jauh lebih tahan (bahkan hampir mustahil) terhadap malware, dan mendukung scripting otomatis yang efisien (Bash/Shell).</p></li>
 <li><p><strong>Ekosistem terbuka</strong> – Hampir semua perangkat lunak bioinformatika bersifat <em>open-source</em> (gratis) dan dikembangkan di lingkungan Linux, membuat dokumentasi dan komunitas dukungannya jauh lebih luas.</p></li>
 </ol>
-<div style="text-align: center;">
-<p><img src="assets/linux-win-mac.jpeg" alt="Fish With Code" style="width: 90%; height: auto;"></p>
-</div>
+<p><img src="assets/linux-win-mac.jpeg" class="content-image img-fluid" alt="Perbandingan sistem operasi Linux, Windows, dan macOS"></p>
 <blockquote class="blockquote">
 <p>Seluruh materi dalam website ini disusun dengan asumsi bahwa Anda menjalankan Linux secara langsung (<em>full system install</em>), bukan melalui Windows. Panduan penggunaan <em>Windows Subsystem for Linux</em> (WSL) hanya disediakan sebagai opsi tambahan untuk keperluan eksplorasi atau pembelajaran awal. Namun, dalam praktiknya, WSL memiliki banyak keterbatasan dalam hal kompatibilitas dan kinerja, sehingga tidak direkomendasikan untuk analisis bioinformatika yang sesungguhnya.</p>
 </blockquote>
-<p>Untuk perangkat keras, saya merancang semua tutorial agar dapat dijalankan pada komputer/laptop dengan spesifikasi medium (<em>laptop dana pelajar</em> 😁), selama menggunakan sistem operasi berbasis Linux <a href="./docs/basic-linux-in-win.html">cek disini</a>. Hal ini memungkinkan siapapun tetap dapat mengikuti alur tutorial ini, mulai dari unduhan data, pra-pemrosesan, analisis, hingga visualisasi, tanpa memerlukan perangkat mahal!!! (meskipun lebih baik jika setiap kampus punya <em>High Performance Computing</em> - HPC, yuk bikin!).</p>
+<p>Untuk perangkat keras, saya merancang semua tutorial agar dapat dijalankan pada komputer/laptop dengan spesifikasi medium (<em>laptop dana pelajar</em>), selama menggunakan sistem operasi berbasis Linux <a href="./docs/basic-linux-in-win.html">cek disini</a>. Hal ini memungkinkan siapapun tetap dapat mengikuti alur tutorial ini, mulai dari unduhan data, pra-pemrosesan, analisis, hingga visualisasi, tanpa memerlukan perangkat mahal!!! (meskipun lebih baik jika setiap kampus punya <em>High Performance Computing</em> - HPC, yuk bikin!).</p>
 </section>
-<section id="kontribusi-kolaborasi" class="level2">
-<h2 class="anchored" data-anchor-id="kontribusi-kolaborasi">💡 Kontribusi &amp; kolaborasi</h2>
+<section id="kontribusi-kolaborasi" class="level3">
+<h3 class="anchored" data-anchor-id="kontribusi-kolaborasi">Kontribusi &amp; kolaborasi</h3>
 <p>Saya terbuka untuk kolaborasi dan diskusi, terutama dalam proyek penelitian bioinformatika di bidang akuakultur atau genomik fungsional.</p>
 <p>Jika anda berminat untuk mengirimkan artikel, silakan hubungi saya melalui:</p>
 <p><a href="https://www.linkedin.com/in/agus-wibowo-1608/">Linkedln</a> atau via <a href="mailto:agus.wibowo@my.jcu.edu.au">Email</a></p>
@@ -221,6 +382,19 @@ ul.task-list li input[type="checkbox"] {
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -628,7 +802,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 Agus Wibowo · MIT License</p>
+<p>© 2026 Agus Wibowo · <a href="https://bowo1698.github.io/Bioinfonote/LICENSE">MIT License</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
