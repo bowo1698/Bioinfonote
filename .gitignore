@@ -6,5 +6,7 @@
 **/.DS_Store
 docs/data/16s-demo/filtered/
 docs/data/rnaseq-demo/_pipe/
+docs/data/rnaseq-gse94345/
+_docs/
 
 /.luarc.json
