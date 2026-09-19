@@ -8,6 +8,7 @@ title: "RNA-Seq workflow"
 
 - [Apa itu studi RNA-seq?](#apa-itu-studi-rna-seq)
 - [Tentang data yang digunakan dan persiapannya](#tentang-data-yang-digunakan-dan-persiapannya)
+- [Menyiapkan metadata dan referensi](#menyiapkan-metadata-dan-referensi)
 - [Quality control data sequencing](#quality-control-data-sequencing)
 - [Memilih dan memasang tools](#memilih-dan-memasang-tools)
 - [Pipeline dari reads ke matriks hitungan](#pipeline-dari-reads-ke-matriks-hitungan)
@@ -41,52 +42,58 @@ RNA-seq menjembatani dunia molekuler dan praktik budidaya. Dengan memahami "baha
 
 ### Studi kasus: regulasi lipid pada ragi
 
-Tutorial ini memakai enam sampel *paired-end* dari [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345), studi RNA-seq *Saccharomyces cerevisiae* tentang regulasi fluiditas membran, flokulasi, dan pertumbuhan terbatas oksigen. Kita hanya memakai kontras yang sederhana dan bereplikasi baik, yaitu strain `spt23p90` tanpa doxycycline (`tanpa_dox`) dibandingkan dengan strain yang sama dengan doxycycline (`dox`), masing-masing tiga replikasi.
+Dalam tutorial ini, kita tidak akan menggunakan dataset dari studi pada spesies akuakultur, melainkan hanya akan menggunakan dataset RNA-seq dari studi pada *Saccharomyces cerevisiae.* Studi oleh [Degreif *et al* 2017](http://dx.doi.org/10.1016/j.ymben.2017.03.002) menggunakan pendekatan RNA-seq untuk mengetahui set gen yang sensitif terhadap fluiditas membran dan bagaimana gen-gen tersebut diaktifkan secara sebagai bagian dari penyesuaian metabolik dan stres sel. Data *sequencing* berbasis paired-end diunduh dari NCBI dengan kode akses [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345). Dalam tutorial ini, kita akan mencari tahu bagaimana pengaruh penggunaan doxycycline (`tanpa_dox`) terhadap ekspresi dari domain aktif *SPT23p90.* Sehingga kita akan membandingkan 2 kelompok yang diberi dan tidak diberi doxycycline dan melihat perbandingan profil ekspresi gen nya.
 
 | Kondisi     | Sampel GEO             | Run SRA                | Replikasi |
 |-------------|------------------------|------------------------|----------:|
 | `tanpa_dox` | GSM2473529--GSM2473531 | SRR5220163--SRR5220165 |         3 |
 | `dox`       | GSM2473532--GSM2473534 | SRR5220166--SRR5220168 |         3 |
 
-Keenam pasangan FASTQ penuh berukuran sekitar 623 MiB dalam bentuk terkompresi dan berisi 7.235.625 pasangan reads. Data diunduh dengan SRA Toolkit ke komputer Anda, tidak disimpan atau dibagikan melalui repositori ini. Sediakan sedikitnya 8--10 GiB ruang kosong untuk FASTQ, indeks, BAM, dan keluaran kuantifikasi; RAM 4 GiB cukup untuk batas minimum, sedangkan 8 GiB lebih nyaman.
+Dalam tutorial ini, kita akan memulai dari pasangan data mentah hasil sequencing (FASTQ), berukuran sekitar 1 GB. Sehingga setidaknya, Anda harus memiliki sisa penyimpanan data sebesar 8 - 10 GiB untuk menyimpan file FASTQ, indeks, BAM, dan hasil kuantifikasi gen.
 
-> **Mengapa memakai ragi?** Studi kasus ini bukan organisme akuakultur. Ragi dipilih karena genomnya kecil dan anotasinya sangat baik, sehingga seluruh alur bulk RNA-seq dapat dijalankan dari FASTQ publik hingga pengayaan GO dan KEGG pada komputer biasa. Saat diterapkan pada ikan atau udang, desain eksperimen, genom referensi, dan anotasi berubah, tetapi prinsip QC, kuantifikasi, ekspresi diferensial, dan interpretasi fungsi gen tetap sama.
+### Memilih dan memasang tools {#memilih-dan-memasang-tools}
 
-### Unduh FASTQ, metadata, dan referensi
+Pipeline ini memakai tiga tools utama yang bekerja berurutan, yaitu `HISAT2` untuk menyejajarkan (*align*) *reads* ke genom referensi, `StringTie` untuk mengkuantifikasi ekspresi tiap gen mengikuti anotasi, dan `samtools` untuk menangani berkas hasil *alignment*. Tahap analisis diferensial di akhir memakai paket R `DESeq2`. Pilihan HISAT2 dan StringTie digunakan untuk tutorial ini karena keduanya akurat, hemat memori, dan dapat berjalan pada komputer biasa tanpa HPC.
 
-Semua perintah tutorial ada di halaman ini. Folder kerja berada di `docs/data/rnaseq-gse94345/` dan sudah diabaikan oleh Git. FASTQ diunduh dengan SRA Toolkit: `prefetch` dapat melanjutkan unduhan bila koneksi putus, kemudian `fasterq-dump` mengubah arsip SRA menjadi FASTQ.
+Semua tools alignment dipasang melalui conda via bioconda.
 
-#### SRA Toolkit (`prefetch` dan `fasterq-dump`)
+``` bash
+# bash
+conda create -n rnaseq -y
+conda activate rnaseq
+conda install -c bioconda -c conda-forge hisat2 stringtie samtools -y
+```
 
-Tambahkan `sra-tools` saat membuat environment, kemudian jalankan blok ini dari root repositori. `fasterq-dump` menulis FASTQ tanpa kompresi terlebih dahulu, sehingga sisakan ruang kosong tambahan sebelum menjalankannya.
+Paket R untuk analisis diferensial.
+
+``` r
+# r
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install(c("DESeq2", "clusterProfiler", "enrichplot", "AnnotationDbi", "org.Sc.sgd.db"))
+install.packages(c("ggplot2", "dplyr", "ggrepel"))
+```
+
+### Menyiapkan metadata dan referensi {#menyiapkan-metadata-dan-referensi}
+
+Dua belas FASTQ sudah tersedia dan bisa diakses pada [tutorial QC](teknis-quality-control.html). Sekarang kita menambahkan beberapa hal yang diperlukan oleh workflow RNA-seq, yaitu metadata untuk menghubungkan setiap FASTQ dengan kondisi eksperimen, genom referensi serta anotasi ragi untuk alignment dan kuantifikasi.
 
 ``` bash
 # bash
 set -euo pipefail
 
-ROOT=$(pwd)
+ROOT="$(pwd)"
 DD="$ROOT/docs/data/rnaseq-gse94345"
-mkdir -p "$DD/sra" "$DD/raw_reads" "$DD/ref" "$DD/_tmp"
+mkdir -p "$DD/ref"
 
-prefetch --progress --output-directory "$DD/sra" SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168
-
-runs=(SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168)
-samples=(spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3)
-for i in "${!runs[@]}"; do
-  vdb-validate "${runs[$i]}"
-  fasterq-dump --split-files --threads 4 --temp "$DD/_tmp" --outdir "$DD/raw_reads" "$DD/sra/${runs[$i]}/${runs[$i]}.sra"
-  mv "$DD/raw_reads/${runs[$i]}_1.fastq" "$DD/raw_reads/${samples[$i]}_R1.fastq"
-  mv "$DD/raw_reads/${runs[$i]}_2.fastq" "$DD/raw_reads/${samples[$i]}_R2.fastq"
-done
-gzip "$DD"/raw_reads/*.fastq
-cd "$ROOT"
-
+# unduh genom dan anotasi ragi dari Ensembl release 115
 curl -fL -o "$DD/ref/Saccharomyces_cerevisiae.fa.gz" \
   https://ftp.ensembl.org/pub/release-115/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
 curl -fL -o "$DD/ref/Saccharomyces_cerevisiae.gtf.gz" \
   https://ftp.ensembl.org/pub/release-115/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.115.gtf.gz
-gzip -dkf "$DD/ref/Saccharomyces_cerevisiae.fa.gz" "$DD/ref/Saccharomyces_cerevisiae.gtf.gz"
+gzip -dkf "$DD/ref/Saccharomyces_cerevisiae.fa.gz" \
+  "$DD/ref/Saccharomyces_cerevisiae.gtf.gz"
 
+# simpan hubungan FASTQ, kondisi, akses GEO, dan run SRA
 cat > "$DD/metadata.csv" <<'EOF'
 sample,condition,geo_accession,sra_run
 spt23p90_untreated_1,tanpa_dox,GSM2473529,SRR5220163
@@ -98,124 +105,11 @@ spt23p90_dox_3,dox,GSM2473534,SRR5220168
 EOF
 ```
 
-Ulangi perintah `prefetch` yang sama jika unduhan terputus. Toolkit akan melanjutkan run yang belum lengkap. Setelah FASTQ berhasil dibuat, folder `sra/` dan `_tmp/` boleh dihapus untuk menghemat ruang.
-
-Struktur folder setelah unduhan adalah:
-
-``` {.text .terminal-output}
-docs/data/rnaseq-gse94345/
-├── raw_reads/                 # 12 FASTQ, enam pasangan read penuh
-├── ref/                       # FASTA dan GTF Ensembl release 115
-└── metadata.csv
-```
-
-## Quality control data sequencing {#quality-control-data-sequencing}
-
-### Inspeksi awal file sequencing
-
-Sebelum analisis, ada baiknya kita melihat langsung struktur berkas FASTQ. Setiap *read* pada FASTQ terdiri dari empat baris, yaitu header yang diawali `@`, urutan basa nukleotida, tanda `+`, dan string skor kualitas.
-
-``` bash
-# bash
-DD=docs/data/rnaseq-gse94345
-
-# lihat dua read pertama
-gunzip -c "$DD/raw_reads/spt23p90_untreated_1_R1.fastq.gz" | head -8
-
-# hitung jumlah read pada satu berkas R1
-gunzip -c "$DD/raw_reads/spt23p90_untreated_1_R1.fastq.gz" | awk 'END {print NR/4}'
-```
-
-Perintah pertama menampilkan dua *read* pertama, sedangkan perintah kedua menghitung jumlah *read* dengan membagi banyaknya baris dengan empat. Selanjutnya lakukan QC pada semua FASTQ. Jangan memangkas read secara otomatis: periksa FastQC dan MultiQC terlebih dahulu. Pada dataset ini, sekuens Illumina/TruSeq berlebih terdeteksi pada 1,4--9,2% reads sehingga trimming diperlukan sebelum alignment.
-
-## Memilih dan memasang tools {#memilih-dan-memasang-tools}
-
-Pipeline ini memakai tiga tools utama yang bekerja berurutan, yaitu `HISAT2` untuk menyejajarkan (*align*) *reads* ke genom referensi, `StringTie` untuk mengkuantifikasi ekspresi tiap gen mengikuti anotasi, dan `samtools` untuk menangani berkas hasil *alignment*. Tahap analisis diferensial di akhir memakai paket R `DESeq2`. Pilihan HISAT2 dan StringTie tepat untuk tutorial ini karena keduanya akurat, hemat memori, dan dapat berjalan pada komputer biasa tanpa HPC.
-
-Semua tools alignment dipasang melalui conda lewat kanal bioconda.
-
-``` bash
-# bash
-conda create -n rnaseq -y
-conda activate rnaseq
-conda install -c bioconda -c conda-forge sra-tools fastqc multiqc hisat2 stringtie samtools -y
-python -m pip install cutadapt
-```
-
-Paket R untuk analisis diferensial dipasang dari dalam R.
-
-``` r
-# r
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install(c("DESeq2", "clusterProfiler", "enrichplot", "AnnotationDbi", "org.Sc.sgd.db"))
-install.packages(c("ggplot2", "dplyr", "ggrepel"))
-```
+`metadata.csv` akan dipakai lagi saat menyusun count matrix dan model DESeq2. Jangan mengubah urutan atau nama sampel di file ini tanpa mengubah nama FASTQ yang sesuai. Referensi berada di `ref/`, sedangkan FASTQ hasil QC berada di `_pipe/trimmed/`.
 
 ## Pipeline dari reads ke matriks hitungan {#pipeline-dari-reads-ke-matriks-hitungan}
 
-Tiga langkah berikut mengubah *reads* mentah menjadi `gene_count_matrix.csv`, yaitu matriks jumlah baca per gen per sampel yang menjadi masukan DESeq2. Jalankan perintah satu per satu agar setiap tahap dapat diperiksa.
-
-### Quality control FASTQ
-
-Jalankan FastQC untuk setiap pasangan FASTQ, kemudian gabungkan laporan dengan MultiQC. Perintah ini membaca nama sampel dari `metadata.csv`, sehingga hanya menggunakan 12 FASTQ utama dan tidak menangkap berkas lain di folder yang sama.
-
-``` bash
-# bash
-DD=docs/data/rnaseq-gse94345
-mkdir -p "$DD/_pipe/qc" "$DD/_pipe/multiqc"
-
-for s in $(tail -n +2 "$DD/metadata.csv" | cut -d, -f1); do
-  fastqc --threads 4 --outdir "$DD/_pipe/qc" \
-    "$DD/raw_reads/${s}_R1.fastq.gz" "$DD/raw_reads/${s}_R2.fastq.gz"
-done
-multiqc --force --outdir "$DD/_pipe/multiqc" "$DD/_pipe/qc"
-```
-
-Buka `docs/data/rnaseq-gse94345/_pipe/multiqc/multiqc_report.html`. Hasil MultiQC awal untuk data yang dipakai dalam tutorial ini diringkas berikut; jumlah *read pairs* berasal dari R1/R2 yang berpasangan.
-
-| Sampel | Read pairs awal (juta) | GC | Median panjang | Kualitas per-basa | Temuan penting |
-|------------|-----------:|-----------:|-----------:|------------|------------|
-| `tanpa_dox_1` | 0,798 | 44% | 76 nt | Lulus | Adaptor/index TruSeq berlebih |
-| `tanpa_dox_2` | 1,236 | 44% | 76 nt | Lulus | Adaptor/index TruSeq berlebih |
-| `tanpa_dox_3` | 1,039 | 44–45% | 76 nt | Lulus | Adaptor/index TruSeq berlebih |
-| `dox_1` | 1,481 | 44% | 76 nt | Lulus | Adaptor/index TruSeq berlebih |
-| `dox_2` | 1,336 | 44% | 76 nt | Lulus | Adaptor/index TruSeq berlebih |
-| `dox_3` | 1,345 | 44% | 76 nt | Lulus | Adaptor/index TruSeq berlebih |
-
-Walaupun modul *Adapter Content* FastQC berstatus lulus, modul *Overrepresented sequences* menemukan sekuens Illumina/TruSeq berindeks pada kedua mate. Adaptor R1 memiliki barcode indeks delapan basa di tengahnya; pola ini perlu ditulis eksplisit dengan `N{8}` pada Cutadapt. Bila dibiarkan, adaptor dapat menurunkan *alignment rate* dan menghasilkan *soft clipping* yang tidak perlu. Karena itu, trimming dilakukan dari FASTQ mentah, bukan dari hasil trimming parsial.
-
-``` bash
-# bash
-DD=docs/data/rnaseq-gse94345
-mkdir -p "$DD/_pipe/trimmed" "$DD/_pipe/cutadapt" "$DD/_pipe/qc_trimmed" "$DD/_pipe/multiqc_trimmed"
-
-for s in $(tail -n +2 "$DD/metadata.csv" | cut -d, -f1); do
-  cutadapt --cores 4 --minimum-length 20 \
-    -g GATCGGAAGAGCACACGTCTGAACTCCAGTCACN{8}CTCGTATGCCGTCTTCTGCTTG \
-    -G GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG \
-    -o "$DD/_pipe/trimmed/${s}_R1.fastq.gz" \
-    -p "$DD/_pipe/trimmed/${s}_R2.fastq.gz" \
-    "$DD/raw_reads/${s}_R1.fastq.gz" "$DD/raw_reads/${s}_R2.fastq.gz" \
-    > "$DD/_pipe/cutadapt/${s}.log"
-
-  fastqc --threads 4 --outdir "$DD/_pipe/qc_trimmed" \
-    "$DD/_pipe/trimmed/${s}_R1.fastq.gz" "$DD/_pipe/trimmed/${s}_R2.fastq.gz"
-done
-multiqc --force --outdir "$DD/_pipe/multiqc_trimmed" "$DD/_pipe/qc_trimmed" "$DD/_pipe/cutadapt"
-```
-
-Buka `docs/data/rnaseq-gse94345/_pipe/multiqc_trimmed/multiqc_report.html`. MultiQC pasca-trimming mencatat hasil berikut.
-
-| Sampel | Read pairs awal | Read pairs lolos | Basa dipangkas | Kualitas per-basa | Adaptor tersisa |
-|------------|-----------:|-----------:|-----------:|------------|------------|
-| `tanpa_dox_1` | 798.158 | 783.356 | 2,0% | Lulus | Tidak terdeteksi |
-| `tanpa_dox_2` | 1.235.768 | 1.127.885 | 8,9% | Lulus | Tidak terdeteksi |
-| `tanpa_dox_3` | 1.038.940 | 971.246 | 6,7% | Lulus | Tidak terdeteksi |
-| `dox_1` | 1.481.499 | 1.310.698 | 11,7% | Lulus | Tidak terdeteksi |
-| `dox_2` | 1.336.414 | 1.253.948 | 6,3% | Lulus | Tidak terdeteksi |
-| `dox_3` | 1.344.846 | 1.198.163 | 11,1% | Lulus | Tidak terdeteksi |
-
-Dengan demikian, FASTQ pada `docs/data/rnaseq-gse94345/_pipe/trimmed/` menjadi masukan untuk alignment berikutnya. Peringatan *Overrepresented sequences* yang masih tersisa di FastQC pasca-trimming tidak lagi cocok dengan sekuens Illumina/TruSeq; evaluasi selanjutnya berfokus pada hasil alignment.
+Tiga langkah berikut mengubah *reads* hasil QC menjadi `gene_count_matrix.csv`, yaitu matriks jumlah baca per gen per sampel yang menjadi masukan DESeq2. Jalankan perintah satu per satu agar setiap tahap dapat diperiksa.
 
 ### Membangun index dan menyejajarkan reads
 
@@ -228,6 +122,7 @@ READ_DIR="$DD/_pipe/trimmed"
 # bangun indeks sekali saja dari referensi ragi
 hisat2-build -p 4 "$DD/ref/Saccharomyces_cerevisiae.fa" "$DD/_pipe/idx"
 
+# alignment
 for s in $(tail -n +2 "$DD/metadata.csv" | cut -d, -f1); do
   hisat2 -p 4 -x "$DD/_pipe/idx" \
     -1 "$READ_DIR/${s}_R1.fastq.gz" -2 "$READ_DIR/${s}_R2.fastq.gz" \
@@ -238,20 +133,19 @@ done
 
 `hisat2-build` membangun indeks genom sekali saja. Tidak seperti data sintetis sebelumnya, kita memakai mode *spliced alignment* bawaan HISAT2 karena ragi adalah eukariota dengan intron.
 
-Hasil alignment untuk FASTQ hasil trimming sangat baik. Tingkat *mapped reads* berada pada 98,38--98,85%, sedangkan pasangan yang *properly paired* berada pada 94,77--96,60%. Nilai yang konsisten antar-sampel menunjukkan bahwa referensi dan orientasi pasangan reads sesuai; perbedaan kecil terutama mengikuti kedalaman sequencing, bukan kegagalan teknis.
+Hasil alignment untuk FASTQ hasil trimming sangat baik. Overall alignment rate berkisar antara 96 - 97%, yang mengindikasikan bahwa referensi dan orientasi pasangan reads sesuai.
 
-| Sampel        | Mapped reads | Properly paired |
-|---------------|-------------:|----------------:|
-| `tanpa_dox_1` |       98,70% |          96,06% |
-| `tanpa_dox_2` |       98,46% |          95,30% |
-| `tanpa_dox_3` |       98,38% |          94,77% |
-| `dox_1`       |       98,60% |          96,02% |
-| `dox_2`       |       98,85% |          96,60% |
-| `dox_3`       |       98,61% |          95,90% |
+Statistik lebih detail dapat diperiksa kembali untuk setiap .BAM file dengan menggunakan `samtools`
 
-Statistik ini dapat diperiksa kembali untuk setiap BAM dengan `samtools flagstat docs/data/rnaseq-gse94345/_pipe/bam/<nama_sampel>.bam`.
+``` bash
+samtools flagstat docs/data/rnaseq-gse94345/_pipe/bam/<nama_sampel>.bam
+```
 
 ### Kuantifikasi ekspresi dengan StringTie
+
+Alignment memberi tahu kita lokasi setiap read pada genom, tetapi belum memberi tabel jumlah read per gen. Pada tahap ini, StringTie membaca BAM terurut dari tiap sampel bersama anotasi GTF. Ia lalu memperkirakan dukungan read untuk setiap transkrip dan gen yang sudah tercatat pada referensi. Hasilnya masih terpisah, satu GTF untuk satu sampel. Itu wajar, karena tiap library memang diukur sendiri-sendiri lebih dahulu.
+
+Perintah berikut menjalankan kuantifikasi untuk keenam BAM. `sample_list.txt` dibuat bersamaan agar tahap berikutnya mengetahui nama sampel dan lokasi GTF masing-masing. Satu baris berisi `nama_sampel`, tab, lalu jalur GTF.
 
 ``` bash
 # bash
@@ -266,9 +160,23 @@ for s in $(tail -n +2 "$DD/metadata.csv" | cut -d, -f1); do
 done
 ```
 
-Opsi `-e -B` membuat StringTie hanya mengkuantifikasi transkrip yang sudah ada pada anotasi referensi (`-G`) lalu menulis berkas Ballgown yang dibutuhkan tahap berikutnya. Pendekatan ini sesuai untuk genom yang sudah teranotasi baik karena kita tidak perlu merakit transkrip baru.
+Parameter pada perintah tersebut memiliki pekerjaan yang berbeda:
+
+| Parameter | Fungsi pada tutorial ini |
+|------------------------------------|------------------------------------|
+| `-G` | Memberi anotasi GTF ragi sebagai daftar gen dan transkrip yang akan dikuantifikasi. |
+| `-e` | Membatasi StringTie pada transkrip dalam anotasi; tool tidak merakit transkrip atau isoform baru. |
+| `-B` | Menulis berkas tambahan berformat Ballgown di folder tiap sampel. Berkas ini berguna bila hasil ingin diperiksa dengan Ballgown. |
+| `-p 4` | Memakai empat thread. |
+| `-o` | Menentukan GTF keluaran yang menyimpan hasil kuantifikasi sampel tersebut. |
+
+Kombinasi `-G` dan `-e` cocok untuk contoh ini karena genom ragi sudah dianotasi dengan baik dan tujuan kita adalah membandingkan ekspresi gen yang diketahui. Untuk spesies dengan anotasi belum lengkap, perakitan transkrip baru bisa menjadi analisis tersendiri dan perlu dinilai lebih hati-hati.
 
 ### Menyusun matriks hitungan dengan prepDE
+
+Sekarang ada enam GTF, tetapi DESeq2 memerlukan satu matriks, yang mana baris adalah gen, kolom adalah sampel, dan setiap sel berisi count. `prepDE.py`, yang dipasang bersama StringTie, membaca GTF dari `sample_list.txt` lalu menerjemahkan informasi *coverage* StringTie menjadi perkiraan count pada tingkat gen dan transkrip. Tool ini tidak membaca ulang BAM; karena itu, daftar GTF dan nama sampel harus benar sejak langkah sebelumnya.
+
+Perintah berikut menghasilkan dua matriks. Untuk analisis diferensial pada tutorial ini, gunakan matriks gen. Matriks transkrip tetap disimpan karena berguna bila suatu saat ingin memeriksa ekspresi isoform.
 
 ``` bash
 # bash
@@ -276,10 +184,13 @@ prepDE.py -i "$DD/_pipe/sample_list.txt" \
   -g "$DD/gene_count_matrix.csv" -t "$DD/_pipe/transcript_count_matrix.csv"
 ```
 
+`-i` menerima daftar sampel dan GTF; `-g` menentukan keluaran count per gen; sedangkan `-t` menentukan keluaran count per transkrip. Jangan menormalisasi kedua matriks ini dengan CPM, TPM, atau FPKM sebelum memakainya di DESeq2. DESeq2 membutuhkan count integer dan menghitung faktor normalisasinya sendiri untuk mengatasi perbedaan kedalaman sequencing.
+
 Validasi berikut dijalankan dengan R. Jika ada count negatif, non-integer, atau jumlah kolom selain enam, `stopifnot()` menghentikan proses; bila kode menghasilkan tabel di bawah, matriks lolos pemeriksaan.
 
 ```{r}
 #| label: validate-gene-count-matrix
+# Baca matriks count dan periksa dimensi serta rentang nilainya.
 x <- as.matrix(read.csv("data/rnaseq-gse94345/gene_count_matrix.csv",
                         row.names = 1, check.names = FALSE))
 stopifnot(ncol(x) == 6L, all(x >= 0), all(x == round(x)))
@@ -302,20 +213,21 @@ Keluaran R pada matriks hasil tutorial ini:
 1                     11.08
 ```
 
-Hasil akhirnya adalah `gene_count_matrix.csv`, yaitu matriks jumlah baca per gen kali sampel yang benar-benar berasal dari enam FASTQ publik. Pada eksekusi tutorial ini, matriks berisi **7.127 gen × 6 sampel**; semua nilai adalah count integer non-negatif. `prepDE.py` menulis ID sebagai `ORF|nama_gen` (misalnya `YAL067C|SEO1`). Bentuk ini dapat langsung digunakan pada DESeq2; untuk `org.Sc.sgd.db`, gunakan bagian ORF sebelum tanda `|`. Matriks ini menjadi masukan DESeq2.
+Hasil akhir yang kita pakai adalah `gene_count_matrix.csv`, yaitu matriks jumlah baca per gen kali sampel yang benar-benar berasal dari enam FASTQ publik. Pada eksekusi tutorial ini, matriks berisi **7.127 gen × 6 sampel**; semua nilainya integer non-negatif. Nilai nol pada sekitar 11% sel juga wajar: tidak setiap gen terdeteksi pada setiap library.
+
+`prepDE.py` menulis ID gen sebagai `ORF|nama_gen`, misalnya `YAL067C|SEO1`. Bentuk itu dapat langsung digunakan sebagai nama baris pada DESeq2. Saat memakai `org.Sc.sgd.db` untuk anotasi, ambil bagian ORF sebelum tanda `|`, karena basis data tersebut mengenali `YAL067C`, bukan gabungan ID dan nama gen. Matriks ini menjadi masukan tahap analisis diferensial berikutnya.
 
 ## Analisis perbedaan ekspresi {#analisis-perbedaan-ekspresi}
 
-Setelah memperoleh `gene_count_matrix.csv` dari tahap sebelumnya, kita sampai pada inti studi RNA-seq, yaitu **analisis ekspresi diferensial** (*differential expression*, DE). Tujuannya adalah menemukan gen-gen yang ekspresinya berubah signifikan antara `dox` dan `tanpa_dox` pada ragi. Gen-gen ini memberi petunjuk tentang respons transkriptom terhadap perlakuan pada studi tersebut.
+Kita akan membandingkan ekspresi gen pada kondisi `dox` terhadap `tanpa_dox`. Dalam desain GSE94345, doxycycline menekan ekspresi fragmen aktif SPT23p90. Karena `tanpa_dox` dipakai sebagai referensi, `log2FoldChange` positif berarti ekspresi lebih tinggi ketika SPT23p90 ditekan, sedangkan nilai negatif berarti ekspresi lebih rendah.
 
-Kita akan menggunakan `DESeq2`, salah satu paket R paling banyak digunakan untuk DE. `DESeq2` memodelkan *count* dengan distribusi *negative binomial*, melakukan normalisasi antar-sampel (mengoreksi perbedaan *sequencing depth*), serta menstabilkan estimasi *dispersion* sehingga andal walaupun jumlah replikasi terbatas.
-
-Mulai dari sini analisis memakai matriks hitungan nyata yang baru dibuat dari FASTQ melalui HISAT2, StringTie, dan prepDE. Kode berikut dieksekusi saat halaman dibangun setelah data lokal tersedia.
+DESeq2 bekerja langsung dengan *count* integer. Paket ini menghitung faktor normalisasi antar-sampel, memodelkan variasi *count* dengan distribusi binomial negatif, lalu menguji perbedaan kedua kondisi. Gen dengan total *count* kurang dari 10 dibuang agar baris yang hampir tidak memiliki informasi tidak ikut diuji.
 
 ```{r}
 #| label: deseq2-run
 #| warning: false
 #| message: false
+# Muat count dan metadata, lalu samakan urutan sampelnya.
 library(DESeq2)
 counts <- as.matrix(read.csv("data/rnaseq-gse94345/gene_count_matrix.csv",
                              row.names = 1, check.names = FALSE))
@@ -324,12 +236,17 @@ meta <- read.csv("data/rnaseq-gse94345/metadata.csv", row.names = 1,
 stopifnot(identical(sort(colnames(counts)), sort(rownames(meta))))
 counts <- counts[, rownames(meta), drop = FALSE]
 stopifnot(all(counts >= 0), all(counts == round(counts)))
+
+# Jadikan tanpa_dox sebagai referensi agar arah log2 fold change mudah dibaca.
 meta$condition <- factor(meta$condition, levels = c("tanpa_dox", "dox"))
 
+# Saring gen dengan count sangat rendah, lalu pasang model DESeq2.
 dds <- DESeqDataSetFromMatrix(countData = counts, colData = meta, design = ~ condition)
 dds <- dds[rowSums(counts(dds)) >= 10, ]
 dds <- DESeq(dds, quiet = TRUE)
 res <- results(dds, contrast = c("condition", "dox", "tanpa_dox"))
+
+# Pilih DEG dengan ambang statistik dan besar perubahan yang sama-sama ketat.
 deg <- subset(res, !is.na(padj) & padj < 0.05 & abs(log2FoldChange) > 1)
 write.csv(as.data.frame(res), "data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv",
           row.names = TRUE)
@@ -338,41 +255,23 @@ data.frame(jumlah_DEG = nrow(deg),
            turun_pada_dox = sum(deg$log2FoldChange < 0, na.rm = TRUE))
 ```
 
-Keluaran R pada data tutorial ini:
+Penyaringan menyisakan 6.179 dari 7.127 gen. DESeq2 menghasilkan `padj` untuk 5.340 gen setelah *independent filtering*. Dengan ambang `padj < 0.05` dan `|log2FoldChange| > 1`, terdapat 142 DEG: 40 lebih tinggi dan 102 lebih rendah pada `dox`. Tabel lengkap ditulis ke `docs/data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv`.
 
-``` {.text .r-output}
-  jumlah_DEG naik_pada_dox turun_pada_dox
-1        142            40            102
-```
+`log2FoldChange` menyatakan besar perubahan pada skala log basis 2. Nilai `+1` setara dengan kenaikan dua kali, sedangkan `-1` setara dengan penurunan menjadi setengah. `pvalue` adalah hasil uji per gen; `padj` sudah memperhitungkan banyaknya gen yang diuji dengan koreksi Benjamini-Hochberg. Karena itu, penentuan DEG memakai `padj`, bukan `pvalue` mentah.
 
-Ringkasan ini memberi tahu berapa banyak gen yang naik (`LFC > 0`) dan turun (`LFC < 0`) secara signifikan pada `dox` dibanding `tanpa_dox`. Pada data ini, gen yang menurun lebih banyak daripada yang meningkat (102 versus 40). Ini adalah pola respons pada eksperimen ragi tersebut, bukan kesimpulan biologis untuk organisme akuakultur. Tabel lengkap disimpan lokal pada `docs/data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv`.
+### Gen dengan bukti statistik paling kuat
 
-### Interpretasi: gen apa yang paling berubah?
+Sebagian besar gen dengan `padj` terkecil bergerak ke arah negatif. `AGA1` turun sekitar 6,8 kali pada `dox` (`log2FoldChange = -2,76`), `FLO1` turun sekitar 12,1 kali (`-3,60`), dan `HPF1` turun sekitar 3,9 kali (`-1,95`). `POR1`, `HXK1`, `SAG1`, dan `ADH4` juga termasuk gen dengan `padj` terkecil dan semuanya lebih rendah pada `dox`. Sebaliknya, `ADH1` naik hampir empat kali (`log2FoldChange = 2,00`).
 
-Sepuluh gen dengan `padj` terkecil pada kontras ini didominasi oleh dua kelompok fungsi yang berbeda arah perubahannya:
-
-- **Gen adhesi dan dinding sel yang turun tajam pada `dox`**: `FLO1` (flokulin), `AGA1` (subunit a-agglutinin), `HPF1`, `FIG2`, `ZPS1`, `CTS1`, dan `PRY1` semuanya turun 2--12 kali lipat (`log2FoldChange` antara -1 dan -3,6) dengan `padj` sangat kecil (hingga $10^{-90}$ untuk `AGA1`). Pola ini sejalan dengan studi sumber GSE94345 yang meneliti regulasi **flokulasi** lewat jalur `spt23p90`: menekan galur ini dengan doxycycline menekan pula program transkripsi flokulasi dan adhesi dinding sel.
-- **Gen metabolisme sentral yang justru naik pada `dox`**: `ADH1` dan `MET17` naik dengan `padj` kecil, menunjukkan pergeseran metabolisme redoks dan asam amino-belerang yang menyertai perubahan flokulasi tersebut.
-
-Pola berlawanan arah pada dua kelompok fungsi ini adalah petunjuk awal bahwa perubahan bukan sekadar derau statistik, melainkan respons transkripsi yang terkoordinasi -- sesuatu yang akan diuji lebih lanjut lewat GO dan KEGG di bagian akhir.
-
-Beberapa kolom penting pada objek `res`:
-
-- `log2FoldChange`: besar perubahan ekspresi dalam skala log basis 2. Nilai `+1` berarti ekspresi **naik 2 kali lipat** pada `dox`, `-1` berarti **turun setengahnya**.
-- `pvalue`: *p-value* mentah hasil uji Wald untuk tiap gen.
-- `padj`: *p-value* yang telah dikoreksi untuk *multiple testing* dengan metode Benjamini-Hochberg (mengontrol *false discovery rate*). **Selalu gunakan `padj`, bukan `pvalue` mentah**, untuk menentukan signifikansi.
-
-Lazimnya, sebuah gen disebut *differentially expressed* (DEG) jika memenuhi dua syarat sekaligus: signifikan secara statistik (`padj < 0.05`) **dan** punya besar perubahan yang berarti secara biologis (`|log2FoldChange| > 1`).
+Arah perubahan `FLO1` sesuai dengan [studi sumber](https://doi.org/10.1016/j.ymben.2017.03.002): ketika fragmen aktif SPT23p90 ditekan oleh doxycycline, ekspresi gen flokulasi ini ikut turun. Hasil DESeq2 menunjukkan asosiasi yang kuat pada perbandingan ini, tetapi tidak cukup untuk menyatakan bahwa SPT23p90 mengatur langsung setiap gen dalam daftar tersebut.
 
 ### Memvisualisasikan hasil dengan volcano plot
 
-Cara paling umum untuk meringkas hasil DE adalah **volcano plot**, yaitu sebar antara besarnya perubahan (`log2FoldChange` pada sumbu-x) dan signifikansi (`-log10(p-value)` pada sumbu-y). Disebut "*volcano*" karena bentuk sebarannya menyerupai semburan gunung berapi: gen yang paling menarik (perubahan besar **dan** sangat signifikan) terlempar ke pojok kiri-atas dan kanan-atas.
-
-Volcano plot di bawah ini dibuat langsung dari objek `res` hasil data nyata.
+Volcano plot mempertemukan besar perubahan pada sumbu-x dengan kekuatan bukti statistik pada sumbu-y. Sumbu-y memakai `padj`, sama dengan nilai yang dipakai untuk memilih DEG, sehingga garis ambang dan warna titik tidak menyampaikan dua ukuran yang berbeda.
 
 ```{r}
 #| label: fig-volcano
-#| fig-cap: "Volcano plot ekspresi diferensial GSE94345. Tiap titik satu gen. Titik merah naik pada dox dan biru turun pada dox dibanding tanpa_dox; garis putus-putus menandai ambang |log2FC| > 1 dan padj < 0.05."
+#| fig-cap: "Volcano plot GSE94345. Merah menunjukkan gen yang lebih tinggi pada dox, sedangkan biru menunjukkan gen yang lebih rendah. Garis putus-putus menandai |log2FC| > 1 dan padj < 0,05."
 #| fig-width: 7
 #| fig-height: 5.5
 #| warning: false
@@ -380,14 +279,20 @@ Volcano plot di bawah ini dibuat langsung dari objek `res` hasil data nyata.
 #| code-fold: true
 #| code-summary: "Lihat kode R volcano plot"
 suppressMessages({library(ggplot2); library(dplyr); library(ggrepel)})
+
+# Kelompokkan gen dengan ambang yang sama seperti pada pemilihan DEG.
 res_df <- as.data.frame(res)
-res_df$gene <- rownames(res_df)
+res_df$gene <- sub(".*[|]", "", rownames(res_df))
 res_df <- res_df %>% mutate(status = case_when(
   !is.na(padj) & padj < 0.05 & log2FoldChange >  1 ~ "Naik pada dox",
   !is.na(padj) & padj < 0.05 & log2FoldChange < -1 ~ "Turun pada dox",
   TRUE                                             ~ "Tidak signifikan"))
+
+# Beri label pada delapan DEG dengan padj terkecil.
 top <- res_df %>% filter(status != "Tidak signifikan") %>% slice_min(padj, n = 8)
-ggplot(res_df, aes(log2FoldChange, -log10(pvalue), colour = status)) +
+
+# Plot besar perubahan terhadap padj agar ambang visual konsisten.
+ggplot(res_df, aes(log2FoldChange, -log10(padj), colour = status)) +
   geom_point(alpha = 0.75, size = 1.8) +
   scale_colour_manual(values = c("Naik pada dox" = "#c0392b",
                                  "Turun pada dox" = "#2c7fb8",
@@ -397,67 +302,68 @@ ggplot(res_df, aes(log2FoldChange, -log10(pvalue), colour = status)) +
   geom_text_repel(data = top, aes(label = gene), size = 3,
                   max.overlaps = 20, show.legend = FALSE, colour = "grey20") +
   labs(x = expression(log[2]~"fold change (dox vs tanpa_dox)"),
-       y = expression(-log[10]~"(p-value)")) +
+       y = expression(-log[10]~"(adjusted p-value)")) +
   theme_minimal(base_size = 13) + theme(legend.position = "top")
 ```
 
-Cara membacanya: makin ke **kanan/kiri**, makin besar perubahan ekspresinya; makin ke **atas**, makin meyakinkan secara statistik. Gen di kanan-atas lebih tinggi pada `dox`, sedangkan gen di kiri-atas lebih tinggi pada `tanpa_dox`. Daftar DEG inilah yang kemudian dibawa ke analisis fungsi gen.
-
-Pada plot ini, delapan label dengan `padj` terkecil terkumpul di **pojok kiri-atas** -- yaitu `FLO1`, `AGA1`, `HPF1`, `FIG2`, `ZPS1`, `CTS1`, `PRY1`, dan `POR1` -- yang berarti seluruhnya turun kuat pada `dox` sekaligus sangat signifikan secara statistik. Tidak ada label DEG yang berada jauh di pojok kanan-atas dengan besaran serupa; ini konsisten dengan hasil sebelumnya bahwa gen yang turun lebih banyak dan lebih ekstrem daripada gen yang naik pada kontras ini.
+Titik di sisi kanan lebih tinggi pada `dox`; titik di sisi kiri lebih tinggi pada `tanpa_dox`. Dari delapan DEG berlabel, tujuh berada di sisi kiri: `AGA1`, `FLO1`, `HPF1`, `POR1`, `HXK1`, `SAG1`, dan `ADH4`. `ADH1` berada di sisi kanan. Sebaran ini sejalan dengan ringkasan DEG, yaitu lebih banyak gen yang turun daripada naik pada `dox`.
 
 ### MA plot
 
-*MA plot* memetakan rata-rata ekspresi tiap gen pada sumbu mendatar terhadap *log2 fold change* pada sumbu tegak. Plot ini berguna untuk melihat apakah gen yang berubah tersebar di seluruh rentang ekspresi atau hanya terpusat pada gen ber-ekspresi tinggi, sekaligus memperlihatkan pola penyusutan estimasi pada gen ber-count rendah.
+MA plot menempatkan rata-rata *count* ternormalisasi pada sumbu mendatar dan `log2FoldChange` pada sumbu tegak. Plot ini membantu memeriksa apakah sinyal hanya berasal dari gen dengan *count* rendah atau juga muncul pada gen yang terukur dengan baik.
 
 ```{r}
 #| label: fig-ma
-#| fig-cap: "MA plot GSE94345 untuk dox versus tanpa_dox. Sumbu mendatar rata-rata count ternormalisasi, sumbu tegak log2 fold change. Titik biru adalah gen yang signifikan secara statistik."
+#| fig-cap: "MA plot GSE94345 untuk dox versus tanpa_dox. Titik biru memiliki padj < 0,05; garis horizontal menunjukkan tidak ada perubahan ekspresi."
 #| fig-width: 7
 #| fig-height: 5
 #| warning: false
 #| message: false
-DESeq2::plotMA(res, ylim = c(-5, 5), main = "dox vs tanpa_dox")
+# Warnai gen dengan padj < 0,05; ambang besar perubahan belum diterapkan di sini.
+DESeq2::plotMA(res, alpha = 0.05, ylim = c(-5, 5), main = "dox vs tanpa_dox")
 ```
 
-Titik biru yang menyebar jauh dari garis nol adalah gen yang ekspresinya berbeda antar kondisi. Plot ini juga memperlihatkan apakah sinyal terutama muncul pada gen dengan ekspresi sangat rendah atau tersebar di sepanjang rentang ekspresi.
-
-Pada data ini, titik biru muncul di seluruh rentang rata-rata count, termasuk pada gen ber-ekspresi tinggi seperti `ZPS1` dan `POR1` (baseMean di atas 1.000). Ini menandakan bahwa perbedaan `dox` versus `tanpa_dox` bukan artefak gen ber-count rendah yang bervariansi besar, melainkan sinyal yang juga terdeteksi pada gen dengan cakupan baca tinggi dan estimasi *fold change* yang stabil.
+Sebanyak 448 gen memiliki `padj < 0.05` dan berwarna biru. Setelah syarat `|log2FoldChange| > 1` diterapkan, jumlahnya menjadi 142 DEG. Dari 142 DEG tersebut, 13 memiliki `baseMean` di atas 1.000 dan hanya satu yang memiliki `baseMean` di bawah 10. Sinyal tetap terlihat pada gen yang terukur dengan *count* tinggi.
 
 ### PCA antar sampel
 
-Sebelum menelaah gen satu per satu, kita lihat dulu gambaran besarnya dengan *Principal Component Analysis* pada nilai ekspresi yang sudah distabilkan variansinya. Jika kedua kondisi berbeda secara global, sampel `tanpa_dox` dan `dox` akan cenderung membentuk dua gerombol terpisah.
+PCA merangkum pola ekspresi seluruh sampel setelah variansinya distabilkan. Sampel yang berdekatan memiliki profil ekspresi yang lebih mirip.
 
 ```{r}
 #| label: fig-pca
-#| fig-cap: "PCA enam sampel GSE94345 berdasarkan ekspresi tervariance-stabilized. Pemisahan dox dan tanpa_dox menandakan perbedaan profil ekspresi global."
+#| fig-cap: "PCA enam sampel GSE94345 setelah variance-stabilizing transformation. Ketiga replikasi terpisah menurut kondisi pada PC1."
 #| fig-width: 6.5
 #| fig-height: 5
 #| warning: false
 #| message: false
+# Stabilkan variansi sebelum menghitung PCA antar-sampel.
 vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
+
+# Warna menunjukkan kondisi eksperimen.
 plotPCA(vsd, intgroup = "condition") +
   scale_color_manual(values = c(tanpa_dox = "#2c7fb8", dox = "#c0392b")) +
   theme_minimal(base_size = 13)
 ```
 
-Posisi keenam sampel menunjukkan seberapa konsisten replikasi biologis dan seberapa besar variasi global yang terkait dengan kondisi. Interpretasikan pemisahan kelompok bersama informasi QC dan desain eksperimen, bukan hanya dari satu plot.
-
-Pada data ini, PC1 menjelaskan sekitar 55% keragaman total dan memisahkan kedua kondisi secara bersih: ketiga replikasi `tanpa_dox` berada pada nilai PC1 negatif, sedangkan ketiga replikasi `dox` berada pada nilai PC1 positif, tanpa tumpang tindih. PC2 (sekitar 15% keragaman) menyebar dalam tiap kelompok dan lebih mencerminkan variasi antar-replikasi biologis daripada efek perlakuan. Pemisahan bersih pada PC1 ini konsisten dengan jumlah DEG yang besar (142 gen) dan `padj` yang sangat kecil pada gen teratas.
+PC1 menjelaskan 76,2% variasi dan memisahkan kedua kondisi tanpa tumpang tindih. PC2 menjelaskan 11,1% variasi. Replikasi pertama dan kedua berdekatan dalam masing-masing kondisi, sedangkan replikasi ketiga bergeser pada PC2 tetapi tetap berada bersama kelompok kondisinya. Pola ini mendukung adanya perbedaan ekspresi global antara `dox` dan `tanpa_dox`; PCA sendiri tidak menunjukkan gen mana yang menyebabkan pemisahan tersebut.
 
 ### Heatmap gen paling diferensial
 
-Terakhir, kita tampilkan 25 gen dengan *padj* terkecil sebagai *heatmap*. Nilai ekspresi tervariance-stabilized dipusatkan per gen sehingga warna menunjukkan apakah suatu gen relatif lebih tinggi (merah) atau lebih rendah (biru) pada tiap sampel.
+Heatmap berikut menampilkan 25 gen dengan `padj` terkecil. Nilai setiap gen dikurangi dengan rerata gen tersebut. Warna karena itu menunjukkan ekspresi relatif antar-sampel, bukan perbedaan absolut antar-gen.
 
 ```{r}
 #| label: fig-heatmap-genes
-#| fig-cap: "Heatmap 25 gen GSE94345 dengan padj terkecil. Warna adalah ekspresi tervariance-stabilized yang dipusatkan per gen; kolom dikelompokkan menurut tanpa_dox dan dox."
+#| fig-cap: "Heatmap 25 gen GSE94345 dengan padj terkecil. Warna menunjukkan ekspresi yang dipusatkan terhadap rerata setiap gen."
 #| fig-width: 8
 #| fig-height: 6
 #| warning: false
 #| message: false
+# Ambil 25 gen dengan padj terkecil dan pusatkan nilainya per gen.
 topg <- head(rownames(res[order(res$padj, na.last = NA), ]), 25)
 mat <- assay(vsd)[topg, , drop = FALSE]
 mat <- mat - rowMeans(mat)
+
+# Ubah matriks ke format panjang agar dapat digambar dengan ggplot2.
 long <- as.data.frame(as.table(as.matrix(mat)))
 colnames(long) <- c("gene", "sample", "z")
 long$condition <- factor(meta[as.character(long$sample), "condition"], levels = c("tanpa_dox", "dox"))
@@ -465,66 +371,68 @@ long$gene  <- factor(long$gene, levels = rev(topg))
 ggplot(long, aes(sample, gene, fill = z)) +
   geom_tile() +
   facet_grid(~ condition, scales = "free_x", space = "free_x") +
-  scale_fill_gradient2(low = "#2c7fb8", mid = "#f7f7f7", high = "#c0392b", name = "z-score") +
+  scale_fill_gradient2(low = "#2c7fb8", mid = "#f7f7f7", high = "#c0392b",
+                       name = "Ekspresi\nterpusat") +
   labs(x = NULL, y = NULL) +
   theme_minimal(base_size = 10) +
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
         panel.grid = element_blank(), strip.text = element_text(face = "bold"))
 ```
 
-Pola blok warna yang konsisten dalam tiap kondisi memperkuat hasil DE. Gen yang lebih merah pada panel `dox` relatif lebih biru pada panel `tanpa_dox`, atau sebaliknya. Gen-gen ini adalah kandidat untuk penelusuran fungsi lebih lanjut dalam konteks studi ragi.
-
-Dua puluh lima gen dengan `padj` terkecil ini kembali didominasi oleh gen adhesi/dinding sel (`AGA1`, `FLO1`, `HPF1`, `FIG2`, `CTS1`, `ZPS1`, `PRY1`, `SAG1`) yang membentuk blok biru konsisten pada panel `dox`, bersama sekelompok gen metabolisme (`POR1`, `ADH1`, `HXK1`, `ADH4`, `ENO1`, `DLD3`, `HXT6`, `FCY2`) yang polanya lebih beragam. Konsistensi warna dalam tiap panel menunjukkan bahwa perbedaan ini bukan didorong oleh satu replikasi yang menyimpang, melainkan pola bersama pada ketiga replikasi tiap kondisi.
+Dari 25 gen ini, 20 lebih rendah dan lima lebih tinggi pada `dox`. Warna ketiga replikasi dalam setiap kondisi umumnya searah, termasuk pada `AGA1`, `FLO1`, `HPF1`, `POR1`, dan `ADH1`. Pola itu menunjukkan bahwa perbedaan tidak berasal dari satu sampel saja. Perlu diingat bahwa pemilihan heatmap hanya berdasarkan `padj`; `ENO1`, misalnya, masuk ke 25 teratas tetapi tidak melewati ambang `|log2FoldChange| > 1` yang dipakai untuk daftar DEG.
 
 ## Analisis fungsi gen - GO dan KEGG *pathway* {#analisis-fungsi-gen---go-dan-kegg-pathway}
 
-Mendapatkan ratusan DEG barulah separuh cerita; pertanyaan berikutnya adalah **"gen-gen ini sebenarnya mengerjakan apa?"**. Untuk menjawabnya, kita lakukan **analisis pengayaan fungsional** (*functional enrichment*) yang menguji apakah daftar DEG kita diperkaya oleh fungsi biologis tertentu dibanding yang diharapkan secara kebetulan. Dua kerangka anotasi yang paling umum:
+Daftar DEG belum menjelaskan proses biologis yang berubah. Analisis pengayaan menguji apakah fungsi tertentu muncul lebih sering dalam daftar DEG daripada dalam latar belakang gen yang diuji. Di sini kita memakai dua sumber anotasi:
 
-- **Gene Ontology (GO)**: mengelompokkan gen ke dalam tiga ranah, *Biological Process* (BP), *Molecular Function* (MF), dan *Cellular Component* (CC).
-- **KEGG pathway**: memetakan gen ke jalur metabolik dan sinyal (misalnya *Toll-like receptor signaling* atau *metabolisme lipid*).
+- Gene Ontology Biological Process untuk istilah proses biologis.
+- KEGG untuk jalur metabolisme yang berisi DEG.
 
-Untuk studi ini, ragi memiliki paket anotasi resmi `org.Sc.sgd.db`. GO memakai Entrez ID hasil pemetaan dari ORF, sedangkan KEGG memakai ID ORF langsung karena organisme `"sce"` pada KEGG mengindeks gen dengan ID ORF, bukan Entrez ID. Kita memakai gen yang benar-benar lolos pengujian DESeq2 sebagai *universe*. Pendekatan ini berbeda dari organisme akuakultur non-model, yang sering memerlukan pemetaan ortolog atau anotasi kustom.
+ID keluaran prepDE berbentuk `ORF|nama_gen`. GO memerlukan Entrez ID dari `org.Sc.sgd.db`, sedangkan KEGG untuk organisme `"sce"` menerima ORF. Gen dengan `padj` yang tersedia dipakai sebagai *universe*, sehingga latar belakang mengikuti gen yang berpeluang masuk ke daftar DEG pada analisis ini. Blok KEGG mengambil anotasi dari KEGG REST API dan memerlukan koneksi internet saat pertama dijalankan.
 
 ```{r}
 #| label: go-kegg-run
 #| warning: false
 #| message: false
+# Muat basis data anotasi dan fungsi pengayaan.
 library(AnnotationDbi)
 library(org.Sc.sgd.db)
 library(clusterProfiler)
 library(enrichplot)
 
-# prepDE.py memakai ID ORF|nama_gen; AnnotationDbi memerlukan ORF sebelum tanda |.
+# Ambil ORF sebelum tanda | untuk daftar DEG dan latar belakang.
 orf_bg <- unique(sub("\\|.*", "", rownames(res)[!is.na(res$padj)]))
 orf_de <- unique(sub("\\|.*", "", rownames(deg)))
 
+# Petakan ORF ke Entrez ID untuk analisis GO.
 gene_bg <- unique(na.omit(mapIds(org.Sc.sgd.db,
   keys = orf_bg, column = "ENTREZID", keytype = "ORF", multiVals = "first")))
 gene_de <- unique(na.omit(mapIds(org.Sc.sgd.db,
   keys = orf_de, column = "ENTREZID", keytype = "ORF", multiVals = "first")))
 stopifnot(length(gene_bg) > 0L)
 
-# org.Sc.sgd.db tidak punya kolom SYMBOL, sehingga readable = TRUE tidak dipakai di sini.
+# Uji pengayaan GO Biological Process dengan latar belakang gen yang teruji.
 ego <- enrichGO(gene = gene_de, universe = gene_bg, OrgDb = org.Sc.sgd.db,
                 keyType = "ENTREZID", ont = "BP", pAdjustMethod = "BH",
                 pvalueCutoff = 0.05, qvalueCutoff = 0.05)
 
-# KEGG "sce" mengindeks gen dengan ID ORF, bukan Entrez ID.
+# KEGG sce memakai ORF ragi, bukan Entrez ID.
 ekegg <- enrichKEGG(gene = orf_de, universe = orf_bg, organism = "sce",
                     pAdjustMethod = "BH", pvalueCutoff = 0.05,
                     qvalueCutoff = 0.05)
 ```
 
-Hasil pengayaan ditampilkan sebagai **dotplot**: sumbu-x adalah *gene ratio* (proporsi DEG yang masuk ke istilah), ukuran titik menunjukkan jumlah gen, dan warna menunjukkan signifikansi (`p.adjust`). Kode berikut menampilkan hasil sebenarnya hanya bila ada istilah yang lolos koreksi multipel.
+Pada *dotplot*, sumbu-x menunjukkan proporsi DEG yang masuk ke suatu istilah, ukuran titik menunjukkan jumlah gen, dan warna menunjukkan `p.adjust`. Bila tidak ada istilah yang lolos koreksi multipel, kode menampilkan pesan alih-alih grafik kosong.
 
 ```{r}
 #| label: fig-go
-#| fig-cap: "Dotplot GO Biological Process nyata untuk DEG dox versus tanpa_dox. Jika tidak ada istilah yang lolos koreksi multipel, halaman menampilkan pesan tersebut alih-alih grafik buatan."
+#| fig-cap: "Istilah GO Biological Process yang diperkaya pada DEG dox versus tanpa_dox."
 #| fig-width: 7.5
-#| fig-height: 5
+#| fig-height: 6.5
 #| warning: false
 #| message: false
 #| code-fold: true
+# Gambar maksimal 15 istilah GO atau tampilkan pesan jika hasil kosong.
 if (nrow(as.data.frame(ego)) == 0L) {
   cat("Tidak ada istilah GO Biological Process yang lolos ambang setelah koreksi multipel.")
 } else {
@@ -533,43 +441,45 @@ if (nrow(as.data.frame(ego)) == 0L) {
 }
 ```
 
-Tampilkan tabel hasil dan KEGG dengan kode berikut. Bila tidak ada hasil yang lolos, tidak ada kesimpulan pathway yang boleh dibuat dari ambang ini.
+Tabel dibatasi pada sepuluh istilah GO teratas agar hasil tetap terbaca. Semua jalur KEGG yang lolos ambang ditampilkan karena jumlahnya hanya 11.
 
 ```{r}
 #| label: enrichment-tables
+# Tampilkan sepuluh istilah GO dengan padj terkecil.
 if (nrow(as.data.frame(ego)) > 0L) {
-  as.data.frame(ego)[, c("ID", "Description", "GeneRatio", "p.adjust", "geneID")]
+  head(as.data.frame(ego)[, c("ID", "Description", "GeneRatio", "p.adjust")], 10)
 }
+
+# Gambar dan tampilkan KEGG hanya jika ada jalur yang lolos ambang.
 if (nrow(as.data.frame(ekegg)) == 0L) {
   cat("Tidak ada pathway KEGG yang lolos ambang setelah koreksi multipel.")
 } else {
   dotplot(ekegg, showCategory = min(15, nrow(as.data.frame(ekegg)))) +
     ggtitle("KEGG pathway: dox vs tanpa_dox")
-  as.data.frame(ekegg)[, c("ID", "Description", "GeneRatio", "p.adjust", "geneID")]
+  as.data.frame(ekegg)[, c("ID", "Description", "GeneRatio", "p.adjust")]
 }
 ```
 
-Istilah dan gen yang tampil adalah hasil studi ragi ini. Interpretasikan dalam konteks regulasi lipid dan kondisi eksperimen GSE94345, bukan sebagai bukti langsung untuk akuakultur.
+### Membaca hasil GO dan KEGG
 
-### Interpretasi: apa arti GO dan KEGG di sini?
+Dari 142 DEG, 141 dapat dipetakan ke Entrez ID. Sebanyak 5.256 gen latar belakang memiliki Entrez ID, dan 5.243 di antaranya memiliki anotasi Biological Process yang dipakai dalam pengujian. Analisis menghasilkan 54 istilah dengan `p.adjust < 0.05`. Tiga istilah teratas adalah *oxoacid metabolic process* (34 dari 141 DEG), *organic acid metabolic process* (34 dari 141), dan *carboxylic acid metabolic process* (33 dari 141). Ketiganya memiliki `p.adjust = 8,74 × 10^-9` dan banyak berbagi gen yang sama. Hasil ini lebih tepat dibaca sebagai satu kelompok proses metabolisme asam organik yang saling bertumpang tindih, bukan tiga mekanisme terpisah.
 
-Menjalankan kode di atas pada 142 DEG (universe 5.256 gen ber-Entrez ID) menghasilkan **54 istilah GO Biological Process** dan **11 pathway KEGG** yang lolos `padj < 0.05`. Dua istilah GO teratas, *oxoacid metabolic process* dan *carboxylic acid metabolic process* (masing-masing melibatkan 34 dari 141 gen dengan Entrez ID, `padj` di kisaran $10^{-9}$), langsung menunjuk ke pergeseran metabolisme asam organik/karboksilat -- konsisten dengan gen `ADH1`, `ADH4`, `HXK1`, `ENO1`, dan `DLD3` yang juga muncul sebagai DEG teratas pada bagian ekspresi diferensial. Kelompok istilah GO lain yang lolos ambang, *retrotransposition*, *transposition*, dan *DNA integration* (elemen Ty), menandakan aktivitas elemen transposabel ragi turut berubah pada kontras ini; ini pola yang lazim menyertai stres seluler pada ragi dan tidak berkaitan langsung dengan tema flokulasi/lipid GSE94345.
+Istilah *retrotransposition* dan *transposition* masing-masing memuat 15 DEG, sedangkan *DNA integration* memuat 12 DEG. Daftar gen pada ketiga istilah ini juga saling tumpang tindih. Hasil pengayaan menunjukkan bahwa gen terkait elemen transposabel banyak muncul dalam daftar DEG, tetapi belum menjelaskan penyebab atau dampaknya.
 
-Pada KEGG, pathway dengan `p.adjust` terkecil adalah *Biosynthesis of secondary metabolites* dan *Carbon metabolism*, diikuti oleh pathway yang lebih spesifik dan relevan secara biologis untuk tema studi ini: *Fatty acid degradation*, *Biosynthesis of unsaturated fatty acids*, *Glycolysis / Gluconeogenesis*, dan *Pyruvate metabolism*. Pathway lipid/asam lemak ini selaras dengan judul studi sumber tentang regulasi fluiditas membran, meskipun DEG teratas pada bagian sebelumnya (`FLO1`, `AGA1`, dan gen adhesi lain) lebih banyak masuk ke kategori GO/KEGG metabolisme karbon sentral daripada kategori "lipid" secara eksplisit -- menunjukkan bahwa perubahan flokulasi pada `dox` kemungkinan menyertai, bukan disebabkan langsung oleh, pergeseran metabolisme yang tertangkap GO/KEGG.
+Pemetaan KEGG lebih terbatas: 56 dari 142 DEG dan 2.178 gen latar belakang masuk ke anotasi yang dipakai KEGG. Sebelas jalur lolos koreksi multipel. Hasil teratas adalah *Biosynthesis of secondary metabolites* (28 dari 56 DEG; `p.adjust = 2,79 × 10^-7`) dan *Carbon metabolism* (13 dari 56; `p.adjust = 4,79 × 10^-5`). Jalur *Fatty acid degradation*, *Biosynthesis of unsaturated fatty acids*, *Glycolysis / Gluconeogenesis*, dan *Pyruvate metabolism* juga lolos dengan `p.adjust = 0,0108`.
 
-Perlu dicatat, hasil KEGG di atas hanya valid bila `enrichKEGG()` diberi ID ORF (mis. `YOL086C`), bukan Entrez ID, karena organisme `"sce"` pada database KEGG mengindeks gen dengan ID ORF (lihat catatan pada kode di atas). Menggunakan Entrez ID untuk `enrichKEGG()` membuat seluruh gen gagal dipetakan dan tidak menghasilkan satu pun pathway.
+Analisis ini menggabungkan gen yang naik dan turun. Karena itu, istilah GO atau jalur KEGG yang diperkaya tidak otomatis berarti proses tersebut aktif atau tertekan. Untuk menentukan arah, analisis dapat diulang secara terpisah pada gen yang naik dan turun, atau dilanjutkan dengan metode berbasis peringkat seperti GSEA.
 
 ## Apa yang perlu dipertimbangkan sebelum studi RNA-seq {#apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq}
 
-Kualitas hasil RNA-seq lebih banyak ditentukan di meja desain daripada di depan komputer. Sebelum mengeluarkan biaya sekuensing, pertimbangkan hal-hal berikut.
+Rancang hal-hal berikut sebelum sekuensing.
 
-1.  **Desain eksperimen dan replikasi biologis.** Gunakan minimal **3-4 replikasi biologis** per kelompok (bukan replikasi teknis). Replikasi yang cukup jauh lebih menentukan kekuatan statistik daripada menambah *sequencing depth*.
-2.  **Randomisasi dan *batch effect*.** Jika sampel diproses dalam beberapa *batch* (hari ekstraksi atau *lane* sekuensing berbeda), sebar kondisi secara merata antar-*batch* dan catat informasinya agar bisa dimasukkan ke dalam desain model (`~ batch + kondisi`).
-3.  **Kedalaman dan tipe sekuensing.** Untuk DE pada level gen, umumnya cukup **20-30 juta *reads* per sampel**; deteksi *isoform* atau transkrip langka membutuhkan lebih banyak. *Paired-end* lebih disukai untuk *alignment* dan deteksi *splice junction*.
-4.  **Kualitas dan jenis *library*.** Periksa **RIN** (*RNA Integrity Number*) RNA Anda. Pilih *library prep* yang sesuai: *poly-A selection* untuk mRNA pada sampel berkualitas baik, atau *ribo-depletion* untuk sampel terdegradasi atau jika ingin menangkap RNA non-poliadenilasi.
-5.  ***Strandedness*****.** Catat orientasi *library* (*stranded* vs *unstranded*); kesalahan parameter *strand* saat kuantifikasi (`--rf`/`--fr`) dapat membuat banyak *count* hilang atau salah.
-6.  **Kualitas genom dan anotasi referensi.** Untuk organisme akuakultur non-model, kualitas anotasi sering menjadi penentu. Anotasi yang tidak lengkap akan langsung membatasi analisis GO/KEGG di hilir.
-7.  **Normalisasi dan *multiple testing*.** Percayakan normalisasi pada metode bawaan DESeq2/edgeR, dan selalu laporkan hasil berdasarkan `padj`, bukan `pvalue` mentah.
-8.  **Validasi dan interpretasi biologis.** Idealnya, sebagian DEG kunci divalidasi dengan **RT-qPCR**, dan temuan ditafsirkan dalam konteks biologis, bukan sekadar daftar gen dengan *p-value* kecil.
+1.  Gunakan setidaknya tiga replikasi biologis per kondisi sebagai batas praktis, lalu tambah jumlahnya jika variasi biologis diperkirakan besar atau perubahan yang dicari kecil. Replikasi teknis tidak menggantikan sampel biologis independen.
+2.  Sebarkan kondisi pada hari ekstraksi, proses pembuatan *library*, dan *lane* sekuensing. Catat setiap *batch* agar dapat dimasukkan ke model, misalnya `~ batch + condition`.
+3.  Tentukan kedalaman sekuensing berdasarkan organisme, kompleksitas transkriptom, kualitas anotasi, dan sasaran analisis. Kisaran 20 hingga 30 juta *read* per sampel sering dipakai sebagai titik awal untuk DE tingkat gen pada organisme yang teranotasi baik, tetapi analisis isoform dan transkrip langka memerlukan pertimbangan lain.
+4.  Periksa integritas RNA, pilih *poly-A selection* atau *ribo-depletion* sesuai jenis sampel, dan simpan informasi *strandedness*. Parameter *strand* yang salah saat kuantifikasi dapat mengurangi atau membalikkan *count* pada gen yang bertumpang tindih.
+5.  Gunakan versi genom dan GTF yang cocok, lalu catat versinya. Pada organisme akuakultur non-model, anotasi yang tidak lengkap akan mengurangi jumlah gen yang dapat diberi nama atau masuk ke GO dan KEGG.
+6.  Tetapkan kontras, ambang `padj`, dan ambang besar perubahan sebelum membaca hasil. DESeq2 atau edgeR harus menerima *count* mentah dan melakukan normalisasinya sendiri.
+7.  Pilih gen prioritas berdasarkan besar perubahan, ketidakpastian, fungsi, dan konsistensi antar-replikasi. RT-qPCR atau eksperimen lanjutan diperlukan bila hasil akan dipakai untuk membuat klaim mekanistik.
 
-> **Penutup.** Dengan menyelesaikan alur HISAT2 → StringTie → DESeq2 hingga visualisasi dan pemaknaan fungsional, Anda kini memiliki gambaran utuh satu siklus studi RNA-seq, dari *reads* mentah sampai cerita biologis. Pada *workflow* berikutnya kita akan menempuh jalur alternatif **STAR + RSEM** untuk data yang sama dan membandingkan hasilnya. Skrip otomatis untuk seluruh pipeline ini tersedia di [All-hisat-stringtie.sh](/code/All-hisat-stringtie.sh){download="All-hisat-stringtie.sh"} beserta [config.yaml](/code/config.yaml){download="config.yaml"}.
+Selesai.
