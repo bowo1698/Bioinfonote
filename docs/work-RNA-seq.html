@@ -115,35 +115,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -466,7 +437,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Quality control hasil sequencing</span></a>
+ <span class="menu-text">Quality control dan trimming FASTQ RNA-seq</span></a>
   </div>
 </li>
       </ul>
@@ -520,23 +491,18 @@ window.Quarto = {
   <li><a href="#tentang-data-yang-digunakan-dan-persiapannya" id="toc-tentang-data-yang-digunakan-dan-persiapannya" class="nav-link" data-scroll-target="#tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</a>
   <ul class="collapse">
   <li><a href="#studi-kasus-regulasi-lipid-pada-ragi" id="toc-studi-kasus-regulasi-lipid-pada-ragi" class="nav-link" data-scroll-target="#studi-kasus-regulasi-lipid-pada-ragi">Studi kasus: regulasi lipid pada ragi</a></li>
-  <li><a href="#unduh-fastq-metadata-dan-referensi" id="toc-unduh-fastq-metadata-dan-referensi" class="nav-link" data-scroll-target="#unduh-fastq-metadata-dan-referensi">Unduh FASTQ, metadata, dan referensi</a></li>
-  </ul></li>
-  <li><a href="#quality-control-data-sequencing" id="toc-quality-control-data-sequencing" class="nav-link" data-scroll-target="#quality-control-data-sequencing">Quality control data sequencing</a>
-  <ul class="collapse">
-  <li><a href="#inspeksi-awal-file-sequencing" id="toc-inspeksi-awal-file-sequencing" class="nav-link" data-scroll-target="#inspeksi-awal-file-sequencing">Inspeksi awal file sequencing</a></li>
-  </ul></li>
   <li><a href="#memilih-dan-memasang-tools" id="toc-memilih-dan-memasang-tools" class="nav-link" data-scroll-target="#memilih-dan-memasang-tools">Memilih dan memasang tools</a></li>
+  <li><a href="#menyiapkan-metadata-dan-referensi" id="toc-menyiapkan-metadata-dan-referensi" class="nav-link" data-scroll-target="#menyiapkan-metadata-dan-referensi">Menyiapkan metadata dan referensi</a></li>
+  </ul></li>
   <li><a href="#pipeline-dari-reads-ke-matriks-hitungan" id="toc-pipeline-dari-reads-ke-matriks-hitungan" class="nav-link" data-scroll-target="#pipeline-dari-reads-ke-matriks-hitungan">Pipeline dari reads ke matriks hitungan</a>
   <ul class="collapse">
-  <li><a href="#quality-control-fastq" id="toc-quality-control-fastq" class="nav-link" data-scroll-target="#quality-control-fastq">Quality control FASTQ</a></li>
   <li><a href="#membangun-index-dan-menyejajarkan-reads" id="toc-membangun-index-dan-menyejajarkan-reads" class="nav-link" data-scroll-target="#membangun-index-dan-menyejajarkan-reads">Membangun index dan menyejajarkan reads</a></li>
   <li><a href="#kuantifikasi-ekspresi-dengan-stringtie" id="toc-kuantifikasi-ekspresi-dengan-stringtie" class="nav-link" data-scroll-target="#kuantifikasi-ekspresi-dengan-stringtie">Kuantifikasi ekspresi dengan StringTie</a></li>
   <li><a href="#menyusun-matriks-hitungan-dengan-prepde" id="toc-menyusun-matriks-hitungan-dengan-prepde" class="nav-link" data-scroll-target="#menyusun-matriks-hitungan-dengan-prepde">Menyusun matriks hitungan dengan prepDE</a></li>
   </ul></li>
   <li><a href="#analisis-perbedaan-ekspresi" id="toc-analisis-perbedaan-ekspresi" class="nav-link" data-scroll-target="#analisis-perbedaan-ekspresi">Analisis perbedaan ekspresi</a>
   <ul class="collapse">
-  <li><a href="#interpretasi-gen-apa-yang-paling-berubah" id="toc-interpretasi-gen-apa-yang-paling-berubah" class="nav-link" data-scroll-target="#interpretasi-gen-apa-yang-paling-berubah">Interpretasi: gen apa yang paling berubah?</a></li>
+  <li><a href="#gen-dengan-bukti-statistik-paling-kuat" id="toc-gen-dengan-bukti-statistik-paling-kuat" class="nav-link" data-scroll-target="#gen-dengan-bukti-statistik-paling-kuat">Gen dengan bukti statistik paling kuat</a></li>
   <li><a href="#memvisualisasikan-hasil-dengan-volcano-plot" id="toc-memvisualisasikan-hasil-dengan-volcano-plot" class="nav-link" data-scroll-target="#memvisualisasikan-hasil-dengan-volcano-plot">Memvisualisasikan hasil dengan volcano plot</a></li>
   <li><a href="#ma-plot" id="toc-ma-plot" class="nav-link" data-scroll-target="#ma-plot">MA plot</a></li>
   <li><a href="#pca-antar-sampel" id="toc-pca-antar-sampel" class="nav-link" data-scroll-target="#pca-antar-sampel">PCA antar sampel</a></li>
@@ -544,7 +510,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#analisis-fungsi-gen---go-dan-kegg-pathway" id="toc-analisis-fungsi-gen---go-dan-kegg-pathway" class="nav-link" data-scroll-target="#analisis-fungsi-gen---go-dan-kegg-pathway">Analisis fungsi gen - GO dan KEGG <em>pathway</em></a>
   <ul class="collapse">
-  <li><a href="#interpretasi-apa-arti-go-dan-kegg-di-sini" id="toc-interpretasi-apa-arti-go-dan-kegg-di-sini" class="nav-link" data-scroll-target="#interpretasi-apa-arti-go-dan-kegg-di-sini">Interpretasi: apa arti GO dan KEGG di sini?</a></li>
+  <li><a href="#membaca-hasil-go-dan-kegg" id="toc-membaca-hasil-go-dan-kegg" class="nav-link" data-scroll-target="#membaca-hasil-go-dan-kegg">Membaca hasil GO dan KEGG</a></li>
   </ul></li>
   <li><a href="#apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" id="toc-apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" class="nav-link" data-scroll-target="#apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq">Apa yang perlu dipertimbangkan sebelum studi RNA-seq</a></li>
   </ul>
@@ -580,6 +546,7 @@ window.Quarto = {
 <ul>
 <li><a href="#apa-itu-studi-rna-seq">Apa itu studi RNA-seq?</a></li>
 <li><a href="#tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</a></li>
+<li><a href="#menyiapkan-metadata-dan-referensi">Menyiapkan metadata dan referensi</a></li>
 <li><a href="#quality-control-data-sequencing">Quality control data sequencing</a></li>
 <li><a href="#memilih-dan-memasang-tools">Memilih dan memasang tools</a></li>
 <li><a href="#pipeline-dari-reads-ke-matriks-hitungan">Pipeline dari reads ke matriks hitungan</a></li>
@@ -618,7 +585,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="tentang-data-yang-digunakan-dan-persiapannya">Tentang data yang digunakan dan persiapannya</h2>
 <section id="studi-kasus-regulasi-lipid-pada-ragi" class="level3">
 <h3 class="anchored" data-anchor-id="studi-kasus-regulasi-lipid-pada-ragi">Studi kasus: regulasi lipid pada ragi</h3>
-<p>Tutorial ini memakai enam sampel <em>paired-end</em> dari <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345">GEO GSE94345</a>, studi RNA-seq <em>Saccharomyces cerevisiae</em> tentang regulasi fluiditas membran, flokulasi, dan pertumbuhan terbatas oksigen. Kita hanya memakai kontras yang sederhana dan bereplikasi baik, yaitu strain <code>spt23p90</code> tanpa doxycycline (<code>tanpa_dox</code>) dibandingkan dengan strain yang sama dengan doxycycline (<code>dox</code>), masing-masing tiga replikasi.</p>
+<p>Dalam tutorial ini, kita tidak akan menggunakan dataset dari studi pada spesies akuakultur, melainkan hanya akan menggunakan dataset RNA-seq dari studi pada <em>Saccharomyces cerevisiae.</em> Studi oleh <a href="http://dx.doi.org/10.1016/j.ymben.2017.03.002">Degreif <em>et al</em> 2017</a> menggunakan pendekatan RNA-seq untuk mengetahui set gen yang sensitif terhadap fluiditas membran dan bagaimana gen-gen tersebut diaktifkan secara sebagai bagian dari penyesuaian metabolik dan stres sel. Data <em>sequencing</em> berbasis paired-end diunduh dari NCBI dengan kode akses <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345">GEO GSE94345</a>. Dalam tutorial ini, kita akan mencari tahu bagaimana pengaruh penggunaan doxycycline (<code>tanpa_dox</code>) terhadap ekspresi dari domain aktif <em>SPT23p90.</em> Sehingga kita akan membandingkan 2 kelompok yang diberi dan tidak diberi doxycycline dan melihat perbandingan profil ekspresi gen nya.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 18%">
@@ -649,362 +616,151 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Keenam pasangan FASTQ penuh berukuran sekitar 623 MiB dalam bentuk terkompresi dan berisi 7.235.625 pasangan reads. Data diunduh dengan SRA Toolkit ke komputer Anda, tidak disimpan atau dibagikan melalui repositori ini. Sediakan sedikitnya 8–10 GiB ruang kosong untuk FASTQ, indeks, BAM, dan keluaran kuantifikasi; RAM 4 GiB cukup untuk batas minimum, sedangkan 8 GiB lebih nyaman.</p>
-<blockquote class="blockquote">
-<p><strong>Mengapa memakai ragi?</strong> Studi kasus ini bukan organisme akuakultur. Ragi dipilih karena genomnya kecil dan anotasinya sangat baik, sehingga seluruh alur bulk RNA-seq dapat dijalankan dari FASTQ publik hingga pengayaan GO dan KEGG pada komputer biasa. Saat diterapkan pada ikan atau udang, desain eksperimen, genom referensi, dan anotasi berubah, tetapi prinsip QC, kuantifikasi, ekspresi diferensial, dan interpretasi fungsi gen tetap sama.</p>
-</blockquote>
+<p>Dalam tutorial ini, kita akan memulai dari pasangan data mentah hasil sequencing (FASTQ), berukuran sekitar 1 GB. Sehingga setidaknya, Anda harus memiliki sisa penyimpanan data sebesar 8 - 10 GiB untuk menyimpan file FASTQ, indeks, BAM, dan hasil kuantifikasi gen.</p>
 </section>
-<section id="unduh-fastq-metadata-dan-referensi" class="level3">
-<h3 class="anchored" data-anchor-id="unduh-fastq-metadata-dan-referensi">Unduh FASTQ, metadata, dan referensi</h3>
-<p>Semua perintah tutorial ada di halaman ini. Folder kerja berada di <code>docs/data/rnaseq-gse94345/</code> dan sudah diabaikan oleh Git. FASTQ diunduh dengan SRA Toolkit: <code>prefetch</code> dapat melanjutkan unduhan bila koneksi putus, kemudian <code>fasterq-dump</code> mengubah arsip SRA menjadi FASTQ.</p>
-<section id="sra-toolkit-prefetch-dan-fasterq-dump" class="level4">
-<h4 class="anchored" data-anchor-id="sra-toolkit-prefetch-dan-fasterq-dump">SRA Toolkit (<code>prefetch</code> dan <code>fasterq-dump</code>)</h4>
-<p>Tambahkan <code>sra-tools</code> saat membuat environment, kemudian jalankan blok ini dari root repositori. <code>fasterq-dump</code> menulis FASTQ tanpa kompresi terlebih dahulu, sehingga sisakan ruang kosong tambahan sebelum menjalankannya.</p>
+<section id="memilih-dan-memasang-tools" class="level3">
+<h3 class="anchored" data-anchor-id="memilih-dan-memasang-tools">Memilih dan memasang tools</h3>
+<p>Pipeline ini memakai tiga tools utama yang bekerja berurutan, yaitu <code>HISAT2</code> untuk menyejajarkan (<em>align</em>) <em>reads</em> ke genom referensi, <code>StringTie</code> untuk mengkuantifikasi ekspresi tiap gen mengikuti anotasi, dan <code>samtools</code> untuk menangani berkas hasil <em>alignment</em>. Tahap analisis diferensial di akhir memakai paket R <code>DESeq2</code>. Pilihan HISAT2 dan StringTie digunakan untuk tutorial ini karena keduanya akurat, hemat memori, dan dapat berjalan pada komputer biasa tanpa HPC.</p>
+<p>Semua tools alignment dipasang melalui conda via bioconda.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">ROOT</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span><span class="st">"</span><span class="va">$ROOT</span><span class="st">/docs/data/rnaseq-gse94345"</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/sra"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_tmp"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">prefetch</span> <span class="at">--progress</span> <span class="at">--output-directory</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/sra"</span> SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">runs</span><span class="op">=</span><span class="va">(</span>SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168<span class="va">)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="va">samples</span><span class="op">=</span><span class="va">(</span>spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3<span class="va">)</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="st">"</span><span class="va">${</span><span class="op">!</span><span class="va">runs</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">vdb-validate</span> <span class="st">"</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">"</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fasterq-dump</span> <span class="at">--split-files</span> <span class="at">--threads</span> 4 <span class="at">--temp</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_tmp"</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/sra/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">.sra"</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mv</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_1.fastq"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${samples</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_R1.fastq"</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mv</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_2.fastq"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${samples</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_R2.fastq"</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="st">"</span><span class="va">$DD</span><span class="st">"</span>/raw_reads/<span class="pp">*</span>.fastq</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$ROOT</span><span class="st">"</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fL</span> <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.fa.gz"</span> <span class="dt">\</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  https://ftp.ensembl.org/pub/release-115/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fL</span> <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.gtf.gz"</span> <span class="dt">\</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  https://ftp.ensembl.org/pub/release-115/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.115.gtf.gz</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-dkf</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.fa.gz"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.gtf.gz"</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="op">&lt;&lt;'EOF'</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="st">sample,condition,geo_accession,sra_run</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_untreated_1,tanpa_dox,GSM2473529,SRR5220163</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_untreated_2,tanpa_dox,GSM2473530,SRR5220164</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_untreated_3,tanpa_dox,GSM2473531,SRR5220165</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_dox_1,dox,GSM2473532,SRR5220166</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_dox_2,dox,GSM2473533,SRR5220167</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_dox_3,dox,GSM2473534,SRR5220168</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ulangi perintah <code>prefetch</code> yang sama jika unduhan terputus. Toolkit akan melanjutkan run yang belum lengkap. Setelah FASTQ berhasil dibuat, folder <code>sra/</code> dan <code>_tmp/</code> boleh dihapus untuk menghemat ruang.</p>
-<p>Struktur folder setelah unduhan adalah:</p>
-<pre class="text terminal-output"><code>docs/data/rnaseq-gse94345/
-├── raw_reads/                 # 12 FASTQ, enam pasangan read penuh
-├── ref/                       # FASTA dan GTF Ensembl release 115
-└── metadata.csv</code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> rnaseq <span class="at">-y</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate rnaseq</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda <span class="at">-c</span> conda-forge hisat2 stringtie samtools <span class="at">-y</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Paket R untuk analisis diferensial.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">"DESeq2"</span>, <span class="st">"clusterProfiler"</span>, <span class="st">"enrichplot"</span>, <span class="st">"AnnotationDbi"</span>, <span class="st">"org.Sc.sgd.db"</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ggplot2"</span>, <span class="st">"dplyr"</span>, <span class="st">"ggrepel"</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-</section>
-<section id="quality-control-data-sequencing" class="level2">
-<h2 class="anchored" data-anchor-id="quality-control-data-sequencing">Quality control data sequencing</h2>
-<section id="inspeksi-awal-file-sequencing" class="level3">
-<h3 class="anchored" data-anchor-id="inspeksi-awal-file-sequencing">Inspeksi awal file sequencing</h3>
-<p>Sebelum analisis, ada baiknya kita melihat langsung struktur berkas FASTQ. Setiap <em>read</em> pada FASTQ terdiri dari empat baris, yaitu header yang diawali <code>@</code>, urutan basa nukleotida, tanda <code>+</code>, dan string skor kualitas.</p>
+<section id="menyiapkan-metadata-dan-referensi" class="level3">
+<h3 class="anchored" data-anchor-id="menyiapkan-metadata-dan-referensi">Menyiapkan metadata dan referensi</h3>
+<p>Dua belas FASTQ sudah tersedia dan bisa diakses pada <a href="teknis-quality-control.html">tutorial QC</a>. Sekarang kita menambahkan beberapa hal yang diperlukan oleh workflow RNA-seq, yaitu metadata untuk menghubungkan setiap FASTQ dengan kondisi eksperimen, genom referensi serta anotasi ragi untuk alignment dan kuantifikasi.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>docs/data/rnaseq-gse94345</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># lihat dua read pertama</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/spt23p90_untreated_1_R1.fastq.gz"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># hitung jumlah read pada satu berkas R1</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/spt23p90_untreated_1_R1.fastq.gz"</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Perintah pertama menampilkan dua <em>read</em> pertama, sedangkan perintah kedua menghitung jumlah <em>read</em> dengan membagi banyaknya baris dengan empat. Selanjutnya lakukan QC pada semua FASTQ. Jangan memangkas read secara otomatis: periksa FastQC dan MultiQC terlebih dahulu. Pada dataset ini, sekuens Illumina/TruSeq berlebih terdeteksi pada 1,4–9,2% reads sehingga trimming diperlukan sebelum alignment.</p>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">ROOT</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span><span class="st">"</span><span class="va">$ROOT</span><span class="st">/docs/data/rnaseq-gse94345"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># unduh genom dan anotasi ragi dari Ensembl release 115</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fL</span> <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.fa.gz"</span> <span class="dt">\</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  https://ftp.ensembl.org/pub/release-115/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fL</span> <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.gtf.gz"</span> <span class="dt">\</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  https://ftp.ensembl.org/pub/release-115/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.115.gtf.gz</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-dkf</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.fa.gz"</span> <span class="dt">\</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.gtf.gz"</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># simpan hubungan FASTQ, kondisi, akses GEO, dan run SRA</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="op">&lt;&lt;'EOF'</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">sample,condition,geo_accession,sra_run</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_untreated_1,tanpa_dox,GSM2473529,SRR5220163</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_untreated_2,tanpa_dox,GSM2473530,SRR5220164</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_untreated_3,tanpa_dox,GSM2473531,SRR5220165</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_dox_1,dox,GSM2473532,SRR5220166</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_dox_2,dox,GSM2473533,SRR5220167</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="st">spt23p90_dox_3,dox,GSM2473534,SRR5220168</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>metadata.csv</code> akan dipakai lagi saat menyusun count matrix dan model DESeq2. Jangan mengubah urutan atau nama sampel di file ini tanpa mengubah nama FASTQ yang sesuai. Referensi berada di <code>ref/</code>, sedangkan FASTQ hasil QC berada di <code>_pipe/trimmed/</code>.</p>
 </section>
-</section>
-<section id="memilih-dan-memasang-tools" class="level2">
-<h2 class="anchored" data-anchor-id="memilih-dan-memasang-tools">Memilih dan memasang tools</h2>
-<p>Pipeline ini memakai tiga tools utama yang bekerja berurutan, yaitu <code>HISAT2</code> untuk menyejajarkan (<em>align</em>) <em>reads</em> ke genom referensi, <code>StringTie</code> untuk mengkuantifikasi ekspresi tiap gen mengikuti anotasi, dan <code>samtools</code> untuk menangani berkas hasil <em>alignment</em>. Tahap analisis diferensial di akhir memakai paket R <code>DESeq2</code>. Pilihan HISAT2 dan StringTie tepat untuk tutorial ini karena keduanya akurat, hemat memori, dan dapat berjalan pada komputer biasa tanpa HPC.</p>
-<p>Semua tools alignment dipasang melalui conda lewat kanal bioconda.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> rnaseq <span class="at">-y</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate rnaseq</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda <span class="at">-c</span> conda-forge sra-tools fastqc multiqc hisat2 stringtie samtools <span class="at">-y</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install cutadapt</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Paket R untuk analisis diferensial dipasang dari dalam R.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">"DESeq2"</span>, <span class="st">"clusterProfiler"</span>, <span class="st">"enrichplot"</span>, <span class="st">"AnnotationDbi"</span>, <span class="st">"org.Sc.sgd.db"</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ggplot2"</span>, <span class="st">"dplyr"</span>, <span class="st">"ggrepel"</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="pipeline-dari-reads-ke-matriks-hitungan" class="level2">
 <h2 class="anchored" data-anchor-id="pipeline-dari-reads-ke-matriks-hitungan">Pipeline dari reads ke matriks hitungan</h2>
-<p>Tiga langkah berikut mengubah <em>reads</em> mentah menjadi <code>gene_count_matrix.csv</code>, yaitu matriks jumlah baca per gen per sampel yang menjadi masukan DESeq2. Jalankan perintah satu per satu agar setiap tahap dapat diperiksa.</p>
-<section id="quality-control-fastq" class="level3">
-<h3 class="anchored" data-anchor-id="quality-control-fastq">Quality control FASTQ</h3>
-<p>Jalankan FastQC untuk setiap pasangan FASTQ, kemudian gabungkan laporan dengan MultiQC. Perintah ini membaca nama sampel dari <code>metadata.csv</code>, sehingga hanya menggunakan 12 FASTQ utama dan tidak menangkap berkas lain di folder yang sama.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>docs/data/rnaseq-gse94345</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastqc</span> <span class="at">--threads</span> 4 <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc"</span> <span class="dt">\</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--force</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Buka <code>docs/data/rnaseq-gse94345/_pipe/multiqc/multiqc_report.html</code>. Hasil MultiQC awal untuk data yang dipakai dalam tutorial ini diringkas berikut; jumlah <em>read pairs</em> berasal dari R1/R2 yang berpasangan.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Sampel</th>
-<th style="text-align: right;">Read pairs awal (juta)</th>
-<th style="text-align: right;">GC</th>
-<th style="text-align: right;">Median panjang</th>
-<th>Kualitas per-basa</th>
-<th>Temuan penting</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>tanpa_dox_1</code></td>
-<td style="text-align: right;">0,798</td>
-<td style="text-align: right;">44%</td>
-<td style="text-align: right;">76 nt</td>
-<td>Lulus</td>
-<td>Adaptor/index TruSeq berlebih</td>
-</tr>
-<tr class="even">
-<td><code>tanpa_dox_2</code></td>
-<td style="text-align: right;">1,236</td>
-<td style="text-align: right;">44%</td>
-<td style="text-align: right;">76 nt</td>
-<td>Lulus</td>
-<td>Adaptor/index TruSeq berlebih</td>
-</tr>
-<tr class="odd">
-<td><code>tanpa_dox_3</code></td>
-<td style="text-align: right;">1,039</td>
-<td style="text-align: right;">44–45%</td>
-<td style="text-align: right;">76 nt</td>
-<td>Lulus</td>
-<td>Adaptor/index TruSeq berlebih</td>
-</tr>
-<tr class="even">
-<td><code>dox_1</code></td>
-<td style="text-align: right;">1,481</td>
-<td style="text-align: right;">44%</td>
-<td style="text-align: right;">76 nt</td>
-<td>Lulus</td>
-<td>Adaptor/index TruSeq berlebih</td>
-</tr>
-<tr class="odd">
-<td><code>dox_2</code></td>
-<td style="text-align: right;">1,336</td>
-<td style="text-align: right;">44%</td>
-<td style="text-align: right;">76 nt</td>
-<td>Lulus</td>
-<td>Adaptor/index TruSeq berlebih</td>
-</tr>
-<tr class="even">
-<td><code>dox_3</code></td>
-<td style="text-align: right;">1,345</td>
-<td style="text-align: right;">44%</td>
-<td style="text-align: right;">76 nt</td>
-<td>Lulus</td>
-<td>Adaptor/index TruSeq berlebih</td>
-</tr>
-</tbody>
-</table>
-<p>Walaupun modul <em>Adapter Content</em> FastQC berstatus lulus, modul <em>Overrepresented sequences</em> menemukan sekuens Illumina/TruSeq berindeks pada kedua mate. Adaptor R1 memiliki barcode indeks delapan basa di tengahnya; pola ini perlu ditulis eksplisit dengan <code>N{8}</code> pada Cutadapt. Bila dibiarkan, adaptor dapat menurunkan <em>alignment rate</em> dan menghasilkan <em>soft clipping</em> yang tidak perlu. Karena itu, trimming dilakukan dari FASTQ mentah, bukan dari hasil trimming parsial.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>docs/data/rnaseq-gse94345</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/cutadapt"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc_trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc_trimmed"</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">cutadapt</span> <span class="at">--cores</span> 4 <span class="at">--minimum-length</span> 20 <span class="dt">\</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">-g</span> GATCGGAAGAGCACACGTCTGAACTCCAGTCACN{8}CTCGTATGCCGTCTTCTGCTTG <span class="dt">\</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">-G</span> GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG <span class="dt">\</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="dt">\</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span> <span class="dt">\</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span> <span class="dt">\</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/cutadapt/</span><span class="va">${s}</span><span class="st">.log"</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastqc</span> <span class="at">--threads</span> 4 <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc_trimmed"</span> <span class="dt">\</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--force</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc_trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc_trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/cutadapt"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Buka <code>docs/data/rnaseq-gse94345/_pipe/multiqc_trimmed/multiqc_report.html</code>. MultiQC pasca-trimming mencatat hasil berikut.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Sampel</th>
-<th style="text-align: right;">Read pairs awal</th>
-<th style="text-align: right;">Read pairs lolos</th>
-<th style="text-align: right;">Basa dipangkas</th>
-<th>Kualitas per-basa</th>
-<th>Adaptor tersisa</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>tanpa_dox_1</code></td>
-<td style="text-align: right;">798.158</td>
-<td style="text-align: right;">783.356</td>
-<td style="text-align: right;">2,0%</td>
-<td>Lulus</td>
-<td>Tidak terdeteksi</td>
-</tr>
-<tr class="even">
-<td><code>tanpa_dox_2</code></td>
-<td style="text-align: right;">1.235.768</td>
-<td style="text-align: right;">1.127.885</td>
-<td style="text-align: right;">8,9%</td>
-<td>Lulus</td>
-<td>Tidak terdeteksi</td>
-</tr>
-<tr class="odd">
-<td><code>tanpa_dox_3</code></td>
-<td style="text-align: right;">1.038.940</td>
-<td style="text-align: right;">971.246</td>
-<td style="text-align: right;">6,7%</td>
-<td>Lulus</td>
-<td>Tidak terdeteksi</td>
-</tr>
-<tr class="even">
-<td><code>dox_1</code></td>
-<td style="text-align: right;">1.481.499</td>
-<td style="text-align: right;">1.310.698</td>
-<td style="text-align: right;">11,7%</td>
-<td>Lulus</td>
-<td>Tidak terdeteksi</td>
-</tr>
-<tr class="odd">
-<td><code>dox_2</code></td>
-<td style="text-align: right;">1.336.414</td>
-<td style="text-align: right;">1.253.948</td>
-<td style="text-align: right;">6,3%</td>
-<td>Lulus</td>
-<td>Tidak terdeteksi</td>
-</tr>
-<tr class="even">
-<td><code>dox_3</code></td>
-<td style="text-align: right;">1.344.846</td>
-<td style="text-align: right;">1.198.163</td>
-<td style="text-align: right;">11,1%</td>
-<td>Lulus</td>
-<td>Tidak terdeteksi</td>
-</tr>
-</tbody>
-</table>
-<p>Dengan demikian, FASTQ pada <code>docs/data/rnaseq-gse94345/_pipe/trimmed/</code> menjadi masukan untuk alignment berikutnya. Peringatan <em>Overrepresented sequences</em> yang masih tersisa di FastQC pasca-trimming tidak lagi cocok dengan sekuens Illumina/TruSeq; evaluasi selanjutnya berfokus pada hasil alignment.</p>
-</section>
+<p>Tiga langkah berikut mengubah <em>reads</em> hasil QC menjadi <code>gene_count_matrix.csv</code>, yaitu matriks jumlah baca per gen per sampel yang menjadi masukan DESeq2. Jalankan perintah satu per satu agar setiap tahap dapat diperiksa.</p>
 <section id="membangun-index-dan-menyejajarkan-reads" class="level3">
 <h3 class="anchored" data-anchor-id="membangun-index-dan-menyejajarkan-reads">Membangun index dan menyejajarkan reads</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>docs/data/rnaseq-gse94345</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">READ_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed"</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># bangun indeks sekali saja dari referensi ragi</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">hisat2-build</span> <span class="at">-p</span> 4 <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.fa"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/idx"</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">hisat2</span> <span class="at">-p</span> 4 <span class="at">-x</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/idx"</span> <span class="dt">\</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">-1</span> <span class="st">"</span><span class="va">$READ_DIR</span><span class="st">/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="at">-2</span> <span class="st">"</span><span class="va">$READ_DIR</span><span class="st">/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span> <span class="dt">\</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam/</span><span class="va">${s}</span><span class="st">.bam"</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> index <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam/</span><span class="va">${s}</span><span class="st">.bam"</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span>docs/data/rnaseq-gse94345</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">READ_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># bangun indeks sekali saja dari referensi ragi</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">hisat2-build</span> <span class="at">-p</span> 4 <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.fa"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/idx"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># alignment</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">hisat2</span> <span class="at">-p</span> 4 <span class="at">-x</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/idx"</span> <span class="dt">\</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">-1</span> <span class="st">"</span><span class="va">$READ_DIR</span><span class="st">/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="at">-2</span> <span class="st">"</span><span class="va">$READ_DIR</span><span class="st">/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam/</span><span class="va">${s}</span><span class="st">.bam"</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> index <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam/</span><span class="va">${s}</span><span class="st">.bam"</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>hisat2-build</code> membangun indeks genom sekali saja. Tidak seperti data sintetis sebelumnya, kita memakai mode <em>spliced alignment</em> bawaan HISAT2 karena ragi adalah eukariota dengan intron.</p>
-<p>Hasil alignment untuk FASTQ hasil trimming sangat baik. Tingkat <em>mapped reads</em> berada pada 98,38–98,85%, sedangkan pasangan yang <em>properly paired</em> berada pada 94,77–96,60%. Nilai yang konsisten antar-sampel menunjukkan bahwa referensi dan orientasi pasangan reads sesuai; perbedaan kecil terutama mengikuti kedalaman sequencing, bukan kegagalan teknis.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Sampel</th>
-<th style="text-align: right;">Mapped reads</th>
-<th style="text-align: right;">Properly paired</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>tanpa_dox_1</code></td>
-<td style="text-align: right;">98,70%</td>
-<td style="text-align: right;">96,06%</td>
-</tr>
-<tr class="even">
-<td><code>tanpa_dox_2</code></td>
-<td style="text-align: right;">98,46%</td>
-<td style="text-align: right;">95,30%</td>
-</tr>
-<tr class="odd">
-<td><code>tanpa_dox_3</code></td>
-<td style="text-align: right;">98,38%</td>
-<td style="text-align: right;">94,77%</td>
-</tr>
-<tr class="even">
-<td><code>dox_1</code></td>
-<td style="text-align: right;">98,60%</td>
-<td style="text-align: right;">96,02%</td>
-</tr>
-<tr class="odd">
-<td><code>dox_2</code></td>
-<td style="text-align: right;">98,85%</td>
-<td style="text-align: right;">96,60%</td>
-</tr>
-<tr class="even">
-<td><code>dox_3</code></td>
-<td style="text-align: right;">98,61%</td>
-<td style="text-align: right;">95,90%</td>
-</tr>
-</tbody>
-</table>
-<p>Statistik ini dapat diperiksa kembali untuk setiap BAM dengan <code>samtools flagstat docs/data/rnaseq-gse94345/_pipe/bam/&lt;nama_sampel&gt;.bam</code>.</p>
+<p>Hasil alignment untuk FASTQ hasil trimming sangat baik. Overall alignment rate berkisar antara 96 - 97%, yang mengindikasikan bahwa referensi dan orientasi pasangan reads sesuai.</p>
+<p>Statistik lebih detail dapat diperiksa kembali untuk setiap .BAM file dengan menggunakan <code>samtools</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat docs/data/rnaseq-gse94345/_pipe/bam/<span class="op">&lt;</span>nama_sampel<span class="op">&gt;</span>.bam</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="kuantifikasi-ekspresi-dengan-stringtie" class="level3">
 <h3 class="anchored" data-anchor-id="kuantifikasi-ekspresi-dengan-stringtie">Kuantifikasi ekspresi dengan StringTie</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown"</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/sample_list.txt"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">"</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">stringtie</span> <span class="at">-e</span> <span class="at">-B</span> <span class="at">-p</span> 4 <span class="at">-G</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.gtf"</span> <span class="dt">\</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">/</span><span class="va">${s}</span><span class="st">.gtf"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam/</span><span class="va">${s}</span><span class="st">.bam"</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">'%s\t%s\n'</span> <span class="st">"</span><span class="va">$s</span><span class="st">"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">/</span><span class="va">${s}</span><span class="st">.gtf"</span> <span class="op">&gt;&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/sample_list.txt"</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Opsi <code>-e -B</code> membuat StringTie hanya mengkuantifikasi transkrip yang sudah ada pada anotasi referensi (<code>-G</code>) lalu menulis berkas Ballgown yang dibutuhkan tahap berikutnya. Pendekatan ini sesuai untuk genom yang sudah teranotasi baik karena kita tidak perlu merakit transkrip baru.</p>
+<p>Alignment memberi tahu kita lokasi setiap read pada genom, tetapi belum memberi tabel jumlah read per gen. Pada tahap ini, StringTie membaca BAM terurut dari tiap sampel bersama anotasi GTF. Ia lalu memperkirakan dukungan read untuk setiap transkrip dan gen yang sudah tercatat pada referensi. Hasilnya masih terpisah, satu GTF untuk satu sampel. Itu wajar, karena tiap library memang diukur sendiri-sendiri lebih dahulu.</p>
+<p>Perintah berikut menjalankan kuantifikasi untuk keenam BAM. <code>sample_list.txt</code> dibuat bersamaan agar tahap berikutnya mengetahui nama sampel dan lokasi GTF masing-masing. Satu baris berisi <code>nama_sampel</code>, tab, lalu jalur GTF.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">:</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/sample_list.txt"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="st">"</span><span class="va">$DD</span><span class="st">/metadata.csv"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span><span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">stringtie</span> <span class="at">-e</span> <span class="at">-B</span> <span class="at">-p</span> 4 <span class="at">-G</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/ref/Saccharomyces_cerevisiae.gtf"</span> <span class="dt">\</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">/</span><span class="va">${s}</span><span class="st">.gtf"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/bam/</span><span class="va">${s}</span><span class="st">.bam"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">'%s\t%s\n'</span> <span class="st">"</span><span class="va">$s</span><span class="st">"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/ballgown/</span><span class="va">${s}</span><span class="st">/</span><span class="va">${s}</span><span class="st">.gtf"</span> <span class="op">&gt;&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/sample_list.txt"</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Parameter pada perintah tersebut memiliki pekerjaan yang berbeda:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Fungsi pada tutorial ini</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-G</code></td>
+<td>Memberi anotasi GTF ragi sebagai daftar gen dan transkrip yang akan dikuantifikasi.</td>
+</tr>
+<tr class="even">
+<td><code>-e</code></td>
+<td>Membatasi StringTie pada transkrip dalam anotasi; tool tidak merakit transkrip atau isoform baru.</td>
+</tr>
+<tr class="odd">
+<td><code>-B</code></td>
+<td>Menulis berkas tambahan berformat Ballgown di folder tiap sampel. Berkas ini berguna bila hasil ingin diperiksa dengan Ballgown.</td>
+</tr>
+<tr class="even">
+<td><code>-p 4</code></td>
+<td>Memakai empat thread.</td>
+</tr>
+<tr class="odd">
+<td><code>-o</code></td>
+<td>Menentukan GTF keluaran yang menyimpan hasil kuantifikasi sampel tersebut.</td>
+</tr>
+</tbody>
+</table>
+<p>Kombinasi <code>-G</code> dan <code>-e</code> cocok untuk contoh ini karena genom ragi sudah dianotasi dengan baik dan tujuan kita adalah membandingkan ekspresi gen yang diketahui. Untuk spesies dengan anotasi belum lengkap, perakitan transkrip baru bisa menjadi analisis tersendiri dan perlu dinilai lebih hati-hati.</p>
 </section>
 <section id="menyusun-matriks-hitungan-dengan-prepde" class="level3">
 <h3 class="anchored" data-anchor-id="menyusun-matriks-hitungan-dengan-prepde">Menyusun matriks hitungan dengan prepDE</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">prepDE.py</span> <span class="at">-i</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/sample_list.txt"</span> <span class="dt">\</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-g</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/gene_count_matrix.csv"</span> <span class="at">-t</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/transcript_count_matrix.csv"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sekarang ada enam GTF, tetapi DESeq2 memerlukan satu matriks, yang mana baris adalah gen, kolom adalah sampel, dan setiap sel berisi count. <code>prepDE.py</code>, yang dipasang bersama StringTie, membaca GTF dari <code>sample_list.txt</code> lalu menerjemahkan informasi <em>coverage</em> StringTie menjadi perkiraan count pada tingkat gen dan transkrip. Tool ini tidak membaca ulang BAM; karena itu, daftar GTF dan nama sampel harus benar sejak langkah sebelumnya.</p>
+<p>Perintah berikut menghasilkan dua matriks. Untuk analisis diferensial pada tutorial ini, gunakan matriks gen. Matriks transkrip tetap disimpan karena berguna bila suatu saat ingin memeriksa ekspresi isoform.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">prepDE.py</span> <span class="at">-i</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/sample_list.txt"</span> <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-g</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/gene_count_matrix.csv"</span> <span class="at">-t</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/transcript_count_matrix.csv"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>-i</code> menerima daftar sampel dan GTF; <code>-g</code> menentukan keluaran count per gen; sedangkan <code>-t</code> menentukan keluaran count per transkrip. Jangan menormalisasi kedua matriks ini dengan CPM, TPM, atau FPKM sebelum memakainya di DESeq2. DESeq2 membutuhkan count integer dan menghitung faktor normalisasinya sendiri untuk mengatasi perbedaan kedalaman sequencing.</p>
 <p>Validasi berikut dijalankan dengan R. Jika ada count negatif, non-integer, atau jumlah kolom selain enam, <code>stopifnot()</code> menghentikan proses; bila kode menghasilkan tabel di bawah, matriks lolos pemeriksaan.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"data/rnaseq-gse94345/gene_count_matrix.csv"</span>,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">ncol</span>(x) <span class="sc">==</span> <span class="dv">6</span>L, <span class="fu">all</span>(x <span class="sc">&gt;=</span> <span class="dv">0</span>), <span class="fu">all</span>(x <span class="sc">==</span> <span class="fu">round</span>(x)))</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">jumlah_gen =</span> <span class="fu">nrow</span>(x),</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">jumlah_sampel =</span> <span class="fu">ncol</span>(x),</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">count_minimum =</span> <span class="fu">min</span>(x),</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">count_maksimum =</span> <span class="fu">max</span>(x),</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">proporsi_count_nol_persen =</span> <span class="fu">round</span>(<span class="fu">mean</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Baca matriks count dan periksa dimensi serta rentang nilainya.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"data/rnaseq-gse94345/gene_count_matrix.csv"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">ncol</span>(x) <span class="sc">==</span> <span class="dv">6</span>L, <span class="fu">all</span>(x <span class="sc">&gt;=</span> <span class="dv">0</span>), <span class="fu">all</span>(x <span class="sc">==</span> <span class="fu">round</span>(x)))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">jumlah_gen =</span> <span class="fu">nrow</span>(x),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">jumlah_sampel =</span> <span class="fu">ncol</span>(x),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">count_minimum =</span> <span class="fu">min</span>(x),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">count_maksimum =</span> <span class="fu">max</span>(x),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">proporsi_count_nol_persen =</span> <span class="fu">round</span>(<span class="fu">mean</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  jumlah_gen jumlah_sampel count_minimum count_maksimum
 1       7127             6             0         348559
@@ -1017,87 +773,85 @@ window.Quarto = {
 1       7127             6             0         348559
   proporsi_count_nol_persen
 1                     11.08</code></pre>
-<p>Hasil akhirnya adalah <code>gene_count_matrix.csv</code>, yaitu matriks jumlah baca per gen kali sampel yang benar-benar berasal dari enam FASTQ publik. Pada eksekusi tutorial ini, matriks berisi <strong>7.127 gen × 6 sampel</strong>; semua nilai adalah count integer non-negatif. <code>prepDE.py</code> menulis ID sebagai <code>ORF|nama_gen</code> (misalnya <code>YAL067C|SEO1</code>). Bentuk ini dapat langsung digunakan pada DESeq2; untuk <code>org.Sc.sgd.db</code>, gunakan bagian ORF sebelum tanda <code>|</code>. Matriks ini menjadi masukan DESeq2.</p>
+<p>Hasil akhir yang kita pakai adalah <code>gene_count_matrix.csv</code>, yaitu matriks jumlah baca per gen kali sampel yang benar-benar berasal dari enam FASTQ publik. Pada eksekusi tutorial ini, matriks berisi <strong>7.127 gen × 6 sampel</strong>; semua nilainya integer non-negatif. Nilai nol pada sekitar 11% sel juga wajar: tidak setiap gen terdeteksi pada setiap library.</p>
+<p><code>prepDE.py</code> menulis ID gen sebagai <code>ORF|nama_gen</code>, misalnya <code>YAL067C|SEO1</code>. Bentuk itu dapat langsung digunakan sebagai nama baris pada DESeq2. Saat memakai <code>org.Sc.sgd.db</code> untuk anotasi, ambil bagian ORF sebelum tanda <code>|</code>, karena basis data tersebut mengenali <code>YAL067C</code>, bukan gabungan ID dan nama gen. Matriks ini menjadi masukan tahap analisis diferensial berikutnya.</p>
 </section>
 </section>
 <section id="analisis-perbedaan-ekspresi" class="level2">
 <h2 class="anchored" data-anchor-id="analisis-perbedaan-ekspresi">Analisis perbedaan ekspresi</h2>
-<p>Setelah memperoleh <code>gene_count_matrix.csv</code> dari tahap sebelumnya, kita sampai pada inti studi RNA-seq, yaitu <strong>analisis ekspresi diferensial</strong> (<em>differential expression</em>, DE). Tujuannya adalah menemukan gen-gen yang ekspresinya berubah signifikan antara <code>dox</code> dan <code>tanpa_dox</code> pada ragi. Gen-gen ini memberi petunjuk tentang respons transkriptom terhadap perlakuan pada studi tersebut.</p>
-<p>Kita akan menggunakan <code>DESeq2</code>, salah satu paket R paling banyak digunakan untuk DE. <code>DESeq2</code> memodelkan <em>count</em> dengan distribusi <em>negative binomial</em>, melakukan normalisasi antar-sampel (mengoreksi perbedaan <em>sequencing depth</em>), serta menstabilkan estimasi <em>dispersion</em> sehingga andal walaupun jumlah replikasi terbatas.</p>
-<p>Mulai dari sini analisis memakai matriks hitungan nyata yang baru dibuat dari FASTQ melalui HISAT2, StringTie, dan prepDE. Kode berikut dieksekusi saat halaman dibangun setelah data lokal tersedia.</p>
+<p>Kita akan membandingkan ekspresi gen pada kondisi <code>dox</code> terhadap <code>tanpa_dox</code>. Dalam desain GSE94345, doxycycline menekan ekspresi fragmen aktif SPT23p90. Karena <code>tanpa_dox</code> dipakai sebagai referensi, <code>log2FoldChange</code> positif berarti ekspresi lebih tinggi ketika SPT23p90 ditekan, sedangkan nilai negatif berarti ekspresi lebih rendah.</p>
+<p>DESeq2 bekerja langsung dengan <em>count</em> integer. Paket ini menghitung faktor normalisasi antar-sampel, memodelkan variasi <em>count</em> dengan distribusi binomial negatif, lalu menguji perbedaan kedua kondisi. Gen dengan total <em>count</em> kurang dari 10 dibuang agar baris yang hampir tidak memiliki informasi tidak ikut diuji.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"data/rnaseq-gse94345/gene_count_matrix.csv"</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rnaseq-gse94345/metadata.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">sort</span>(<span class="fu">colnames</span>(counts)), <span class="fu">sort</span>(<span class="fu">rownames</span>(meta))))</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> counts[, <span class="fu">rownames</span>(meta), drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(counts <span class="sc">&gt;=</span> <span class="dv">0</span>), <span class="fu">all</span>(counts <span class="sc">==</span> <span class="fu">round</span>(counts)))</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"tanpa_dox"</span>, <span class="st">"dox"</span>))</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> counts, <span class="at">colData =</span> meta, <span class="at">design =</span> <span class="sc">~</span> condition)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[<span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;=</span> <span class="dv">10</span>, ]</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">"condition"</span>, <span class="st">"dox"</span>, <span class="st">"tanpa_dox"</span>))</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>deg <span class="ot">&lt;-</span> <span class="fu">subset</span>(res, <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(log2FoldChange) <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">as.data.frame</span>(res), <span class="st">"data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv"</span>,</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">jumlah_DEG =</span> <span class="fu">nrow</span>(deg),</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">naik_pada_dox =</span> <span class="fu">sum</span>(deg<span class="sc">$</span>log2FoldChange <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">turun_pada_dox =</span> <span class="fu">sum</span>(deg<span class="sc">$</span>log2FoldChange <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Muat count dan metadata, lalu samakan urutan sampelnya.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="st">"data/rnaseq-gse94345/gene_count_matrix.csv"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rnaseq-gse94345/metadata.csv"</span>, <span class="at">row.names =</span> <span class="dv">1</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">sort</span>(<span class="fu">colnames</span>(counts)), <span class="fu">sort</span>(<span class="fu">rownames</span>(meta))))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> counts[, <span class="fu">rownames</span>(meta), drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(counts <span class="sc">&gt;=</span> <span class="dv">0</span>), <span class="fu">all</span>(counts <span class="sc">==</span> <span class="fu">round</span>(counts)))</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Jadikan tanpa_dox sebagai referensi agar arah log2 fold change mudah dibaca.</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"tanpa_dox"</span>, <span class="st">"dox"</span>))</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Saring gen dengan count sangat rendah, lalu pasang model DESeq2.</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> counts, <span class="at">colData =</span> meta, <span class="at">design =</span> <span class="sc">~</span> condition)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[<span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;=</span> <span class="dv">10</span>, ]</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">"condition"</span>, <span class="st">"dox"</span>, <span class="st">"tanpa_dox"</span>))</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Pilih DEG dengan ambang statistik dan besar perubahan yang sama-sama ketat.</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>deg <span class="ot">&lt;-</span> <span class="fu">subset</span>(res, <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(log2FoldChange) <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">as.data.frame</span>(res), <span class="st">"data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">jumlah_DEG =</span> <span class="fu">nrow</span>(deg),</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">naik_pada_dox =</span> <span class="fu">sum</span>(deg<span class="sc">$</span>log2FoldChange <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">turun_pada_dox =</span> <span class="fu">sum</span>(deg<span class="sc">$</span>log2FoldChange <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  jumlah_DEG naik_pada_dox turun_pada_dox
 1        142            40            102</code></pre>
 </div>
 </div>
-<p>Keluaran R pada data tutorial ini:</p>
-<pre class="text r-output terminal-output"><code>  jumlah_DEG naik_pada_dox turun_pada_dox
-1        142            40            102</code></pre>
-<p>Ringkasan ini memberi tahu berapa banyak gen yang naik (<code>LFC &gt; 0</code>) dan turun (<code>LFC &lt; 0</code>) secara signifikan pada <code>dox</code> dibanding <code>tanpa_dox</code>. Pada data ini, gen yang menurun lebih banyak daripada yang meningkat (102 versus 40). Ini adalah pola respons pada eksperimen ragi tersebut, bukan kesimpulan biologis untuk organisme akuakultur. Tabel lengkap disimpan lokal pada <code>docs/data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv</code>.</p>
-<section id="interpretasi-gen-apa-yang-paling-berubah" class="level3">
-<h3 class="anchored" data-anchor-id="interpretasi-gen-apa-yang-paling-berubah">Interpretasi: gen apa yang paling berubah?</h3>
-<p>Sepuluh gen dengan <code>padj</code> terkecil pada kontras ini didominasi oleh dua kelompok fungsi yang berbeda arah perubahannya:</p>
-<ul>
-<li><strong>Gen adhesi dan dinding sel yang turun tajam pada <code>dox</code></strong>: <code>FLO1</code> (flokulin), <code>AGA1</code> (subunit a-agglutinin), <code>HPF1</code>, <code>FIG2</code>, <code>ZPS1</code>, <code>CTS1</code>, dan <code>PRY1</code> semuanya turun 2–12 kali lipat (<code>log2FoldChange</code> antara -1 dan -3,6) dengan <code>padj</code> sangat kecil (hingga <span class="math inline">\(10^{-90}\)</span> untuk <code>AGA1</code>). Pola ini sejalan dengan studi sumber GSE94345 yang meneliti regulasi <strong>flokulasi</strong> lewat jalur <code>spt23p90</code>: menekan galur ini dengan doxycycline menekan pula program transkripsi flokulasi dan adhesi dinding sel.</li>
-<li><strong>Gen metabolisme sentral yang justru naik pada <code>dox</code></strong>: <code>ADH1</code> dan <code>MET17</code> naik dengan <code>padj</code> kecil, menunjukkan pergeseran metabolisme redoks dan asam amino-belerang yang menyertai perubahan flokulasi tersebut.</li>
-</ul>
-<p>Pola berlawanan arah pada dua kelompok fungsi ini adalah petunjuk awal bahwa perubahan bukan sekadar derau statistik, melainkan respons transkripsi yang terkoordinasi – sesuatu yang akan diuji lebih lanjut lewat GO dan KEGG di bagian akhir.</p>
-<p>Beberapa kolom penting pada objek <code>res</code>:</p>
-<ul>
-<li><code>log2FoldChange</code>: besar perubahan ekspresi dalam skala log basis 2. Nilai <code>+1</code> berarti ekspresi <strong>naik 2 kali lipat</strong> pada <code>dox</code>, <code>-1</code> berarti <strong>turun setengahnya</strong>.</li>
-<li><code>pvalue</code>: <em>p-value</em> mentah hasil uji Wald untuk tiap gen.</li>
-<li><code>padj</code>: <em>p-value</em> yang telah dikoreksi untuk <em>multiple testing</em> dengan metode Benjamini-Hochberg (mengontrol <em>false discovery rate</em>). <strong>Selalu gunakan <code>padj</code>, bukan <code>pvalue</code> mentah</strong>, untuk menentukan signifikansi.</li>
-</ul>
-<p>Lazimnya, sebuah gen disebut <em>differentially expressed</em> (DEG) jika memenuhi dua syarat sekaligus: signifikan secara statistik (<code>padj &lt; 0.05</code>) <strong>dan</strong> punya besar perubahan yang berarti secara biologis (<code>|log2FoldChange| &gt; 1</code>).</p>
+<p>Penyaringan menyisakan 6.179 dari 7.127 gen. DESeq2 menghasilkan <code>padj</code> untuk 5.340 gen setelah <em>independent filtering</em>. Dengan ambang <code>padj &lt; 0.05</code> dan <code>|log2FoldChange| &gt; 1</code>, terdapat 142 DEG: 40 lebih tinggi dan 102 lebih rendah pada <code>dox</code>. Tabel lengkap ditulis ke <code>docs/data/rnaseq-gse94345/deseq2_dox_vs_tanpa_dox.csv</code>.</p>
+<p><code>log2FoldChange</code> menyatakan besar perubahan pada skala log basis 2. Nilai <code>+1</code> setara dengan kenaikan dua kali, sedangkan <code>-1</code> setara dengan penurunan menjadi setengah. <code>pvalue</code> adalah hasil uji per gen; <code>padj</code> sudah memperhitungkan banyaknya gen yang diuji dengan koreksi Benjamini-Hochberg. Karena itu, penentuan DEG memakai <code>padj</code>, bukan <code>pvalue</code> mentah.</p>
+<section id="gen-dengan-bukti-statistik-paling-kuat" class="level3">
+<h3 class="anchored" data-anchor-id="gen-dengan-bukti-statistik-paling-kuat">Gen dengan bukti statistik paling kuat</h3>
+<p>Sebagian besar gen dengan <code>padj</code> terkecil bergerak ke arah negatif. <code>AGA1</code> turun sekitar 6,8 kali pada <code>dox</code> (<code>log2FoldChange = -2,76</code>), <code>FLO1</code> turun sekitar 12,1 kali (<code>-3,60</code>), dan <code>HPF1</code> turun sekitar 3,9 kali (<code>-1,95</code>). <code>POR1</code>, <code>HXK1</code>, <code>SAG1</code>, dan <code>ADH4</code> juga termasuk gen dengan <code>padj</code> terkecil dan semuanya lebih rendah pada <code>dox</code>. Sebaliknya, <code>ADH1</code> naik hampir empat kali (<code>log2FoldChange = 2,00</code>).</p>
+<p>Arah perubahan <code>FLO1</code> sesuai dengan <a href="https://doi.org/10.1016/j.ymben.2017.03.002">studi sumber</a>: ketika fragmen aktif SPT23p90 ditekan oleh doxycycline, ekspresi gen flokulasi ini ikut turun. Hasil DESeq2 menunjukkan asosiasi yang kuat pada perbandingan ini, tetapi tidak cukup untuk menyatakan bahwa SPT23p90 mengatur langsung setiap gen dalam daftar tersebut.</p>
 </section>
 <section id="memvisualisasikan-hasil-dengan-volcano-plot" class="level3">
 <h3 class="anchored" data-anchor-id="memvisualisasikan-hasil-dengan-volcano-plot">Memvisualisasikan hasil dengan volcano plot</h3>
-<p>Cara paling umum untuk meringkas hasil DE adalah <strong>volcano plot</strong>, yaitu sebar antara besarnya perubahan (<code>log2FoldChange</code> pada sumbu-x) dan signifikansi (<code>-log10(p-value)</code> pada sumbu-y). Disebut “<em>volcano</em>” karena bentuk sebarannya menyerupai semburan gunung berapi: gen yang paling menarik (perubahan besar <strong>dan</strong> sangat signifikan) terlempar ke pojok kiri-atas dan kanan-atas.</p>
-<p>Volcano plot di bawah ini dibuat langsung dari objek <code>res</code> hasil data nyata.</p>
+<p>Volcano plot mempertemukan besar perubahan pada sumbu-x dengan kekuatan bukti statistik pada sumbu-y. Sumbu-y memakai <code>padj</code>, sama dengan nilai yang dipakai untuk memilih DEG, sehingga garis ambang dan warna titik tidak menyampaikan dua ukuran yang berbeda.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Lihat kode R volcano plot</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(ggplot2); <span class="fu">library</span>(dplyr); <span class="fu">library</span>(ggrepel)})</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(res)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>res_df<span class="sc">$</span>gene <span class="ot">&lt;-</span> <span class="fu">rownames</span>(res_df)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> res_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">status =</span> <span class="fu">case_when</span>(</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> log2FoldChange <span class="sc">&gt;</span>  <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Naik pada dox"</span>,</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> log2FoldChange <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"Turun pada dox"</span>,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                                             <span class="sc">~</span> <span class="st">"Tidak signifikan"</span>))</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> res_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(status <span class="sc">!=</span> <span class="st">"Tidak signifikan"</span>) <span class="sc">%&gt;%</span> <span class="fu">slice_min</span>(padj, <span class="at">n =</span> <span class="dv">8</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(res_df, <span class="fu">aes</span>(log2FoldChange, <span class="sc">-</span><span class="fu">log10</span>(pvalue), <span class="at">colour =</span> status)) <span class="sc">+</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Naik pada dox"</span> <span class="ot">=</span> <span class="st">"#c0392b"</span>,</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Turun pada dox"</span> <span class="ot">=</span> <span class="st">"#2c7fb8"</span>,</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Tidak signifikan"</span> <span class="ot">=</span> <span class="st">"grey78"</span>), <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data =</span> top, <span class="fu">aes</span>(<span class="at">label =</span> gene), <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max.overlaps =</span> <span class="dv">20</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(log[<span class="dv">2</span>]<span class="sc">~</span><span class="st">"fold change (dox vs tanpa_dox)"</span>),</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="sc">-</span>log[<span class="dv">10</span>]<span class="sc">~</span><span class="st">"(p-value)"</span>)) <span class="sc">+</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>({<span class="fu">library</span>(ggplot2); <span class="fu">library</span>(dplyr); <span class="fu">library</span>(ggrepel)})</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Kelompokkan gen dengan ambang yang sama seperti pada pemilihan DEG.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(res)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>res_df<span class="sc">$</span>gene <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*[|]"</span>, <span class="st">""</span>, <span class="fu">rownames</span>(res_df))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>res_df <span class="ot">&lt;-</span> res_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> log2FoldChange <span class="sc">&gt;</span>  <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Naik pada dox"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> log2FoldChange <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"Turun pada dox"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                                             <span class="sc">~</span> <span class="st">"Tidak signifikan"</span>))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Beri label pada delapan DEG dengan padj terkecil.</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> res_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(status <span class="sc">!=</span> <span class="st">"Tidak signifikan"</span>) <span class="sc">%&gt;%</span> <span class="fu">slice_min</span>(padj, <span class="at">n =</span> <span class="dv">8</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot besar perubahan terhadap padj agar ambang visual konsisten.</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(res_df, <span class="fu">aes</span>(log2FoldChange, <span class="sc">-</span><span class="fu">log10</span>(padj), <span class="at">colour =</span> status)) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Naik pada dox"</span> <span class="ot">=</span> <span class="st">"#c0392b"</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Turun pada dox"</span> <span class="ot">=</span> <span class="st">"#2c7fb8"</span>,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"Tidak signifikan"</span> <span class="ot">=</span> <span class="st">"grey78"</span>), <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data =</span> top, <span class="fu">aes</span>(<span class="at">label =</span> gene), <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max.overlaps =</span> <span class="dv">20</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(log[<span class="dv">2</span>]<span class="sc">~</span><span class="st">"fold change (dox vs tanpa_dox)"</span>),</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="sc">-</span>log[<span class="dv">10</span>]<span class="sc">~</span><span class="st">"(adjusted p-value)"</span>)) <span class="sc">+</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-volcano" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1106,20 +860,20 @@ window.Quarto = {
 <img src="work-RNA-seq_files/figure-html/fig-volcano-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Gambar&nbsp;1: Volcano plot ekspresi diferensial GSE94345. Tiap titik satu gen. Titik merah naik pada dox dan biru turun pada dox dibanding tanpa_dox; garis putus-putus menandai ambang |log2FC| &gt; 1 dan padj &lt; 0.05.
+Gambar&nbsp;1: Volcano plot GSE94345. Merah menunjukkan gen yang lebih tinggi pada dox, sedangkan biru menunjukkan gen yang lebih rendah. Garis putus-putus menandai |log2FC| &gt; 1 dan padj &lt; 0,05.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Cara membacanya: makin ke <strong>kanan/kiri</strong>, makin besar perubahan ekspresinya; makin ke <strong>atas</strong>, makin meyakinkan secara statistik. Gen di kanan-atas lebih tinggi pada <code>dox</code>, sedangkan gen di kiri-atas lebih tinggi pada <code>tanpa_dox</code>. Daftar DEG inilah yang kemudian dibawa ke analisis fungsi gen.</p>
-<p>Pada plot ini, delapan label dengan <code>padj</code> terkecil terkumpul di <strong>pojok kiri-atas</strong> – yaitu <code>FLO1</code>, <code>AGA1</code>, <code>HPF1</code>, <code>FIG2</code>, <code>ZPS1</code>, <code>CTS1</code>, <code>PRY1</code>, dan <code>POR1</code> – yang berarti seluruhnya turun kuat pada <code>dox</code> sekaligus sangat signifikan secara statistik. Tidak ada label DEG yang berada jauh di pojok kanan-atas dengan besaran serupa; ini konsisten dengan hasil sebelumnya bahwa gen yang turun lebih banyak dan lebih ekstrem daripada gen yang naik pada kontras ini.</p>
+<p>Titik di sisi kanan lebih tinggi pada <code>dox</code>; titik di sisi kiri lebih tinggi pada <code>tanpa_dox</code>. Dari delapan DEG berlabel, tujuh berada di sisi kiri: <code>AGA1</code>, <code>FLO1</code>, <code>HPF1</code>, <code>POR1</code>, <code>HXK1</code>, <code>SAG1</code>, dan <code>ADH4</code>. <code>ADH1</code> berada di sisi kanan. Sebaran ini sejalan dengan ringkasan DEG, yaitu lebih banyak gen yang turun daripada naik pada <code>dox</code>.</p>
 </section>
 <section id="ma-plot" class="level3">
 <h3 class="anchored" data-anchor-id="ma-plot">MA plot</h3>
-<p><em>MA plot</em> memetakan rata-rata ekspresi tiap gen pada sumbu mendatar terhadap <em>log2 fold change</em> pada sumbu tegak. Plot ini berguna untuk melihat apakah gen yang berubah tersebar di seluruh rentang ekspresi atau hanya terpusat pada gen ber-ekspresi tinggi, sekaligus memperlihatkan pola penyusutan estimasi pada gen ber-count rendah.</p>
+<p>MA plot menempatkan rata-rata <em>count</em> ternormalisasi pada sumbu mendatar dan <code>log2FoldChange</code> pada sumbu tegak. Plot ini membantu memeriksa apakah sinyal hanya berasal dari gen dengan <em>count</em> rendah atau juga muncul pada gen yang terukur dengan baik.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>DESeq2<span class="sc">::</span><span class="fu">plotMA</span>(res, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="at">main =</span> <span class="st">"dox vs tanpa_dox"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Warnai gen dengan padj &lt; 0,05; ambang besar perubahan belum diterapkan di sini.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>DESeq2<span class="sc">::</span><span class="fu">plotMA</span>(res, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="at">main =</span> <span class="st">"dox vs tanpa_dox"</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-ma" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1127,23 +881,25 @@ Gambar&nbsp;1: Volcano plot ekspresi diferensial GSE94345. Tiap titik satu gen. 
 <img src="work-RNA-seq_files/figure-html/fig-ma-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Gambar&nbsp;2: MA plot GSE94345 untuk dox versus tanpa_dox. Sumbu mendatar rata-rata count ternormalisasi, sumbu tegak log2 fold change. Titik biru adalah gen yang signifikan secara statistik.
+Gambar&nbsp;2: MA plot GSE94345 untuk dox versus tanpa_dox. Titik biru memiliki padj &lt; 0,05; garis horizontal menunjukkan tidak ada perubahan ekspresi.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Titik biru yang menyebar jauh dari garis nol adalah gen yang ekspresinya berbeda antar kondisi. Plot ini juga memperlihatkan apakah sinyal terutama muncul pada gen dengan ekspresi sangat rendah atau tersebar di sepanjang rentang ekspresi.</p>
-<p>Pada data ini, titik biru muncul di seluruh rentang rata-rata count, termasuk pada gen ber-ekspresi tinggi seperti <code>ZPS1</code> dan <code>POR1</code> (baseMean di atas 1.000). Ini menandakan bahwa perbedaan <code>dox</code> versus <code>tanpa_dox</code> bukan artefak gen ber-count rendah yang bervariansi besar, melainkan sinyal yang juga terdeteksi pada gen dengan cakupan baca tinggi dan estimasi <em>fold change</em> yang stabil.</p>
+<p>Sebanyak 448 gen memiliki <code>padj &lt; 0.05</code> dan berwarna biru. Setelah syarat <code>|log2FoldChange| &gt; 1</code> diterapkan, jumlahnya menjadi 142 DEG. Dari 142 DEG tersebut, 13 memiliki <code>baseMean</code> di atas 1.000 dan hanya satu yang memiliki <code>baseMean</code> di bawah 10. Sinyal tetap terlihat pada gen yang terukur dengan <em>count</em> tinggi.</p>
 </section>
 <section id="pca-antar-sampel" class="level3">
 <h3 class="anchored" data-anchor-id="pca-antar-sampel">PCA antar sampel</h3>
-<p>Sebelum menelaah gen satu per satu, kita lihat dulu gambaran besarnya dengan <em>Principal Component Analysis</em> pada nilai ekspresi yang sudah distabilkan variansinya. Jika kedua kondisi berbeda secara global, sampel <code>tanpa_dox</code> dan <code>dox</code> akan cenderung membentuk dua gerombol terpisah.</p>
+<p>PCA merangkum pola ekspresi seluruh sampel setelah variansinya distabilkan. Sampel yang berdekatan memiliki profil ekspresi yang lebih mirip.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>vsd <span class="ot">&lt;-</span> <span class="fu">varianceStabilizingTransformation</span>(dds, <span class="at">blind =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(vsd, <span class="at">intgroup =</span> <span class="st">"condition"</span>) <span class="sc">+</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">tanpa_dox =</span> <span class="st">"#2c7fb8"</span>, <span class="at">dox =</span> <span class="st">"#c0392b"</span>)) <span class="sc">+</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stabilkan variansi sebelum menghitung PCA antar-sampel.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>vsd <span class="ot">&lt;-</span> <span class="fu">varianceStabilizingTransformation</span>(dds, <span class="at">blind =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Warna menunjukkan kondisi eksperimen.</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(vsd, <span class="at">intgroup =</span> <span class="st">"condition"</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">tanpa_dox =</span> <span class="st">"#2c7fb8"</span>, <span class="at">dox =</span> <span class="st">"#c0392b"</span>)) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-pca" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1151,34 +907,37 @@ Gambar&nbsp;2: MA plot GSE94345 untuk dox versus tanpa_dox. Sumbu mendatar rata-
 <img src="work-RNA-seq_files/figure-html/fig-pca-1.png" class="img-fluid figure-img" width="624">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Gambar&nbsp;3: PCA enam sampel GSE94345 berdasarkan ekspresi tervariance-stabilized. Pemisahan dox dan tanpa_dox menandakan perbedaan profil ekspresi global.
+Gambar&nbsp;3: PCA enam sampel GSE94345 setelah variance-stabilizing transformation. Ketiga replikasi terpisah menurut kondisi pada PC1.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Posisi keenam sampel menunjukkan seberapa konsisten replikasi biologis dan seberapa besar variasi global yang terkait dengan kondisi. Interpretasikan pemisahan kelompok bersama informasi QC dan desain eksperimen, bukan hanya dari satu plot.</p>
-<p>Pada data ini, PC1 menjelaskan sekitar 55% keragaman total dan memisahkan kedua kondisi secara bersih: ketiga replikasi <code>tanpa_dox</code> berada pada nilai PC1 negatif, sedangkan ketiga replikasi <code>dox</code> berada pada nilai PC1 positif, tanpa tumpang tindih. PC2 (sekitar 15% keragaman) menyebar dalam tiap kelompok dan lebih mencerminkan variasi antar-replikasi biologis daripada efek perlakuan. Pemisahan bersih pada PC1 ini konsisten dengan jumlah DEG yang besar (142 gen) dan <code>padj</code> yang sangat kecil pada gen teratas.</p>
+<p>PC1 menjelaskan 76,2% variasi dan memisahkan kedua kondisi tanpa tumpang tindih. PC2 menjelaskan 11,1% variasi. Replikasi pertama dan kedua berdekatan dalam masing-masing kondisi, sedangkan replikasi ketiga bergeser pada PC2 tetapi tetap berada bersama kelompok kondisinya. Pola ini mendukung adanya perbedaan ekspresi global antara <code>dox</code> dan <code>tanpa_dox</code>; PCA sendiri tidak menunjukkan gen mana yang menyebabkan pemisahan tersebut.</p>
 </section>
 <section id="heatmap-gen-paling-diferensial" class="level3">
 <h3 class="anchored" data-anchor-id="heatmap-gen-paling-diferensial">Heatmap gen paling diferensial</h3>
-<p>Terakhir, kita tampilkan 25 gen dengan <em>padj</em> terkecil sebagai <em>heatmap</em>. Nilai ekspresi tervariance-stabilized dipusatkan per gen sehingga warna menunjukkan apakah suatu gen relatif lebih tinggi (merah) atau lebih rendah (biru) pada tiap sampel.</p>
+<p>Heatmap berikut menampilkan 25 gen dengan <code>padj</code> terkecil. Nilai setiap gen dikurangi dengan rerata gen tersebut. Warna karena itu menunjukkan ekspresi relatif antar-sampel, bukan perbedaan absolut antar-gen.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>topg <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">rownames</span>(res[<span class="fu">order</span>(res<span class="sc">$</span>padj, <span class="at">na.last =</span> <span class="cn">NA</span>), ]), <span class="dv">25</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">assay</span>(vsd)[topg, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> mat <span class="sc">-</span> <span class="fu">rowMeans</span>(mat)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">as.table</span>(<span class="fu">as.matrix</span>(mat)))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(long) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"gene"</span>, <span class="st">"sample"</span>, <span class="st">"z"</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta[<span class="fu">as.character</span>(long<span class="sc">$</span>sample), <span class="st">"condition"</span>], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"tanpa_dox"</span>, <span class="st">"dox"</span>))</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>gene  <span class="ot">&lt;-</span> <span class="fu">factor</span>(long<span class="sc">$</span>gene, <span class="at">levels =</span> <span class="fu">rev</span>(topg))</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(long, <span class="fu">aes</span>(sample, gene, <span class="at">fill =</span> z)) <span class="sc">+</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> condition, <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">space =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#2c7fb8"</span>, <span class="at">mid =</span> <span class="st">"#f7f7f7"</span>, <span class="at">high =</span> <span class="st">"#c0392b"</span>, <span class="at">name =</span> <span class="st">"z-score"</span>) <span class="sc">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ambil 25 gen dengan padj terkecil dan pusatkan nilainya per gen.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>topg <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">rownames</span>(res[<span class="fu">order</span>(res<span class="sc">$</span>padj, <span class="at">na.last =</span> <span class="cn">NA</span>), ]), <span class="dv">25</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">assay</span>(vsd)[topg, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> mat <span class="sc">-</span> <span class="fu">rowMeans</span>(mat)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Ubah matriks ke format panjang agar dapat digambar dengan ggplot2.</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">as.table</span>(<span class="fu">as.matrix</span>(mat)))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(long) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"gene"</span>, <span class="st">"sample"</span>, <span class="st">"z"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta[<span class="fu">as.character</span>(long<span class="sc">$</span>sample), <span class="st">"condition"</span>], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"tanpa_dox"</span>, <span class="st">"dox"</span>))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>long<span class="sc">$</span>gene  <span class="ot">&lt;-</span> <span class="fu">factor</span>(long<span class="sc">$</span>gene, <span class="at">levels =</span> <span class="fu">rev</span>(topg))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(long, <span class="fu">aes</span>(sample, gene, <span class="at">fill =</span> z)) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> condition, <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">space =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#2c7fb8"</span>, <span class="at">mid =</span> <span class="st">"#f7f7f7"</span>, <span class="at">high =</span> <span class="st">"#c0392b"</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="st">"Ekspresi</span><span class="sc">\n</span><span class="st">terpusat"</span>) <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-heatmap-genes" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1186,60 +945,62 @@ Gambar&nbsp;3: PCA enam sampel GSE94345 berdasarkan ekspresi tervariance-stabili
 <img src="work-RNA-seq_files/figure-html/fig-heatmap-genes-1.png" class="img-fluid figure-img" width="768">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heatmap-genes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Gambar&nbsp;4: Heatmap 25 gen GSE94345 dengan padj terkecil. Warna adalah ekspresi tervariance-stabilized yang dipusatkan per gen; kolom dikelompokkan menurut tanpa_dox dan dox.
+Gambar&nbsp;4: Heatmap 25 gen GSE94345 dengan padj terkecil. Warna menunjukkan ekspresi yang dipusatkan terhadap rerata setiap gen.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Pola blok warna yang konsisten dalam tiap kondisi memperkuat hasil DE. Gen yang lebih merah pada panel <code>dox</code> relatif lebih biru pada panel <code>tanpa_dox</code>, atau sebaliknya. Gen-gen ini adalah kandidat untuk penelusuran fungsi lebih lanjut dalam konteks studi ragi.</p>
-<p>Dua puluh lima gen dengan <code>padj</code> terkecil ini kembali didominasi oleh gen adhesi/dinding sel (<code>AGA1</code>, <code>FLO1</code>, <code>HPF1</code>, <code>FIG2</code>, <code>CTS1</code>, <code>ZPS1</code>, <code>PRY1</code>, <code>SAG1</code>) yang membentuk blok biru konsisten pada panel <code>dox</code>, bersama sekelompok gen metabolisme (<code>POR1</code>, <code>ADH1</code>, <code>HXK1</code>, <code>ADH4</code>, <code>ENO1</code>, <code>DLD3</code>, <code>HXT6</code>, <code>FCY2</code>) yang polanya lebih beragam. Konsistensi warna dalam tiap panel menunjukkan bahwa perbedaan ini bukan didorong oleh satu replikasi yang menyimpang, melainkan pola bersama pada ketiga replikasi tiap kondisi.</p>
+<p>Dari 25 gen ini, 20 lebih rendah dan lima lebih tinggi pada <code>dox</code>. Warna ketiga replikasi dalam setiap kondisi umumnya searah, termasuk pada <code>AGA1</code>, <code>FLO1</code>, <code>HPF1</code>, <code>POR1</code>, dan <code>ADH1</code>. Pola itu menunjukkan bahwa perbedaan tidak berasal dari satu sampel saja. Perlu diingat bahwa pemilihan heatmap hanya berdasarkan <code>padj</code>; <code>ENO1</code>, misalnya, masuk ke 25 teratas tetapi tidak melewati ambang <code>|log2FoldChange| &gt; 1</code> yang dipakai untuk daftar DEG.</p>
 </section>
 </section>
 <section id="analisis-fungsi-gen---go-dan-kegg-pathway" class="level2">
 <h2 class="anchored" data-anchor-id="analisis-fungsi-gen---go-dan-kegg-pathway">Analisis fungsi gen - GO dan KEGG <em>pathway</em></h2>
-<p>Mendapatkan ratusan DEG barulah separuh cerita; pertanyaan berikutnya adalah <strong>“gen-gen ini sebenarnya mengerjakan apa?”</strong>. Untuk menjawabnya, kita lakukan <strong>analisis pengayaan fungsional</strong> (<em>functional enrichment</em>) yang menguji apakah daftar DEG kita diperkaya oleh fungsi biologis tertentu dibanding yang diharapkan secara kebetulan. Dua kerangka anotasi yang paling umum:</p>
+<p>Daftar DEG belum menjelaskan proses biologis yang berubah. Analisis pengayaan menguji apakah fungsi tertentu muncul lebih sering dalam daftar DEG daripada dalam latar belakang gen yang diuji. Di sini kita memakai dua sumber anotasi:</p>
 <ul>
-<li><strong>Gene Ontology (GO)</strong>: mengelompokkan gen ke dalam tiga ranah, <em>Biological Process</em> (BP), <em>Molecular Function</em> (MF), dan <em>Cellular Component</em> (CC).</li>
-<li><strong>KEGG pathway</strong>: memetakan gen ke jalur metabolik dan sinyal (misalnya <em>Toll-like receptor signaling</em> atau <em>metabolisme lipid</em>).</li>
+<li>Gene Ontology Biological Process untuk istilah proses biologis.</li>
+<li>KEGG untuk jalur metabolisme yang berisi DEG.</li>
 </ul>
-<p>Untuk studi ini, ragi memiliki paket anotasi resmi <code>org.Sc.sgd.db</code>. GO memakai Entrez ID hasil pemetaan dari ORF, sedangkan KEGG memakai ID ORF langsung karena organisme <code>"sce"</code> pada KEGG mengindeks gen dengan ID ORF, bukan Entrez ID. Kita memakai gen yang benar-benar lolos pengujian DESeq2 sebagai <em>universe</em>. Pendekatan ini berbeda dari organisme akuakultur non-model, yang sering memerlukan pemetaan ortolog atau anotasi kustom.</p>
+<p>ID keluaran prepDE berbentuk <code>ORF|nama_gen</code>. GO memerlukan Entrez ID dari <code>org.Sc.sgd.db</code>, sedangkan KEGG untuk organisme <code>"sce"</code> menerima ORF. Gen dengan <code>padj</code> yang tersedia dipakai sebagai <em>universe</em>, sehingga latar belakang mengikuti gen yang berpeluang masuk ke daftar DEG pada analisis ini. Blok KEGG mengambil anotasi dari KEGG REST API dan memerlukan koneksi internet saat pertama dijalankan.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationDbi)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(org.Sc.sgd.db)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># prepDE.py memakai ID ORF|nama_gen; AnnotationDbi memerlukan ORF sebelum tanda |.</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>orf_bg <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, <span class="fu">rownames</span>(res)[<span class="sc">!</span><span class="fu">is.na</span>(res<span class="sc">$</span>padj)]))</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>orf_de <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, <span class="fu">rownames</span>(deg)))</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>gene_bg <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(<span class="fu">mapIds</span>(org.Sc.sgd.db,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">keys =</span> orf_bg, <span class="at">column =</span> <span class="st">"ENTREZID"</span>, <span class="at">keytype =</span> <span class="st">"ORF"</span>, <span class="at">multiVals =</span> <span class="st">"first"</span>)))</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>gene_de <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(<span class="fu">mapIds</span>(org.Sc.sgd.db,</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">keys =</span> orf_de, <span class="at">column =</span> <span class="st">"ENTREZID"</span>, <span class="at">keytype =</span> <span class="st">"ORF"</span>, <span class="at">multiVals =</span> <span class="st">"first"</span>)))</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">length</span>(gene_bg) <span class="sc">&gt;</span> <span class="dv">0</span>L)</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># org.Sc.sgd.db tidak punya kolom SYMBOL, sehingga readable = TRUE tidak dipakai di sini.</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene =</span> gene_de, <span class="at">universe =</span> gene_bg, <span class="at">OrgDb =</span> org.Sc.sgd.db,</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">keyType =</span> <span class="st">"ENTREZID"</span>, <span class="at">ont =</span> <span class="st">"BP"</span>, <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>,</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>)</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co"># KEGG "sce" mengindeks gen dengan ID ORF, bukan Entrez ID.</span></span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>ekegg <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene =</span> orf_de, <span class="at">universe =</span> orf_bg, <span class="at">organism =</span> <span class="st">"sce"</span>,</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>, <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>                    <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Muat basis data anotasi dan fungsi pengayaan.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationDbi)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(org.Sc.sgd.db)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ambil ORF sebelum tanda | untuk daftar DEG dan latar belakang.</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>orf_bg <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, <span class="fu">rownames</span>(res)[<span class="sc">!</span><span class="fu">is.na</span>(res<span class="sc">$</span>padj)]))</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>orf_de <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, <span class="fu">rownames</span>(deg)))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Petakan ORF ke Entrez ID untuk analisis GO.</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>gene_bg <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(<span class="fu">mapIds</span>(org.Sc.sgd.db,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">keys =</span> orf_bg, <span class="at">column =</span> <span class="st">"ENTREZID"</span>, <span class="at">keytype =</span> <span class="st">"ORF"</span>, <span class="at">multiVals =</span> <span class="st">"first"</span>)))</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>gene_de <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(<span class="fu">mapIds</span>(org.Sc.sgd.db,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">keys =</span> orf_de, <span class="at">column =</span> <span class="st">"ENTREZID"</span>, <span class="at">keytype =</span> <span class="st">"ORF"</span>, <span class="at">multiVals =</span> <span class="st">"first"</span>)))</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">length</span>(gene_bg) <span class="sc">&gt;</span> <span class="dv">0</span>L)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Uji pengayaan GO Biological Process dengan latar belakang gen yang teruji.</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene =</span> gene_de, <span class="at">universe =</span> gene_bg, <span class="at">OrgDb =</span> org.Sc.sgd.db,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">keyType =</span> <span class="st">"ENTREZID"</span>, <span class="at">ont =</span> <span class="st">"BP"</span>, <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co"># KEGG sce memakai ORF ragi, bukan Entrez ID.</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>ekegg <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene =</span> orf_de, <span class="at">universe =</span> orf_bg, <span class="at">organism =</span> <span class="st">"sce"</span>,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>, <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>                    <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Hasil pengayaan ditampilkan sebagai <strong>dotplot</strong>: sumbu-x adalah <em>gene ratio</em> (proporsi DEG yang masuk ke istilah), ukuran titik menunjukkan jumlah gen, dan warna menunjukkan signifikansi (<code>p.adjust</code>). Kode berikut menampilkan hasil sebenarnya hanya bila ada istilah yang lolos koreksi multipel.</p>
+<p>Pada <em>dotplot</em>, sumbu-x menunjukkan proporsi DEG yang masuk ke suatu istilah, ukuran titik menunjukkan jumlah gen, dan warna menunjukkan <code>p.adjust</code>. Bila tidak ada istilah yang lolos koreksi multipel, kode menampilkan pesan alih-alih grafik kosong.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Kode</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ego)) <span class="sc">==</span> <span class="dv">0</span>L) {</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Tidak ada istilah GO Biological Process yang lolos ambang setelah koreksi multipel."</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotplot</span>(ego, <span class="at">showCategory =</span> <span class="fu">min</span>(<span class="dv">15</span>, <span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ego)))) <span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"GO Biological Process: dox vs tanpa_dox"</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gambar maksimal 15 istilah GO atau tampilkan pesan jika hasil kosong.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ego)) <span class="sc">==</span> <span class="dv">0</span>L) {</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Tidak ada istilah GO Biological Process yang lolos ambang setelah koreksi multipel."</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotplot</span>(ego, <span class="at">showCategory =</span> <span class="fu">min</span>(<span class="dv">15</span>, <span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ego)))) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"GO Biological Process: dox vs tanpa_dox"</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-go" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1248,246 +1009,50 @@ Gambar&nbsp;4: Heatmap 25 gen GSE94345 dengan padj terkecil. Warna adalah ekspre
 <img src="work-RNA-seq_files/figure-html/fig-go-1.png" class="img-fluid figure-img" width="720">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-go-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Gambar&nbsp;5: Dotplot GO Biological Process nyata untuk DEG dox versus tanpa_dox. Jika tidak ada istilah yang lolos koreksi multipel, halaman menampilkan pesan tersebut alih-alih grafik buatan.
+Gambar&nbsp;5: Istilah GO Biological Process yang diperkaya pada DEG dox versus tanpa_dox.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Tampilkan tabel hasil dan KEGG dengan kode berikut. Bila tidak ada hasil yang lolos, tidak ada kesimpulan pathway yang boleh dibuat dari ambang ini.</p>
+<p>Tabel dibatasi pada sepuluh istilah GO teratas agar hasil tetap terbaca. Semua jalur KEGG yang lolos ambang ditampilkan karena jumlahnya hanya 11.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ego)) <span class="sc">&gt;</span> <span class="dv">0</span>L) {</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(ego)[, <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Description"</span>, <span class="st">"GeneRatio"</span>, <span class="st">"p.adjust"</span>, <span class="st">"geneID"</span>)]</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tampilkan sepuluh istilah GO dengan padj terkecil.</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ego)) <span class="sc">&gt;</span> <span class="dv">0</span>L) {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="fu">as.data.frame</span>(ego)[, <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Description"</span>, <span class="st">"GeneRatio"</span>, <span class="st">"p.adjust"</span>)], <span class="dv">10</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                   ID
-GO:0043436 GO:0043436
-GO:0006082 GO:0006082
-GO:0019752 GO:0019752
-GO:0032197 GO:0032197
-GO:0032196 GO:0032196
-GO:0015074 GO:0015074
-GO:0016053 GO:0016053
-GO:0046394 GO:0046394
-GO:0032787 GO:0032787
-GO:0006278 GO:0006278
-GO:0046395 GO:0046395
-GO:0016054 GO:0016054
-GO:0044283 GO:0044283
-GO:0006520 GO:0006520
-GO:0044282 GO:0044282
-GO:0009063 GO:0009063
-GO:0170039 GO:0170039
-GO:0170033 GO:0170033
-GO:0007155 GO:0007155
-GO:1901605 GO:1901605
-GO:0071897 GO:0071897
-GO:0072348 GO:0072348
-GO:0009065 GO:0009065
-GO:0170034 GO:0170034
-GO:0170038 GO:0170038
-GO:0009064 GO:0009064
-GO:0000755 GO:0000755
-GO:0009068 GO:0009068
-GO:0015755 GO:0015755
-GO:0098609 GO:0098609
-GO:1901606 GO:1901606
-GO:0006995 GO:0006995
-GO:0043562 GO:0043562
-GO:1901607 GO:1901607
-GO:0072329 GO:0072329
-GO:0072330 GO:0072330
-GO:0009069 GO:0009069
-GO:0170035 GO:0170035
-GO:0055085 GO:0055085
-GO:0009070 GO:0009070
-GO:1904659 GO:1904659
-GO:0008652 GO:0008652
-GO:0051703 GO:0051703
-GO:0009062 GO:0009062
-GO:0008645 GO:0008645
-GO:0015749 GO:0015749
-GO:0044272 GO:0044272
-GO:0009066 GO:0009066
-GO:0170040 GO:0170040
-GO:0006631 GO:0006631
-GO:0000955 GO:0000955
-GO:0006865 GO:0006865
-GO:0006563 GO:0006563
-GO:0042537 GO:0042537
-                                                                         Description
-GO:0043436                                                 oxoacid metabolic process
-GO:0006082                                            organic acid metabolic process
-GO:0019752                                         carboxylic acid metabolic process
-GO:0032197                                                        retrotransposition
-GO:0032196                                                             transposition
-GO:0015074                                                           DNA integration
-GO:0016053                                         organic acid biosynthetic process
-GO:0046394                                      carboxylic acid biosynthetic process
-GO:0032787                                     monocarboxylic acid metabolic process
-GO:0006278                                    RNA-templated DNA biosynthetic process
-GO:0046395                                         carboxylic acid catabolic process
-GO:0016054                                            organic acid catabolic process
-GO:0044283                                       small molecule biosynthetic process
-GO:0006520                                              amino acid metabolic process
-GO:0044282                                          small molecule catabolic process
-GO:0009063                                              amino acid catabolic process
-GO:0170039                                proteinogenic amino acid metabolic process
-GO:0170033                                            L-amino acid metabolic process
-GO:0007155                                                             cell adhesion
-GO:1901605                                        alpha-amino acid metabolic process
-GO:0071897                                                  DNA biosynthetic process
-GO:0072348                                                 sulfur compound transport
-GO:0009065                             glutamine family amino acid catabolic process
-GO:0170034                                         L-amino acid biosynthetic process
-GO:0170038                             proteinogenic amino acid biosynthetic process
-GO:0009064                             glutamine family amino acid metabolic process
-GO:0000755                                                                  cytogamy
-GO:0009068                             aspartate family amino acid catabolic process
-GO:0015755                                          fructose transmembrane transport
-GO:0098609                                                        cell-cell adhesion
-GO:1901606                                        alpha-amino acid catabolic process
-GO:0006995                                  cellular response to nitrogen starvation
-GO:0043562                                      cellular response to nitrogen levels
-GO:1901607                                     alpha-amino acid biosynthetic process
-GO:0072329                                     monocarboxylic acid catabolic process
-GO:0072330                                  monocarboxylic acid biosynthetic process
-GO:0009069                                serine family amino acid metabolic process
-GO:0170035                                            L-amino acid catabolic process
-GO:0055085                                                   transmembrane transport
-GO:0009070                             serine family amino acid biosynthetic process
-GO:1904659                                         D-glucose transmembrane transport
-GO:0008652                                           amino acid biosynthetic process
-GO:0051703 biological process involved in intraspecies interaction between organisms
-GO:0009062                                              fatty acid catabolic process
-GO:0008645                                            hexose transmembrane transport
-GO:0015749                                    monosaccharide transmembrane transport
-GO:0044272                                      sulfur compound biosynthetic process
-GO:0009066                             aspartate family amino acid metabolic process
-GO:0170040                                proteinogenic amino acid catabolic process
-GO:0006631                                              fatty acid metabolic process
-GO:0000955                          amino acid catabolic process via Ehrlich pathway
-GO:0006865                                                      amino acid transport
-GO:0006563                                                L-serine metabolic process
-GO:0042537                             benzene-containing compound metabolic process
-           GeneRatio     p.adjust
-GO:0043436    34/141 8.741114e-09
-GO:0006082    34/141 8.741114e-09
-GO:0019752    33/141 8.741114e-09
-GO:0032197    15/141 1.319134e-07
-GO:0032196    15/141 1.559598e-07
-GO:0015074    12/141 1.849433e-07
-GO:0016053    20/141 4.937432e-06
-GO:0046394    20/141 4.937432e-06
-GO:0032787    17/141 2.986775e-05
-GO:0006278    12/141 2.986775e-05
-GO:0046395    13/141 2.986775e-05
-GO:0016054    13/141 3.133098e-05
-GO:0044283    25/141 4.227822e-05
-GO:0006520    21/141 5.908259e-05
-GO:0044282    15/141 9.861718e-05
-GO:0009063    10/141 1.084867e-04
-GO:0170039    16/141 1.515283e-04
-GO:0170033    16/141 1.690800e-04
-GO:0007155     6/141 1.774902e-04
-GO:1901605    16/141 4.106956e-04
-GO:0071897    12/141 4.106956e-04
-GO:0072348     6/141 5.636416e-04
-GO:0009065     5/141 6.539218e-04
-GO:0170034    11/141 2.868900e-03
-GO:0170038    11/141 2.868900e-03
-GO:0009064     8/141 2.868900e-03
-GO:0000755     4/141 3.283384e-03
-GO:0009068     4/141 3.283384e-03
-GO:0015755     4/141 3.283384e-03
-GO:0098609     4/141 3.283384e-03
-GO:1901606     7/141 3.283384e-03
-GO:0006995     4/141 4.430786e-03
-GO:0043562     4/141 4.430786e-03
-GO:1901607    11/141 5.175348e-03
-GO:0072329     6/141 5.776770e-03
-GO:0072330     7/141 6.150506e-03
-GO:0009069     6/141 6.150506e-03
-GO:0170035     6/141 6.150506e-03
-GO:0055085    24/141 6.150506e-03
-GO:0009070     5/141 6.423874e-03
-GO:1904659     4/141 6.915035e-03
-GO:0008652    11/141 6.993406e-03
-GO:0051703     4/141 8.654778e-03
-GO:0009062     5/141 8.654778e-03
-GO:0008645     4/141 1.074586e-02
-GO:0015749     4/141 1.074586e-02
-GO:0044272     8/141 1.339711e-02
-GO:0009066     7/141 1.649485e-02
-GO:0170040     5/141 2.089844e-02
-GO:0006631     7/141 2.108630e-02
-GO:0000955     3/141 2.718241e-02
-GO:0006865     6/141 4.469076e-02
-GO:0006563     3/141 4.524152e-02
-GO:0042537     3/141 4.524152e-02
-                                                                                                                                                                                                                                                  geneID
-GO:0043436 851663/856638/852146/852150/856814/850514/850614/852667/852691/852825/853122/856539/854736/853395/853477/853482/853602/853619/853839/851158/855518/855691/855793/855794/855795/854160/854303/850850/850852/850855/850857/851010/856010/856147
-GO:0006082 851663/856638/852146/852150/856814/850514/850614/852667/852691/852825/853122/856539/854736/853395/853477/853482/853602/853619/853839/851158/855518/855691/855793/855794/855795/854160/854303/850850/850852/850855/850857/851010/856010/856147
-GO:0019752        856638/852146/852150/856814/850514/850614/852667/852691/852825/853122/856539/854736/853395/853477/853482/853602/853619/853839/851158/855518/855691/855793/855794/855795/854160/854303/850850/850852/850855/850857/851010/856010/856147
-GO:0032197                                                                                                                                      852175/850340/851851/851599/851750/851793/853006/853067/854728/851128/855672/855671/854365/854312/854523
-GO:0032196                                                                                                                                      852175/850340/851851/851599/851750/851793/853006/853067/854728/851128/855672/855671/854365/854312/854523
-GO:0015074                                                                                                                                                           852175/850340/851851/851599/851793/853006/853067/854728/851128/855672/854365/854523
-GO:0016053                                                                                                   856638/852146/856814/850514/852691/852825/853122/856539/854736/853482/853602/851158/855691/855793/855794/855795/854303/851010/856010/856147
-GO:0046394                                                                                                   856638/852146/856814/850514/852691/852825/853122/856539/854736/853482/853602/851158/855691/855793/855794/855795/854303/851010/856010/856147
-GO:0032787                                                                                                                        856638/852146/852150/850614/852667/852825/853395/853477/853482/853619/853839/855518/855793/855794/855795/854160/856010
-GO:0006278                                                                                                                                                           852175/850340/851851/851599/851793/853006/853067/854728/851128/855672/854365/854523
-GO:0046395                                                                                                                                                    852150/852667/856539/853477/853482/853619/851158/855518/850850/850852/850855/850857/856010
-GO:0016054                                                                                                                                                    852150/852667/856539/853477/853482/853619/851158/855518/850850/850852/850855/850857/856010
-GO:0044283                                                                856638/852146/856814/850514/852636/852691/852825/853122/856539/854736/853395/853482/853602/851092/851158/855349/855691/855793/855794/855795/854068/854303/851010/856010/856147
-GO:0006520                                                                                            856814/850514/852636/852691/853122/856539/854736/853482/853839/851158/855349/855691/854068/854303/850850/850852/850855/850857/851010/856147/856196
-GO:0044282                                                                                                                                      852146/852150/852667/856539/853477/853482/853619/851158/855518/855808/850850/850852/850855/850857/856010
-GO:0009063                                                                                                                                                                         852636/856539/853482/851158/855349/854068/850850/850852/850855/850857
-GO:0170039                                                                                                                               856814/850514/852691/853122/856539/854736/853482/851158/855691/854303/850850/850852/850855/850857/851010/856147
-GO:0170033                                                                                                                               856814/850514/852691/853122/856539/854736/853482/851158/855691/854303/850850/850852/850855/850857/851010/856147
-GO:0007155                                                                                                                                                                                                     851236/851289/850451/850532/853460/855780
-GO:1901605                                                                                                                               856814/850514/852691/853122/856539/854736/853482/851158/855691/854303/850850/850852/850855/850857/851010/856147
-GO:0071897                                                                                                                                                           852175/850340/851851/851599/851793/853006/853067/854728/851128/855672/854365/854523
-GO:0072348                                                                                                                                                                                                     856349/852946/850665/851063/850938/855854
-GO:0009065                                                                                                                                                                                                            851158/850850/850852/850855/850857
-GO:0170034                                                                                                                                                                  856814/850514/852691/853122/856539/854736/851158/855691/854303/851010/856147
-GO:0170038                                                                                                                                                                  856814/850514/852691/853122/856539/854736/851158/855691/854303/851010/856147
-GO:0009064                                                                                                                                                                                       851158/855691/854303/850850/850852/850855/850857/856147
-GO:0000755                                                                                                                                                                                                                   852328/850330/850451/855442
-GO:0009068                                                                                                                                                                                                                   850850/850852/850855/850857
-GO:0015755                                                                                                                                                                                                                   851943/851944/850614/856492
-GO:0098609                                                                                                                                                                                                                   851236/851289/853460/855780
-GO:1901606                                                                                                                                                                                              856539/853482/851158/850850/850852/850855/850857
-GO:0006995                                                                                                                                                                                                                   850850/850852/850855/850857
-GO:0043562                                                                                                                                                                                                                   850850/850852/850855/850857
-GO:1901607                                                                                                                                                                  856814/850514/852691/853122/856539/854736/851158/855691/854303/851010/856147
-GO:0072329                                                                                                                                                                                                     852150/852667/853477/853619/855518/856010
-GO:0072330                                                                                                                                                                                              856638/852146/852825/855793/855794/855795/856010
-GO:0009069                                                                                                                                                                                                     856814/850514/852691/853122/854736/851010
-GO:0170035                                                                                                                                                                                                     856539/851158/850850/850852/850855/850857
-GO:0055085                                                                       851230/852598/851943/851944/856644/856783/850614/856349/852946/856492/853218/850665/850636/851063/854924/855080/855451/855669/855793/850938/855854/856049/856071/856322
-GO:0009070                                                                                                                                                                                                            856814/850514/853122/854736/851010
-GO:1904659                                                                                                                                                                                                                   851943/851944/850614/856492
-GO:0008652                                                                                                                                                                  856814/850514/852691/853122/856539/854736/851158/855691/854303/851010/856147
-GO:0051703                                                                                                                                                                                                                   851236/851289/853460/855780
-GO:0009062                                                                                                                                                                                                            852667/853477/853619/855518/856010
-GO:0008645                                                                                                                                                                                                                   851943/851944/850614/856492
-GO:0015749                                                                                                                                                                                                                   851943/851944/850614/856492
-GO:0044272                                                                                                                                                                                       852691/856539/853602/853946/855793/855794/855795/851010
-GO:0009066                                                                                                                                                                                              852691/856539/850850/850852/850855/850857/851010
-GO:0170040                                                                                                                                                                                                            851158/850850/850852/850855/850857
-GO:0006631                                                                                                                                                                                              852667/852825/853477/853619/855518/854160/856010
-GO:0000955                                                                                                                                                                                                                          852636/855349/854068
-GO:0006865                                                                                                                                                                                                     856349/852946/853043/850665/855451/855854
-GO:0006563                                                                                                                                                                                                                          856814/853122/854736
-GO:0042537                                                                                                                                                                                                                          852150/856539/853482</code></pre>
+<pre><code>                   ID                            Description GeneRatio
+GO:0043436 GO:0043436              oxoacid metabolic process    34/141
+GO:0006082 GO:0006082         organic acid metabolic process    34/141
+GO:0019752 GO:0019752      carboxylic acid metabolic process    33/141
+GO:0032197 GO:0032197                     retrotransposition    15/141
+GO:0032196 GO:0032196                          transposition    15/141
+GO:0015074 GO:0015074                        DNA integration    12/141
+GO:0016053 GO:0016053      organic acid biosynthetic process    20/141
+GO:0046394 GO:0046394   carboxylic acid biosynthetic process    20/141
+GO:0032787 GO:0032787  monocarboxylic acid metabolic process    17/141
+GO:0006278 GO:0006278 RNA-templated DNA biosynthetic process    12/141
+               p.adjust
+GO:0043436 8.741114e-09
+GO:0006082 8.741114e-09
+GO:0019752 8.741114e-09
+GO:0032197 1.319134e-07
+GO:0032196 1.559598e-07
+GO:0015074 1.849433e-07
+GO:0016053 4.937432e-06
+GO:0046394 4.937432e-06
+GO:0032787 2.986775e-05
+GO:0006278 2.986775e-05</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ekegg)) <span class="sc">==</span> <span class="dv">0</span>L) {</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Tidak ada pathway KEGG yang lolos ambang setelah koreksi multipel."</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotplot</span>(ekegg, <span class="at">showCategory =</span> <span class="fu">min</span>(<span class="dv">15</span>, <span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ekegg)))) <span class="sc">+</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"KEGG pathway: dox vs tanpa_dox"</span>)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(ekegg)[, <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Description"</span>, <span class="st">"GeneRatio"</span>, <span class="st">"p.adjust"</span>, <span class="st">"geneID"</span>)]</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gambar dan tampilkan KEGG hanya jika ada jalur yang lolos ambang.</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ekegg)) <span class="sc">==</span> <span class="dv">0</span>L) {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Tidak ada pathway KEGG yang lolos ambang setelah koreksi multipel."</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotplot</span>(ekegg, <span class="at">showCategory =</span> <span class="fu">min</span>(<span class="dv">15</span>, <span class="fu">nrow</span>(<span class="fu">as.data.frame</span>(ekegg)))) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"KEGG pathway: dox vs tanpa_dox"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(ekegg)[, <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Description"</span>, <span class="st">"GeneRatio"</span>, <span class="st">"p.adjust"</span>)]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               ID                                 Description GeneRatio
 sce01110 sce01110       Biosynthesis of secondary metabolites     28/56
@@ -1512,45 +1077,30 @@ sce00071 1.077109e-02
 sce00010 1.077109e-02
 sce01040 1.077109e-02
 sce01230 1.659219e-02
-sce00260 3.385547e-02
-                                                                                                                                                                                                                                  geneID
-sce01110 YDR256C/YDR044W/YDR538W/YER081W/YFL030W/YFR053C/YGL256W/YGL205W/YGL184C/YGR208W/YHR137W/YHR216W/YIL074C/YJL052W/YJR019C/YLR377C/YLR438W/YMR303C/YNL037C/YOL086C/YOR128C/YOR136W/YLR155C/YLR157C/YLR158C/YLR160C/YLR303W/YPR035W
-sce01200                                                                                                                         YDR256C/YER081W/YFL030W/YFR053C/YGL205W/YGR208W/YIL074C/YJL052W/YKL029C/YLR377C/YNL037C/YOR136W/YLR303W
-sce00250                                                                                                                                                                                 YFL030W/YLR155C/YLR157C/YLR158C/YLR160C/YPR035W
-sce00680                                                                                                                                                                                         YER081W/YFL030W/YGR208W/YIL074C/YLR377C
-sce00350                                                                                                                                                                                                 YGL256W/YHR137W/YMR303C/YOL086C
-sce00620                                                                                                                                                                                 YEL071W/YDR533C/YGL256W/YKL029C/YMR303C/YOL086C
-sce00071                                                                                                                                                                                                 YGL256W/YGL205W/YMR303C/YOL086C
-sce00010                                                                                                                                                                                 YFR053C/YGL256W/YJL052W/YLR377C/YMR303C/YOL086C
-sce01040                                                                                                                                                                                                         YGL205W/YGL055W/YJR019C
-sce01230                                                                                                                                                         YER081W/YGL184C/YGR208W/YIL074C/YJL052W/YNL037C/YOR136W/YLR303W/YPR035W
-sce00260                                                                                                                                                                                                 YER081W/YFL030W/YGR208W/YIL074C</code></pre>
+sce00260 3.385547e-02</code></pre>
 </div>
 </div>
-<p>Istilah dan gen yang tampil adalah hasil studi ragi ini. Interpretasikan dalam konteks regulasi lipid dan kondisi eksperimen GSE94345, bukan sebagai bukti langsung untuk akuakultur.</p>
-<section id="interpretasi-apa-arti-go-dan-kegg-di-sini" class="level3">
-<h3 class="anchored" data-anchor-id="interpretasi-apa-arti-go-dan-kegg-di-sini">Interpretasi: apa arti GO dan KEGG di sini?</h3>
-<p>Menjalankan kode di atas pada 142 DEG (universe 5.256 gen ber-Entrez ID) menghasilkan <strong>54 istilah GO Biological Process</strong> dan <strong>11 pathway KEGG</strong> yang lolos <code>padj &lt; 0.05</code>. Dua istilah GO teratas, <em>oxoacid metabolic process</em> dan <em>carboxylic acid metabolic process</em> (masing-masing melibatkan 34 dari 141 gen dengan Entrez ID, <code>padj</code> di kisaran <span class="math inline">\(10^{-9}\)</span>), langsung menunjuk ke pergeseran metabolisme asam organik/karboksilat – konsisten dengan gen <code>ADH1</code>, <code>ADH4</code>, <code>HXK1</code>, <code>ENO1</code>, dan <code>DLD3</code> yang juga muncul sebagai DEG teratas pada bagian ekspresi diferensial. Kelompok istilah GO lain yang lolos ambang, <em>retrotransposition</em>, <em>transposition</em>, dan <em>DNA integration</em> (elemen Ty), menandakan aktivitas elemen transposabel ragi turut berubah pada kontras ini; ini pola yang lazim menyertai stres seluler pada ragi dan tidak berkaitan langsung dengan tema flokulasi/lipid GSE94345.</p>
-<p>Pada KEGG, pathway dengan <code>p.adjust</code> terkecil adalah <em>Biosynthesis of secondary metabolites</em> dan <em>Carbon metabolism</em>, diikuti oleh pathway yang lebih spesifik dan relevan secara biologis untuk tema studi ini: <em>Fatty acid degradation</em>, <em>Biosynthesis of unsaturated fatty acids</em>, <em>Glycolysis / Gluconeogenesis</em>, dan <em>Pyruvate metabolism</em>. Pathway lipid/asam lemak ini selaras dengan judul studi sumber tentang regulasi fluiditas membran, meskipun DEG teratas pada bagian sebelumnya (<code>FLO1</code>, <code>AGA1</code>, dan gen adhesi lain) lebih banyak masuk ke kategori GO/KEGG metabolisme karbon sentral daripada kategori “lipid” secara eksplisit – menunjukkan bahwa perubahan flokulasi pada <code>dox</code> kemungkinan menyertai, bukan disebabkan langsung oleh, pergeseran metabolisme yang tertangkap GO/KEGG.</p>
-<p>Perlu dicatat, hasil KEGG di atas hanya valid bila <code>enrichKEGG()</code> diberi ID ORF (mis. <code>YOL086C</code>), bukan Entrez ID, karena organisme <code>"sce"</code> pada database KEGG mengindeks gen dengan ID ORF (lihat catatan pada kode di atas). Menggunakan Entrez ID untuk <code>enrichKEGG()</code> membuat seluruh gen gagal dipetakan dan tidak menghasilkan satu pun pathway.</p>
+<section id="membaca-hasil-go-dan-kegg" class="level3">
+<h3 class="anchored" data-anchor-id="membaca-hasil-go-dan-kegg">Membaca hasil GO dan KEGG</h3>
+<p>Dari 142 DEG, 141 dapat dipetakan ke Entrez ID. Sebanyak 5.256 gen latar belakang memiliki Entrez ID, dan 5.243 di antaranya memiliki anotasi Biological Process yang dipakai dalam pengujian. Analisis menghasilkan 54 istilah dengan <code>p.adjust &lt; 0.05</code>. Tiga istilah teratas adalah <em>oxoacid metabolic process</em> (34 dari 141 DEG), <em>organic acid metabolic process</em> (34 dari 141), dan <em>carboxylic acid metabolic process</em> (33 dari 141). Ketiganya memiliki <code>p.adjust = 8,74 × 10^-9</code> dan banyak berbagi gen yang sama. Hasil ini lebih tepat dibaca sebagai satu kelompok proses metabolisme asam organik yang saling bertumpang tindih, bukan tiga mekanisme terpisah.</p>
+<p>Istilah <em>retrotransposition</em> dan <em>transposition</em> masing-masing memuat 15 DEG, sedangkan <em>DNA integration</em> memuat 12 DEG. Daftar gen pada ketiga istilah ini juga saling tumpang tindih. Hasil pengayaan menunjukkan bahwa gen terkait elemen transposabel banyak muncul dalam daftar DEG, tetapi belum menjelaskan penyebab atau dampaknya.</p>
+<p>Pemetaan KEGG lebih terbatas: 56 dari 142 DEG dan 2.178 gen latar belakang masuk ke anotasi yang dipakai KEGG. Sebelas jalur lolos koreksi multipel. Hasil teratas adalah <em>Biosynthesis of secondary metabolites</em> (28 dari 56 DEG; <code>p.adjust = 2,79 × 10^-7</code>) dan <em>Carbon metabolism</em> (13 dari 56; <code>p.adjust = 4,79 × 10^-5</code>). Jalur <em>Fatty acid degradation</em>, <em>Biosynthesis of unsaturated fatty acids</em>, <em>Glycolysis / Gluconeogenesis</em>, dan <em>Pyruvate metabolism</em> juga lolos dengan <code>p.adjust = 0,0108</code>.</p>
+<p>Analisis ini menggabungkan gen yang naik dan turun. Karena itu, istilah GO atau jalur KEGG yang diperkaya tidak otomatis berarti proses tersebut aktif atau tertekan. Untuk menentukan arah, analisis dapat diulang secara terpisah pada gen yang naik dan turun, atau dilanjutkan dengan metode berbasis peringkat seperti GSEA.</p>
 </section>
 </section>
 <section id="apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq" class="level2">
 <h2 class="anchored" data-anchor-id="apa-yang-perlu-dipertimbangkan-sebelum-studi-rna-seq">Apa yang perlu dipertimbangkan sebelum studi RNA-seq</h2>
-<p>Kualitas hasil RNA-seq lebih banyak ditentukan di meja desain daripada di depan komputer. Sebelum mengeluarkan biaya sekuensing, pertimbangkan hal-hal berikut.</p>
+<p>Rancang hal-hal berikut sebelum sekuensing.</p>
 <ol type="1">
-<li><strong>Desain eksperimen dan replikasi biologis.</strong> Gunakan minimal <strong>3-4 replikasi biologis</strong> per kelompok (bukan replikasi teknis). Replikasi yang cukup jauh lebih menentukan kekuatan statistik daripada menambah <em>sequencing depth</em>.</li>
-<li><strong>Randomisasi dan <em>batch effect</em>.</strong> Jika sampel diproses dalam beberapa <em>batch</em> (hari ekstraksi atau <em>lane</em> sekuensing berbeda), sebar kondisi secara merata antar-<em>batch</em> dan catat informasinya agar bisa dimasukkan ke dalam desain model (<code>~ batch + kondisi</code>).</li>
-<li><strong>Kedalaman dan tipe sekuensing.</strong> Untuk DE pada level gen, umumnya cukup <strong>20-30 juta <em>reads</em> per sampel</strong>; deteksi <em>isoform</em> atau transkrip langka membutuhkan lebih banyak. <em>Paired-end</em> lebih disukai untuk <em>alignment</em> dan deteksi <em>splice junction</em>.</li>
-<li><strong>Kualitas dan jenis <em>library</em>.</strong> Periksa <strong>RIN</strong> (<em>RNA Integrity Number</em>) RNA Anda. Pilih <em>library prep</em> yang sesuai: <em>poly-A selection</em> untuk mRNA pada sampel berkualitas baik, atau <em>ribo-depletion</em> untuk sampel terdegradasi atau jika ingin menangkap RNA non-poliadenilasi.</li>
-<li><strong><em>Strandedness</em>.</strong> Catat orientasi <em>library</em> (<em>stranded</em> vs <em>unstranded</em>); kesalahan parameter <em>strand</em> saat kuantifikasi (<code>--rf</code>/<code>--fr</code>) dapat membuat banyak <em>count</em> hilang atau salah.</li>
-<li><strong>Kualitas genom dan anotasi referensi.</strong> Untuk organisme akuakultur non-model, kualitas anotasi sering menjadi penentu. Anotasi yang tidak lengkap akan langsung membatasi analisis GO/KEGG di hilir.</li>
-<li><strong>Normalisasi dan <em>multiple testing</em>.</strong> Percayakan normalisasi pada metode bawaan DESeq2/edgeR, dan selalu laporkan hasil berdasarkan <code>padj</code>, bukan <code>pvalue</code> mentah.</li>
-<li><strong>Validasi dan interpretasi biologis.</strong> Idealnya, sebagian DEG kunci divalidasi dengan <strong>RT-qPCR</strong>, dan temuan ditafsirkan dalam konteks biologis, bukan sekadar daftar gen dengan <em>p-value</em> kecil.</li>
+<li>Gunakan setidaknya tiga replikasi biologis per kondisi sebagai batas praktis, lalu tambah jumlahnya jika variasi biologis diperkirakan besar atau perubahan yang dicari kecil. Replikasi teknis tidak menggantikan sampel biologis independen.</li>
+<li>Sebarkan kondisi pada hari ekstraksi, proses pembuatan <em>library</em>, dan <em>lane</em> sekuensing. Catat setiap <em>batch</em> agar dapat dimasukkan ke model, misalnya <code>~ batch + condition</code>.</li>
+<li>Tentukan kedalaman sekuensing berdasarkan organisme, kompleksitas transkriptom, kualitas anotasi, dan sasaran analisis. Kisaran 20 hingga 30 juta <em>read</em> per sampel sering dipakai sebagai titik awal untuk DE tingkat gen pada organisme yang teranotasi baik, tetapi analisis isoform dan transkrip langka memerlukan pertimbangan lain.</li>
+<li>Periksa integritas RNA, pilih <em>poly-A selection</em> atau <em>ribo-depletion</em> sesuai jenis sampel, dan simpan informasi <em>strandedness</em>. Parameter <em>strand</em> yang salah saat kuantifikasi dapat mengurangi atau membalikkan <em>count</em> pada gen yang bertumpang tindih.</li>
+<li>Gunakan versi genom dan GTF yang cocok, lalu catat versinya. Pada organisme akuakultur non-model, anotasi yang tidak lengkap akan mengurangi jumlah gen yang dapat diberi nama atau masuk ke GO dan KEGG.</li>
+<li>Tetapkan kontras, ambang <code>padj</code>, dan ambang besar perubahan sebelum membaca hasil. DESeq2 atau edgeR harus menerima <em>count</em> mentah dan melakukan normalisasinya sendiri.</li>
+<li>Pilih gen prioritas berdasarkan besar perubahan, ketidakpastian, fungsi, dan konsistensi antar-replikasi. RT-qPCR atau eksperimen lanjutan diperlukan bila hasil akan dipakai untuk membuat klaim mekanistik.</li>
 </ol>
-<blockquote class="blockquote">
-<p><strong>Penutup.</strong> Dengan menyelesaikan alur HISAT2 → StringTie → DESeq2 hingga visualisasi dan pemaknaan fungsional, Anda kini memiliki gambaran utuh satu siklus studi RNA-seq, dari <em>reads</em> mentah sampai cerita biologis. Pada <em>workflow</em> berikutnya kita akan menempuh jalur alternatif <strong>STAR + RSEM</strong> untuk data yang sama dan membandingkan hasilnya. Skrip otomatis untuk seluruh pipeline ini tersedia di <a href="../code/All-hisat-stringtie.sh" download="All-hisat-stringtie.sh">All-hisat-stringtie.sh</a> beserta <a href="../code/config.yaml" download="config.yaml">config.yaml</a>.</p>
-</blockquote>
+<p>Selesai.</p>
 
 
 <nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>

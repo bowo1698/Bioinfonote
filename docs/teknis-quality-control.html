@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Quality control hasil sequencing – Bioinformatic Notes</title>
+<title>Quality control dan trimming FASTQ RNA-seq – Bioinformatic Notes</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -336,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-quality-control.html">Quality control hasil sequencing</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-quality-control.html">Quality control dan trimming FASTQ RNA-seq</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -437,7 +437,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../docs/teknis-quality-control.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Quality control hasil sequencing</span></a>
+ <span class="menu-text">Quality control dan trimming FASTQ RNA-seq</span></a>
   </div>
 </li>
       </ul>
@@ -482,14 +482,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#daftar-isi" id="toc-daftar-isi" class="nav-link active" data-scroll-target="#daftar-isi">Daftar isi</a></li>
-  <li><a href="#apa-itu-quality-control-dan-mengapa-penting" id="toc-apa-itu-quality-control-dan-mengapa-penting" class="nav-link" data-scroll-target="#apa-itu-quality-control-dan-mengapa-penting">Apa itu <em>quality control</em> dan mengapa penting?</a></li>
-  <li><a href="#mendownload-data-sekuen" id="toc-mendownload-data-sekuen" class="nav-link" data-scroll-target="#mendownload-data-sekuen">Mendownload data sekuen</a></li>
-  <li><a href="#fastqc-dan-multiqc" id="toc-fastqc-dan-multiqc" class="nav-link" data-scroll-target="#fastqc-dan-multiqc">FASTQC dan MULTIQC</a>
+  <li><a href="#tujuan-dan-data-contoh" id="toc-tujuan-dan-data-contoh" class="nav-link" data-scroll-target="#tujuan-dan-data-contoh">Tujuan dan data contoh</a></li>
+  <li><a href="#unduh-fastq-metadata-dan-referensi" id="toc-unduh-fastq-metadata-dan-referensi" class="nav-link" data-scroll-target="#unduh-fastq-metadata-dan-referensi">Unduh FASTQ melalui SRA</a></li>
+  <li><a href="#memahami-fastq" id="toc-memahami-fastq" class="nav-link" data-scroll-target="#memahami-fastq">Memahami FASTQ</a></li>
+  <li><a href="#menjalankan-fastqc-dan-multiqc" id="toc-menjalankan-fastqc-dan-multiqc" class="nav-link" data-scroll-target="#menjalankan-fastqc-dan-multiqc">Menjalankan FastQC dan MultiQC</a></li>
+  <li><a href="#membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming" id="toc-membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming" class="nav-link" data-scroll-target="#membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming">Membaca hasil dan memutuskan perlu tidaknya trimming</a>
   <ul class="collapse">
-  <li><a href="#interpretasi" id="toc-interpretasi" class="nav-link" data-scroll-target="#interpretasi">Interpretasi</a></li>
+  <li><a href="#hasil-qc-awal-gse94345" id="toc-hasil-qc-awal-gse94345" class="nav-link" data-scroll-target="#hasil-qc-awal-gse94345">Hasil QC awal GSE94345</a></li>
   </ul></li>
-  <li><a href="#kenapa-kualitas-data-sekuensing-bisa-jelek" id="toc-kenapa-kualitas-data-sekuensing-bisa-jelek" class="nav-link" data-scroll-target="#kenapa-kualitas-data-sekuensing-bisa-jelek">Kenapa kualitas data sekuensing bisa buruk?</a></li>
-  <li><a href="#mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" id="toc-mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" class="nav-link" data-scroll-target="#mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp">Mengatasi data sekuensing berkualitas rendah dengan FASTP</a></li>
+  <li><a href="#mengapa-adapter-muncul-di-read" id="toc-mengapa-adapter-muncul-di-read" class="nav-link" data-scroll-target="#mengapa-adapter-muncul-di-read">Mengapa adapter muncul di read?</a></li>
+  <li><a href="#trimming-adapter-dengan-cutadapt" id="toc-trimming-adapter-dengan-cutadapt" class="nav-link" data-scroll-target="#trimming-adapter-dengan-cutadapt">Trimming adapter dengan Cutadapt</a></li>
+  <li><a href="#qc-pasca-trimming-dan-langkah-berikutnya" id="toc-qc-pasca-trimming-dan-langkah-berikutnya" class="nav-link" data-scroll-target="#qc-pasca-trimming-dan-langkah-berikutnya">QC pasca-trimming dan langkah berikutnya</a></li>
   </ul>
 </nav>
     </div>
@@ -497,9 +500,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-quality-control.html">Quality control hasil sequencing</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/skill-teknis.html">Skill Teknis</a></li><li class="breadcrumb-item"><a href="../docs/teknis-quality-control.html">Quality control dan trimming FASTQ RNA-seq</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Quality control hasil sequencing</h1>
+<h1 class="title">Quality control dan trimming FASTQ RNA-seq</h1>
 </div>
 
 
@@ -516,171 +519,229 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Quality control hasil sequencing</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
+<style>#title-block-header { display: none; }</style><header class="article-frame"><nav class="article-frame-nav" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav><div class="article-frame-title"><h1>Quality control dan trimming FASTQ RNA-seq</h1></div><p class="article-frame-byline">Oleh <a href="bio.html">Agus Wibowo</a></p></header>
 <p><img src="https://www.integra-biosciences.com/sites/default/files/styles/large/public/images/data-analysis.jpg?itok=DX2veo4F" class="content-image article-hero-image img-fluid" alt="Ilustrasi analisis dan quality control data"></p>
 <section id="daftar-isi" class="level2">
 <h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
-<li><a href="#apa-itu-quality-control-dan-mengapa-penting">Apa itu quality control dan mengapa penting?</a></li>
-<li><a href="#mendownload-data-sekuen">Mendownload data sekuen</a></li>
-<li><a href="#fastqc-dan-multiqc">FASTQC dan MULTIQC</a></li>
-<li><a href="#kenapa-kualitas-data-sekuensing-bisa-jelek">Kenapa kualitas data sekuensing bisa jelek?</a></li>
-<li><a href="#mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp">Mengatasi data sekuensing berkualitas rendah dengan FASTP</a></li>
+<li><a href="#tujuan-dan-data-contoh">Tujuan dan data contoh</a></li>
+<li><a href="#unduh-fastq-metadata-dan-referensi">Unduh FASTQ, metadata, dan referensi</a></li>
+<li><a href="#memahami-fastq">Memahami FASTQ</a></li>
+<li><a href="#menjalankan-fastqc-dan-multiqc">Menjalankan FastQC dan MultiQC</a></li>
+<li><a href="#membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming">Membaca hasil dan memutuskan perlu tidaknya trimming</a></li>
+<li><a href="#mengapa-adapter-muncul-di-read">Mengapa adapter muncul di read?</a></li>
+<li><a href="#trimming-adapter-dengan-cutadapt">Trimming adapter dengan Cutadapt</a></li>
+<li><a href="#qc-pasca-trimming-dan-langkah-berikutnya">QC pasca-trimming dan langkah berikutnya</a></li>
 </ul>
 <blockquote class="blockquote">
-<p><strong>Catatan</strong>: Dalam tutorial ini, kita akan bekerja menggunakan pemrograman Bash dalam lingkungan Linux. Anda dapat menggunakan VS code baik untuk melihat dan mengedit script maupun menjalankan script Bash tersebut via terminal.</p>
+<p><strong>Catatan.</strong> Tutorial ini memakai Bash di Linux dan data publik nyata GSE94345 yang telah diunduh secara lokal. Jalankan perintah dari akar repositori <code>Bioinfonote</code>. FASTQ dan seluruh hasil berada pada <code>docs/data/rnaseq-gse94345/</code>, direktori yang sengaja tidak dilacak Git.</p>
 </blockquote>
 </section>
-<section id="apa-itu-quality-control-dan-mengapa-penting" class="level2">
-<h2 class="anchored" data-anchor-id="apa-itu-quality-control-dan-mengapa-penting">Apa itu <em>quality control</em> dan mengapa penting?</h2>
-<p>Bayangkan Anda mengambil foto dengan kamera harga ratusan juta, tapi lensa yang digunakan berembun. Hasilnya? Gambar blur yang nyaris tak bisa dilihat. Begitu juga dengan data sekuensing DNA yang kualitasnya buruk—tak peduli seberapa canggih analisisnya, hasilnya tetap tidak akan optimal.</p>
-<p><em>Next-Generation Sequencing</em> (NGS) telah membuka jendela baru untuk mengintip rahasia genetik makhluk hidup. Dalam sekali eksperimen, jutaan fragmen DNA berhasil dibaca! Tapi jumlah besar ini tidak otomatis menjamin kualitas. Seperti memilah berlian dari kerikil, <em>quality contro</em>l (QC) menjadi langkah krusial untuk memastikan data yang kita analisis benar-benar berharga.</p>
+<section id="tujuan-dan-data-contoh" class="level2">
+<h2 class="anchored" data-anchor-id="tujuan-dan-data-contoh">Tujuan dan data contoh</h2>
+<p><em>Quality control</em> (QC) adalah pemeriksaan terhadap FASTQ sebelum <em>alignment</em> atau kuantifikasi. Tujuannya untuk menemukan masalah teknis yang dapat mempengaruhi data biologis atau menurunkan kualitas analisis berikutnya.</p>
+<p>Tutorial ini akan memakai enam pasangan <em>paired-end reads</em> RNA-seq ragi (<em>Saccharomyces cerevisiae</em>) dari <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345">GEO GSE94345</a>: tiga replikasi tanpa doxycycline dan tiga replikasi dengan doxycycline. Studi ini meneliti respons transkripsi ketika domain aktif SPT23p90 diinduksi doxycycline.</p>
 </section>
-<section id="mendownload-data-sekuen" class="level2">
-<h2 class="anchored" data-anchor-id="mendownload-data-sekuen">Mendownload data sekuen</h2>
-<p>Dalam tutorial ini, kita menggunakan data dari studi oleh <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-15-1149">Robledo et al.&nbsp;(2014)</a> yang meneliti respons transkriptomik ikan turbot (<em>Scophthalmus maximus</em>) terhadap infeksi <em>Enteromyxum scophthalmi</em>, penyebab enteromikosis. Penelitian ini menganalisis perubahan ekspresi gen di ginjal, limpa, dan usus menggunakan RNA-seq berbasis Illumina HiSeq 2000.</p>
-<p>Dataset lengkap dapat diakses melalui <a href="https://www.ebi.ac.uk/ena/browser/view/PRJNA269386">ENA (European Nucleotide Archive)</a> dengan kode proyek PRJNA269386. Karena ukuran total data mencapai sekitar 27 GB, dalam tutorial ini kita hanya menggunakan satu file sequencing yaitu SRR1695153, yang berasal dari organ limpa. Setiap file ini telah dimodifikasi untuk keperluan edukasi, sehingga ukurannya menjadi lebih kecil (60 MB) dan lebih mudah diolah. Bagi yang tertarik mempelajari proses manipulasi data tersebut, kode lengkapnya dapat <a href="../code/fastq_manip.py" download="fastq_manip.py">diunduh di sini</a>.</p>
-<p>Buat forlder baru untuk menyimpan dan mendownload file FASTQ yang sudah dikompresi dengan gunzip dengan cara:</p>
+<section id="unduh-fastq-metadata-dan-referensi" class="level2">
+<h2 class="anchored" data-anchor-id="unduh-fastq-metadata-dan-referensi">Unduh FASTQ melalui SRA</h2>
+<p>Enam run SRA pada studi ini menghasilkan dua belas FASTQ, masing-masing R1 dan R2. Total berkas FASTQ terkompresi sekitar 623 MiB. Selama proses berlangsung, sediakan ruang kosong sekitar 8-10 GiB untuk berkas SRA, FASTQ sementara, referensi, dan hasil analisis berikutnya. Semua berkas akan disimpan di <code>docs/data/rnaseq-gse94345/</code>.</p>
+<p>Menggunakan anacona, kita akan menginstall beberapa tools, seperti <code>sra-tools</code>, <code>fastqc</code>, dan <code>multiqc</code> di lingkungan conda <code>rnaseq</code>, serta juga menginstall <code>cutadapt</code> langsung dengan <code>pip:</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># buat folder baru</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data_fastq/</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># masuk ke direktori data_fastq/</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data_fastq/</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># download data SRR</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://huggingface.co/datasets/bowo1745/fastqc_data/resolve/main/SRR1695148_edit_R1.fastq.gz</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://huggingface.co/datasets/bowo1745/fastqc_data/resolve/main/SRR1695148_edit_R2.fastq.gz</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ubah akses ke read-only</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u-w <span class="pp">*</span>fastq.gz</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<blockquote class="blockquote">
-<p><strong>Catatan:</strong> Setiap hasil sequencing yang menggunakan <em>paired-end reads</em> maka akan selalu memiliki 2 file reads (R1 dan R2) untuk setiap sampel.</p>
-</blockquote>
-</section>
-<section id="fastqc-dan-multiqc" class="level2">
-<h2 class="anchored" data-anchor-id="fastqc-dan-multiqc">FASTQC dan MULTIQC</h2>
-<p>Setalah data didownload dan pada terminal kita berada di direktori <code>data_fastq/</code>, maka langkah selanjutnya adalah menginstall tools <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FASTQC</a>. FASTQC adalah tool yang digunakan untuk melakukan <em>quality control</em> awal terhadap data <em>sequencing</em>, dengan memberikan ringkasan visual mengenai kualitas base, <em>adapter contamination</em>, <em>overrepresented sequences</em>, dan metrik penting lainnya dalam file FASTQ. Sementara MULTIQC merupakan tools untuk membantu meringkas hasil dari FASTQC, sangat bermanfaat jika kita bekerja dengan banyak data sekuensing.</p>
-<p>Install FASTQC melalui anaconda Python dengan langkah-langkah sebagai berikut:</p>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> rnaseq <span class="at">-y</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate rnaseq</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda <span class="at">-c</span> conda-forge sra-tools fastqc multiqc <span class="at">-y</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install cutadapt</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Berikutnya, unduh data dengan SRA Toolkit. <code>prefetch</code> menyimpan arsip SRA terlebih dahulu. Sesudah itu <code>fasterq-dump</code> mengubah tiap arsip menjadi dua FASTQ. Bila unduhan terputus, jalankan kembali baris <code>prefetch</code> yang sama; toolkit melanjutkan run yang belum lengkap.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># buat env khusus untuk QC data sequencing dengan nama misalnya: qc_sequencing</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">--name</span> qc_sequence python=3.11</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># aktifkan env qc_sequencing</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate qc_sequencing</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">ROOT</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span><span class="st">"</span><span class="va">$ROOT</span><span class="st">/docs/data/rnaseq-gse94345"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/sra"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_tmp"</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># install fastqc</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install fastqc multiqc</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Untuk melakukan quality control dengan FASTQC pada data FASTQ, cukup gunakan perintah berikut setelah membuat direktori baru untuk menyimpan file hasil QC.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># buat direktori hasil QC</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> fastqc</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># jalankan fastqc</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="pp">*</span>.fastq.gz <span class="at">-o</span> fastqc/</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># jalankan multiqc</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> fastqc/ <span class="at">-o</span> fastqc/</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<blockquote class="blockquote">
-<p><strong>Catatan:</strong> Setiap perintah yang menggunakan simbol <code>*</code> diikuti dengan jenis file, misalnya <code>*.fastq.gz</code> maka perintah tersebut akan memproses semua file dengan format .fastq.gz. Teknik ini sangat bermanfaat jika kita ingin memproses banyak file dengan jenis file yang sama.</p>
-</blockquote>
-<p>Setelah menjalankan FASTQC, di dalam folder <code>fastqc/</code> akan terdapat dua jenis file: file berakhiran <code>.html</code> yang berisi laporan visual hasil analisis kualitas, dan file <code>.zip</code> yang berisi data mentah serta detail dari laporan tersebut. Untuk keperluan evaluasi, kita cukup membuka file <code>.html</code> menggunakan browser seperti Chrome atau Safari, maka akan tampil hasil seperti ini.</p>
-<p><img src="images/fastqc.png" class="content-image img-fluid" style="width:90.0%" alt="Contoh hasil FastQC"></p>
-<p>Anda juga bisa observasi langsung hasil MULTIQC yang dikerjakan untuk semua file FASTQ tanpa tanpa harus menjalankan semua perintah tadi dengan klik link berikut: <a href="results/multiqc_report.html">Hasil MULTIQC</a></p>
-<section id="interpretasi" class="level3">
-<h3 class="anchored" data-anchor-id="interpretasi">Interpretasi</h3>
-<p>Hasil FASTQC atau MULTIQC akan menampilakan beberapa hal diantaranya:</p>
-<ol type="1">
-<li><p><strong><em>Basic Statistics</em></strong></p>
-<p>Menyediakan ringkasan umum data, seperti jumlah total reads, panjang reads, dan format kualitas encoding. Dalam data yang kita kerjakan, kedua sampel memiliki jumlah reads sekitar 300 ribu dengan kandungan GC stabil di 48%, menunjukkan komposisi basa yang normal.</p></li>
-<li><p><strong><em>Per base sequence quality</em></strong></p>
-<p>Menampilkan distribusi nilai kualitas (<em>Phred score</em>) untuk setiap posisi basa di dalam reads. Ini penting untuk melihat apakah kualitas menurun di bagian akhir reads.</p></li>
-<li><p><strong><em>Per sequence quality scores</em></strong></p>
-<p>Menunjukkan distribusi nilai kualitas rata-rata per read, untuk mengetahui apakah sebagian besar reads memiliki kualitas tinggi.</p></li>
-<li><p><strong><em>Per base sequence content</em></strong></p>
-<p>Memvisualisasikan proporsi basa A, T, G, dan C di setiap posisi. Pola tidak seimbang bisa mengindikasikan bias library preparation.</p></li>
-<li><p><strong><em>Per sequence GC content</em></strong></p>
-<p>Menampilkan distribusi kandungan GC dari semua reads dan membandingkannya dengan distribusi teoritis. Perbedaan signifikan bisa menandakan kontaminasi.</p></li>
-<li><p><strong><em>Per base N content</em></strong></p>
-<p>Menunjukkan persentase basa yang tidak dapat ditentukan (N) di setiap posisi basa.</p></li>
-<li><p><strong><em>Sequence Length Distribution</em></strong></p>
-<p>Memperlihatkan distribusi panjang reads. Idealnya, semua reads memiliki panjang yang seragam, terutama untuk data Illumina.</p></li>
-<li><p><strong><em>Sequence Duplication Levels</em></strong></p>
-<p>Menunjukkan proporsi reads yang terduplikasi. Duplikasi tinggi bisa terjadi karena over-amplifikasi atau bias library.</p></li>
-<li><p><strong><em>Overrepresented sequences</em></strong></p>
-<p>Mengidentifikasi reads yang muncul terlalu sering, yang dapat mengindikasikan kontaminasi atau adapter yang belum dibuang.</p></li>
-<li><p><strong><em>Adapter Content</em></strong></p>
-<p>Mengukur seberapa banyak urutan adapter yang masih tersisa dalam data. Tingginya konten adapter berarti trimming perlu dilakukan.</p></li>
-<li><p><strong><em>Kmer Content</em></strong></p>
-<p>Mengidentifikasi motif pendek yang muncul secara berlebih, yang bisa mengindikasikan kontaminasi atau bias teknis lainnya.</p></li>
-</ol>
-<p>Pada data yang kita kerjakan, terutama yang ditampilkan pada tab “<strong>Status Check</strong>” dalam hasil MULTIQC, metrik seperti <em>Per base sequence quality</em>, <em>Per base sequence content</em>, <em>Per sequence GC content</em>, dan <em>Adapter Content</em>, berwarna merah, mengindikasikan ada MASALAH pada sekuen yang kita kerjakan.</p>
-<p><img src="images/multiqc.png" class="content-image img-fluid" style="width:90.0%" alt="Status pemeriksaan MultiQC"></p>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># unduh enam run SRA</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">prefetch</span> <span class="at">--progress</span> <span class="at">--output-directory</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/sra"</span> <span class="dt">\</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ubah setiap run menjadi satu pasangan FASTQ dan beri nama sampel yang jelas</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="va">runs</span><span class="op">=</span><span class="va">(</span>SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168<span class="va">)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="va">samples</span><span class="op">=</span><span class="va">(</span>spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 <span class="dt">\</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3<span class="va">)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="st">"</span><span class="va">${</span><span class="op">!</span><span class="va">runs</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fasterq-dump</span> <span class="at">--split-files</span> <span class="at">--threads</span> 4 <span class="at">--temp</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_tmp"</span> <span class="dt">\</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/sra/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">.sra"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mv</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_1.fastq"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${samples</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_R1.fastq"</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mv</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${runs</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_2.fastq"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${samples</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">_R2.fastq"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="st">"</span><span class="va">$DD</span><span class="st">"</span>/raw_reads/<span class="pp">*</span>.fastq</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Setelah konversi selesai, struktur foldernya seperti ini.</p>
+<pre class="text terminal-output"><code>docs/data/rnaseq-gse94345/
+└── raw_reads/                 # 12 FASTQ, enam pasangan read penuh</code></pre>
+<p>Folder <code>sra/</code> dan <code>_tmp/</code> hanya diperlukan saat unduhan serta konversi. Setelah FASTQ selesai dibuat dan Anda sudah memeriksanya, keduanya boleh dihapus untuk menghemat ruang.</p>
 </section>
-</section>
-<section id="kenapa-kualitas-data-sekuensing-bisa-jelek" class="level2">
-<h2 class="anchored" data-anchor-id="kenapa-kualitas-data-sekuensing-bisa-jelek">Kenapa kualitas data sekuensing bisa buruk?</h2>
-<p>Dalam proses sekuensing, salah satu masalah umum yang sering terjadi adalah masuknya sekuan adapter ke dalam hasil pembacaan. Hal ini biasanya disebabkan oleh potongan/fragmen DNA yang terlalu pendek dibandingkan panjang read yang dihasilkan oleh mesin sekuensing. Akibatnya, saat mesin membaca DNA dari kedua arah (<em>paired-end</em>), ia tidak hanya membaca urutan target, tetapi juga melampaui ujung fragmen dan mulai membaca bagian adapter. Seperti ditunjukkan pada gambar di bawah, di mana urutan adapter muncul dalam read karena panjang insert terlalu pendek.</p>
-<p><img src="images/qc-problem.png" class="content-image img-fluid" style="width:90.0%" alt="Masalah yang terdeteksi pada quality control"></p>
-<p>Urutan adapter sendiri sebenarnya dibutuhkan pada tahap awal proses sekuensing, karena berfungsi sebagai tempat menempel primer dan memungkinkan amplifikasi serta pengikatan ke <em>flow cell</em>. Namun, apabila adapter tidak dihapus dari data mentah, keberadaannya dapat mengganggu proses downstream seperti pemetaan (mapping) atau anotasi. Oleh karena itu, langkah <em>trimming</em> adapter menjadi bagian penting dalam preprocessing data sekuensing, untuk memastikan hanya urutan biologis yang relevan yang dianalisis lebih lanjut.</p>
-<p>Di sisi lain, pada sekuensing <em>long-read</em> seperti Oxford nanophore atau PacBio, tantangan QC berbeda dari teknologi <em>short-read</em> (Illumina). Panjang read menjadi metrik penting, karena read panjang cenderung lebih informatif, meski read yang sangat panjang bisa merupakan artefak. Proses penghapusan adapter juga lebih sulit akibat tingkat kesalahan yang tinggi. Nilai kualitas basa di ujung read sering rendah, dan tidak selalu mencerminkan panjang read, tidak seperti pada platform Illumina.</p>
-</section>
-<section id="mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp" class="level2">
-<h2 class="anchored" data-anchor-id="mengatasi-data-sekuensing-berkualitas-rendah-dengan-fastp">Mengatasi data sekuensing berkualitas rendah dengan FASTP</h2>
-<p>Dalam contoh data yang kita kerjakan, ada 3 masalah utama:</p>
-<ol type="1">
-<li><p>Kualitas Basis Menurun di Bagian Akhir.</p>
-<p>Grafik Per base sequence quality menunjukkan bahwa kualitas sekuens menurun drastis setelah posisi ~70 bp, dan sangat buruk setelah 100 bp (banyak nilai di zona merah &lt; Q20). Ini sering terjadi karena efisiensi pembacaan menurun seiring bertambahnya siklus sequencer.</p></li>
-<li><p>Isi Adapter (<em>Adapter Content</em>)</p>
-<p>Tanda silang merah di bagian Adapter Content mengindikasikan bahwa urutan adapter masih muncul dalam data.</p></li>
-<li><p>Distribusi Panjang Read Variatif</p>
-<p>Diberi tanda seru (!) untuk <em>Sequence Length Distribution</em>, artinya panjang read bervariasi dari 36 hingga 113 bp. Ini menandakan sekuen belum seragam atau memang berasal dari library dengan panjang fragment bervariasi.</p></li>
-</ol>
-<p>Nah, di sinilah proses trimming berperan penting, untuk memastikan bahwa kita menggunakan data yang benar-benar siap analisis. Dalam tutorial ini, kita akan menggunakan <a href="https://academic.oup.com/bioinformatics/article/34/17/i884/5093234">FASTP</a> untuk mengatasi memotong dan mengatasi masalah umum dalam data hasil sekuen. Dibandingkan dengan Trimmomatic, FASTP menawarkan proses yang lebih cepat, otomatis, dan user-friendly. Selain itu, FASTP juga mampu mendeteksi adapter secara otomatis dan menghasilkan laporan kualitas dalam format HTML, sehingga sangat efisien untuk analisis awal data sekuensing.</p>
-<p>Install FASTP melalui anaconda:</p>
+<section id="memahami-fastq" class="level2">
+<h2 class="anchored" data-anchor-id="memahami-fastq">Memahami FASTQ</h2>
+<p>Satu read FASTQ selalu terdiri dari empat baris: header, sekuens basa, tanda <code>+</code>, dan karakter kualitas Phred. R1 dan R2 adalah pembacaan dari dua arah fragmen biologis yang sama; keduanya harus diproses sebagai satu pasangan.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pastikan anda masih mengaktifkan env qc_sequencing</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install fastp</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># menampilkan dokumentasi FASTP</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">fastp</span> <span class="at">--help</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ringkasnya, perintah umum FASTP jika kita menangani data jenis <em>paired-end reads</em> adalah;</p>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/docs/data/rnaseq-gse94345"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># tampilkan dua read pertama dari R1</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/spt23p90_untreated_1_R1.fastq.gz"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># jumlah read dalam sebuah berkas FASTQ: empat baris untuk satu read</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/spt23p90_untreated_1_R1.fastq.gz"</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR / 4}'</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Jangan mengedit FASTQ mentah. Semua hasil QC dan trimming ditulis di bawah <code>$DD/_pipe/</code>, sehingga <code>raw_reads/</code> tetap dapat menjadi sumber yang dapat diaudit ulang.</p>
+</section>
+<section id="menjalankan-fastqc-dan-multiqc" class="level2">
+<h2 class="anchored" data-anchor-id="menjalankan-fastqc-dan-multiqc">Menjalankan FastQC dan MultiQC</h2>
+<p><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> memeriksa setiap FASTQ; <a href="https://multiqc.info/">MultiQC</a> menggabungkan semua hasil ke satu laporan. Perintah berikut memakai enam nama sampel yang baru saja dibuat pada tahap unduhan, sehingga hanya dua belas FASTQ utama yang diproses.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fastp</span> <span class="at">-i</span> input.fastq <span class="at">-o</span> output_cleaned.fastq <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-q</span> 20 <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--cut_right</span> <span class="dt">\</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--cut_right_mean_quality</span> 20 <span class="dt">\</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--adapter_sequence</span><span class="op">=</span>AGATCGGAAGAGC <span class="dt">\</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-l</span> 36</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Penjelasan perintah:</p>
-<ul>
-<li><code>fastp -i input.fastq -o output_cleaned.fastq</code> - Menjalankan <code>fastp</code> dengan input file <code>input.fastq</code> dan menyimpan hasil yang telah dibersihkan ke <code>output_cleaned.fastq</code>.</li>
-<li><code>-q 20</code> - Filter global untuk membatasi hanya base dengan nilai Phred ≥ 20 (artinya error rate ≤ 1%). Base yang nilainya lebih rendah bisa di-trim atau dibuang tergantung konteks pengaturannya.</li>
-<li><code>--cut_right</code> - Mengaktifkan mode trimming dari sisi kanan (akhir) read. Ini berguna saat bagian ujung read menunjukkan penurunan kualitas, seperti yang terlihat pada data yang kita miliki</li>
-<li><code>--cut_right_mean_quality 20</code> - Menentukan ambang kualitas rata-rata di ujung kanan yang digunakan untuk memutuskan kapan trimming harus berhenti. Jika rata-rata kualitas pada posisi tertentu &lt; 20, maka bagian itu dan sesudahnya akan dipotong.</li>
-<li><code>--adapter_sequence=AGATCGGAAGAGC</code> - Menentukan adapter sequence Illumina yang akan dicari dan dihapus dari read. Ini sangat penting karena sampel sekuens kita mengandung sisa adapter.</li>
-<li><code>-l 36</code> - Menyaring hasil akhir agar hanya menyimpan read yang memiliki panjang minimal 36 bp. Sehingga read yang lebih pendek dari ini setelah trimming akan dibuang.</li>
-</ul>
-<p>Untuk automatisasi proses trimming dengan FASTP serta menangani data yang mungkin banyak, saya sudah menyiapkan code bash yang bisa digunakan untuk menangani data <em>paired-end</em> apapun selama memiliki format file *_R1/R2.fastq.gz. Anda bisa <a href="../code/process_paired_fastq.sh" download="process_paired_fastq.sh">mengunduh kode Bash di sini</a> dan menjalankan perintah sebagai berikut:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x process_paired_fastq.sh</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># jalankan proses autotrimming</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> process_paired_fastq.sh <span class="at">-i</span> data_fastq/ <span class="at">-o</span> fastq_ready/</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Perintah di atas akan secara otomatis memproses file .fastq.gz yang berada di direktori <code>data_fastq/</code> kemudian menyimpan hasilnya di dalam direktori <code>fastq_ready/</code> meskipun anda belum membuat direktori ini sebelumnya. Secara <em>default</em>, script ini akan menjalankan perintah dari FASTP dengan jumlah thread pemrosesan sebanyak 4, nilai kualitas minimum 20, panjang minimum read 36, dan menggunakan AGATCGGAAGAGC sebagai sekuen adapter. Kemudian menjalankan FASTQC dan MULTIQC sekaligus.</p>
-<p>Anda bisa melihat dokumentasi cara menggunakan script bash ini dengan menggunakan perintah <code>--help</code></p>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/docs/data/rnaseq-gse94345"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">samples</span><span class="op">=</span><span class="va">(</span>spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3<span class="va">)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="st">"</span><span class="va">${samples</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastqc</span> <span class="at">--threads</span> 4 <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc"</span> <span class="dt">\</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--force</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Buka <code>docs/data/rnaseq-gse94345/_pipe/multiqc/multiqc_report.html</code> pada browser anda. Laporan itu adalah hasil QC awal untuk tutorial ini.</p>
+<p><img src="images/multiqc-gse94345-awal.png" class="content-image img-fluid" style="width:90.0%" alt="Panel General Statistics dari laporan MultiQC awal GSE94345"></p>
+<p>Gambar di atas memberi gambaran cepat tentang dua belas file FASTQ, yang meliputi kedalaman read, proporsi GC, dan tingkat duplikasi. Angka ini bukan alasan untuk langsung memangkas read. Kita perlu melihat panel atau parameter FastQC lainnya sebelum melakukan tindakan tertentu seperti <em>trimming.</em></p>
+</section>
+<section id="membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming" class="level2">
+<h2 class="anchored" data-anchor-id="membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming">Membaca hasil dan memutuskan perlu tidaknya trimming</h2>
+<p>Kriteria berikut membantu membedakan masalah yang memang perlu tindakan dari pola yang wajar pada RNA-seq.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Modul FastQC/MultiQC</th>
+<th>Yang diperiksa</th>
+<th>Kapan perlu tindakan?</th>
+<th>Catatan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>Per base sequence quality</em></td>
+<td>Kualitas Phred di setiap posisi</td>
+<td>Pangkas ujung bila kualitas menurun konsisten dan cukup dalam pada banyak read</td>
+<td>Jangan memangkas hanya karena satu posisi atau satu sampel mendapat peringatan</td>
+</tr>
+<tr class="even">
+<td><em>Per sequence quality scores</em></td>
+<td>Kualitas rata-rata setiap read</td>
+<td>Selidiki bila banyak read berkualitas sangat rendah</td>
+<td>Tidak selalu berarti seluruh library gagal</td>
+</tr>
+<tr class="odd">
+<td><em>Adapter Content</em></td>
+<td>Proporsi adapter yang dikenali FastQC menurut posisi</td>
+<td>Trim bila ada kenaikan adapter yang jelas</td>
+<td>Panel ini dapat lulus meskipun adapter penuh muncul hanya pada sebagian read</td>
+</tr>
+<tr class="even">
+<td><em>Overrepresented sequences</em></td>
+<td>Sekuens panjang yang terlalu sering muncul</td>
+<td>Trim hanya bila sekuensnya cocok dengan adapter/primer yang terverifikasi</td>
+<td>Dapat juga menunjukkan gen, rRNA, atau artefak biologis berlimpah</td>
+</tr>
+<tr class="odd">
+<td><em>Sequence Length Distribution</em></td>
+<td>Distribusi panjang read</td>
+<td>Evaluasi bila tidak sesuai rancangan atau berubah drastis setelah proses</td>
+<td>Panjang bervariasi setelah trimming adapter adalah normal</td>
+</tr>
+<tr class="even">
+<td><em>Per base sequence content</em> dan <em>Kmer Content</em></td>
+<td>Bias komposisi basa atau motif</td>
+<td>Selidiki bila pola kuat tidak dapat dijelaskan oleh protokol</td>
+<td>Bias awal read lazim pada library RNA-seq dan bukan alasan otomatis untuk trimming</td>
+</tr>
+<tr class="odd">
+<td><em>Sequence Duplication Levels</em></td>
+<td>Read identik berulang</td>
+<td>Evaluasi bersama kedalaman dan jenis library</td>
+<td>Duplikasi dapat mencerminkan transkrip sangat diekspresikan, bukan hanya PCR duplicate</td>
+</tr>
+</tbody>
+</table>
+<section id="hasil-qc-awal-gse94345" class="level3">
+<h3 class="anchored" data-anchor-id="hasil-qc-awal-gse94345">Hasil QC awal GSE94345</h3>
+<p>Pada keenam pasangan FASTQ, kualitas per-basa dan kualitas per-sekuens lulus; GC 44–45% dan median panjang read 76 nt. Tidak ada alasan untuk melakukan <em>quality trimming</em> berbasis Phred pada data ini.</p>
+<p><img src="images/multiqc-gse94345-awal.png" class="content-image img-fluid" style="width:90.0%" alt="Panel General Statistics dari laporan MultiQC awal GSE94345"></p>
+<p>Namun, <em>Overrepresented sequences</em> menemukan pola Illumina/TruSeq pada R1 dan R2 di semua sample, sehingga <em>adapter trimming</em> tetap diperlukan.</p>
+<p><img src="images/multiqc-gse94345-overrepresented-sample.png" class="img-fluid" style="width:90.0%"></p>
+<p>Pada agregat laporan, sekuen <code>GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG</code> muncul 459.572 kali (3.18%) dan sekuen <code>GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGC</code> muncul 131806 kali (0.91%).</p>
+<p><img src="images/multiqc-gse94345-overrepresented.png" class="content-image img-fluid" style="width:90.0%" alt="Tabel Top overrepresented sequences dari MultiQC awal GSE94345"></p>
+<p>FastQC mengenal pola tersebut sebagai <strong>TruSeq</strong> adapter dengan indeks. Laporan juga memuat variasi seperti <code>...TGACCAACCTCG...</code> dan <code>...TGACCAAACTCG...</code>. Variasi satu basa seperti ini tidak diperlakukan sebagai tiga adapter baru. Melainkan, kemungkinan besar itu adalah mismatch pembacaan pada wilayah adapter.</p>
+<p>Pada contoh sekuen <code>GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGC</code>, sekuen ini memiliki pola sebagai berikut:</p>
+<pre><code>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC  TGACCA   ATCTCGTATGCCGTCTTCTGCTTG
+└─────── Adapter Trueseq ───────┘  Index    └─── Adapter Trueseq ───┘</code></pre>
+<p>Perhatikan baris kedua pada tabel. Sekuens dengan indeks <code>TGACCA</code> muncul 131.806 kali, dan juga muncul pada variasi sekuen lain. Index <code>TGACCA</code> pada dasarnya merupakan index dari protokol Illumina, yang dapat kita cocokkan pada protol library.</p>
+<p>Sebaliknya, sekuens berlebih seperti <code>CTCAAACTTCCATCGGCTTGAAACCGATAGTCCCTCTAAGAAGTGGATAA</code> tidak boleh langsung dimasukkan sebagai adapter hanya karena frekuensinya tinggi.</p>
+<p>Sekuens tersebut tidak cocok dengan adapter/primer TruSeq yang terverifikasi dan muncul pada seluruh dua belas FASTQ. Pada RNA-seq, pola demikian dapat berasal dari transkrip biologis yang sangat melimpah. Memangkasnya akan berisiko menghapus sinyal biologis.</p>
+</section>
+</section>
+<section id="mengapa-adapter-muncul-di-read" class="level2">
+<h2 class="anchored" data-anchor-id="mengapa-adapter-muncul-di-read">Mengapa adapter muncul di read?</h2>
+<p>Adapter diperlukan saat pembuatan library untuk pengikatan ke <em>flow cell</em>, pengamplifikasian, dan identifikasi sampel (<em>indexing</em>). Bila insert lebih pendek daripada 76 siklus pembacaan, sequencer melewati ujung fragmen cDNA lalu membaca adapter. Jika tidak dihapus, bagian non-biologis ini dapat mengurangi kualitas <em>alignment</em>, menghasilkan <em>soft clipping</em>, dan mengganggu kuantifikasi.</p>
+<p><code>TGACCA</code> adalah indeks dengan 6 basa pada contoh read tersebut. Karena sampel lain dapat memakai indeks lain, kode trimming nantinya tidak boleh hanya menggunakan nilai <code>TGACCA</code>. Sehingga kode trimming haruslah fleksibel menggunakan index 6 basa apapun. Karenaya, kita akan menggunakan <code>N{6}</code>.</p>
+<p>Cutadapt mencocokkan template adapter terhadap setiap read, bukan satu per satu baris di tabel <em>Overrepresented sequences</em>. Toleransi mismatch bawaan Cutadapt (<code>--error-rate 0.1</code>) juga memungkinkan kecocokan terhadap variasi kecil yang masih jelas merupakan adapter. Karena itu, cukup gunakan satu template R1 dan satu template R2 yang terverifikasi.</p>
+</section>
+<section id="trimming-adapter-dengan-cutadapt" class="level2">
+<h2 class="anchored" data-anchor-id="trimming-adapter-dengan-cutadapt">Trimming adapter dengan Cutadapt</h2>
+<p>Pada GSE94345 ini, tindakan yang didukung laporan adalah penghapusan adapter, bukan pemotongan kualitas secara agresif. <code>--minimum-length 20</code> membuang pasangan yang setelah adapter dihapus terlalu pendek untuk dipetakan secara bermakna. Cutadapt menjaga pasangan R1/R2 tetap sinkron: bila salah satu mate tidak lolos panjang minimum, pasangan tersebut tidak ditulis.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># menampilkan dokumentasi script </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> process_paired_fastq.sh <span class="at">--help</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># menjalankan opsi custom misalnya: 8 threat, dengan nilai kualitas minimum 30, panjang minimum read 50, dan menggunakan AGATCGGAAGAGC sebagai adapter</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> process_paired_fastq.sh <span class="at">-i</span> data_fastq/ <span class="at">-o</span> fastq_ready/ <span class="at">-t</span> 8 <span class="at">-q</span> 30 <span class="at">-l</span> 50 <span class="at">-a</span> AGATCGGAAGAGC</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Anda bisa lihat video demonstrasinya di bawah ini.</p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/UXbhQsSyCr8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<p>Setelah diperbaiki, hasil pada “Status Check” MULTIQC menjadi sedikit lebih baik, terutama untuk R2. Bisa dilihat <a href="results/multiqc_report2.html">di sini</a></p>
-<p>— Sekian —</p>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">DD</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/docs/data/rnaseq-gse94345"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">samples</span><span class="op">=</span><span class="va">(</span>spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3<span class="va">)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/cutadapt"</span> <span class="dt">\</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc_trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc_trimmed"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="st">"</span><span class="va">${samples</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">cutadapt</span> <span class="at">--cores</span> 4 <span class="at">--minimum-length</span> 20 <span class="dt">\</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">-g</span> GATCGGAAGAGCACACGTCTGAACTCCAGTCACN{6}ATCTCGTATGCCGTCTTCTGCTTG <span class="dt">\</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">-G</span> GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG <span class="dt">\</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">-o</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">-p</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/raw_reads/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/cutadapt/</span><span class="va">${s}</span><span class="st">.log"</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastqc</span> <span class="at">--threads</span> 4 <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc_trimmed"</span> <span class="dt">\</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R1.fastq.gz"</span> <span class="dt">\</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/trimmed/</span><span class="va">${s}</span><span class="st">_R2.fastq.gz"</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--force</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/multiqc_trimmed"</span> <span class="dt">\</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/qc_trimmed"</span> <span class="st">"</span><span class="va">$DD</span><span class="st">/_pipe/cutadapt"</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Parameter:</p>
+<ul>
+<li><code>-g</code> adalah template adapter R1. <code>N{6}</code> menerima indeks enam basa apa pun.</li>
+<li><code>-G</code> adalah template adapter R2.</li>
+<li><code>-o</code> dan <code>-p</code> menyimpan hasil R1 dan R2 untuk pasangan sampel yang sama.</li>
+<li><code>--minimum-length 20</code> menyaring read/pasangan yang menjadi terlalu pendek setelah adapter dihapus.</li>
+<li>Berkas <code>cutadapt/*.log</code> merekam jumlah pasangan yang diproses, jumlah yang lolos, dan adapter yang ditemukan; jangan menghapusnya sebelum QC pasca-trimming ditinjau.</li>
+</ul>
+</section>
+<section id="qc-pasca-trimming-dan-langkah-berikutnya" class="level2">
+<h2 class="anchored" data-anchor-id="qc-pasca-trimming-dan-langkah-berikutnya">QC pasca-trimming dan langkah berikutnya</h2>
+<p>Buka <code>docs/data/rnaseq-gse94345/_pipe/multiqc_trimmed/multiqc_report.html</code>. Hasil setelah menjalankan perintah di atas adalah sebagai berikut.</p>
+<p><img src="images/multiqc-gse94345-pasca-trimming.png" class="content-image img-fluid" style="width:90.0%" alt="Panel Adapter Content dan Status Checks MultiQC setelah trimming GSE94345"></p>
+<p>Panel <em>Adapter Content</em> kini hanya mencatat kombinasi sampel-adapter di bawah 0,1%, dan kolom <em>Adapter Content</em> pada <em>Status Checks</em> berwarna hijau. Panel lain masih dapat berwarna kuning atau merah, terutama <em>Per base sequence content</em> dan duplikasi.</p>
+<p>Semua pasangan mempertahankan sebagian besar read dan seluruh modul <em>Per base sequence quality</em> serta <em>Adapter Content</em> lulus. Peringatan <em>Overrepresented sequences</em> yang tersisa tidak lagi cocok dengan sekuens Illumina/TruSeq, sehingga tidak menjadi alasan untuk trimming tambahan tanpa identifikasi kontaminan yang independen.</p>
+<p>Selesai.</p>
 
 
 <nav class="article-frame-footer" aria-label="Navigasi artikel"><a href="../index.html">Beranda</a><a href="../materi.html">Materi</a></nav>
