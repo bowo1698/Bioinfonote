@@ -16,9 +16,9 @@ Alur analisis lengkap dari data mentah hingga interpretasi biologis. Setiap work
 ::: {.section-index-item}
 [02]{.index-number}
 
-[Metagenomik 16S rRNA](work-metagenomics.html){.section-index-title}
+[Metabarcoding 16S rRNA](work-metabarcoding-16s.html){.section-index-title}
 
-[Profiling komunitas mikroba usus udang dari reads mentah hingga analisis keragaman dan kelimpahan diferensial.](work-metagenomics.html){.section-index-description}
+[Profil komunitas mikroba usus udang dari *reads* mentah hingga analisis keragaman dan kelimpahan diferensial.](work-metabarcoding-16s.html){.section-index-description}
 :::
 
 ::: {.section-index-item}
@@ -27,5 +27,13 @@ Alur analisis lengkap dari data mentah hingga interpretasi biologis. Setiap work
 [Variant Calling dengan GATK](work-variant-calling.html){.section-index-title}
 
 [Alignment reads *E. coli* ke genom referensi dan pemanggilan varian menggunakan GATK.](work-variant-calling.html){.section-index-description}
+:::
+
+::: {.section-index-item}
+[04]{.index-number}
+
+[Variant Calling Part 2](work-variant-calling-multi-sample.html){.section-index-title}
+
+[Joint genotyping 20 individu *Arabidopsis thaliana* hingga menjadi VCF multisampel dan matriks dosis alel.](work-variant-calling-multi-sample.html){.section-index-description}
 :::
 :::

@@ -62,8 +62,9 @@ website:
           href: docs/workflows.qmd
           contents:
             - docs/work-RNA-seq.qmd
-            - docs/work-metagenomics.qmd
+            - docs/work-metabarcoding-16s.qmd
             - docs/work-variant-calling.qmd
+            - docs/work-variant-calling-multi-sample.qmd
 
   search:
     location: navbar

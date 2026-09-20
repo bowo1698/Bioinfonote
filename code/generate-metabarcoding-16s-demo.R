@@ -1,12 +1,12 @@
 #!/usr/bin/env Rscript
-# Synthetic 16S rRNA V3-V4 demo dataset for the Bioinfonote metagenomics tutorial.
+# Synthetic 16S rRNA V3-V4 demo dataset for the Bioinfonote metabarcoding tutorial.
 # Produces paired-end FASTQ for 20 samples (10 sehat, 10 AHPND), a small DADA2
 # taxonomy training set, and metadata. Deterministic (seeded).
-# Run from repo root:  Rscript code/generate-16s-dummy.R
+# Run from repo root: Rscript code/generate-metabarcoding-16s-demo.R
 
 set.seed(20260604)
 
-out_dir   <- "docs/data/16s-demo"
+out_dir   <- "docs/data/metabarcoding-16s-demo"
 reads_dir <- file.path(out_dir, "raw_reads")
 ref_dir   <- file.path(out_dir, "ref")
 dir.create(reads_dir, recursive = TRUE, showWarnings = FALSE)
@@ -14,7 +14,7 @@ dir.create(ref_dir,   recursive = TRUE, showWarnings = FALSE)
 
 ## 1. Taxa table (genus + 6-level lineage) ---------------------------------
 # Semua genus adalah bakteri laut/payau yang lazim pada lingkungan tambak dan
-# saluran pencernaan udang vanamei (tidak ada genus khas air tawar).
+# saluran pencernaan udang vanamei.
 tax <- read.csv(text = "
 genus,kingdom,phylum,class,order,family
 Vibrio,Bacteria,Proteobacteria,Gammaproteobacteria,Vibrionales,Vibrionaceae
@@ -127,8 +127,8 @@ for (k in seq_along(samples)) {
 ## 7. Bundel reads untuk tombol unduh ---------------------------------------
 local({
   wd <- setwd(out_dir); on.exit(setwd(wd))
-  utils::tar("raw_reads.tar.gz", "raw_reads", compression = "gzip")
+  utils::tar("metabarcoding-16s-raw-reads.tar.gz", "raw_reads", compression = "gzip")
 })
 
 cat("DONE. reads:", reads_dir, " ref:", ref_fa,
-    " bundle:", file.path(out_dir, "raw_reads.tar.gz"), "\n")
+    " bundle:", file.path(out_dir, "metabarcoding-16s-raw-reads.tar.gz"), "\n")

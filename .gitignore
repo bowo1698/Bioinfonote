@@ -4,9 +4,10 @@
 /_scripts/
 .Rhistory
 **/.DS_Store
-docs/data/16s-demo/filtered/
+docs/data/metabarcoding-16s-demo/filtered/
 docs/data/rnaseq-demo/_pipe/
 docs/data/rnaseq-gse94345/
+docs/data/variant-calling-part-2/
 _docs/
 
 /.luarc.json

@@ -28,6 +28,6 @@ Untuk mulai belajar, silakan pilih salah satu bagian di bawah ini. Setiap bagian
 
 [Workflows](docs/workflows.html){.section-index-title}
 
-[Alur analisis lengkap end to end, mulai dari RNA-Seq hingga metagenomik 16S.](docs/workflows.html){.section-index-description}
+[Alur analisis lengkap *end-to-end*, mulai dari RNA-Seq hingga metabarcoding 16S.](docs/workflows.html){.section-index-description}
 :::
 :::

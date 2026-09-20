@@ -1,5 +1,5 @@
 ---
-title: "Quality control dan trimming FASTQ RNA-seq"
+title: "Quality control dan trimming FASTQ"
 ---
 
 ![](https://www.integra-biosciences.com/sites/default/files/styles/large/public/images/data-analysis.jpg?itok=DX2veo4F){.content-image .article-hero-image fig-alt="Ilustrasi analisis dan quality control data"}
@@ -7,55 +7,55 @@ title: "Quality control dan trimming FASTQ RNA-seq"
 ## Daftar isi
 
 - [Tujuan dan data contoh](#tujuan-dan-data-contoh)
-- [Unduh FASTQ, metadata, dan referensi](#unduh-fastq-metadata-dan-referensi)
+- [Menyiapkan perangkat dan mengunduh FASTQ](#menyiapkan-perangkat-dan-mengunduh-fastq)
 - [Memahami FASTQ](#memahami-fastq)
 - [Menjalankan FastQC dan MultiQC](#menjalankan-fastqc-dan-multiqc)
-- [Membaca hasil dan memutuskan perlu tidaknya trimming](#membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming)
+- [Membaca hasil dan menentukan tindakan](#membaca-hasil-dan-menentukan-tindakan)
 - [Mengapa adapter muncul di read?](#mengapa-adapter-muncul-di-read)
-- [Trimming adapter dengan Cutadapt](#trimming-adapter-dengan-cutadapt)
-- [QC pasca-trimming dan langkah berikutnya](#qc-pasca-trimming-dan-langkah-berikutnya)
+- [Memangkas adapter dengan Cutadapt](#memangkas-adapter-dengan-cutadapt)
+- [Menilai hasil pascatrimming](#menilai-hasil-pascatrimming)
 
-> **Catatan.** Tutorial ini memakai Bash di Linux dan data publik nyata GSE94345 yang telah diunduh secara lokal. Jalankan perintah dari akar repositori `Bioinfonote`. FASTQ dan seluruh hasil berada pada `docs/data/rnaseq-gse94345/`, direktori yang sengaja tidak dilacak Git.
+> Catatan: tutorial ini memakai Bash dan data publik GSE94345 yang sudah tersedia secara lokal. Jalankan semua perintah dari akar repositori `Bioinfonote`. FASTQ dan hasil analisis disimpan di `docs/data/rnaseq-gse94345/`, yang tidak dilacak oleh Git. Hasil dalam artikel ini diverifikasi dengan FastQC 0.12.1, MultiQC 1.35, dan Cutadapt 5.2.
 
 ## Tujuan dan data contoh {#tujuan-dan-data-contoh}
 
-*Quality control* (QC) adalah pemeriksaan terhadap FASTQ sebelum *alignment* atau kuantifikasi. Tujuannya untuk menemukan masalah teknis yang dapat mempengaruhi data biologis atau menurunkan kualitas analisis berikutnya.
+*Quality control* (QC) memeriksa FASTQ sebelum *alignment* atau kuantifikasi. Dari QC, kita ingin menjawab dua pertanyaan: apakah kualitas read cukup baik, dan apakah ada bagian teknis seperti adapter yang perlu dibuang. Keputusan trimming harus mengikuti temuan tersebut. Memangkas read tanpa alasan dapat menghilangkan basa yang masih berguna.
 
-Tutorial ini akan memakai enam pasangan *paired-end reads* RNA-seq ragi (*Saccharomyces cerevisiae*) dari [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345): tiga replikasi tanpa doxycycline dan tiga replikasi dengan doxycycline. Studi ini meneliti respons transkripsi ketika domain aktif SPT23p90 diinduksi doxycycline.
+Tutorial ini memakai enam sampel RNA-seq *paired-end* ragi (*Saccharomyces cerevisiae*) dari [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345). Tiga sampel tidak mendapat doxycycline, sedangkan tiga lainnya mendapat doxycycline. Studi tersebut mengamati perubahan transkripsi setelah induksi domain aktif SPT23p90.
 
-## Unduh FASTQ melalui SRA {#unduh-fastq-metadata-dan-referensi}
+## Menyiapkan perangkat dan mengunduh FASTQ {#menyiapkan-perangkat-dan-mengunduh-fastq}
 
-Enam run SRA pada studi ini menghasilkan dua belas FASTQ, masing-masing R1 dan R2. Total berkas FASTQ terkompresi sekitar 623 MiB. Selama proses berlangsung, sediakan ruang kosong sekitar 8-10 GiB untuk berkas SRA, FASTQ sementara, referensi, dan hasil analisis berikutnya. Semua berkas akan disimpan di `docs/data/rnaseq-gse94345/`.
-
-Menggunakan anacona, kita akan menginstall beberapa tools, seperti `sra-tools`, `fastqc`, dan `multiqc` di lingkungan conda `rnaseq`, serta juga menginstall `cutadapt` langsung dengan `pip:`
+Pasang SRA Toolkit, FastQC, MultiQC, dan Cutadapt dalam satu lingkungan Conda. Menyatukan semua paket di lingkungan yang sama membuat pipeline lebih mudah dijalankan ulang.
 
 ``` bash
-# bash
-conda create -n rnaseq -y
+# Buat lingkungan Conda dan pasang semua perangkat yang dipakai dalam tutorial.
+conda create -n rnaseq -c conda-forge -c bioconda \
+  sra-tools fastqc multiqc cutadapt -y
 conda activate rnaseq
-conda install -c bioconda -c conda-forge sra-tools fastqc multiqc -y
-python -m pip install cutadapt
 ```
 
-Berikutnya, unduh data dengan SRA Toolkit. `prefetch` menyimpan arsip SRA terlebih dahulu. Sesudah itu `fasterq-dump` mengubah tiap arsip menjadi dua FASTQ. Bila unduhan terputus, jalankan kembali baris `prefetch` yang sama; toolkit melanjutkan run yang belum lengkap.
+Enam run SRA menghasilkan 12 FASTQ, masing-masing satu R1 dan satu R2. Ukuran seluruh FASTQ terkompresi sekitar 623 MiB. Siapkan ruang kosong 8--10 GiB karena konversi SRA membuat berkas sementara yang jauh lebih besar daripada hasil terkompresi.
+
+Perintah di bawah mengunduh arsip SRA, mengubahnya menjadi FASTQ *paired-end*, mengganti nama berkas agar mudah dibaca, lalu mengompresnya. Jika `prefetch` terputus, jalankan kembali perintah yang sama. SRA Toolkit akan melanjutkan run yang belum lengkap.
 
 ``` bash
-# bash
+# Hentikan pipeline saat perintah gagal, variabel kosong, atau pipe bermasalah.
 set -euo pipefail
 
-ROOT="$(pwd)"
-DD="$ROOT/docs/data/rnaseq-gse94345"
+# Siapkan direktori kerja untuk arsip SRA, FASTQ, dan berkas sementara.
+DD="$(pwd)/docs/data/rnaseq-gse94345"
 mkdir -p "$DD/sra" "$DD/raw_reads" "$DD/_tmp"
 
-# unduh enam run SRA
+# Unduh enam run SRA ke direktori data.
 prefetch --progress --output-directory "$DD/sra" \
   SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168
 
-# ubah setiap run menjadi satu pasangan FASTQ dan beri nama sampel yang jelas
+# Pasangkan setiap run dengan nama sampel yang lebih mudah dibaca.
 runs=(SRR5220163 SRR5220164 SRR5220165 SRR5220166 SRR5220167 SRR5220168)
 samples=(spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 \
   spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3)
 
+# Ubah tiap arsip menjadi R1 dan R2, lalu kompres seluruh FASTQ.
 for i in "${!runs[@]}"; do
   fasterq-dump --split-files --threads 4 --temp "$DD/_tmp" \
     --outdir "$DD/raw_reads" "$DD/sra/${runs[$i]}/${runs[$i]}.sra"
@@ -65,125 +65,123 @@ done
 gzip "$DD"/raw_reads/*.fastq
 ```
 
-Setelah konversi selesai, struktur foldernya seperti ini.
+Setelah konversi selesai, direktori `raw_reads/` berisi enam pasang FASTQ.
 
 ``` {.text .terminal-output}
+# Struktur minimum setelah konversi dan kompresi selesai.
 docs/data/rnaseq-gse94345/
-└── raw_reads/                 # 12 FASTQ, enam pasangan read penuh
+└── raw_reads/                 # 12 FASTQ, terdiri atas enam pasang R1 dan R2
 ```
 
-Folder `sra/` dan `_tmp/` hanya diperlukan saat unduhan serta konversi. Setelah FASTQ selesai dibuat dan Anda sudah memeriksanya, keduanya boleh dihapus untuk menghemat ruang.
+Direktori `sra/` dan `_tmp/` hanya diperlukan selama pengunduhan dan konversi. Keduanya dapat dihapus setelah semua FASTQ diperiksa.
 
 ## Memahami FASTQ {#memahami-fastq}
 
-Satu read FASTQ selalu terdiri dari empat baris: header, sekuens basa, tanda `+`, dan karakter kualitas Phred. R1 dan R2 adalah pembacaan dari dua arah fragmen biologis yang sama; keduanya harus diproses sebagai satu pasangan.
+Setiap read FASTQ memakai empat baris: header, sekuens basa, tanda `+`, dan karakter kualitas Phred. R1 dan R2 membaca dua ujung fragmen biologis yang sama. Karena itu, keduanya harus tetap berpasangan selama trimming dan analisis berikutnya.
 
 ``` bash
-# bash
+# Tampilkan dua read pertama dan hitung jumlah read dari banyaknya baris FASTQ.
 DD="$(pwd)/docs/data/rnaseq-gse94345"
-
-# tampilkan dua read pertama dari R1
-gunzip -c "$DD/raw_reads/spt23p90_untreated_1_R1.fastq.gz" | head -8
-
-# jumlah read dalam sebuah berkas FASTQ: empat baris untuk satu read
-gunzip -c "$DD/raw_reads/spt23p90_untreated_1_R1.fastq.gz" | awk 'END {print NR / 4}'
+gunzip -c "$DD/raw_reads/spt23p90_untreated_1_R1.fastq.gz" | sed -n '1,8p'
+gunzip -c "$DD/raw_reads/spt23p90_untreated_1_R1.fastq.gz" | \
+  awk 'END {print NR / 4}'
 ```
 
-Jangan mengedit FASTQ mentah. Semua hasil QC dan trimming ditulis di bawah `$DD/_pipe/`, sehingga `raw_reads/` tetap dapat menjadi sumber yang dapat diaudit ulang.
+Perintah tersebut menghasilkan 798.158 read untuk `spt23p90_untreated_1_R1.fastq.gz`. Jumlah barisnya habis dibagi empat, seperti yang diharapkan untuk FASTQ yang utuh.
+
+Jangan mengubah berkas di `raw_reads/`. Pipeline di bawah menulis semua hasil ke `$DD/_pipe/`, sehingga FASTQ mentah tetap tersedia jika analisis perlu diulang.
 
 ## Menjalankan FastQC dan MultiQC {#menjalankan-fastqc-dan-multiqc}
 
-[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) memeriksa setiap FASTQ; [MultiQC](https://multiqc.info/) menggabungkan semua hasil ke satu laporan. Perintah berikut memakai enam nama sampel yang baru saja dibuat pada tahap unduhan, sehingga hanya dua belas FASTQ utama yang diproses.
+[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) memeriksa satu FASTQ pada satu waktu. [MultiQC](https://multiqc.info/) menggabungkan 12 laporan FastQC agar pola antarsampel mudah dibandingkan.
 
 ``` bash
-# bash
+# Tentukan sampel dan siapkan direktori untuk FastQC serta MultiQC.
 DD="$(pwd)/docs/data/rnaseq-gse94345"
 samples=(spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 \
   spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3)
 mkdir -p "$DD/_pipe/qc" "$DD/_pipe/multiqc"
 
+# Jalankan FastQC pada R1 dan R2 dari setiap sampel.
 for s in "${samples[@]}"; do
   fastqc --threads 4 --outdir "$DD/_pipe/qc" \
     "$DD/raw_reads/${s}_R1.fastq.gz" \
     "$DD/raw_reads/${s}_R2.fastq.gz"
 done
 
+# Gabungkan seluruh laporan FastQC menjadi satu laporan MultiQC.
 multiqc --force --outdir "$DD/_pipe/multiqc" "$DD/_pipe/qc"
 ```
 
-Buka `docs/data/rnaseq-gse94345/_pipe/multiqc/multiqc_report.html` pada browser anda. Laporan itu adalah hasil QC awal untuk tutorial ini.
+Buka `docs/data/rnaseq-gse94345/_pipe/multiqc/multiqc_report.html`. Panel *General Statistics* merangkum jumlah read, GC, panjang read, dan duplikasi. Gunakan panel ini sebagai titik awal, bukan sebagai dasar tunggal untuk trimming.
 
 ![](images/multiqc-gse94345-awal.png){.content-image fig-alt="Panel General Statistics dari laporan MultiQC awal GSE94345" width="90%"}
 
-Gambar di atas memberi gambaran cepat tentang dua belas file FASTQ, yang meliputi kedalaman read, proporsi GC, dan tingkat duplikasi. Angka ini bukan alasan untuk langsung memangkas read. Kita perlu melihat panel atau parameter FastQC lainnya sebelum melakukan tindakan tertentu seperti *trimming.*
+## Membaca hasil dan menentukan tindakan {#membaca-hasil-dan-menentukan-tindakan}
 
-## Membaca hasil dan memutuskan perlu tidaknya trimming {#membaca-hasil-dan-memutuskan-perlu-tidaknya-trimming}
+Setiap modul FastQC menjawab pertanyaan yang berbeda. Tabel berikut menghubungkan temuan dengan tindakan yang masuk akal.
 
-Kriteria berikut membantu membedakan masalah yang memang perlu tindakan dari pola yang wajar pada RNA-seq.
-
-| Modul FastQC/MultiQC | Yang diperiksa | Kapan perlu tindakan? | Catatan |
+| Modul FastQC/MultiQC | Yang diperiksa | Kapan perlu tindakan? | Cara membacanya |
 |------------------|------------------|------------------|------------------|
-| *Per base sequence quality* | Kualitas Phred di setiap posisi | Pangkas ujung bila kualitas menurun konsisten dan cukup dalam pada banyak read | Jangan memangkas hanya karena satu posisi atau satu sampel mendapat peringatan |
-| *Per sequence quality scores* | Kualitas rata-rata setiap read | Selidiki bila banyak read berkualitas sangat rendah | Tidak selalu berarti seluruh library gagal |
-| *Adapter Content* | Proporsi adapter yang dikenali FastQC menurut posisi | Trim bila ada kenaikan adapter yang jelas | Panel ini dapat lulus meskipun adapter penuh muncul hanya pada sebagian read |
-| *Overrepresented sequences* | Sekuens panjang yang terlalu sering muncul | Trim hanya bila sekuensnya cocok dengan adapter/primer yang terverifikasi | Dapat juga menunjukkan gen, rRNA, atau artefak biologis berlimpah |
-| *Sequence Length Distribution* | Distribusi panjang read | Evaluasi bila tidak sesuai rancangan atau berubah drastis setelah proses | Panjang bervariasi setelah trimming adapter adalah normal |
-| *Per base sequence content* dan *Kmer Content* | Bias komposisi basa atau motif | Selidiki bila pola kuat tidak dapat dijelaskan oleh protokol | Bias awal read lazim pada library RNA-seq dan bukan alasan otomatis untuk trimming |
-| *Sequence Duplication Levels* | Read identik berulang | Evaluasi bersama kedalaman dan jenis library | Duplikasi dapat mencerminkan transkrip sangat diekspresikan, bukan hanya PCR duplicate |
+| *Per base sequence quality* | Kualitas Phred pada setiap posisi | Pangkas ujung hanya jika kualitas turun konsisten pada banyak read | Satu posisi atau satu sampel yang mendapat peringatan belum cukup untuk trimming |
+| *Per sequence quality scores* | Kualitas rata-rata setiap read | Selidiki jika banyak read memiliki kualitas sangat rendah | Peringatan tidak selalu berarti seluruh pustaka gagal |
+| *Adapter Content* | Proporsi adapter yang dikenal FastQC pada setiap posisi | Trim jika kurva adapter meningkat jelas | Modul ini dapat lulus ketika adapter lengkap hanya muncul pada sebagian read |
+| *Overrepresented sequences* | Sekuens yang muncul jauh lebih sering daripada perkiraan | Trim jika sekuens cocok dengan adapter atau primer yang terverifikasi | Sekuens berlebih juga dapat berasal dari transkrip atau rRNA yang melimpah |
+| *Sequence Length Distribution* | Sebaran panjang read | Periksa jika panjang tidak sesuai desain eksperimen | Panjang yang bervariasi setelah trimming adalah normal |
+| *Per base sequence content* | Proporsi A, C, G, dan T menurut posisi | Selidiki pola yang tidak dapat dijelaskan oleh protokol | Bias posisi pada RNA-seq bukan alasan otomatis untuk trimming |
+| *Sequence Duplication Levels* | Banyaknya read identik | Nilai bersama kedalaman dan jenis pustaka | Pada RNA-seq, transkrip dengan ekspresi tinggi juga meningkatkan duplikasi |
 
 ### Hasil QC awal GSE94345
 
-Pada keenam pasangan FASTQ, kualitas per-basa dan kualitas per-sekuens lulus; GC 44--45% dan median panjang read 76 nt. Tidak ada alasan untuk melakukan *quality trimming* berbasis Phred pada data ini.
+Semua FASTQ lulus *Per base sequence quality* dan *Per sequence quality scores*. Kandungan GC berada pada 44--45%, sedangkan median panjang read adalah 76 nukleotida. Jumlah read per berkas berkisar antara 798.158 dan 1.481.499. Tidak ada bukti yang mendukung *quality trimming* berbasis Phred.
 
-![](images/multiqc-gse94345-awal.png){.content-image fig-alt="Panel General Statistics dari laporan MultiQC awal GSE94345" width="90%"}
+Modul *Adapter Content* juga lulus. Namun, hasil *Overrepresented sequences* memperlihatkan dua sekuens Illumina/TruSeq pada R1 dan R2. Artinya, sebagian read didominasi adapter meskipun proporsinya belum cukup untuk menggagalkan modul *Adapter Content*.
 
-Namun, *Overrepresented sequences* menemukan pola Illumina/TruSeq pada R1 dan R2 di semua sample, sehingga *adapter trimming* tetap diperlukan.
+![](images/multiqc-gse94345-overrepresented-sample.png){.content-image fig-alt="Contoh sekuens berlebih pada satu sampel GSE94345" width="90%"}
 
-![](images/multiqc-gse94345-overrepresented-sample.png){width="90%"}
+Dalam gabungan 12 FASTQ, sekuens `GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG` muncul 459.572 kali atau 3,18% dari seluruh read. Sekuens `GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGC` muncul 131.806 kali atau 0,91%.
 
-Pada agregat laporan, sekuen `GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG` muncul 459.572 kali (3.18%) dan sekuen `GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGC` muncul 131806 kali (0.91%).
+![](images/multiqc-gse94345-overrepresented.png){.content-image fig-alt="Tabel sekuens yang paling sering muncul pada laporan MultiQC awal" width="90%"}
 
-![](images/multiqc-gse94345-overrepresented.png){.content-image fig-alt="Tabel Top overrepresented sequences dari MultiQC awal GSE94345" width="90%"}
+FastQC mengenali keduanya sebagai adapter TruSeq. Pada sekuens R1, pola adapter mengapit indeks enam basa:
 
-FastQC mengenal pola tersebut sebagai **TruSeq** adapter dengan indeks. Laporan juga memuat variasi seperti `...TGACCAACCTCG...` dan `...TGACCAAACTCG...`. Variasi satu basa seperti ini tidak diperlakukan sebagai tiga adapter baru. Melainkan, kemungkinan besar itu adalah mismatch pembacaan pada wilayah adapter.
-
-Pada contoh sekuen `GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGC`, sekuen ini memiliki pola sebagai berikut:
-
-```         
-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC  TGACCA   ATCTCGTATGCCGTCTTCTGCTTG
-└─────── Adapter Trueseq ───────┘  Index    └─── Adapter Trueseq ───┘
+``` text
+# Susunan adapter dan indeks pada salah satu sekuens R1 yang berlebih.
+GATCGGAAGAGCACACGTCTGAACTCCAGTCAC  TGACCA  ATCTCGTATGCCGTCTTCTGCTTG
+└──────────── adapter ──────────┘  indeks  └─────── adapter ───────┘
 ```
 
-Perhatikan baris kedua pada tabel. Sekuens dengan indeks `TGACCA` muncul 131.806 kali, dan juga muncul pada variasi sekuen lain. Index `TGACCA` pada dasarnya merupakan index dari protokol Illumina, yang dapat kita cocokkan pada protol library.
+Variasi seperti `...TGACCAACCTCG...` atau `...TGACCAAACTCG...` berbeda satu basa dari pola utama. Perbedaan kecil ini sesuai dengan toleransi kesalahan pembacaan; kita tidak perlu mendaftarkan setiap variasi sebagai adapter baru.
 
-Sebaliknya, sekuens berlebih seperti `CTCAAACTTCCATCGGCTTGAAACCGATAGTCCCTCTAAGAAGTGGATAA` tidak boleh langsung dimasukkan sebagai adapter hanya karena frekuensinya tinggi.
-
-Sekuens tersebut tidak cocok dengan adapter/primer TruSeq yang terverifikasi dan muncul pada seluruh dua belas FASTQ. Pada RNA-seq, pola demikian dapat berasal dari transkrip biologis yang sangat melimpah. Memangkasnya akan berisiko menghapus sinyal biologis.
+Tidak semua sekuens berlebih boleh dipangkas. Contohnya, `CTCAAACTTCCATCGGCTTGAAACCGATAGTCCCTCTAAGAAGTGGATAA` tidak cocok dengan adapter atau primer TruSeq yang diperiksa. Sekuens tersebut muncul di semua FASTQ dan dapat berasal dari transkrip yang melimpah. Memangkasnya hanya karena frekuensinya tinggi berisiko menghapus sinyal biologis.
 
 ## Mengapa adapter muncul di read? {#mengapa-adapter-muncul-di-read}
 
-Adapter diperlukan saat pembuatan library untuk pengikatan ke *flow cell*, pengamplifikasian, dan identifikasi sampel (*indexing*). Bila insert lebih pendek daripada 76 siklus pembacaan, sequencer melewati ujung fragmen cDNA lalu membaca adapter. Jika tidak dihapus, bagian non-biologis ini dapat mengurangi kualitas *alignment*, menghasilkan *soft clipping*, dan mengganggu kuantifikasi.
+Adapter diperlukan untuk menempelkan fragmen pustaka ke *flow cell* dan mengenali sampel melalui indeks. Jika insert lebih pendek daripada jumlah siklus sekuensing, mesin melewati ujung insert lalu membaca adapter. Pustaka juga dapat mengandung molekul yang hampir seluruhnya terdiri atas adapter.
 
-`TGACCA` adalah indeks dengan 6 basa pada contoh read tersebut. Karena sampel lain dapat memakai indeks lain, kode trimming nantinya tidak boleh hanya menggunakan nilai `TGACCA`. Sehingga kode trimming haruslah fleksibel menggunakan index 6 basa apapun. Karenaya, kita akan menggunakan `N{6}`.
+Pada GSE94345, sebagian besar kecocokan mengikuti pola kedua. Dalam log Cutadapt, 99,9% kecocokan adapter pada sampel contoh masuk kategori `none/other` untuk basa di depannya. Adapter umumnya sudah dimulai pada basa pertama read. Read seperti ini tidak membawa insert yang berguna dan akan dibuang setelah panjang minimumnya diperiksa.
 
-Cutadapt mencocokkan template adapter terhadap setiap read, bukan satu per satu baris di tabel *Overrepresented sequences*. Toleransi mismatch bawaan Cutadapt (`--error-rate 0.1`) juga memungkinkan kecocokan terhadap variasi kecil yang masih jelas merupakan adapter. Karena itu, cukup gunakan satu template R1 dan satu template R2 yang terverifikasi.
+Indeks `TGACCA` bukan bagian yang perlu dicocokkan secara khusus. Cutadapt cukup mencari bagian awal adapter R1 dan R2 yang sudah terverifikasi. Pilihan ini juga berlaku untuk sampel dengan indeks berbeda.
 
-## Trimming adapter dengan Cutadapt {#trimming-adapter-dengan-cutadapt}
+## Memangkas adapter dengan Cutadapt {#memangkas-adapter-dengan-cutadapt}
 
-Pada GSE94345 ini, tindakan yang didukung laporan adalah penghapusan adapter, bukan pemotongan kualitas secara agresif. `--minimum-length 20` membuang pasangan yang setelah adapter dihapus terlalu pendek untuk dipetakan secara bermakna. Cutadapt menjaga pasangan R1/R2 tetap sinkron: bila salah satu mate tidak lolos panjang minimum, pasangan tersebut tidak ditulis.
+[Cutadapt](https://cutadapt.readthedocs.io/en/v5.1/guide.html) memakai `-a` dan `-A` untuk adapter 3′ pada R1 dan R2. Orientasi ini penting: saat adapter muncul setelah insert, Cutadapt mempertahankan bagian biologis di depannya dan membuang adapter beserta seluruh basa setelahnya.
+
+Pipeline berikut meminta kecocokan sedikitnya 10 basa. Batas ini cukup panjang untuk menghindari kecocokan acak 3--4 basa yang terlihat ketika nilai bawaan dipakai. Opsi `--minimum-length 20` membuang pasangan jika salah satu read menjadi lebih pendek dari 20 basa.
 
 ``` bash
-# bash
+# Siapkan nama sampel dan direktori keluaran pascatrimming.
 DD="$(pwd)/docs/data/rnaseq-gse94345"
 samples=(spt23p90_untreated_1 spt23p90_untreated_2 spt23p90_untreated_3 \
   spt23p90_dox_1 spt23p90_dox_2 spt23p90_dox_3)
 mkdir -p "$DD/_pipe/trimmed" "$DD/_pipe/cutadapt" \
   "$DD/_pipe/qc_trimmed" "$DD/_pipe/multiqc_trimmed"
 
+# Pangkas adapter 3' pada setiap pasangan, lalu periksa hasilnya dengan FastQC.
 for s in "${samples[@]}"; do
-  cutadapt --cores 4 --minimum-length 20 \
-    -g GATCGGAAGAGCACACGTCTGAACTCCAGTCACN{6}ATCTCGTATGCCGTCTTCTGCTTG \
-    -G GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG \
+  cutadapt --cores 4 --minimum-length 20 --overlap 10 \
+    -a GATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
+    -A GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
     -o "$DD/_pipe/trimmed/${s}_R1.fastq.gz" \
     -p "$DD/_pipe/trimmed/${s}_R2.fastq.gz" \
     "$DD/raw_reads/${s}_R1.fastq.gz" \
@@ -195,26 +193,27 @@ for s in "${samples[@]}"; do
     "$DD/_pipe/trimmed/${s}_R2.fastq.gz"
 done
 
+# Gabungkan laporan Cutadapt dan FastQC pascatrimming.
 multiqc --force --outdir "$DD/_pipe/multiqc_trimmed" \
   "$DD/_pipe/qc_trimmed" "$DD/_pipe/cutadapt"
 ```
 
-Parameter:
+Opsi pada perintah tersebut memiliki fungsi berikut:
 
-- `-g` adalah template adapter R1. `N{6}` menerima indeks enam basa apa pun.
-- `-G` adalah template adapter R2.
-- `-o` dan `-p` menyimpan hasil R1 dan R2 untuk pasangan sampel yang sama.
-- `--minimum-length 20` menyaring read/pasangan yang menjadi terlalu pendek setelah adapter dihapus.
-- Berkas `cutadapt/*.log` merekam jumlah pasangan yang diproses, jumlah yang lolos, dan adapter yang ditemukan; jangan menghapusnya sebelum QC pasca-trimming ditinjau.
+- `-a` mencari adapter 3′ pada R1, sedangkan `-A` melakukan hal yang sama pada R2.
+- `--overlap 10` menerima kecocokan yang mencakup sedikitnya 10 basa adapter.
+- `--minimum-length 20` membuang pasangan jika salah satu read terlalu pendek setelah trimming.
+- `-o` dan `-p` menulis R1 dan R2 ke berkas terpisah tanpa memutus pasangan.
+- Setiap berkas di `cutadapt/*.log` menyimpan jumlah pasangan yang diproses, dipangkas, dibuang, dan ditulis.
 
-## QC pasca-trimming dan langkah berikutnya {#qc-pasca-trimming-dan-langkah-berikutnya}
+## Menilai hasil pascatrimming {#menilai-hasil-pascatrimming}
 
-Buka `docs/data/rnaseq-gse94345/_pipe/multiqc_trimmed/multiqc_report.html`. Hasil setelah menjalankan perintah di atas adalah sebagai berikut.
+Buka `docs/data/rnaseq-gse94345/_pipe/multiqc_trimmed/multiqc_report.html`. Pipeline yang diuji memproses 7.235.625 pasangan read dan mempertahankan 6.636.129 pasangan, atau 91,7%. Proporsi yang tersimpan berbeda antarsampel, dari 88,3% sampai 98,1%. Sampel dengan lebih banyak read adapter kehilangan pasangan lebih banyak.
 
-![](images/multiqc-gse94345-pasca-trimming.png){.content-image fig-alt="Panel Adapter Content dan Status Checks MultiQC setelah trimming GSE94345" width="90%"}
+![](images/multiqc-gse94345-pasca-trimming.png){.content-image fig-alt="Status modul FastQC setelah trimming adapter GSE94345" width="90%"}
 
-Panel *Adapter Content* kini hanya mencatat kombinasi sampel-adapter di bawah 0,1%, dan kolom *Adapter Content* pada *Status Checks* berwarna hijau. Panel lain masih dapat berwarna kuning atau merah, terutama *Per base sequence content* dan duplikasi.
+Semua FASTQ pascatrimming lulus modul *Per base sequence quality* dan *Adapter Content*. Sekuens TruSeq yang sebelumnya mendominasi tabel *Overrepresented sequences* juga tidak muncul lagi. Trimming membuang targetnya tanpa memotong berdasarkan kualitas yang sejak awal sudah baik.
 
-Semua pasangan mempertahankan sebagian besar read dan seluruh modul *Per base sequence quality* serta *Adapter Content* lulus. Peringatan *Overrepresented sequences* yang tersisa tidak lagi cocok dengan sekuens Illumina/TruSeq, sehingga tidak menjadi alasan untuk trimming tambahan tanpa identifikasi kontaminan yang independen.
+Beberapa peringatan tetap muncul. *Per base sequence content* dan *Sequence Duplication Levels* masih gagal, sedangkan *Sequence Length Distribution* dan *Overrepresented sequences* memberi peringatan. Hasil tersebut tidak cocok dengan adapter yang baru saja dibuang. Panjang read yang bervariasi memang diharapkan setelah trimming, sementara duplikasi tinggi dapat berasal dari transkrip ragi yang sangat melimpah. Jangan melakukan trimming tambahan atau menghapus duplikat FASTQ tanpa bukti kontaminasi atau artefak teknis lain.
 
-Selesai.
+Simpan laporan MultiQC dan log Cutadapt bersama hasil analisis. FASTQ di `_pipe/trimmed/` kini siap dipakai untuk *alignment* atau kuantifikasi.
