@@ -2,86 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bowo1698.github.io/Bioinfonote/tentang.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
+    <lastmod>2026-09-20T03:56:23.036Z</lastmod>
   </url>
   <url>
     <loc>https://bowo1698.github.io/Bioinfonote/index.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
   </url>
   <url>
     <loc>https://bowo1698.github.io/Bioinfonote/docs/work-variant-calling.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
   </url>
   <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/work-RNA-seq.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/teknis-file-format.html</loc>
-    <lastmod>2026-09-19T07:09:23.344Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/skill-teknis.html</loc>
-    <lastmod>2026-09-19T07:09:23.344Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/bio.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-marker-genetik.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-library-preparation.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-konsep-biomol.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-hierarki-linux.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-instalasi-tools.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-konsep-dasar-ml.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-linux-in-win.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-tren-terbaru.html</loc>
-    <lastmod>2026-09-19T07:09:23.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/materi-dasar.html</loc>
-    <lastmod>2026-09-19T07:09:23.307Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/teknis-curl-wget.html</loc>
-    <lastmod>2026-09-19T07:09:23.344Z</lastmod>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/work-metabarcoding-16s.html</loc>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
   </url>
   <url>
     <loc>https://bowo1698.github.io/Bioinfonote/docs/teknis-quality-control.html</loc>
-    <lastmod>2026-09-19T07:09:23.345Z</lastmod>
+    <lastmod>2026-09-20T03:56:22.989Z</lastmod>
   </url>
   <url>
-    <loc>https://bowo1698.github.io/Bioinfonote/docs/work-metagenomics.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/teknis-curl-wget.html</loc>
+    <lastmod>2026-09-20T03:56:22.989Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/materi-dasar.html</loc>
+    <lastmod>2026-09-20T03:56:22.952Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-tren-terbaru.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-linux-in-win.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-konsep-dasar-ml.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-instalasi-tools.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-hierarki-linux.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-konsep-biomol.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-library-preparation.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/basic-marker-genetik.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/bio.html</loc>
+    <lastmod>2026-09-20T03:56:22.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/skill-teknis.html</loc>
+    <lastmod>2026-09-20T03:56:22.988Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/teknis-file-format.html</loc>
+    <lastmod>2026-09-20T03:56:22.989Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/work-RNA-seq.html</loc>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bowo1698.github.io/Bioinfonote/docs/work-variant-calling-multi-sample.html</loc>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
   </url>
   <url>
     <loc>https://bowo1698.github.io/Bioinfonote/docs/workflows.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
   </url>
   <url>
     <loc>https://bowo1698.github.io/Bioinfonote/materi.html</loc>
-    <lastmod>2026-09-19T07:09:23.390Z</lastmod>
+    <lastmod>2026-09-20T03:56:23.035Z</lastmod>
   </url>
 </urlset>
