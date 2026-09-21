@@ -545,7 +545,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="tujuan-dan-data-contoh" class="level2">
 <h2 class="anchored" data-anchor-id="tujuan-dan-data-contoh">Tujuan dan data contoh</h2>
-<p><em>Quality control</em> (QC) memeriksa FASTQ sebelum <em>alignment</em> atau kuantifikasi. Dari QC, kita ingin menjawab dua pertanyaan: apakah kualitas read cukup baik, dan apakah ada bagian teknis seperti adapter yang perlu dibuang. Keputusan trimming harus mengikuti temuan tersebut. Memangkas read tanpa alasan dapat menghilangkan basa yang masih berguna.</p>
+<p>Dalam bioinformatika, <em>Quality control</em> (QC) merupakan proses paling pertama untuk meningkatkan kualitas data hasil sequencing (biasanya FASTQ) dengan cara menghilangkan error yang teridentifikasi dari data tersebut. Karena QC adalah proses yang besar kemungkinan dapat merubah data, kita harus sangat berhati-hati untuk tidak secara sengaja memberikan “informasi” baru pada data. Sehingga idealnya, kita ingin dari data yang sama, kita bisa memperoleh kualitas yang lebih baik, dan analisis <em>downstream</em> dapat dilakukan dengan lebih akurat, presisi, dan <em>insightful</em>.</p>
+<p>Kita memang secara umum berharap banyak dari proses QC untuk meningkatkan kualitas data, namun QC tidak akan mampu memperbaiki data yang memang sudah benar-benar buruk. Sehingga jika hal ini terjadi, pengambilan ulang data dengan lebih hati-hati akan sangat diperlukan.</p>
+<p>Secara umum QC melibatkan 3 proses utama:</p>
+<ol type="1">
+<li>Mengevaluasi (seringkali melalui visualisasi) kualitas data</li>
+<li>Hentikan QC jika data tampak cukup baik</li>
+<li>Jika tidak, lakukan perbaikan data dan kembali ke tahap 1.</li>
+</ol>
 <p>Tutorial ini memakai enam sampel RNA-seq <em>paired-end</em> ragi (<em>Saccharomyces cerevisiae</em>) dari <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345">GEO GSE94345</a>. Tiga sampel tidak mendapat doxycycline, sedangkan tiga lainnya mendapat doxycycline. Studi tersebut mengamati perubahan transkripsi setelah induksi domain aktif SPT23p90.</p>
 </section>
 <section id="menyiapkan-perangkat-dan-mengunduh-fastq" class="level2">
