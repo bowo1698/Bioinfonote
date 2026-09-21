@@ -19,7 +19,15 @@ title: "Quality control dan trimming FASTQ"
 
 ## Tujuan dan data contoh {#tujuan-dan-data-contoh}
 
-*Quality control* (QC) memeriksa FASTQ sebelum *alignment* atau kuantifikasi. Dari QC, kita ingin menjawab dua pertanyaan: apakah kualitas read cukup baik, dan apakah ada bagian teknis seperti adapter yang perlu dibuang. Keputusan trimming harus mengikuti temuan tersebut. Memangkas read tanpa alasan dapat menghilangkan basa yang masih berguna.
+Dalam bioinformatika, *Quality control* (QC) merupakan proses paling pertama untuk meningkatkan kualitas data hasil sequencing (biasanya FASTQ) dengan cara menghilangkan error yang teridentifikasi dari data tersebut. Karena QC adalah proses yang besar kemungkinan dapat merubah data, kita harus sangat berhati-hati untuk tidak secara sengaja memberikan "informasi" baru pada data. Sehingga idealnya, kita ingin dari data yang sama, kita bisa memperoleh kualitas yang lebih baik, dan analisis *downstream* dapat dilakukan dengan lebih akurat, presisi, dan *insightful*.
+
+Kita memang secara umum berharap banyak dari proses QC untuk meningkatkan kualitas data, namun QC tidak akan mampu memperbaiki data yang memang sudah benar-benar buruk. Sehingga jika hal ini terjadi, pengambilan ulang data dengan lebih hati-hati akan sangat diperlukan.
+
+Secara umum QC melibatkan 3 proses utama:
+
+1.  Mengevaluasi (seringkali melalui visualisasi) kualitas data
+2.  Hentikan QC jika data tampak cukup baik
+3.  Jika tidak, lakukan perbaikan data dan kembali ke tahap 1.
 
 Tutorial ini memakai enam sampel RNA-seq *paired-end* ragi (*Saccharomyces cerevisiae*) dari [GEO GSE94345](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94345). Tiga sampel tidak mendapat doxycycline, sedangkan tiga lainnya mendapat doxycycline. Studi tersebut mengamati perubahan transkripsi setelah induksi domain aktif SPT23p90.
 
