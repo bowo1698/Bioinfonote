@@ -454,12 +454,9 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#daftar-isi" id="toc-daftar-isi" class="nav-link active" data-scroll-target="#daftar-isi">Daftar isi</a></li>
   <li><a href="#pendahuluan" id="toc-pendahuluan" class="nav-link" data-scroll-target="#pendahuluan">Pendahuluan</a></li>
-  <li><a href="#gen-dna-dan-dogma-sentral" id="toc-gen-dna-dan-dogma-sentral" class="nav-link" data-scroll-target="#gen-dna-dan-dogma-sentral">Gen, DNA, dan Dogma sentral</a>
-  <ul class="collapse">
-  <li><a href="#gen-unit-dasar-pewarisan-sifat" id="toc-gen-unit-dasar-pewarisan-sifat" class="nav-link" data-scroll-target="#gen-unit-dasar-pewarisan-sifat">Gen: Unit dasar pewarisan sifat</a></li>
-  <li><a href="#dna-bahan-penyusun-gen" id="toc-dna-bahan-penyusun-gen" class="nav-link" data-scroll-target="#dna-bahan-penyusun-gen">DNA: Bahan penyusun gen</a></li>
-  <li><a href="#dogma-sentral-aliran-informasi-genetik" id="toc-dogma-sentral-aliran-informasi-genetik" class="nav-link" data-scroll-target="#dogma-sentral-aliran-informasi-genetik">Dogma sentral: Aliran informasi genetik</a></li>
-  </ul></li>
+  <li><a href="#dna" id="toc-dna" class="nav-link" data-scroll-target="#dna">Tentang DNA dan bagaimana dibaca dalam Bioinformatika</a></li>
+  <li><a href="#gen" id="toc-gen" class="nav-link" data-scroll-target="#gen">Gen: Unit dasar pewarisan sifat</a></li>
+  <li><a href="#central-dogma" id="toc-central-dogma" class="nav-link" data-scroll-target="#central-dogma">Dogma sentral: Aliran informasi genetik</a></li>
   <li><a href="#regulasi-ekspresi-gen" id="toc-regulasi-ekspresi-gen" class="nav-link" data-scroll-target="#regulasi-ekspresi-gen">Regulasi ekspresi gen</a>
   <ul class="collapse">
   <li><a href="#regulasi-transkripsi" id="toc-regulasi-transkripsi" class="nav-link" data-scroll-target="#regulasi-transkripsi">Regulasi transkripsi</a></li>
@@ -505,23 +502,62 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="daftar-isi">Daftar isi</h2>
 <ul>
 <li><a href="#pendahuluan">Pendahuluan</a></li>
-<li><a href="#gen-dna-dan-dogma-sentral">Gen, DNA dan Dogma sentral</a></li>
+<li><a href="#dna">Tentang DNA dan bagaimana dibaca dalam Bioinformatika</a></li>
+<li><a href="#gen">Gen: Unit dasar pewarisan sifat</a></li>
+<li><a href="#central-dogma">Dogma sentral: Aliran informasi genetik</a></li>
 <li><a href="#regulasi-ekspresi-gen">Regulasi ekspresi gen</a></li>
 <li><a href="#membentuk-genome-variasi-sebagai-kunci-keragaman-dan-kelangsungan-hidup">Membentuk genome: Variasi sebagai kunci keragaman dan kelangsungan hidup</a></li>
 </ul>
 </section>
 <section id="pendahuluan" class="level2">
 <h2 class="anchored" data-anchor-id="pendahuluan">Pendahuluan</h2>
-<p>Biologi molekuler adalah cabang ilmu biologi yang mempelajari struktur dan fungsi molekul biologis, terutama asam nukleat dan protein, serta interaksi antara molekul-molekul tersebut. Bidang ini berperan penting dalam memahami proses-proses dasar kehidupan pada tingkat molekuler. Biologi molekuler menjembatani kesenjangan antara biologi klasik dan bidang-bidang seperti biokimia, genetika, dan fisiologi, memberikan pemahaman mendalam tentang mekanisme seluler.</p>
-<p>Perkembangan biologi molekuler dimulai dengan penemuan struktur DNA oleh James Watson dan Francis Crick pada tahun 1953, yang meletakkan dasar untuk memahami bagaimana informasi genetik disimpan, direplikasi, dan diterjemahkan menjadi protein. Sejak penemuan revolusioner ini, biologi molekuler telah berkembang pesat, menghasilkan teknik-teknik seperti kloning gen, sekuensing DNA, dan rekayasa genetika yang telah mengubah pendekatan kita dalam penelitian biologis.</p>
-<p>Dalam beberapa dekade terakhir, kemajuan dalam teknologi sekuensing dan analisis genetik telah memungkinkan para ilmuwan untuk memetakan genom berbagai organisme, termasuk genom manusia yang selesai dipetakan pada tahun 2003 (<em>Human Genome Project</em>). Pencapaian ini membuka era baru dalam penelitian biologi, memungkinkan pendekatan sistematis untuk memahami hubungan antara gen dan fenotipe, serta pengembangan aplikasi praktis dalam bidang kesehatan, pangan, dan lingkungan.</p>
-<p>Aplikasi biologi molekuler sangat luas dan terus berkembang. Di bidang kedokteran, biologi molekuler memungkinkan diagnosis yang lebih tepat untuk penyakit genetik, pengembangan terapi gen, dan pendekatan pengobatan yang dipersonalisasi (<em>precision medicine</em>). Di bidang pangan, akuakultur misalnya, teknologi DNA telah menghasilkan varian ikan dan udang dengan peningkatan performa pertumbuhan, ketahanan penyakit, dan nilai gizi. Di bidang lingkungan, pendekatan molekuler digunakan untuk memahami keanekaragaman hayati, mengembangkan bioremediasi, dan memantau ekosistem, misalnya penggunaan teknik eDNA (<em>environmental DNA</em>).</p>
-<p>Keberhasilan biologi molekuler tidak lepas dari pendekatannya yang interdisipliner, menggabungkan prinsip dan teknik dari berbagai bidang seperti biologi, kimia, fisika, matematika, dan ilmu komputer. Pendekatan terintegrasi ini telah melahirkan bidang-bidang baru seperti genomika, proteomika, dan bioinformatika, yang bersama-sama memberikan pemahaman komprehensif tentang proses-proses biologis pada tingkat molekuler.</p>
+<p>Biologi adalah domain dari ilmu hayati (<em>life sciences</em>) yang mencakup kimia organik, ekologi, botani, zoology, fisiologi, dan lain-lain. Biologi pada umumnya mempelajari bagaimana struktur, fungsi, asal-muasal dari suatu organisme, dan bagaimana hal-hal tersebut saling berinteraksi. Dan sebagai salah satu cabang ilmu pengetahun, biologi masih belum matang dan bersifat elektik, yang artinya masih banyak hal yang belum diketahui dan masih mencari-cari “formula” terbaik dari banyak cabang ilmu lainnya.</p>
+<p>Di sisi lain, makhluk hidup itu sangat kompleks, selalu berubah (evolusi), dan banyak hal yang belum kita ketahui. Selama berabad-abad kita masih belum memiliki alat (<em>tools</em>) yang cukup akurat untuk mengukur, mendeskripsikan, dan membantu memahami kompleksitas setiap organisme hidup. Bakteri misalnya, kita tahu bahwa bakteri adalah salah satu organisme hidup yang paling sederhana dalam hal komponen biologi penyusunnya. Namun selama berabad-abad, para ilmuan masih terus mempelajari bakteri, berusaha memahami bagaimana organisme sesederhana itu hidup. Dan faktanya, banyak terobosan dan pengetahuan-pengetahuan baru yang muncul ketika para ilmuan mempelajari bakteri.</p>
+<p>Teknologi digital yang saat ini berkembang kemudian mengakselerasi perkembangan ilmu biologi. Bioinformatika adalah yang terdepan dalam hal ini, dan telah banyak membantu para ilmuan untuk lebih memahami suatu organisme hidup. Kita berharap kedepannya makin banyak <em>tools</em> dan model inovatif yang dikembangkan, sehingga pemahaman tentang organisme hidup akan semakin baik.</p>
+<p>Pada artikel ini, saya berusaha untuk mendeskripsikan beberapa konsep-konsep penting dalam biologi, yang mana memiliki kaitan erat dalam kita mempelajari bioinformatika lebih lanjut.</p>
 </section>
-<section id="gen-dna-dan-dogma-sentral" class="level2">
-<h2 class="anchored" data-anchor-id="gen-dna-dan-dogma-sentral">Gen, DNA, dan Dogma sentral</h2>
-<section id="gen-unit-dasar-pewarisan-sifat" class="level3">
-<h3 class="anchored" data-anchor-id="gen-unit-dasar-pewarisan-sifat">Gen: Unit dasar pewarisan sifat</h3>
+<section id="dna" class="level2">
+<h2 class="anchored" data-anchor-id="dna">Tentang DNA dan bagaimana dibaca dalam Bioinformatika</h2>
+<p>DNA (Deoxyribo Nucleic Acid) merupakan makromolekul (sebuah molekul yang disusun oleh molekul-molekul yang lebih kecil) yang membawa informasi genetik dan instruksinya untuk perkembangan, fungsi, reproduksi, dari setiap organisme hidup. Pada organisme eukariot (hewan, tumbuhan, jamur), DNA terdapat pada inti sel (<em>nucleus</em>), sementara pada prokariot (bakteri, virus), DNA terdapat pada sitoplasma.</p>
+<p>DNA terdiri dari dua untai molekul yang lebih kecil yang saling melilit membentuk struktur heliks ganda (<em>double helix</em>). Jika untaian DNA tersebut direntangkan, bentuknya akan menyerupai sebuah tangga. Kita tahu bahwa tangga memiliki 2 bagian penting: tiang penyangga di kedua sisi dan anak tangga tempat kita berpijak saat memanjat. “Tiang” DNA tersusun dari molekul deoksiribosa (gula) dan fosfat yang berselang-seling. Meskipun bagian ini membentuk kerangka strukturnya, justru “anak tangga” DNA-lah yang paling penting dalam bioinformatika. Untuk memahami “anak tangga” DNA, bayangkan sebuah tangga yang dibelah menjadi dua bagian tepat di tengahnya, sehingga setiap bagiannya menjadi tiang dengan deretan potongan anak tangga yang menonjol keluar. Pada DNA, “potongan anak tangga” ini merupakan molekul yang disebut nukleotida. Informasi genetik dikodekan ke dalam DNA melalui urutan atau susunan letak nukleotida-nukleotida tersebut. “Tangga” DNA ini disatukan oleh ikatan yang menghubungkan setiap “potongan anak tangga” tersebut.</p>
+<p>Nukleotida adalah unit penyusun asam nukleat (DNA dan RNA). Pada DNA, terdapat empat jenis nukleotida: <em>Adenine</em>, <em>Cytosine</em>, <em>Guanine</em>, dan <em>Thymine</em>. Karena urutan kemunculannya menyimpan informasi biologi dan kita berusaha untuk memahami informasi ini, maka kita akan keempat jenis nukleotida ini berdasarkan huruf pertamanya saja, yaitu A, C, G, dan T.</p>
+<pre class="text terminal-output"><code>A Adenine
+C Cytosine 
+G Guanine
+T Thymine</code></pre>
+<p>Kembali ke analogi tangga. “Nukleotida” adalah jenis molekul yang membentuk setiap separuh anak tangga. Karena berfungsi sebagai unit penyandi informasi genetik, setiap huruf ini juga disebut sebagai basa.</p>
+<p>Sebagai contoh kita akan merepresentasikan urutan basa DNA menggunakan huruf-huruf tersebut. Jika kita mengambil DNA bakteri <em>Bacillus anthracis</em> penyebab penyakit antraks, yang mana kita membentangkan heliks gandanya hingga menyerupai tangga, lalu membelah tangga tersebut menjadi dua bagian, maka bagian atasnya (untai maju atau <em>forward</em>) akan ditulis seperti ini:</p>
+<pre class="text terminal-output"><code>ATATTTTTTCTTGTTTTTTATATCCACAAACTCTTTT</code></pre>
+<p>Saat kedua sisi tangga disatukan kembali, setiap anak tangga terbentuk dari ikatan antara dua basa. Ketika keduanya berikatan, kita menyebutnya sebagai pasangan basa (atau <em>base pair</em> “bp”). Terkait pasangan basa, penting untuk diingat bahwa <em>Adenine</em> hanya berpasangan dengan <em>Thymine</em>, dan <em>Guanine</em> dengan <em>Cytosine</em>. Dalam analogi tangga, ini berarti setiap anak tangga akan dilambangkan sebagai: A - T, G - C</p>
+<p>Ingat, saat kita membelah “tangga” DNA tepat di tengahnya, setiap sisi menjadi tiang dengan separuh anak tangga yang menonjol keluar. Kedua bagian ini disebut sebagai untaian (<em>strands</em>). Untuk membedakan kedua untaian tersebut, para ilmuwan melabeli satu sebagai untaian maju (<em>forward strand</em>) dan yang kedua sebagai untaian balik (<em>reverse strand</em>). Sebelumnya, kita telah memberikan contoh untaian maju pada bakteri <em>Bacillus anthracis</em>. Berikut adalah saat berpasangan dengan untaian baliknya:</p>
+<pre class="text terminal-output"><code>forward --&gt; ATATTTTTTCTTGTTTTTTATATCCACAAACTCTTTT
+            |||||||||||||||||||||||||||||||||||||
+            TATAAAAAAGAACAAAAAATATAGGTGTTTGAGAAAA &lt;-- reverse</code></pre>
+<p>Garis-garis yang menghubungkan basa di kedua sisi menunjukkan hubungan pasangan basa.</p>
+<p><em>Forward</em> dan r<em>everse</em> hanyalah sebutan semata. Pemilihan sebutan ini bersifat arbitrer dan tidak bergantung pada sifat intrinsik apa pun dari DNA tersebut. Untaian <em>forward</em> tidaklah istimewa. Para ilmuwan menentukan mana yang disebut <em>forward</em> dan mana yang disebut <em>reverse</em> saat pertama kali menganalisis DNA suatu organisme. Meskipun penentuan tersebut bersifat arbitrer, menjaga konsistensi terhadap keputusan itu penting demi kejelasan komunikasi.</p>
+<p>DNA memiliki arah tertentu yang ditentukan oleh polaritas molekul-molekulnya. Arah ini berjalan berlawanan pada masing-masing untaian. Biasanya, polaritas ini ditunjukkan dengan tanda panah:</p>
+<pre class="text terminal-output"><code>------&gt;
+ATATTTTTTCTTGTTTTTTATATCCACAAACTCTTTT
+|||||||||||||||||||||||||||||||||||||
+TATAAAAAAGAACAAAAAATATAGGTGTTTGAGAAAA
+                              &lt;------</code></pre>
+<p>Sebagian besar mekanisme biologis (namun tidak semuanya) berlangsung pada satu untai DNA dan mengikuti arah panah. Oleh karena itu, urutan DNA di atas akan “dikenali” oleh perangkat biokimia sebagai salah satu dari berikut ini:</p>
+<pre class="text terminal-output"><code>ATATTTTTTCTTGTTTTTTATATCCACAAACTCTTTT</code></pre>
+<p>atau</p>
+<pre class="text terminal-output"><code>AAAAGAGTTTGTGGATATAAAAAACAAGAAAAAATAT</code></pre>
+<p>Urutan terakhir ini disebut sebagai komplemen balik (<em>reverse complement</em>) dari urutan pertama dan dibentuk dengan membalik urutan hurufnya, kemudian menukar A dengan T serta menukar C dengan G (dan sebaliknya).</p>
+<p>Oleh karena itu, urutan misalnya DNA <code>AAACT</code> mungkin memiliki versi:</p>
+<ul>
+<li><p><em>Reverse</em>: <code>TCAAA</code></p></li>
+<li><p><em>Complement</em>: <code>TTTGA</code></p></li>
+<li><p><em>Reverse</em>-<em>complement</em>: <code>AGTTT</code></p></li>
+</ul>
+<p>Konsep tentang forward/reverse lebih berkaitan dengan orientasi acuan dalam genom yang digunakan dalam bioinformatika. Sementara jika orientasinya berdasarkan arah sesungguhnya tentang bagaimana dari untai DNA dapat menghasilkan produk biologis (protein), maka kita akan mengenal konsep baru yaitu <em>sense</em> dan <em>anti</em>-<em>sense.</em></p>
+<p>Sense (dilambangkan dengan simbol +) artinya suatu urutan basa DNA yang persis sama dengan produk nya (mRNA). Sementara anti-sense (dilambangkan dengan simbol -) adalah urutan cetakan (<em>template</em>) yang dibaca oleh enzim polymerase untuk mensintesis produk DNA (mRNA).<br>
+Gen, DNA, dan Dogma sentral</p>
+</section>
+<section id="gen" class="level2">
+<h2 class="anchored" data-anchor-id="gen">Gen: Unit dasar pewarisan sifat</h2>
 <p>Gen dapat diumpamakan sebagai resep dalam buku masak. Setiap resep (gen) berisi instruksi spesifik untuk membuat satu jenis hidangan, dalam hal ini adalah protein. Gen adalah unit fungsional terkecil dari materi genetik yang mengkode informasi untuk membentuk protein tertentu atau mengatur ekspresi gen lainnya.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -533,16 +569,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Gen tidak bekerja sendirian. Mereka saling berinteraksi dalam jaringan kompleks, saling mengatur dan memengaruhi. Beberapa gen aktif sejak awal perkembangan embrio, sementara yang lain hanya aktif pada tahap tertentu atau di jaringan spesifik. Misalnya, gen yang bertanggung jawab untuk membentuk hemoglobin (protein pembawa oksigen dalam darah) sangat aktif di sel-sel darah merah, tetapi tidak aktif di sel kulit.</p>
 <p>Manusia memiliki sekitar 20.000-25.000 gen yang tersebar di 23 pasang kromosom. Jumlah ini mungkin terdengar banyak, tetapi sebenarnya cukup sederhana dibandingkan dengan kompleksitas tubuh manusia itu sendiri. Ini karena satu gen dapat menghasilkan beberapa varian protein melalui proses yang disebut “<em>alternative splicing</em>”, dan protein-protein ini kemudian berinteraksi dengan cara yang sangat kompleks.</p>
 </section>
-<section id="dna-bahan-penyusun-gen" class="level3">
-<h3 class="anchored" data-anchor-id="dna-bahan-penyusun-gen">DNA: Bahan penyusun gen</h3>
-<p>Jika gen adalah resep, maka DNA (<em>Deoxyribonucleic Acid</em>) adalah kertas tempat resep tersebut ditulis. DNA adalah molekul kompleks berbentuk heliks ganda (<em>double helix</em>) yang menyimpan informasi genetik dalam bentuk kode kimia. Struktur DNA seperti tangga spiral, dengan dua untai yang terhubung oleh anak tangga berupa pasangan basa nitrogen.</p>
-<p>Ada empat jenis basa nitrogen dalam DNA: Adenin (A), Guanin (G), Sitosin (C), dan Timin (T). Basa ini selalu berpasangan dengan aturan tertentu. Adenin selalu berpasangan dengan Timin, dan Guanin selalu berpasangan dengan Sitosin. Urutan basa inilah yang membentuk “kode genetik”, sebuah bahasa universal kehidupan yang menentukan karakteristik setiap organisme.</p>
-<p>Keindahan struktur DNA terletak pada kemampuannya untuk mereplikasi diri dengan akurat. Saat sel membelah, untai heliks ganda DNA terpisah, dan masing-masing untai menjadi cetakan (<em>template</em>) untuk membentuk untai komplementer baru. Hasilnya adalah dua molekul DNA identik untuk memastikan bahwa informasi genetik diteruskan dengan tepat ke sel-sel anak.</p>
-<p>Meskipun 99,9% DNA manusia identik, variasi 0,1% itulah yang membuat kita unik. Perbedaan kecil dalam urutan DNA dapat menghasilkan variasi dalam sifat fisik, kerentanan terhadap penyakit, dan bahkan beberapa aspek kepribadian. Variasi ini terjadi melalui mutasi acak dan rekombinasi genetik selama reproduksi seksual.</p>
-<p>DNA tidak hanya ditemukan di dalam inti sel (nukleus). Sebagian kecil DNA juga terdapat di mitokondria (generator energi di dalam sel), yang diwariskan secara eksklusif dari ibu (<em>maternal</em>). DNA mitokondria ini telah menjadi alat penting dalam studi evolusi manusia dan penelusuran garis keturunan.</p>
-</section>
-<section id="dogma-sentral-aliran-informasi-genetik" class="level3">
-<h3 class="anchored" data-anchor-id="dogma-sentral-aliran-informasi-genetik">Dogma sentral: Aliran informasi genetik</h3>
+<section id="central-dogma" class="level2">
+<h2 class="anchored" data-anchor-id="central-dogma">Dogma sentral: Aliran informasi genetik</h2>
 <p>Dogma sentral biologi molekuler (<em>central dogma</em>) menjelaskan bagaimana informasi genetik mengalir dari DNA ke protein, melalui perantara RNA (<em>Ribonucleic acid</em>), sebuah materi genetik dengan untai tunggal (<em>single helix</em>). Ini seperti proses penerjemahan buku dari bahasa asli (DNA) ke bahasa perantara (RNA), dan akhirnya menjadi produk akhir yang fungsional (protein). Proses ini terjadi dalam dua tahap utama:</p>
 <p><strong>Transkripsi:</strong> Pada tahap ini, sekuen DNA digunakan sebagai <em>template</em> untuk membentuk molekul <em>messenger</em> RNA (mRNA). Enzim RNA polimerase membaca kode DNA dan mensintesis mRNA komplementer, di mana terjadi di dalam nukleus. Jika DNA adalah <em>master copy</em> dari instruksi genetik, mRNA adalah salinan kerja yang dapat dibawa keluar dari nukleus.</p>
 <p><strong>Translasi:</strong> Setelah mRNA terbentuk dan bergerak keluar dari nukleus menuju sitoplasma, informasi genetik diterjemahkan menjadi protein. Ribosom, “pabrik protein” sel, membaca kode pada mRNA dan merangkai asam amino sesuai urutan yang ditentukan. Setiap tiga basa (disebut kodon) pada mRNA mengkode satu asam amino spesifik. Rangkaian asam amino inilah yang membentuk protein, dan protein inilah yang menjalankan hampir semua fungsi dalam tubuh.</p>
@@ -553,7 +581,6 @@ ul.task-list li input[type="checkbox"] {
 <figcaption><strong>Dogma sentral.</strong> DNA mengalami replikasi untuk menggandakan dirinya, kemudian ditranskripsi menjadi RNA. RNA selanjutnya diterjemahkan (translasi) menjadi protein. Dalam kasus tertentu, RNA juga dapat ditranskripsi balik (<em>reverse transcription</em>) menjadi DNA, seperti yang terjadi pada virus retro. <em>Sumber gambar:</em> <a href="https://www.scienceholic.org/post/the-exception-to-the-central-dogma">Scienceholic</a></figcaption>
 </figure>
 </div>
-</section>
 </section>
 <section id="regulasi-ekspresi-gen" class="level2">
 <h2 class="anchored" data-anchor-id="regulasi-ekspresi-gen">Regulasi ekspresi gen</h2>
